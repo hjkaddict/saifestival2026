@@ -24,6 +24,14 @@
         </div>
       </div>
     </div>
+    <div class="custom-cursor" :style="{ left: cursorX + 'px', top: cursorY + 'px' }">
+      <div class="arrow-rotate-layer" :style="{ transform: `rotate(${currentAngle}deg)` }">
+        <div class="arrow-center-wrapper">
+          <div class="long-stroke"></div>
+          <div class="arrow-tip"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -43,25 +51,39 @@ export default {
       randomMenus: [],
       isLoaded: false,
       centerPos: { x: 0, y: 0 },
+      cursorX: 0,
+      cursorY: 0,
+      // 처음 진입 시 랜덤한 각도 하나만 딱 정해둡니다.
+      currentAngle: Math.random() * 360,
     }
   },
   mounted() {
     this.updateCenterPos()
     this.generatePositions()
 
-    // DOM이 완전히 그려진 후 아주 짧은 딜레이 후 실행
+    // 🔥 마우스 이동 이벤트 리스너 추가
+    window.addEventListener('mousemove', this.updateCursor)
+
     requestAnimationFrame(() => {
       setTimeout(() => {
         this.isLoaded = true
       }, 50)
     })
-
     window.addEventListener('resize', this.handleResize)
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.handleResize)
+    // 🔥 이벤트 제거
+    window.removeEventListener('mousemove', this.updateCursor)
   },
   methods: {
+    updateCursor(e) {
+      // 각도 계산(dx, dy)을 아예 삭제합니다.
+      requestAnimationFrame(() => {
+        this.cursorX = e.clientX
+        this.cursorY = e.clientY
+      })
+    },
     updateCenterPos() {
       // 메뉴의 대략적인 크기(220x70)를 고려하여 정확히 중앙점 계산
       // window.innerWidth가 작아져도 음수값이 나오지 않도록 처리
@@ -143,7 +165,55 @@ export default {
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  background: transparent;
+  background: #fff;
+  /* 커서가 메뉴 위에서 기본 화살표로 보이지 않게 처리 */
+  cursor: none !important;
+}
+
+/* 🔥 커스텀 커서 스타일 (Artists.vue와 동일) */
+.custom-cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 100000;
+  /* 핵심: 배경 및 글자와 색상 반전 */
+  mix-blend-mode: difference;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+}
+
+.arrow-rotate-layer {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0;
+  height: 0;
+  /* 각도 변경 시 너무 툭툭 끊기지 않게 약간의 트랜지션 추가 가능 */
+}
+
+.arrow-center-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.long-stroke {
+  /* 선의 길이를 메뉴 너비에 맞춰 조절 가능 (예: 300px ~ 500px) */
+  width: 400px;
+  height: 1.5px;
+  background: #fff;
+  transform: translateX(-200px);
+}
+
+.arrow-tip {
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  margin-left: 199px;
+  position: absolute;
+  clip-path: polygon(0% 25%, 100% 50%, 0% 75%);
 }
 
 .paper-label {

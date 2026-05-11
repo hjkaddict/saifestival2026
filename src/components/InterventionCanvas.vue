@@ -51,7 +51,7 @@ export default {
       const h = window.innerHeight
       const centerX = w / 2
       const centerY = h / 2
-      const lineCount = 5 + Math.floor(Math.random() * 7)
+      const lineCount = 3 + Math.floor(Math.random() * 5)
       this.lines = []
 
       for (let i = 0; i < lineCount; i++) {

@@ -1,9 +1,7 @@
 <template>
   <div class="about-container">
     <article class="about-text-wrapper" :key="locale.lang">
-      <div class="description-text">
-        {{ aboutContent }}
-      </div>
+      <div class="description-text" v-html="aboutContent"></div>
     </article>
   </div>
 </template>

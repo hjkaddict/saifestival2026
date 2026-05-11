@@ -1,6 +1,11 @@
 <template>
   <div id="app-root">
-    <button class="lang-globe-btn" @click.stop="toggleLang" aria-label="Toggle Language">
+    <button
+      v-if="$route.path !== '/'"
+      class="lang-globe-btn"
+      @click.stop="toggleLang"
+      aria-label="Toggle Language"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -52,6 +57,7 @@ export default {
 </script>
 
 <style>
+/* ... 기존 스타일 유지 ... */
 ::-webkit-scrollbar {
   width: 4px;
 }
@@ -68,7 +74,7 @@ body {
   padding: 0;
   width: 100%;
   overflow-x: hidden;
-  background-color: #fff; /* 전체 배경 흰색 고정 */
+  background-color: #fff;
 }
 
 * {
@@ -82,7 +88,7 @@ body {
   flex-direction: column;
   width: 100%;
   position: relative;
-  background-color: #fff; /* 캔버스 연산을 위한 기준색 */
+  background-color: #fff;
 }
 
 .router-stage {
@@ -101,10 +107,21 @@ body {
   border: none;
   padding: 10px;
   cursor: pointer;
-  color: #000; /* 버튼은 검은색으로 고정하거나 취향껏 변경 */
+  color: #000;
   display: flex;
   align-items: center;
   gap: 5px;
+  /* 버튼이 나타날 때 부드럽게 보이고 싶다면 아래 애니메이션 추가 */
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .lang-globe-btn svg {
