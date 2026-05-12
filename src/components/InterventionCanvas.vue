@@ -33,6 +33,11 @@ export default {
     window.addEventListener('resize', this.handleResize)
     window.addEventListener('scroll', this.render)
     window.addEventListener('scroll-canvas', this.render)
+
+    // 🔥 추가: 메뉴 호버 신호 감지
+    window.addEventListener('menu-hover-start', this.pauseAnimation)
+    window.addEventListener('menu-hover-end', this.resumeFromHover)
+
     this.handleResize()
 
     if (this.$route.path === '/') {
@@ -44,8 +49,17 @@ export default {
     window.removeEventListener('resize', this.handleResize)
     window.removeEventListener('scroll', this.render)
     window.removeEventListener('scroll-canvas', this.render)
+
+    // 🔥 추가: 리스너 제거
+    window.removeEventListener('menu-hover-start', this.pauseAnimation)
+    window.removeEventListener('menu-hover-end', this.resumeFromHover)
   },
   methods: {
+    resumeFromHover() {
+      if (this.$route.path === '/') {
+        this.startAnimation()
+      }
+    },
     generateLines() {
       const w = window.innerWidth
       const h = window.innerHeight
@@ -65,7 +79,7 @@ export default {
           startY: targetY - Math.cos(angleRad) * (lineLength / 2),
           angleRad: angleRad,
           length: lineLength,
-          lineWidth: 1 + Math.random() * 12,
+          lineWidth: 1 + Math.random() * 15,
           speedFactor: 0.5 + Math.random() * 2,
           direction: Math.random() > 0.5 ? 1 : -1,
         })
@@ -79,14 +93,22 @@ export default {
     },
     startAnimation() {
       if (this.timer) return
-      this.timer = setInterval(() => {
+
+      const loop = () => {
         this.generateLines()
         this.render()
-      }, 300)
+
+        // 10ms에서 1000ms 사이의 랜덤한 지연 시간 설정
+        const randomDelay = Math.random() * (400 - 10) + 10
+        this.timer = setTimeout(loop, randomDelay)
+      }
+
+      loop()
     },
     pauseAnimation() {
       if (this.timer) {
-        clearInterval(this.timer)
+        // setInterval에서 setTimeout으로 바뀌었으므로 clearTimeout 사용
+        clearTimeout(this.timer)
         this.timer = null
       }
     },

@@ -13,6 +13,8 @@
         opacity: isLoaded ? 1 : 0,
       }"
       @click="navigate(item.path)"
+      @mouseenter="onMenuHover(true)"
+      @mouseleave="onMenuHover(false)"
     >
       <div class="folded-text-container">
         <div class="slice t-slice" :style="item.styles.top">
@@ -43,7 +45,7 @@ export default {
       menus: [
         { name: 'Artists', koName: '아티스트', path: '/artists' },
         { name: 'Program', koName: '프로그램', path: '/program' },
-        { name: 'Timetable', koName: '스케줄', path: '/timetable' },
+        { name: 'Venue', koName: '장소', path: '/venue' },
         { name: 'Ticket', koName: '티켓', path: '/ticket' },
         { name: 'Archive', koName: '아카이브', path: '/archive' },
         { name: 'About', koName: '사–이', path: '/about' },
@@ -77,8 +79,16 @@ export default {
     window.removeEventListener('mousemove', this.updateCursor)
   },
   methods: {
+    onMenuHover(isHovering) {
+      if (isHovering) {
+        // InterventionCanvas에게 멈추라고 신호 보냄
+        window.dispatchEvent(new CustomEvent('menu-hover-start'))
+      } else {
+        // 다시 시작하라고 신호 보냄
+        window.dispatchEvent(new CustomEvent('menu-hover-end'))
+      }
+    },
     updateCursor(e) {
-      // 각도 계산(dx, dy)을 아예 삭제합니다.
       requestAnimationFrame(() => {
         this.cursorX = e.clientX
         this.cursorY = e.clientY

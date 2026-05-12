@@ -104,7 +104,7 @@ export const artistsData = [
   },
   {
     id: 'artist_10',
-    name_en: 'Helm',
+    name_en: 'HELM',
     name_kr: '헬름',
     bio_en: `Born and raised in London (England), HELM is an electronic musician known for his intuitive approach to sound design and immersive sonic landscapes. Taking elements from drone, noise, ambient, and industrial music, HELM creates dense, textured compositions that challenge the boundaries of conventional electronic music. His work explores the intersection of abstract sound and physical space, using both analogue and digital techniques to craft deeply atmospheric pieces.
     HELM has released critically acclaimed albums on labels like Dais, PAN, and his own imprint Alter, maintaining a consistent presence in the experimental music scene for over a decade.
@@ -194,7 +194,7 @@ export const artistsData = [
   },
   {
     id: 'artist_18',
-    name_en: 'Evol',
+    name_en: 'EVOL',
     name_kr: '이볼',
     bio_en: `Stephen Sharp and Roc Jiménez de Cisneros like to deform musical objects. Fuelled by analogies about bending and stretching to resynthesise and liquify their favourite dance music tropes, their work is a love letter to techno culture written from a different continuum. Equally austere and maximalist, their music is a blend of bouncy patterns, hyper-deformed acid lines and screeching alarm-like sounds. EVOL records have been published on labels such as Diagonal, iDEAL, Superpang, Presto!?, Editions Mego, or their very own Alku.`,
     bio_kr: ``,

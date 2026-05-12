@@ -22,7 +22,7 @@
         <path d="M12 2a14.5 14.5 0 0 0 0 20" />
         <path d="M2 12h20" />
       </svg>
-      <span class="curr-lang-tag">{{ locale.lang === 'kr' ? 'KO' : 'EN' }}</span>
+      <span class="curr-lang-tag">{{ locale.lang === 'kr' ? 'EN' : 'KR' }}</span>
     </button>
 
     <main class="router-stage">
