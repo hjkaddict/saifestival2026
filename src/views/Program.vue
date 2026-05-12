@@ -3,7 +3,7 @@
     <div class="program-list">
       <template v-for="(pgm, index) in shuffledPrograms" :key="index">
         <section class="program-section">
-          <!-- 기존 메타 정보 -->
+          <!-- 프로그램 메타 정보 -->
           <div class="program-meta">
             <h2 class="program-type">
               <span v-html="pgm.data.title[locale.lang]"></span>
@@ -12,7 +12,12 @@
                 v-html="pgm.data.period ? pgm.data.period[locale.lang] : pgm.data.date[locale.lang]"
               ></span>
             </h2>
-            <div class="info-group">
+
+            <!-- openingHours가 존재하고 해당 언어 데이터가 있을 때만 출력 -->
+            <div
+              v-if="pgm.data.openingHours && pgm.data.openingHours[locale.lang]"
+              class="info-group"
+            >
               <div class="hours-container">
                 <div
                   v-for="(time, tIdx) in pgm.data.openingHours[locale.lang].split('/')"
@@ -25,7 +30,7 @@
             </div>
           </div>
 
-          <!-- 기존 설명 -->
+          <!-- 프로그램 설명 -->
           <div class="program-content">
             <p
               class="description"
@@ -33,7 +38,7 @@
             ></p>
           </div>
 
-          <!-- 🔥 추가: 퍼포먼스 프로그램일 경우 아티스트 리스트 출력 -->
+          <!-- 퍼포먼스 프로그램일 경우 아티스트 리스트 출력 -->
           <div v-if="pgm.isPerformance" class="performance-artists-wrapper">
             <div v-for="day in performanceDays" :key="day.date" class="performance-day-group">
               <h3 class="day-title">{{ day.date }}</h3>
@@ -45,8 +50,6 @@
                   class="artist-card"
                 >
                   <div class="glitch-wrapper">
-                    <!-- 🔥 원본 사진(base) 제거됨 -->
-
                     <!-- 깨진 조각 1: 위쪽 -->
                     <div class="slice top" :style="getSliceStyle(artist.glitch, 'top')">
                       <img :src="artist.img" class="artist-img" />
@@ -58,7 +61,7 @@
                     </div>
 
                     <!-- 이미지를 가르는 날카로운 랜덤 선 -->
-                    <div class="glitch-line" :style="getLineStyle(artist.glitch)"></div>
+                    <div class="glitch-line" :style="getArtistLineStyle(artist.glitch)"></div>
                   </div>
 
                   <div class="artist-info">
@@ -72,7 +75,7 @@
           </div>
         </section>
 
-        <!-- 구분선 -->
+        <!-- 섹션 사이 구분선 -->
         <div v-if="index < shuffledPrograms.length - 1" class="divider-space">
           <svg class="line-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
             <line
@@ -82,7 +85,7 @@
               :y2="lineConfigs[index]?.line1.y2"
               :stroke="lineConfigs[index]?.line1.color"
               :stroke-width="lineConfigs[index]?.line1.weight"
-              :style="getLineStyle(lineConfigs[index]?.line1)"
+              :style="getDividerLineStyle(lineConfigs[index]?.line1)"
             />
             <line
               x1="0"
@@ -91,7 +94,7 @@
               :y2="lineConfigs[index]?.line2.y2"
               :stroke="lineConfigs[index]?.line2.color"
               :stroke-width="lineConfigs[index]?.line2.weight"
-              :style="getLineStyle(lineConfigs[index]?.line2)"
+              :style="getDividerLineStyle(lineConfigs[index]?.line2)"
             />
           </svg>
         </div>
@@ -105,7 +108,7 @@ import { localeStore } from '@/store/locale.js'
 import { programExhibition } from '@/assets/data/program_exhibition.js'
 import { programPerformance } from '@/assets/data/program_performance.js'
 import { programWorkshop } from '@/assets/data/program_workshop.js'
-import { artistsData } from '@/assets/data/artists.js' // 아티스트 데이터 임포트
+import { artistsData } from '@/assets/data/artists.js'
 
 export default {
   name: 'Program',
@@ -116,20 +119,23 @@ export default {
       lineConfigs: [],
       scrollProgress: 0,
       palette: ['#FF0000', '#FFA500', '#FFFF00', '#00FF00', '#FFC0CB'],
-      performanceDays: [], // 날짜별 셔플된 아티스트 저장
+      performanceDays: [],
     }
   },
   mounted() {
     this.initPrograms()
-    this.initPerformanceArtists() // 아티스트 초기화
+    this.initPerformanceArtists()
     window.addEventListener('scroll', this.handleScroll)
     this.handleScroll()
+  },
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
     initPrograms() {
       const baseData = [
         { data: programExhibition, isPerformance: false },
-        { data: programPerformance, isPerformance: true }, // 퍼포먼스 체크
+        { data: programPerformance, isPerformance: true },
         { data: programWorkshop, isPerformance: false },
       ]
       this.shuffledPrograms = baseData.sort(() => Math.random() - 0.5)
@@ -139,6 +145,7 @@ export default {
         line2: this.generateRandomLineParams(),
       }))
     },
+
     initPerformanceArtists() {
       const schedule = [
         { date: 'July 10', names: ['The Great △', 'Jiyoung Wi', 'Container', 'Dayoon Lee'] },
@@ -164,16 +171,22 @@ export default {
             ...artist,
             glitch: {
               split: 35 + Math.random() * 30,
-              angle: (Math.random() - 0.5) * 25,
+              angle: (Math.random() - 0.5) * 120,
               skewX: (Math.random() - 0.5) * 30,
-              // 🔥 간격 범위를 -10px에서 +20px 사이 랜덤으로 설정
-              dist: -10 + Math.random() * 30,
+              dist: -10 + Math.random() * 20, // -20px ~ +20px 랜덤 간격
               lineColor: this.palette[Math.floor(Math.random() * this.palette.length)],
             },
           }))
 
         return { date: day.date, shuffledArtists: shuffled }
       })
+    },
+
+    // △ 기호를 URL에 포함시키기 위해 encodeURIComponent 사용
+    formatSlug(name) {
+      if (!name) return ''
+      const slug = name.toLowerCase().replace(/\s+/g, '-')
+      return encodeURIComponent(slug)
     },
 
     getSliceStyle(g, type) {
@@ -184,13 +197,12 @@ export default {
 
       return {
         clipPath: clip,
-        // 벌어지는 간격을 적용
         transform: `translate(${isTop ? -g.dist : g.dist}px, ${isTop ? -g.dist / 2 : g.dist / 2}px) skewX(${isTop ? g.skewX : -g.skewX}deg)`,
         filter: isTop ? 'none' : 'brightness(90%)',
       }
     },
 
-    getLineStyle(g) {
+    getArtistLineStyle(g) {
       return {
         top: `${g.split}%`,
         transform: `rotate(${g.angle}deg)`,
@@ -198,13 +210,6 @@ export default {
       }
     },
 
-    formatSlug(name) {
-      return name
-        .toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/[^\w-]/g, '')
-    },
-    // ... (기존 generateRandomLineParams, handleScroll, getLineStyle 로직 유지)
     generateRandomLineParams() {
       return {
         y1: 35 + Math.random() * 30,
@@ -215,6 +220,7 @@ export default {
         dir: Math.random() > 0.5 ? 1 : -1,
       }
     },
+
     handleScroll() {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop
       const docHeight = document.documentElement.scrollHeight - window.innerHeight
@@ -222,7 +228,8 @@ export default {
       window.aboutScrollProgress = this.scrollProgress
       window.dispatchEvent(new Event('scroll-canvas'))
     },
-    getLineStyle(config) {
+
+    getDividerLineStyle(config) {
       if (!config) return {}
       const moveX = this.scrollProgress * config.speed * config.dir
       return {
@@ -236,14 +243,55 @@ export default {
 </script>
 
 <style scoped>
-/* 기존 스타일 유지 */
+.program-container {
+  width: 100%;
+  background-color: #fff;
+  overflow-x: hidden;
+}
+
+.program-section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+/* 아티스트 그리드 레이아웃 */
+.performance-artists-wrapper {
+  margin-top: 40px;
+}
+
+.performance-day-group {
+  margin-bottom: 10px;
+}
+
+.day-title {
+  font-family: monospace;
+  font-size: 1.2rem;
+  font-weight: 900;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #000;
+  display: inline-block;
+}
+
+.artist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  padding-bottom: 20px;
+}
+
+.artist-card {
+  text-decoration: none;
+  color: inherit;
+  padding-bottom: 10px;
+}
+
+/* 글리치 이미지 효과 */
 .glitch-wrapper {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
   overflow: visible;
-  margin-bottom: 25px;
-  background-color: transparent; /* 배경 사진 제거됨 */
+  margin-bottom: 2px;
 }
 
 .slice {
@@ -255,123 +303,80 @@ export default {
   transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.program-container {
-  width: 100%;
-  background-color: #fff;
-  overflow-x: hidden;
-}
-.program-section {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 60px 20px;
-}
-.divider-space {
-  width: 100vw;
-  height: 200px;
-  margin: 20px 0;
-  mix-blend-mode: difference;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-}
-.line-svg {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-/* 🔥 추가: 아티스트 리스트 스타일 */
-.performance-artists-wrapper {
-  margin-top: 10px;
-  padding-top: 10px;
-}
-.performance-day-group {
-  margin-bottom: 10px;
-}
-.day-title {
-  font-family: monospace;
-  font-size: 1.2rem;
-  font-weight: 900;
-  margin-bottom: 25px;
-  border-bottom: 2px solid #000;
-  display: inline-block;
-}
-.artist-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 0px;
-}
-.artist-card {
-  text-decoration: none;
-  color: inherit;
-  transition: opacity 0.3s ease;
-}
-.artist-card:hover {
-  opacity: 0.7;
-}
-
 .artist-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
-/* 호버 시 파편이 완벽하게 결합됨 */
+
 .artist-card:hover .slice {
   transform: translate(0, 0) skewX(0) !important;
   filter: none !important;
-  z-index: 20;
-}
-.artist-name-main {
-  font-size: 1rem;
-  font-weight: 700;
-  margin: 0;
-  line-height: 1.2;
 }
 
-/* 박스/타이틀 스타일 등 기존 유지... */
-.hours-box {
-  border: 1px solid #000;
-  padding: 4px 10px;
-  border-radius: 2px;
-  display: inline-flex;
-  align-items: center;
-}
-.hours-container {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.hours {
+.artist-name-main {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+  text-align: center;
   font-family: monospace;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #000;
-  white-space: nowrap;
 }
-.glitch-line {
-  position: absolute;
-  left: -5%;
-  width: 110%;
-  height: 1.5px;
-  z-index: 10;
-  mix-blend-mode: difference;
-}
+
+/* 메타 정보 및 시간 정보 */
 .program-type {
   font-family: monospace;
   font-size: 1.8rem;
   font-weight: 900;
   margin-bottom: 10px;
 }
+
 .date-time {
   padding-left: 1rem;
   font-size: 1rem;
   font-weight: 400;
 }
+
+.info-group {
+  margin-bottom: 25px;
+}
+
+.hours-container {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hours-box {
+  border: 1px solid #000;
+  padding: 4px 10px;
+  border-radius: 2px;
+}
+
+.hours {
+  font-family: monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
 .description {
   font-family: 'Pretendard', sans-serif;
   line-height: 1.8;
   white-space: pre-line;
   word-break: keep-all;
+}
+
+/* 구분선 스타일 */
+.divider-space {
+  width: 100vw;
+  height: 200px;
+  margin: 20px 0;
+  mix-blend-mode: difference;
+}
+
+.line-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 </style>
