@@ -1,29 +1,17 @@
 <template>
   <div id="app-root">
-    <button
-      v-if="$route.path !== '/'"
-      class="lang-globe-btn"
-      @click.stop="toggleLang"
-      aria-label="Toggle Language"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="lucide lucide-globe"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 2a14.5 14.5 0 0 0 0 20" />
-        <path d="M2 12h20" />
-      </svg>
-      <span class="curr-lang-tag">{{ locale.lang === 'kr' ? 'EN' : 'KR' }}</span>
-    </button>
+    <!-- 메인 페이지('/')가 아닐 때만 노출되는 상단 네비게이션 -->
+    <nav v-if="$route.path !== '/'" class="global-nav">
+      <!-- 왼쪽: 메인 이동 버튼 -->
+      <router-link to="/" class="nav-btn left-btn">
+        {{ locale.lang === 'kr' ? '메인' : 'MAIN' }}
+      </router-link>
+
+      <!-- 오른쪽: 언어 전환 버튼 -->
+      <button class="nav-btn right-btn" @click="toggleLang">
+        {{ locale.lang === 'kr' ? 'EN' : '한글' }}
+      </button>
+    </nav>
 
     <main class="router-stage">
       <router-view />
@@ -39,9 +27,7 @@ import InterventionCanvas from '@/components/InterventionCanvas.vue'
 
 export default {
   name: 'App',
-  components: {
-    InterventionCanvas,
-  },
+  components: { InterventionCanvas },
   data() {
     return {
       locale: localeStore,
@@ -57,13 +43,16 @@ export default {
 </script>
 
 <style>
-/* ... 기존 스타일 유지 ... */
+/* ... 전역 스타일 (스크롤바 등) 유지 ... */
+
 ::-webkit-scrollbar {
   width: 4px;
 }
+
 ::-webkit-scrollbar-track {
   background: #ffffff;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #000000;
 }
@@ -71,68 +60,91 @@ export default {
 html,
 body {
   margin: 0;
+
   padding: 0;
+
   width: 100%;
+
   overflow-x: hidden;
+
   background-color: #fff;
 }
 
 * {
   box-sizing: border-box;
+
   margin: 0;
+
   padding: 0;
 }
 
 #app-root {
   display: flex;
+
   flex-direction: column;
+
   width: 100%;
+
   position: relative;
+
   background-color: #fff;
 }
-
-.router-stage {
-  flex: 1;
-  width: 100%;
-  position: relative;
-  z-index: 10;
-}
-
-.lang-globe-btn {
+/* 네비게이션 컨테이너 수정 (화면 밖으로 나가는 문제 해결) */
+.global-nav {
   position: fixed;
   top: 30px;
-  right: 30px;
-  z-index: 10000;
-  background: none;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  color: #000;
+  left: 0;
+
+  /* width: 100% 대신 오른쪽 끝까지 채우도록 설정 */
+  right: 0;
+
+  /* 5. padding이 width에 포함되도록 설정 (이미 * { box-sizing: border-box }가 있다면 괜찮음) */
+  padding: 0 30px;
+
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 5px;
-  /* 버튼이 나타날 때 부드럽게 보이고 싶다면 아래 애니메이션 추가 */
-  animation: fadeIn 0.3s ease;
+  z-index: 10000;
+  pointer-events: none;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
+/* 두 버튼 공통 스타일 */
+.nav-btn {
+  pointer-events: auto;
+  background: #000;
+  color: #fff;
 
-.lang-globe-btn svg {
-  width: 22px;
-  height: 22px;
-  stroke-width: 1.8;
-}
+  /* 1. 패딩 조절: 위아래 6px, 양옆 12px (필요에 따라 더 줄이세요) */
+  padding: 6px 12px;
 
-.curr-lang-tag {
   font-family: monospace;
-  font-size: 0.75rem;
-  font-weight: bold;
+  font-size: 0.9rem;
+  border: 1px solid #000;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  /* 2. 문제의 원인: 최소 폭을 제거하거나 아주 작게 설정 */
+  min-width: auto;
+
+  /* 3. 텍스트 크기에 딱 맞게 조절 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  /* 4. 글자가 한 줄로 나오게 고정 */
+  white-space: nowrap;
+}
+
+.nav-btn:hover {
+  background: #fff;
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .global-nav {
+    top: 20px;
+    padding: 0 20px;
+  }
 }
 </style>

@@ -16,13 +16,6 @@
       <InterventionCanvas :key="currentArtist.id" ref="bgCanvas" :isPaused="true" />
     </div>
 
-    <!-- 🔥 수정된 메인 버튼: LINE-UP과 동일한 스타일 적용 -->
-    <div class="ui-top-left">
-      <div class="ui-btn" @click.stop="$router.push('/')">
-        {{ ui.mainBtn }}
-      </div>
-    </div>
-
     <div class="ui-top-center">
       <div class="ui-btn" @click.stop="toggleLineup">
         {{ ui.lineupBtn }}
