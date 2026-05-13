@@ -60,33 +60,23 @@ export default {
 html,
 body {
   margin: 0;
-
   padding: 0;
-
   width: 100%;
-
   overflow-x: hidden;
-
   background-color: #fff;
 }
 
 * {
   box-sizing: border-box;
-
   margin: 0;
-
   padding: 0;
 }
 
 #app-root {
   display: flex;
-
   flex-direction: column;
-
   width: 100%;
-
   position: relative;
-
   background-color: #fff;
 }
 /* 네비게이션 컨테이너 수정 (화면 밖으로 나가는 문제 해결) */
@@ -94,13 +84,10 @@ body {
   position: fixed;
   top: 30px;
   left: 0;
-
   /* width: 100% 대신 오른쪽 끝까지 채우도록 설정 */
   right: 0;
-
   /* 5. padding이 width에 포함되도록 설정 (이미 * { box-sizing: border-box }가 있다면 괜찮음) */
   padding: 0 30px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -113,10 +100,8 @@ body {
   pointer-events: auto;
   background: #000;
   color: #fff;
-
   /* 1. 패딩 조절: 위아래 6px, 양옆 12px (필요에 따라 더 줄이세요) */
   padding: 6px 12px;
-
   font-family: monospace;
   font-size: 0.9rem;
   border: 1px solid #000;
