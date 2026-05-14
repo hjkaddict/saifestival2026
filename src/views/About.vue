@@ -65,12 +65,19 @@ export default {
   background-color: #fff;
 }
 
+.about-text-wrapper {
+  width: 100%;
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
 .description-text {
   font-size: 1rem;
   line-height: 1.5;
-  color: #000; /* 검은색 글자 */
+  color: #000;
   white-space: pre-wrap;
   word-break: keep-all;
   font-weight: 400;
+  text-align: center;
 }
 </style>

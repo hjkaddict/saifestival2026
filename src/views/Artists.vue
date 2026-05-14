@@ -5,17 +5,15 @@
     :class="{ 'bio-open': showFullBio }"
     @click="handleGlobalClick"
   >
-    <!-- 배경 잔상 레이어 -->
-    <div class="bg-image-layer" v-if="previousArtist">
-      <img :src="previousArtist.img" alt="background-trace" />
-      <div class="bg-overlay"></div>
-    </div>
-
-    <!-- 캔버스 레이어 -->
-    <div class="canvas-bg">
-      <InterventionCanvas :key="currentArtist.id" ref="bgCanvas" :isPaused="true" />
-    </div>
-
+    <!-- 빨간 배경: 검은 선 / 사진 위: difference -->
+    <InterventionCanvas
+      v-if="currentArtist"
+      :key="`lines-under-${currentArtist.id}`"
+      :lines-key="currentArtist.id"
+      blend-mode="normal"
+      stroke-color="#000000"
+      stack="under"
+    />
     <div class="ui-top-center">
       <div class="ui-btn" @click.stop="toggleLineup">
         {{ ui.lineupBtn }}
@@ -40,7 +38,7 @@
 
     <!-- 커스텀 커서 -->
     <div
-      v-if="!isMobile"
+      v-if="!isMobile && !isHoveringButton"
       class="custom-cursor"
       :style="{ left: cursorX + 'px', top: cursorY + 'px' }"
     >
@@ -58,6 +56,15 @@
       <div :key="currentArtist.id" class="artist-stage" :style="dynamicStyles">
         <div class="image-box">
           <img :src="currentArtist.img" :alt="currentArtist.name_en" />
+          <div class="image-canvas-wrap" aria-hidden="true">
+            <InterventionCanvas
+              :key="`lines-photo-${currentArtist.id}`"
+              :lines-key="currentArtist.id"
+              contained
+              blend-mode="difference"
+              stroke-color="#ffffff"
+            />
+          </div>
         </div>
 
         <div
@@ -85,15 +92,30 @@
 
           <div class="text-content">
             <span class="highlight-wrapper">
-              <span class="name-inline">{{ displayName }}</span
-              ><br />
-              <span class="bio-inline">{{ displayBio }}</span>
+              <span class="name-inline">{{ displayName }}</span>
+              <span
+                v-for="(para, index) in bioParagraphs"
+                :key="`bio-${index}`"
+                class="bio-inline"
+                :class="{ 'bio-inline--first': index === 0 }"
+              >{{ para }}</span>
               <span
                 v-if="!showFullBio && isLongBio"
                 class="more-btn-inline"
                 @click.stop="toggleBio"
               >
                 {{ currentLang === 'kr' ? '더보기' : 'more' }}
+              </span>
+              <span v-if="artistWebsite" class="website-wrap">
+                <a
+                  class="website-inline"
+                  :href="artistWebsite"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  @click.stop
+                >
+                  {{ displayWebsite }}
+                </a>
               </span>
             </span>
           </div>
@@ -114,7 +136,6 @@ export default {
   data() {
     return {
       artists: artistsData || [],
-      previousArtist: null,
       cursorX: 0,
       cursorY: 0,
       currentAngle: Math.random() * 360,
@@ -153,13 +174,31 @@ export default {
     displayName() {
       return this.currentLang === 'kr' ? this.currentArtist.name_kr : this.currentArtist.name_en
     },
-    displayBio() {
-      if (this.showFullBio) return this.currentFullBio
-      if (this.isLongBio) return this.currentFullBio.substring(0, this.bioLimit) + '...'
-      return this.currentFullBio
+    bioParagraphs() {
+      const text = this.showFullBio
+        ? this.currentFullBio
+        : this.isLongBio
+          ? `${this.currentFullBio.substring(0, this.bioLimit)}...`
+          : this.currentFullBio
+      if (!text) return []
+      return text
+        .split(/\n\s*\n+/)
+        .map((p) => p.replace(/\s*\n\s*/g, ' ').trim())
+        .filter(Boolean)
     },
     isLongBio() {
       return this.currentFullBio && this.currentFullBio.length > this.bioLimit
+    },
+    artistWebsite() {
+      const raw = this.currentArtist?.website?.trim()
+      if (!raw) return ''
+      if (/^https?:\/\//i.test(raw)) return raw
+      return `https://${raw}`
+    },
+    displayWebsite() {
+      const raw = this.currentArtist?.website?.trim()
+      if (!raw) return ''
+      return raw.replace(/^https?:\/\//i, '')
     },
     // 🔥 UI 다국어 텍스트: MAIN 추가
     ui() {
@@ -185,19 +224,6 @@ export default {
         if (!newId || newId === 'undefined') {
           this.goToRandomArtist()
           return
-        }
-        if (oldId && oldId !== 'undefined') {
-          const prev = this.artists.find((a) => {
-            const slug = a.name_en.toLowerCase().trim().replace(/\s+/g, '-')
-            return slug === oldId || String(a.id) === String(oldId)
-          })
-          if (prev) this.previousArtist = prev
-        } else {
-          const currentIdx = this.artists.findIndex(
-            (a) => a.name_en.toLowerCase().trim().replace(/\s+/g, '-') === newId,
-          )
-          const otherArtists = this.artists.filter((_, idx) => idx !== currentIdx)
-          this.previousArtist = otherArtists[Math.floor(Math.random() * otherArtists.length)]
         }
         this.setRandomState()
         this.showFullBio = false
@@ -234,6 +260,11 @@ export default {
       requestAnimationFrame(() => {
         this.cursorX = e.clientX
         this.cursorY = e.clientY
+        if (!this.isMobile) {
+          this.isHoveringButton = !!e.target.closest(
+            '.ui-btn, .more-btn-inline, .close-x-btn, .random-name-item, .nav-btn, .website-inline, .website-wrap',
+          )
+        }
       })
     },
     goToRandomArtist() {
@@ -330,7 +361,7 @@ export default {
 .artist-explore-container {
   width: 100vw;
   height: calc(var(--app-vh, 1vh) * 100);
-  background: #fff;
+  background: #ffff00;
   overflow: hidden;
   cursor: none !important;
   position: relative;
@@ -358,7 +389,7 @@ export default {
   color: #fff;
   padding: 6px 15px;
   font-size: 0.9rem;
-  cursor: none !important;
+  cursor: pointer;
   border: 1px solid #000;
   transition: all 0.2s ease;
   white-space: nowrap;
@@ -384,7 +415,7 @@ export default {
   position: absolute;
   font-weight: bold;
   text-transform: uppercase;
-  cursor: none !important;
+  cursor: pointer;
   white-space: nowrap;
   transition: all 0.3s ease;
   padding: 5px;
@@ -408,40 +439,6 @@ export default {
   transform: scale(1.1) rotate(0deg) !important;
 }
 
-.bg-image-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-.bg-image-layer img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(1.1);
-  opacity: 0.9;
-}
-.bg-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.2);
-}
-.canvas-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 50;
-  pointer-events: none;
-  mix-blend-mode: multiply;
-  opacity: 0.5;
-}
 
 .info-layer-wide {
   position: absolute;
@@ -460,14 +457,14 @@ export default {
   overflow-y: auto;
   pointer-events: auto;
   padding: 20px;
-  background: #fff;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+  background: transparent;
+  box-shadow: none;
 }
 
 .text-content {
   font-size: 1rem;
   line-height: 1.5rem;
-  color: #000;
+  color: #fff;
   pointer-events: auto;
 }
 .highlight-wrapper {
@@ -475,24 +472,46 @@ export default {
 }
 .name-inline,
 .bio-inline,
-.more-btn-inline {
-  background: #fff;
+.more-btn-inline,
+.website-inline {
+  background: #000;
+  color: #fff;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
-  padding: 3px 0;
+  padding: 0.12em 0.28em;
+}
+.website-wrap {
+  display: block;
+  margin-top: 1.5rem;
+}
+.website-inline {
+  display: inline;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
 }
 .more-btn-inline {
+  position: relative;
+  display: inline-block;
   font-size: 0.75rem;
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 0.5px;
   text-decoration: underline;
   margin-left: 8px;
-  cursor: none !important;
-  color: #666;
+  cursor: pointer;
+  color: inherit;
   transition: color 0.2s;
-  background: #fff;
   padding: 0 2px;
+}
+.more-btn-inline::before {
+  content: '';
+  position: absolute;
+  top: -0.65em;
+  right: -0.75em;
+  bottom: -0.65em;
+  left: -0.75em;
 }
 .name-inline {
   font-weight: bold;
@@ -500,8 +519,15 @@ export default {
   font-size: 1.2rem;
 }
 .bio-inline {
-  opacity: 0.9;
-  white-space: pre-line;
+  display: inline;
+  margin-left: 0;
+}
+.bio-inline--first {
+  margin-left: 0.45em;
+}
+.bio-inline + .bio-inline::before {
+  content: '\A';
+  white-space: pre;
 }
 
 .artist-stage {
@@ -515,12 +541,23 @@ export default {
   align-items: center;
   z-index: 10;
 }
+.image-box {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+  isolation: isolate;
+}
+.image-canvas-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
 .image-box img {
   max-width: 90vw;
   max-height: 90vh;
   min-width: 50vw;
   object-fit: contain;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
 }
 
 .close-x-btn {
@@ -528,9 +565,10 @@ export default {
   top: 0;
   float: right;
   padding: 10px;
-  cursor: none !important;
+  cursor: pointer;
   z-index: 30;
-  background: #fff;
+  background: #000;
+  color: #fff;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -543,51 +581,44 @@ export default {
 
 .custom-cursor {
   position: fixed;
+  width: 0;
+  height: 0;
   pointer-events: none;
   z-index: 100000;
   mix-blend-mode: difference;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   backface-visibility: hidden;
 }
 .arrow-rotate-layer {
   position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  transform-origin: 0 0;
+}
+.arrow-center-wrapper {
+  position: relative;
   width: 0;
   height: 0;
 }
-.arrow-center-wrapper {
-  display: flex;
-  align-items: center;
-  position: relative;
-}
 .long-stroke {
-  /* 선의 길이는 유지하되 두께를 살짝 조절 가능 (1px~1.5px) */
   width: 400px;
   height: 1.2px;
   background: #fff;
-  /* 선의 중심을 맞추기 위해 왼쪽으로 절반 이동 */
-  transform: translateX(-200px);
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-400px, -50%);
 }
 .arrow-tip {
-  /* 삼각형 크기 조정: 가로(width)를 늘려 더 뾰족하게, 세로(height)를 줄여 얇게 */
-  width: 24px; /* 삼각형의 길이 (더 크게) */
-  height: 10px; /* 삼각형의 폭 (더 얇게) */
+  width: 24px;
+  height: 10px;
   background: #fff;
-
-  /* 선의 끝점(200px)에 정확히 맞물리도록 배치 */
   position: absolute;
-  left: 200px;
-
-  /* 날카로운 삼각형을 위한 새로운 좌표 */
-  /* 0% 0%(위), 100% 50%(끝점), 0% 100%(아래) */
+  left: 0;
+  top: 0;
+  transform: translate(-100%, -50%);
   clip-path: polygon(0% 15%, 100% 50%, 0% 85%);
-
-  /* 미세하게 선과 어긋난다면 상단 마진으로 보정 */
-  margin-top: 0px;
 }
 
 .fade-enter-active,
@@ -620,7 +651,8 @@ export default {
   .lineup-random-overlay,
   .random-name-item,
   .more-btn-inline,
-  .close-x-btn {
+  .close-x-btn,
+  .website-inline {
     cursor: pointer !important;
   }
 
@@ -634,6 +666,35 @@ export default {
   .image-box img {
     max-width: 90vw;
     max-height: 60vh;
+  }
+
+  .name-inline {
+    display: inline;
+    margin-bottom: 0;
+  }
+
+  .name-inline::after {
+    content: '\A';
+    white-space: pre;
+  }
+
+  .bio-inline {
+    display: inline;
+    margin-left: 0;
+  }
+
+  .bio-inline--first {
+    margin-left: 0;
+  }
+
+  .bio-inline + .bio-inline::before {
+    content: '\A';
+    white-space: pre;
+  }
+
+  .info-layer-wide.expanded {
+    background: transparent;
+    padding: 20px 0;
   }
 }
 </style>

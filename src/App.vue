@@ -17,7 +17,7 @@
       <router-view />
     </main>
 
-    <InterventionCanvas />
+    <InterventionCanvas v-if="!isArtistsRoute" />
   </div>
 </template>
 
@@ -39,6 +39,11 @@ export default {
   watch: {
     'locale.lang'() {
       this.syncDocumentLang()
+    },
+  },
+  computed: {
+    isArtistsRoute() {
+      return this.$route.path.startsWith('/artists')
     },
   },
   methods: {

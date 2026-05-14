@@ -1,5 +1,21 @@
 <template>
   <div class="menu-universe" ref="universe" :style="universeStyle">
+    <figure
+      class="entry-shard"
+      :class="{ 'is-landed': shardLanded }"
+      :style="shardFlightStyle"
+      aria-hidden="true"
+    >
+      <img
+        src="/images/home/sai-festival-shard.png"
+        alt=""
+        class="entry-shard__img"
+        width="491"
+        height="508"
+        decoding="async"
+      />
+    </figure>
+
     <div
       v-for="(item, index) in randomMenus"
       :key="index"
@@ -54,6 +70,8 @@ export default {
       ],
       randomMenus: [],
       isLoaded: false,
+      shardLanded: false,
+      shardFlight: null,
       isMobile: false,
       universeMinHeight: null,
       centerPos: { x: 0, y: 0 },
@@ -65,12 +83,27 @@ export default {
   },
   computed: {
     universeStyle() {
-      if (!this.isMobile || !this.universeMinHeight) return {}
-      return { minHeight: `${this.universeMinHeight}px` }
+      const style = {}
+      if (this.isMobile && this.universeMinHeight) {
+        style.minHeight = `${this.universeMinHeight}px`
+      }
+      return style
+    },
+    shardFlightStyle() {
+      if (!this.shardFlight) return {}
+      const { startX, startY, landRot } = this.shardFlight
+      return {
+        '--shard-start-x': startX,
+        '--shard-start-y': startY,
+        '--shard-land-rot': `${landRot}deg`,
+        '--shard-land-rot-hit': `${landRot + 2.5}deg`,
+        '--shard-land-rot-settle': `${landRot - 1.2}deg`,
+      }
     },
   },
   mounted() {
     this.checkMobile()
+    this.initShardFlight()
     this.updateCenterPos()
     this.generatePositions()
 
@@ -80,8 +113,11 @@ export default {
 
     requestAnimationFrame(() => {
       setTimeout(() => {
+        this.shardLanded = true
+      }, 60)
+      setTimeout(() => {
         this.isLoaded = true
-      }, 50)
+      }, 820)
     })
     window.addEventListener('resize', this.handleResize)
     window.addEventListener('app-vh-change', this.handleResize)
@@ -94,6 +130,13 @@ export default {
   methods: {
     checkMobile() {
       this.isMobile = window.innerWidth < 768
+    },
+    initShardFlight() {
+      this.shardFlight = {
+        startX: '0vw',
+        startY: '-115vh',
+        landRot: 20,
+      }
     },
     onMenuHover(isHovering) {
       if (isHovering) {
@@ -222,8 +265,61 @@ export default {
   height: calc(var(--app-vh, 1vh) * 100);
   overflow: hidden;
   background: #fff;
-  /* 커서가 메뉴 위에서 기본 화살표로 보이지 않게 처리 */
   cursor: none !important;
+}
+
+.entry-shard {
+  position: fixed;
+  top: 12vh;
+  right: 4vw;
+  width: min(80vw, 680px);
+  margin: 0;
+  padding: 0;
+  border: none;
+  z-index: 12;
+  pointer-events: none;
+  transform: translate(var(--shard-start-x, 0vw), var(--shard-start-y, -115vh)) rotate(0deg)
+    scale(1.12);
+  transform-origin: center center;
+  transition: none;
+  will-change: transform;
+}
+
+.entry-shard.is-landed {
+  animation: shard-stick-in 1.05s cubic-bezier(0.11, 0.98, 0.14, 1) forwards;
+}
+
+.entry-shard__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: invert(1);
+  mix-blend-mode: multiply;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@keyframes shard-stick-in {
+  0% {
+    transform: translate(var(--shard-start-x), var(--shard-start-y)) rotate(0deg) scale(1.12);
+  }
+  72% {
+    transform: translate(0, 2vh) rotate(var(--shard-land-rot-hit)) scale(0.97);
+  }
+  86% {
+    transform: translate(0, -0.5vh) rotate(var(--shard-land-rot-settle)) scale(1.02);
+  }
+  100% {
+    transform: translate(0, 0) rotate(var(--shard-land-rot)) scale(1);
+  }
+}
+
+@media (max-width: 767px) {
+  .entry-shard {
+    top: 8vh;
+    right: 2vw;
+    width: min(95vw, 520px);
+  }
 }
 
 /* 🔥 커스텀 커서 스타일 (Artists.vue와 동일) */
@@ -349,6 +445,147 @@ export default {
 
   .paper-label {
     cursor: pointer;
+  }
+
+  .slice {
+    background: transparent;
+    isolation: isolate;
+  }
+
+  .slice::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    right: -8px;
+    top: -4px;
+    bottom: -4px;
+    background: #ffff00;
+    z-index: -1;
+    clip-path: polygon(
+      0% 30%,
+      4% 12%,
+      9% 26%,
+      15% 8%,
+      21% 24%,
+      28% 6%,
+      35% 22%,
+      42% 10%,
+      50% 28%,
+      58% 7%,
+      65% 23%,
+      72% 9%,
+      79% 25%,
+      86% 6%,
+      93% 20%,
+      98% 12%,
+      100% 28%,
+      100% 70%,
+      96% 88%,
+      91% 74%,
+      85% 92%,
+      79% 76%,
+      72% 94%,
+      65% 78%,
+      58% 93%,
+      50% 72%,
+      42% 90%,
+      35% 76%,
+      28% 94%,
+      21% 80%,
+      14% 92%,
+      7% 78%,
+      0% 68%
+    );
+  }
+
+  .slice.t-slice::before {
+    transform: rotate(-0.45deg) scale(1.02, 1.08);
+    clip-path: polygon(
+      0% 34%,
+      5% 14%,
+      11% 30%,
+      18% 9%,
+      25% 26%,
+      32% 7%,
+      40% 24%,
+      47% 11%,
+      55% 29%,
+      63% 8%,
+      71% 22%,
+      78% 10%,
+      86% 27%,
+      93% 6%,
+      100% 24%,
+      100% 66%,
+      94% 86%,
+      87% 70%,
+      80% 90%,
+      73% 74%,
+      65% 92%,
+      57% 76%,
+      49% 94%,
+      41% 78%,
+      33% 96%,
+      25% 80%,
+      17% 93%,
+      9% 76%,
+      0% 70%
+    );
+  }
+
+  .slice.b-slice::before {
+    transform: rotate(0.4deg) scale(1.01, 1.06);
+    clip-path: polygon(
+      0% 26%,
+      6% 9%,
+      13% 22%,
+      20% 6%,
+      27% 20%,
+      34% 8%,
+      41% 25%,
+      49% 5%,
+      57% 19%,
+      64% 7%,
+      72% 23%,
+      80% 9%,
+      88% 24%,
+      95% 11%,
+      100% 26%,
+      100% 74%,
+      94% 91%,
+      87% 77%,
+      80% 95%,
+      73% 79%,
+      65% 93%,
+      57% 75%,
+      49% 91%,
+      41% 77%,
+      33% 93%,
+      25% 78%,
+      17% 94%,
+      9% 80%,
+      0% 74%
+    );
+  }
+
+  .text {
+    color: #000;
+  }
+
+  .crease-line {
+    background: rgba(0, 0, 0, 0.15);
+  }
+
+  .paper-label:hover .slice {
+    background: transparent;
+  }
+
+  .paper-label:hover .text {
+    color: #000;
+  }
+
+  .paper-label:hover .crease-line {
+    background: rgba(0, 0, 0, 0.15);
   }
 }
 </style>

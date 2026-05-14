@@ -7,7 +7,7 @@ export const artistsData = [
 `,
     bio_kr: ``,
     img: '/images/artists/artist_01.jpg',
-    website: '',
+    website: 'https://andrewross.info/',
   },
   {
     id: 'artist_02',
@@ -19,7 +19,7 @@ export const artistsData = [
 `,
     bio_kr: ``,
     img: '/images/artists/artist_02.jpg',
-    website: '',
+    website: 'https://www.audreychen.com/',
   },
   {
     id: 'artist_03',
@@ -34,7 +34,7 @@ export const artistsData = [
     그는 CD 플레이어의 오작동을 이용해 작업한 DANTHRAX와 같은 솔로 앨범들을 발표해 왔으며, 진상태 및 Devin DiSanto와 함께한 앨범들은 Erstwhile Records에서 발매되었다. 2000년부터는 레이블 Balloon & Needle에서 앨범 프로듀싱과 디자인을 맡고 있다. 또한, 슬로우코어 밴드 Through the Sloe와 둠 메탈 밴드 Vomit & Tear의 멤버로도 활동 중이다.
 `,
     img: '/images/artists/artist_03.jpg',
-    website: '',
+    website: 'http://www.balloonnneedle.com/',
   },
   {
     id: 'artist_04',
@@ -43,7 +43,7 @@ export const artistsData = [
     bio_en: `Container is the solo project of American-born, UK-based musician Ren Schofield, who since 2009 has been honing a signature sound combining his background in noise-rock and tape music with techno and rhythmic electronics. Characterized by propulsive beats and liberal doses of distortion, Container’s deranged sonic meld has been welcomed at club nights, noise basements, electronic festivals, and punk shows alike. His 6 LP’s and 4 EP’s (for labels like Alter and Editions Mego oﬀshoot Spectrum Spools) have boggled brains around the globe, cementing Container as a distinctive and oﬀ-kilter figure in modern electronic music.`,
     bio_kr: ``,
     img: '/images/artists/artist_04.jpg',
-    website: '',
+    website: 'https://gentledefect.bandcamp.com/',
   },
   {
     id: 'artist_05',
@@ -52,7 +52,7 @@ export const artistsData = [
     bio_en: `Dayoon Lee (b. 2007, Seoul) musician. He has explored unintended performances arising from malfunctions in sound equipment. Currently, she investigates the characteristics of such unintended performance practices by combining intentional playing with amplified electronic objects, and incorporates these qualities into her music. He also founded the experimental music label “The Geoul Records” and intermittently curates the performance series “Flexion Paths.”`,
     bio_kr: `이다윤 (b.2007, 서울) 음악가. 음향장치의 오작동으로 발생되는 비의도적 연주를 탐구해 왔다. 현재는 의도적 연주와 증폭된 전자 사물을 활용하여 비의도적 연주 방식이 가진 특성을 파악하고, 이것을 부분적으로 음악에 적용시키고 있다. 또한 실험음악 음반사 "The Geoul Records" 를 설립하였으며, 공연 시리즈 "Flexion Paths" 를 간헐적으로 기획한다.`,
     img: '/images/artists/artist_05.jpg',
-    website: '',
+    website: 'https://dayoonlee.blogspot.com/',
   },
   {
     id: 'artist_06',
@@ -67,7 +67,7 @@ export const artistsData = [
     
     공동체를 이룬 사물들 사이에서 발생하는 사건들이 소리와 움직임으로 드러나는 소리환경에서 관계-듣기를 제안한 개인전 《루트에 대한, 대화》(서울시립미술관 SeMA창고, 2021)는 사물 생태계 연작 《점, 곁에서 말하는 점들》(코리아나미술관, 2022)로 이어지면서, 듣기의 대상을 공간과 물질, 환경에 이르는 무수한 ’점‘들로 확장한다. 서울 홍제천에서 이루어진 사운드워크 공연 《향하는 귀, 흐르는 걸음, 벌어진 사고》(한국문화예술위원회, 2024)는 관계-듣기의 피동적이고 상황적인 성질을 주목하는 듣기장치들을 개발하고, 끝없이 흐르는 의식과 걸음이 안내하는 사건-세계의 공동-청취를 제안한다. 다이애나밴드는 라디오를 환경으로 사유하며, 소리와 네트워크를 함께 연구하는 공동체적 기획 《라디오 월딩》(우루루, 2025)과 자립적이며 분산적인 네트워크 실천을 수행하는 모임 《오☁️완》(우루루, 2024)을 통해 연구·워크숍·토크 등을 이어가고 있다.`,
     img: '/images/artists/artist_06.jpg',
-    website: '',
+    website: 'https://dianaband.in/',
   },
   {
     id: 'artist_07',
@@ -80,7 +80,7 @@ export const artistsData = [
     He has released music on labels Edition Wandelweiser, Creative Sources, Inexhaustible Editions, Full Body Massage Records, Lona Records, Sello Postal, Vintage Vinyl HK, Party Perfect!!!, Aloe Records, Ftarri, and Infant Tree.`,
     bio_kr: ``,
     img: '/images/artists/artist_07.jpg',
-    website: '',
+    website: 'https://www.eric-wong.net/',
   },
   {
     id: 'artist_08',
@@ -89,7 +89,7 @@ export const artistsData = [
     bio_en: `Victoria Shen (Evicshen) is a San Francisco–based experimental sound artist, performer, and instrument builder whose work deconstructs and reimagines turntablism through a rigorously DIY and materially driven practice. Using custom-built devices, ranging from modified turntables and resin records to electromagnetic tools, nails as styli, and kinetic sound objects, she explores the body as both interface and site of inscription, foregrounding gesture, friction, and instability. Her performances unfold as volatile, physically charged environments that blur composition and improvisation, often evoking micro-narratives of tension, dominance, and release. Drawing from histories of noise, experimental music, and modernist abstraction, her work resists fixed meaning while remaining deeply attuned to the cultural and political resonances embedded in sound, material, and performance.`,
     bio_kr: ``,
     img: '/images/artists/artist_08.jpg',
-    website: '',
+    website: 'https://evicshen.com/',
   },
   {
     id: 'artist_09',
@@ -100,7 +100,7 @@ export const artistsData = [
     bio_kr: `'영혼은 장르를 통해 만들어지는가’라는 질문을 가지고 작업한다. 
     현재 서울에서 활동 중이다.`,
     img: '/images/artists/artist_09.jpg',
-    website: '',
+    website: 'https://www.instagram.com/_drumshe',
   },
   {
     id: 'artist_10',
@@ -112,20 +112,18 @@ export const artistsData = [
     Since 2016, HELM has also been a resident DJ on London’s flagship NTS Radio with his renowned AFTER DARK show, where he curates an eclectic mix from the fringes of Electronic music, Jazz, Punk, Metal and Noise. He is currently working on his seventh album, anticipated for release in 2025.`,
     bio_kr: ``,
     img: '/images/artists/artist_10.jpg',
-    website: '',
+    website: 'https://www.instagram.com/_helm_',
   },
   {
     id: 'artist_11',
     name_en: 'Hugo Esquinca',
     name_kr: '휴고 에스킨카',
     bio_en: `Hugo Esquinca (Mexico City, 1990) produces actions and conditions utilising audio electronics at excessive levels of amplification.
-    
     His work has been presented in diverse contexts and venues such as EMPAC-New York,  Stedelijk Museum, Muziekgebouw-Amsterdam, National Centre for Contemporary Arts NCCA-Moscow, HANGAR-Barcelona, Museum Nikola Tesla-Zagreb, Festspielhaus HELLERAU-Dresden, CONCRETE Alserkal-Dubai, Namba BEARS-Osaka, 20000V-Tokyo, MIRA Ploschad of Modern Art Siberia-Krasnoyarsk, Le Centquatre-Paris, Fondazione Antonio Ratti-Como, Ujazdowski Castle for Contemporary Art-Warsaw, Palacio de la Escuela de Medicina-CDMX, ARTER Museum-Istanbul, Haus der Berliner Festspiele, Akademie der Künste, Radialsystem, Haus der Kulturen der Welt, Tresor and Berghain-Berlin among others.
-    
     Esquinca is currently a PhD researcher at the Erasmus Institute for Philosophy and Technology in Rotterdam under the supervision of Yuk Hui.`,
     bio_kr: ``,
     img: '/images/artists/artist_11.jpg',
-    website: '',
+    website: 'https://www.dekj.org/',
   },
   {
     id: 'artist_12',
@@ -134,7 +132,7 @@ export const artistsData = [
     bio_en: `Jiyoung Wi (she/her) is a musician/improviser and fiction writer floating between Rotterdam and Seoul. Her bifocal practice explores narrative possibilities in non-image-based mediums. She has developed a series of ‘sound fiction’ works focusing on the tentative reciprocity between sound and text. As a self-punitive improviser, she confronts the thresholds of sonic immediacy through negative virtuosity and risk-taking gestures She has performed at Volksbühne (DE), Café OTO (UK), Columbia University (US), Sonic Acts (NL), Silent Green (DE), Les Siestes Festival (FR), AN(8)X Festival (DE), the Royal Academy of Fine Arts Antwerp (BE), Tama Art University (JP), and Society for Arts and Technology (CA), among others. She has also contributed as a sound producer to exhibitions and performances at the Sharjah Biennial (UAE), The National Museum of Modern and Contemporary Art, Gwacheon (KR), SeMA (KR), Ilmin Museum of Art (KR), Oil Tank Culture Park (KR), Insa Art Space (KR), and Leeum Museum of Art (KR), among others.`,
     bio_kr: `위지영은 네덜란드 로테르담과 대한민국 서울을 오가며 활동하는 음악가이자 즉흥 연주자, 소설가이다. 비가시적 매체인 텍스트와 사운드 사이에서 내러티브의 잠세적 가능태를 탐색하는 ‘사운드 픽션’ 시리즈를 만들고 있다. 또한 자기처벌적인 즉흥 연주자로서, 반(反) 비르투오조시티, 위험 감수의 제스처를 통해 소리의 즉각성과 그 한계를 마주한다. 위지영은 Volksbühne(독일), Cafe OTO(영국), 콜롬비아 대학교(미국), Sonic Acts(네덜란드), Silent Green(독일), Les Siestes Festival(프랑스), AN(8)X Festival(독일), 앤트워프 왕립 예술학교(벨기에), 타마 예술 대학(일본), Society for Arts and Technology(캐나다) 등 13개국에서 공연을 선보였다. 또한 샤르자 비엔날레(아랍 에미리트), 국립현대미술관 과천관, 서울시립미술관, 일민미술관, 리움미술관, 인사미술공간, 문화비축기지 등에서 열린 전시에 사운드 프로덕션으로 참여했다.`,
     img: '/images/artists/artist_12.jpg',
-    website: '',
+    website: 'https://www.instagram.com/ouijawiji/',
   },
   {
     id: 'artist_13',
@@ -147,7 +145,7 @@ export const artistsData = [
     In 2022, she initiated the project Mercury Patio, an ongoing process of waiting and riding.`,
     bio_kr: ``,
     img: '/images/artists/artist_13.jpg',
-    website: '',
+    website: 'https://qihang.li/',
   },
   {
     id: 'artist_14',
@@ -168,7 +166,7 @@ export const artistsData = [
     bio_en: ``,
     bio_kr: ``,
     img: '/images/artists/artist_15.jpg',
-    website: '',
+    website: 'https://www.instagram.com/minsungsig',
   },
   {
     id: 'artist_16',
@@ -180,7 +178,7 @@ export const artistsData = [
 `,
     bio_kr: ``,
     img: '/images/artists/artist_16.jpg',
-    website: '',
+    website: 'https://nickklein.work/',
   },
   {
     id: 'artist_17',
@@ -190,7 +188,7 @@ export const artistsData = [
     bio_kr: `우롱라디오는 김형중과 이선규가 운영하는 라디오 기반의 예술 프로젝트이다. 우리는 듣고, 녹음하고, 송출하고, 만들고, 퍼포먼스를 하며, 때때로 이벤트를 기획한다.
 `,
     img: '/images/artists/artist_17.jpg',
-    website: '',
+    website: 'https://oolongradio.com/',
   },
   {
     id: 'artist_18',
@@ -212,33 +210,28 @@ export const artistsData = [
     In 2026, he joined The GingerEnsemble as a new member. `,
     bio_kr: ``,
     img: '/images/artists/artist_19.jpg',
-    website: '',
+    website: 'https://www.seijimorimoto.com/',
   },
   {
     id: 'artist_20',
     name_en: 'Sollee Kim',
     name_kr: '김솔이',
-    bio_en: `Kim Sollee works from the belief that “meaning cannot transcend its creator,” throwing herself into situations in pursuit of this unresolved question. Her sculptures do not attempt to assign fixed meaning; rather, they emerge as performative entities, constantly evolving through the act of naming. In her work, naming functions as a linguistic act that situates sculpture not as a fixed object, but as something whose meaning shifts through relations and performative contexts.
-    
+    bio_en: `Sollee Kim works from the belief that “meaning cannot transcend its creator,” throwing herself into situations in pursuit of this unresolved question. Her sculptures do not attempt to assign fixed meaning; rather, they emerge as performative entities, constantly evolving through the act of naming. In her work, naming functions as a linguistic act that situates sculpture not as a fixed object, but as something whose meaning shifts through relations and performative contexts.
     Through acts of transformation and destruction of objects, she explores the moment when a sculpture slips out of the artist’s control and begins to generate its own meaning. This inquiry was developed experimentally in the IAS project Kula! (2020), and was later expanded in her solo exhibition at YPC SPACE (2023), where she investigated sculpture not merely as physical form but to its dynamic reconfiguration within performative and relational contexts—further extending this to a study of femininity.
-    
     Her sculptures as an object examine the tension between incompletion, deferral, and closure, and ask how sculpture intersects with fragments of time, history, and sensation within a recursive causality of omen and curse. Positioned at the edge of evaporation, misalignment, or fragmented boundaries, her sculptures imagine monuments to fates destined for disappearance, and reveal how unresolved sensations and memories intervene in the present as forms resistant to completion.
 `,
-    bio_kr: `김솔이는 "의미는 제작자를 뛰어넘지 못한다"는 믿음과 질문을 가지고, 그 물음의 답을 얻고자 스스로 상황에 몸을 던진다. 그의 조각은 특정한 의미를 부여하기보다, 명명 행위를 통해 끊임없이 변형되는 수행적 존재로 자리하며, 작업의 명명은 조각이 단순한 물체가 아니라 언어적 수행과 관계 속에서 의미를 변화시키는 방식임을 드러낸다.
-    
-    그는 객체의 변형과 파괴를 통해 조각이 제작자의 통제에서 벗어나 스스로 의미를 생성하는 순간을 탐구하며, 인미공창작소 프로젝트 Kula! (2020)에서 이를 실험적으로 전개했다. 이후 조각이 단순한 물리적 형상이 아니라, 수행과 관계 속에서 끊임없이 변형되는 존재임을 연계하여, 이를 YPC SPACE에서 열린 개인전(2023)을 통해 여성성 탐구로 확장하였다.
-    
-    그는 이러한 객체의 조각을 통해 미완, 유보, 종결 사이의 긴장을 탐구하며, 전조와 저주라는 되물린 인과관계 속에서 조각이 시간, 역사, 감각의 파편들과 어떻게 교차할 수 있는지를 질문한다. 증발 직전의 상태, 어긋나는 순간, 혼재된 경계에 놓인 조각은 소멸해야 하는 운명들의 기념비를 상상하며, 완결되지 않은 감각과 기억이 현재에 개입하는 방식을 조형적으로 드러낸다.
+    bio_kr: `김솔이는 "의미는 제작자를 뛰어넘지 못한다"는 믿음과 질문을 가지고, 그 물음의 답을 얻고자 스스로 상황에 몸을 던진다. 그녀의 조각은 특정한 의미를 부여하기보다, 명명 행위를 통해 끊임없이 변형되는 수행적 존재로 자리하며, 작업의 명명은 조각이 단순한 물체가 아니라 언어적 수행과 관계 속에서 의미를 변화시키는 방식임을 드러낸다.
+    그녀는 객체의 변형과 파괴를 통해 조각이 제작자의 통제에서 벗어나 스스로 의미를 생성하는 순간을 탐구하며, 인미공창작소 프로젝트 Kula! (2020)에서 이를 실험적으로 전개했다. 이후 조각이 단순한 물리적 형상이 아니라, 수행과 관계 속에서 끊임없이 변형되는 존재임을 연계하여, 이를 YPC SPACE에서 열린 개인전(2023)을 통해 여성성 탐구로 확장하였다.
+    이러한 객체의 조각을 통해 미완, 유보, 종결 사이의 긴장을 탐구하며, 전조와 저주라는 되물린 인과관계 속에서 조각이 시간, 역사, 감각의 파편들과 어떻게 교차할 수 있는지를 질문한다. 증발 직전의 상태, 어긋나는 순간, 혼재된 경계에 놓인 조각은 소멸해야 하는 운명들의 기념비를 상상하며, 완결되지 않은 감각과 기억이 현재에 개입하는 방식을 조형적으로 드러낸다.
 `,
     img: '/images/artists/artist_20.jpg',
-    website: '',
+    website: 'https://www.instagram.com/keygen_personna_1.7',
   },
   {
     id: 'artist_21',
     name_en: 'The Great △',
     name_kr: '여름의 대△',
-    bio_en: `夏の大△
-    The Great △ is a trio by Makoto Oshiro, Takahiro Kawaguchi and Satoshi Yashiro, which started out from the exhibition “Great △” held in 2010 at gallery Baikado (Osaka). They occasionally gather and do live performances.`,
+    bio_en: `The Great △ is a trio by Makoto Oshiro, Takahiro Kawaguchi and Satoshi Yashiro, which started out from the exhibition “Great △” held in 2010 at gallery Baikado (Osaka). They occasionally gather and do live performances.`,
     bio_kr: ``,
     img: '/images/artists/artist_21.jpg',
     website: '',
@@ -253,7 +246,7 @@ His studio practice starts from found, discarded, and surplus materials. He has 
 Laurila's work has been featured in the New York Times, Artforum, The Guardian, Le Monde, Spike Art Quarterly, Domus, Artsy and Wallpaper*.`,
     bio_kr: ``,
     img: '/images/artists/artist_22.jpg',
-    website: '',
+    website: 'https://thecommunity.io/',
   },
   {
     id: 'artist_23',
@@ -265,7 +258,7 @@ Working at the intersection of embodied listening and spatial poetics, she const
 `,
     bio_kr: ``,
     img: '/images/artists/artist_23.jpg',
-    website: '',
+    website: 'https://iitzunii.xyz/',
   },
   {
     id: 'artist_24',
@@ -279,7 +272,7 @@ Working at the intersection of embodied listening and spatial poetics, she const
     see yanjun.org`,
     bio_kr: ``,
     img: '/images/artists/artist_24.jpg',
-    website: 'yanjun.org',
+    website: 'https://yanjun.org/',
   },
   {
     id: 'artist_25',
@@ -292,6 +285,6 @@ Working at the intersection of embodied listening and spatial poetics, she const
     These works are solitary, simple, dry, and self-harming.`,
     bio_kr: ``,
     img: '/images/artists/artist_25.jpg',
-    website: '',
+    website: 'https://www.instagram.com/zhaoziyiiiii/',
   },
 ]
