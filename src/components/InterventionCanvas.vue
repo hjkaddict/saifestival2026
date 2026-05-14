@@ -31,10 +31,8 @@ export default {
   mounted() {
     this.ctx = this.$refs.canvasRef.getContext('2d')
     window.addEventListener('resize', this.handleResize)
-    window.addEventListener('scroll', this.render)
+    // 스크롤 연동은 aboutScrollProgress를 갱신하는 화면에서 scroll-canvas만 보냄 (중복 render 방지)
     window.addEventListener('scroll-canvas', this.render)
-
-    // 🔥 추가: 메뉴 호버 신호 감지
     window.addEventListener('menu-hover-start', this.pauseAnimation)
     window.addEventListener('menu-hover-end', this.resumeFromHover)
 
@@ -47,10 +45,7 @@ export default {
   beforeUnmount() {
     this.pauseAnimation()
     window.removeEventListener('resize', this.handleResize)
-    window.removeEventListener('scroll', this.render)
     window.removeEventListener('scroll-canvas', this.render)
-
-    // 🔥 추가: 리스너 제거
     window.removeEventListener('menu-hover-start', this.pauseAnimation)
     window.removeEventListener('menu-hover-end', this.resumeFromHover)
   },
@@ -77,7 +72,7 @@ export default {
         this.lines.push({
           startX: targetX - Math.sin(angleRad) * (lineLength / 2),
           startY: targetY - Math.cos(angleRad) * (lineLength / 2),
-          angleRad: angleRad,
+          angleRad,
           length: lineLength,
           lineWidth: 1 + Math.random() * 15,
           speedFactor: 0.5 + Math.random() * 2,
@@ -97,8 +92,6 @@ export default {
       const loop = () => {
         this.generateLines()
         this.render()
-
-        // 10ms에서 1000ms 사이의 랜덤한 지연 시간 설정
         const randomDelay = Math.random() * (400 - 10) + 10
         this.timer = setTimeout(loop, randomDelay)
       }
@@ -107,7 +100,6 @@ export default {
     },
     pauseAnimation() {
       if (this.timer) {
-        // setInterval에서 setTimeout으로 바뀌었으므로 clearTimeout 사용
         clearTimeout(this.timer)
         this.timer = null
       }
@@ -124,9 +116,6 @@ export default {
       this.lines.forEach((line) => {
         this.ctx.beginPath()
         this.ctx.lineWidth = line.lineWidth
-
-        // 🔥 반전 효과의 핵심: 흰색으로 그립니다.
-        // difference 모드에 의해 흰 배경에서는 검은색으로 반전됩니다.
         this.ctx.strokeStyle = 'rgb(255, 255, 255)'
 
         const moveX = w * 0.2 * progress * line.speedFactor * line.direction
@@ -153,12 +142,10 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 999;
   width: 100vw;
   height: 100vh;
-  /* 🔥 z-index를 router-stage(10)보다 높게 설정 */
-  z-index: 999;
   pointer-events: none;
-  /* 🔥 핵심: 아래 요소들과 색상을 반전시킴 */
   mix-blend-mode: difference !important;
 }
 </style>

@@ -5,6 +5,7 @@ import Home from '@/views/Home.vue'
 import Artists from '@/views/Artists.vue'
 import AboutView from '@/views/About.vue'
 import Program from '@/views/Program.vue'
+import Venue from '@/views/Venue.vue'
 // import Schedule from '../views/Schedule.vue'
 // import Ticket from '../views/Ticket.vue'
 // import Archive from '../views/Archive.vue'
@@ -32,6 +33,7 @@ const routes = [
     props: true, // URL 파라미터를 컴포넌트의 props로 전달
   },
   { path: '/program', name: 'Program', component: Program },
+  { path: '/venue', name: 'Venue', component: Venue },
   // { path: '/schedule', name: 'Schedule', component: Schedule },
   // { path: '/ticket', name: 'Ticket', component: Ticket },
   // { path: '/archive', name: 'Archive', component: Archive },

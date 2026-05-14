@@ -15,6 +15,7 @@ export default {
   data() {
     return {
       locale: localeStore,
+      _scrollRafId: null,
     }
   },
   computed: {
@@ -28,15 +29,24 @@ export default {
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll)
+    if (this._scrollRafId != null) {
+      cancelAnimationFrame(this._scrollRafId)
+      this._scrollRafId = null
+    }
     window.aboutScrollProgress = 0
+    window.dispatchEvent(new Event('scroll-canvas'))
   },
   methods: {
     handleScroll() {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      const progress = docHeight > 0 ? scrollTop / docHeight : 0
-      window.aboutScrollProgress = progress
-      window.dispatchEvent(new Event('scroll-canvas'))
+      if (this._scrollRafId != null) return
+      this._scrollRafId = requestAnimationFrame(() => {
+        this._scrollRafId = null
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight
+        const progress = docHeight > 0 ? scrollTop / docHeight : 0
+        window.aboutScrollProgress = progress
+        window.dispatchEvent(new Event('scroll-canvas'))
+      })
     },
   },
 }
