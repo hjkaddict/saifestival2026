@@ -201,7 +201,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 999;
+  z-index: 1900;
   width: 100vw;
   height: calc(var(--app-vh, 1vh) * 100);
   pointer-events: none;

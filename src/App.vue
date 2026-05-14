@@ -74,6 +74,7 @@ body {
   padding: 0;
   width: 100%;
   overflow-x: hidden;
+  overflow-x: clip;
   background-color: #fff;
 }
 

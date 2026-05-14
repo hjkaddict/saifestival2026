@@ -150,18 +150,69 @@ export default {
     this.initPrograms()
     this.initPerformanceArtists()
     window.addEventListener('scroll', this.handleScroll, { passive: true })
-    window.addEventListener('resize', this.checkMobile)
+    window.addEventListener('resize', this.onViewportChange)
     document.addEventListener('click', this.onDocumentClick)
     this.handleScroll()
+    this.$nextTick(() => this.updateStickyOffsets())
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll)
-    window.removeEventListener('resize', this.checkMobile)
+    window.removeEventListener('resize', this.onViewportChange)
     document.removeEventListener('click', this.onDocumentClick)
   },
   methods: {
     checkMobile() {
       this.isMobile = window.innerWidth < 768
+    },
+    onViewportChange() {
+      this.checkMobile()
+      this.updateStickyOffsets()
+    },
+    updateStickyOffsets() {
+      const root = this.$el
+      if (!root) return
+
+      const stickyTop = this.isMobile ? 72 : 88
+      root.style.setProperty('--program-sticky-top', `${stickyTop}px`)
+
+      if (!this.isMobile) {
+        root.style.removeProperty('--day-title-sticky-top')
+        this.clearDayTitlePastState()
+        return
+      }
+
+      const perfSection = root.querySelector('.performance-artists-wrapper')?.closest('.program-section')
+      const perfMeta = perfSection?.querySelector('.program-meta')
+      const metaHeight = perfMeta?.getBoundingClientRect().height ?? 0
+
+      root.style.setProperty('--day-title-sticky-top', `${stickyTop + metaHeight}px`)
+      this.updateDayTitleStickyState()
+    },
+    clearDayTitlePastState() {
+      this.$el?.querySelectorAll('.day-title--past').forEach((el) => {
+        el.classList.remove('day-title--past')
+      })
+    },
+    updateDayTitleStickyState() {
+      const root = this.$el
+      if (!root || !this.isMobile) {
+        this.clearDayTitlePastState()
+        return
+      }
+
+      const stickyTop = parseFloat(
+        getComputedStyle(root).getPropertyValue('--day-title-sticky-top'),
+      )
+      if (!Number.isFinite(stickyTop)) return
+
+      root.querySelectorAll('.performance-day-group').forEach((group) => {
+        const title = group.querySelector('.day-title')
+        const lastImage = group.querySelector('.artist-card:last-child .glitch-wrapper')
+        if (!title || !lastImage) return
+
+        const lastImageBottom = lastImage.getBoundingClientRect().bottom
+        title.classList.toggle('day-title--past', lastImageBottom <= stickyTop)
+      })
     },
     toggleProgramMenu() {
       this.showMenu = !this.showMenu
@@ -303,6 +354,7 @@ export default {
       window.dispatchEvent(new Event('scroll-canvas'))
 
       this.updateDividerProgress()
+      this.updateDayTitleStickyState()
     },
 
     updateDividerProgress() {
@@ -437,7 +489,8 @@ export default {
 .program-container {
   width: 100%;
   background-color: #fff;
-  padding-top: 100px; /* 네비게이션 공간 확보 */
+  padding-top: 100px;
+  overflow: visible;
 }
 
 .program-section {
@@ -446,10 +499,36 @@ export default {
   padding: 80px 20px;
   scroll-margin-top: 100px;
   text-align: center;
+  overflow: visible;
+}
+
+.program-list {
+  overflow: visible;
 }
 
 .program-meta {
-  margin-bottom: 1.5rem;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto 1rem;
+  background: #fff;
+  padding: 6px 12px;
+}
+
+.program-meta .program-type {
+  margin: 0 0 0.2rem;
+}
+
+.program-meta .program-date {
+  margin: 0 0 0.35rem;
+  line-height: 1.35;
+}
+
+.program-meta .info-group {
+  margin-bottom: 0;
+}
+
+.program-meta .hours-container {
+  gap: 4px;
 }
 
 .program-content {
@@ -463,11 +542,12 @@ export default {
 }
 .performance-day-group {
   margin-bottom: 10px;
+  overflow: visible;
 }
 .day-title {
   font-size: 1.2rem;
   font-weight: 900;
-  margin-bottom: 10px;
+  margin: 0 auto 10px;
   border-bottom: 2px solid #000;
   display: inline-block;
 }
@@ -582,11 +662,31 @@ export default {
 
   .program-meta {
     position: sticky;
-    top: 72px;
-    z-index: 150;
+    top: var(--program-sticky-top, 72px);
+    z-index: 1500;
+    margin-bottom: 0.75rem;
+    padding: 5px 10px;
+  }
+
+  .program-section:has(.performance-artists-wrapper) .program-meta {
+    margin-bottom: 0;
+  }
+
+  .day-title {
+    position: sticky;
+    top: var(--day-title-sticky-top, 13rem);
+    z-index: 1400;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto 8px;
+    padding: 4px 10px;
     background: #fff;
-    padding: 12px 0 16px;
-    margin-bottom: 1rem;
+  }
+
+  .day-title--past {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
   }
 }
 
