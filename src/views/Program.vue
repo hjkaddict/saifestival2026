@@ -70,30 +70,52 @@
 
           <!-- 퍼포먼스 프로그램일 경우 아티스트 리스트 -->
           <div v-if="pgm.isPerformance" class="performance-artists-wrapper">
-            <div v-for="day in performanceDays" :key="day.date" class="performance-day-group">
-              <h3 class="day-title">{{ day.date }}</h3>
+            <div
+              v-for="day in performanceDays"
+              :key="day.id"
+              :id="day.id"
+              class="performance-day-group"
+            >
+              <h3 class="day-title">{{ day.dateLabel[locale.lang] || day.dateLabel.en }}</h3>
               <div class="artist-grid">
-                <router-link
-                  v-for="artist in day.shuffledArtists"
-                  :key="artist.id"
-                  :to="`/artists/${formatSlug(artist.name_en)}`"
-                  class="artist-card"
-                >
-                  <div class="glitch-wrapper">
-                    <div class="slice top" :style="getSliceStyle(artist.glitch, 'top')">
-                      <img :src="artist.img" class="artist-img" />
+                <template v-for="item in day.lineup" :key="item.key">
+                  <router-link
+                    v-if="item.kind === 'solo'"
+                    :to="`/artists/${formatSlug(item.artist.name_en)}`"
+                    class="artist-card"
+                  >
+                    <div class="glitch-wrapper">
+                      <div class="slice top" :style="getSliceStyle(item.artist.glitch, 'top')">
+                        <img :src="item.artist.img" class="artist-img" />
+                      </div>
+                      <div class="slice bottom" :style="getSliceStyle(item.artist.glitch, 'bottom')">
+                        <img :src="item.artist.img" class="artist-img" />
+                      </div>
+                      <div class="glitch-line" :style="getArtistLineStyle(item.artist.glitch)"></div>
                     </div>
-                    <div class="slice bottom" :style="getSliceStyle(artist.glitch, 'bottom')">
-                      <img :src="artist.img" class="artist-img" />
+                    <div class="artist-info">
+                      <p class="artist-name-main" :style="getArtistNameStyle(item.artist.glitch)">
+                        {{ locale.lang === 'en' ? item.artist.name_en : item.artist.name_kr }}
+                      </p>
                     </div>
-                    <div class="glitch-line" :style="getArtistLineStyle(artist.glitch)"></div>
+                  </router-link>
+                  <div v-else class="artist-card artist-card--duo">
+                    <div class="glitch-wrapper">
+                      <div class="slice top" :style="getSliceStyle(item.coverArtist.glitch, 'top')">
+                        <img :src="item.coverArtist.img" class="artist-img" />
+                      </div>
+                      <div class="slice bottom" :style="getSliceStyle(item.coverArtist.glitch, 'bottom')">
+                        <img :src="item.coverArtist.img" class="artist-img" />
+                      </div>
+                      <div class="glitch-line" :style="getArtistLineStyle(item.coverArtist.glitch)"></div>
+                    </div>
+                    <div class="artist-info">
+                      <p class="artist-name-main" :style="getArtistNameStyle(item.coverArtist.glitch)">
+                        {{ item.displayName[locale.lang] || item.displayName.en }}
+                      </p>
+                    </div>
                   </div>
-                  <div class="artist-info">
-                    <p class="artist-name-main" :style="getArtistNameStyle(artist.glitch)">
-                      {{ locale.lang === 'en' ? artist.name_en : artist.name_kr }}
-                    </p>
-                  </div>
-                </router-link>
+                </template>
               </div>
             </div>
           </div>
@@ -137,7 +159,7 @@ import { localeStore } from '@/store/locale.js'
 import { programExhibition } from '@/assets/data/program_exhibition.js'
 import { programPerformance } from '@/assets/data/program_performance.js'
 import { programWorkshop } from '@/assets/data/program_workshop.js'
-import { artistsData } from '@/assets/data/artists.js'
+import { performanceSchedule, resolvePerformanceActs } from '@/assets/data/program_performance_schedule.js'
 import { randomOrganicHighlight } from '@/utils/organicHighlight.js'
 
 export default {
@@ -163,7 +185,15 @@ export default {
     window.addEventListener('resize', this.onViewportChange)
     document.addEventListener('click', this.onDocumentClick)
     this.handleScroll()
-    this.$nextTick(() => this.updateStickyOffsets())
+    this.$nextTick(() => {
+      this.updateStickyOffsets()
+      this.scrollToPerformanceDay()
+    })
+  },
+  watch: {
+    '$route.hash'() {
+      this.$nextTick(() => this.scrollToPerformanceDay())
+    },
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll)
@@ -273,41 +303,61 @@ export default {
       }
     },
 
-    // ... 기존 Methods(initPerformanceArtists, formatSlug, getSliceStyle 등) 동일 ...
+    scrollToPerformanceDay(attempt = 0) {
+      const hash = (this.$route.hash || '').replace(/^#/, '')
+      if (!hash.startsWith('perf-')) return
+
+      const el = document.getElementById(hash)
+      if (!el) {
+        if (attempt < 12) {
+          requestAnimationFrame(() => this.scrollToPerformanceDay(attempt + 1))
+        }
+        return
+      }
+
+      this.updateStickyOffsets()
+      const offset = 100
+      const top = el.getBoundingClientRect().top + window.pageYOffset - offset
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
+    },
+
     initPerformanceArtists() {
-      const schedule = [
-        { date: 'July 10', names: ['The Great △', 'Jiyoung Wi', 'Container', 'Dayoon Lee'] },
-        {
-          date: 'July 11',
-          names: ['HELM', 'Luciano Maggiore', 'Seiji Morimoto', 'Tzu Ni', 'Eric Wong'],
+      const attachGlitch = (artist) => ({
+        ...artist,
+        glitch: {
+          split: 35 + Math.random() * 30,
+          angle: (Math.random() - 0.5) * 120,
+          skewX: (Math.random() - 0.5) * 30,
+          dist: -10 + Math.random() * 20,
+          lineColor: this.palette[Math.floor(Math.random() * this.palette.length)],
+          nameRotate: -15 + Math.random() * 30,
         },
-        {
-          date: 'July 17',
-          names: ['Yan Jun', 'Nick Klein', 'Audrey Chen', 'dianaband', 'Zhao Ziyi'],
-        },
-        { date: 'July 18', names: ['Choi Joonyong', 'Evicshen', 'EVOL', 'minsungsig'] },
-      ]
+      })
 
-      this.performanceDays = schedule.map((day) => {
-        const dayArtists = artistsData.filter((a) =>
-          day.names.some((name) => a.name_en.includes(name) || a.name_kr.includes(name)),
-        )
-
-        const shuffled = dayArtists
+      this.performanceDays = performanceSchedule.map((day) => {
+        const lineup = resolvePerformanceActs(day.acts)
           .sort(() => Math.random() - 0.5)
-          .map((artist) => ({
-            ...artist,
-            glitch: {
-              split: 35 + Math.random() * 30,
-              angle: (Math.random() - 0.5) * 120,
-              skewX: (Math.random() - 0.5) * 30,
-              dist: -10 + Math.random() * 20,
-              lineColor: this.palette[Math.floor(Math.random() * this.palette.length)],
-              nameRotate: -15 + Math.random() * 30,
-            },
-          }))
+          .map((item) => {
+            if (item.kind === 'solo') {
+              return {
+                kind: 'solo',
+                key: item.artist.id,
+                artist: attachGlitch(item.artist),
+              }
+            }
+            return {
+              kind: 'duo',
+              key: item.id,
+              displayName: item.label,
+              coverArtist: attachGlitch(item.artists[0]),
+            }
+          })
 
-        return { date: day.date, shuffledArtists: shuffled }
+        return {
+          id: day.id,
+          dateLabel: day.dateLabel,
+          lineup,
+        }
       })
     },
 
@@ -484,11 +534,13 @@ export default {
 }
 
 .program-section {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 80px 20px;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 80px 30px;
+  box-sizing: border-box;
   scroll-margin-top: 100px;
-  text-align: center;
+  text-align: left;
   overflow: visible;
 }
 
@@ -499,7 +551,7 @@ export default {
 .program-meta {
   width: fit-content;
   max-width: 100%;
-  margin: 0 auto 1rem;
+  margin: 0 0 1rem;
   background: #fff;
   padding: 6px 12px;
 }
@@ -522,13 +574,13 @@ export default {
 }
 
 .program-content {
-  text-align: center;
+  text-align: left;
 }
 
 /* ... 이하 기존 CSS 동일 ... */
 .performance-artists-wrapper {
   margin-top: 40px;
-  text-align: center;
+  text-align: left;
 }
 .performance-day-group {
   margin-bottom: 10px;
@@ -537,7 +589,7 @@ export default {
 .day-title {
   font-size: 1.2rem;
   font-weight: 900;
-  margin: 0 auto 10px;
+  margin: 0 0 10px;
   border-bottom: 2px solid #000;
   display: inline-block;
 }
@@ -550,6 +602,9 @@ export default {
   text-decoration: none;
   color: inherit;
   padding-bottom: 10px;
+}
+.artist-info {
+  text-align: left;
 }
 .glitch-wrapper {
   position: relative;
@@ -581,7 +636,7 @@ export default {
   font-size: 1rem;
   font-weight: 500;
   margin: 0;
-  text-align: center;
+  text-align: left;
   transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .artist-card:hover .artist-name-main {
@@ -611,7 +666,7 @@ export default {
 .hours-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
 }
 .hours-box {
@@ -627,7 +682,7 @@ export default {
   line-height: 1.8;
   white-space: pre-line;
   word-break: keep-all;
-  text-align: center;
+  text-align: left;
 }
 .divider-space {
   width: 100vw;
@@ -651,6 +706,8 @@ export default {
   .program-section {
     padding-top: 48px;
     padding-bottom: 48px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   .program-meta {
@@ -671,7 +728,7 @@ export default {
     z-index: 1400;
     width: fit-content;
     max-width: 100%;
-    margin: 0 auto 8px;
+    margin: 0 0 8px;
     padding: 4px 10px;
     background: #fff;
   }

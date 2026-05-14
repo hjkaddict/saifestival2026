@@ -1,29 +1,5 @@
 <template>
   <div class="venue-container">
-    <div class="venue-map-wrap" aria-label="Venue sketch map">
-      <VenueSketchMap :lang="locale.lang" class="venue-map-inner" />
-      <aside class="venue-map-card" :key="locale.lang" aria-label="Venue details">
-        <h2 class="venue-card-title">{{ venueCard.title }}</h2>
-        <p class="venue-card-subtitle">{{ venueCard.subtitle }}</p>
-        <address class="venue-card-address">
-          <span
-            v-for="(line, i) in venueCard.addressLines"
-            :key="i"
-            class="venue-card-address-line"
-            >{{ line }}</span
-          >
-        </address>
-        <a
-          class="venue-card-link"
-          :href="venueDirectionsUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {{ venueCard.directionsLabel }}
-        </a>
-      </aside>
-    </div>
-
     <article class="venue-story" :key="locale.lang">
       <figure
         v-for="(block, idx) in venueBlocks"
@@ -48,25 +24,110 @@
         </figcaption>
       </figure>
     </article>
+
+    <p v-if="mapLoadState === 'no-key'" class="map-hint">{{ copy.mapNoKey }}</p>
+    <p v-else-if="mapLoadState === 'error'" class="map-hint">{{ copy.mapError }}</p>
+    <div
+      v-else
+      class="venue-map-wrap"
+      :class="{ 'is-loading': mapLoadState === 'loading' }"
+      aria-label="Venue map"
+    >
+      <div ref="mapContainer" class="venue-map-inner" />
+      <aside class="venue-map-card" :key="locale.lang" aria-label="Venue details">
+        <h2 class="venue-card-title">{{ venueCard.title }}</h2>
+        <p class="venue-card-subtitle">{{ venueCard.subtitle }}</p>
+        <address class="venue-card-address">
+          <span
+            v-for="(line, i) in venueCard.addressLines"
+            :key="i"
+            class="venue-card-address-line"
+            >{{ line }}</span
+          >
+        </address>
+        <a
+          class="venue-card-link"
+          :href="venueDirectionsUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ venueCard.directionsLabel }}
+        </a>
+      </aside>
+    </div>
   </div>
 </template>
 
 <script>
+import { setOptions, importLibrary } from '@googlemaps/js-api-loader'
 import { localeStore } from '@/store/locale.js'
-import VenueSketchMap from '@/components/VenueSketchMap.vue'
-import { venueDirectionsUrl, venuePlaceInfo } from '@/assets/data/venueMap.js'
+import {
+  defaultVenueCenter,
+  defaultVenueZoom,
+  venueDirectionsUrl,
+  venueGrayscaleMapStyles,
+  venuePlaceInfo,
+} from '@/assets/data/venueMap.js'
 import { buildVenueBlocks } from '@/assets/data/venueIntro.js'
+
+const messages = {
+  kr: {
+    mapNoKeyDev:
+      '지도를 보려면 프로젝트 루트에 .env.local 파일을 만들고 VITE_GOOGLE_MAPS_API_KEY=발급받은키 를 넣은 뒤 개발 서버를 다시 실행하세요. Google Cloud에서 Maps JavaScript API를 켜야 합니다.',
+    mapNoKeyProd:
+      'Vercel 대시보드 → Project → Settings → Environment Variables에 VITE_GOOGLE_MAPS_API_KEY 를 추가한 뒤 재배포(Redeploy)하세요. 로컬의 .env.local 값은 Vercel에 자동으로 올라가지 않습니다.',
+    mapError:
+      '지도를 불러오지 못했습니다. Vercel 배포 URL(예: https://프로젝트명.vercel.app/*)을 Google Cloud API 키의 HTTP 리퍼러 제한에 추가했는지, Maps JavaScript API·결제 설정을 확인해 주세요.',
+  },
+  en: {
+    mapNoKeyDev:
+      'Add VITE_GOOGLE_MAPS_API_KEY to .env.local and restart the dev server. Enable the Maps JavaScript API for your key in Google Cloud.',
+    mapNoKeyProd:
+      'In Vercel: Project → Settings → Environment Variables, add VITE_GOOGLE_MAPS_API_KEY, then redeploy. Values from .env.local are not uploaded automatically.',
+    mapError:
+      'The map could not be loaded. Add your Vercel URL (e.g. https://your-project.vercel.app/*) to the API key HTTP referrer restrictions in Google Cloud, and check billing plus Maps JavaScript API.',
+  },
+}
+
+function parseEnvNumber(value) {
+  const n = Number(value)
+  return Number.isFinite(n) ? n : null
+}
 
 export default {
   name: 'VenueView',
-  components: { VenueSketchMap },
   data() {
     return {
       locale: localeStore,
+      mapLoadState: 'idle',
+      mapInstance: null,
+      _onMapResize: null,
       _scrollRafId: null,
     }
   },
   computed: {
+    copy() {
+      const lang = messages[this.locale.lang] || messages.en
+      const isLocal =
+        typeof window !== 'undefined' &&
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      return {
+        mapNoKey: isLocal ? lang.mapNoKeyDev : lang.mapNoKeyProd,
+        mapError: lang.mapError,
+      }
+    },
+    venueCenter() {
+      const lat = parseEnvNumber(import.meta.env.VITE_VENUE_MAP_LAT)
+      const lng = parseEnvNumber(import.meta.env.VITE_VENUE_MAP_LNG)
+      if (lat != null && lng != null) {
+        return { lat, lng }
+      }
+      return defaultVenueCenter
+    },
+    venueZoom() {
+      const z = parseEnvNumber(import.meta.env.VITE_VENUE_MAP_ZOOM)
+      return z != null ? z : defaultVenueZoom
+    },
     venueCard() {
       return venuePlaceInfo[this.locale.lang] || venuePlaceInfo.en
     },
@@ -80,6 +141,7 @@ export default {
   mounted() {
     window.addEventListener('scroll', this.handleScroll)
     this.handleScroll()
+    this.initMap()
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll)
@@ -89,6 +151,11 @@ export default {
     }
     window.aboutScrollProgress = 0
     window.dispatchEvent(new Event('scroll-canvas'))
+    if (this._onMapResize) {
+      window.removeEventListener('resize', this._onMapResize)
+      this._onMapResize = null
+    }
+    this.mapInstance = null
   },
   methods: {
     handleScroll() {
@@ -101,6 +168,66 @@ export default {
         window.aboutScrollProgress = progress
         window.dispatchEvent(new Event('scroll-canvas'))
       })
+    },
+    async initMap() {
+      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+      if (!apiKey) {
+        this.mapLoadState = 'no-key'
+        return
+      }
+
+      this.mapLoadState = 'loading'
+      await this.$nextTick()
+
+      try {
+        setOptions({
+          key: apiKey,
+          v: 'weekly',
+          language: this.locale.lang === 'kr' ? 'ko' : 'en',
+          region: 'KR',
+        })
+        await importLibrary('maps')
+
+        const el = this.$refs.mapContainer
+        if (!el) return
+
+        const center = this.venueCenter
+        const map = new google.maps.Map(el, {
+          center,
+          zoom: this.venueZoom,
+          styles: venueGrayscaleMapStyles,
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: true,
+          zoomControl: true,
+        })
+
+        new google.maps.Marker({
+          map,
+          position: center,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 8,
+            fillColor: 'red',
+            fillOpacity: 1,
+            strokeColor: 'black',
+            strokeWeight: 2,
+          },
+        })
+
+        this.mapInstance = map
+        this.mapLoadState = 'ready'
+
+        this._onMapResize = () => {
+          if (this.mapInstance) {
+            google.maps.event.trigger(this.mapInstance, 'resize')
+          }
+        }
+        window.addEventListener('resize', this._onMapResize)
+      } catch (e) {
+        console.error(e)
+        this.mapLoadState = 'error'
+      }
     },
   },
 }
@@ -252,7 +379,11 @@ export default {
   height: 420px;
   max-height: 60vh;
   border: 1px solid #000;
-  background: #f4f1ea;
+  background: #e8e8e8;
+}
+
+.venue-map-wrap.is-loading {
+  opacity: 0.92;
 }
 
 .venue-map-inner {
@@ -319,5 +450,13 @@ export default {
 .venue-card-link:hover {
   background: #fff;
   color: #000;
+}
+
+.map-hint {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #333;
+  word-break: keep-all;
+  max-width: 40rem;
 }
 </style>

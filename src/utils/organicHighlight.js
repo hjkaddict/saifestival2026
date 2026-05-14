@@ -19,23 +19,25 @@ function createSeededRandom(seed) {
   }
 }
 
-export function buildOrganicClipPath(rand = Math.random) {
+export function buildOrganicClipPath(rand = Math.random, options = {}) {
   const r = typeof rand === 'function' ? rand : Math.random
-  const steps = 14
+  const intensity = options.intensity ?? 1
+  const steps = Math.round(14 + (intensity - 1) * 10)
   const topPhase = r() * Math.PI * 2
   const botPhase = r() * Math.PI * 2
-  const topFreq = 1.1 + r() * 1.2
-  const botFreq = 1.1 + r() * 1.2
-  const topAmp = 4 + r() * 5
-  const botAmp = 4 + r() * 5
-  const sideAmp = 1 + r() * 2
+  const topFreq = (1.1 + r() * 1.2) * (0.85 + intensity * 0.35)
+  const botFreq = (1.1 + r() * 1.2) * (0.85 + intensity * 0.35)
+  const topAmp = (4 + r() * 5) * intensity
+  const botAmp = (4 + r() * 5) * intensity
+  const sideAmp = (1 + r() * 2) * (0.9 + intensity * 0.45)
   const topBase = 11 + r() * 4
   const botBase = 89 - (11 + r() * 4)
-  const jitter = () => (r() - 0.5) * 0.8
+  const jitter = () => (r() - 0.5) * (0.8 + intensity * 0.35)
 
   const wave = (t, freq, phase, amp) =>
     Math.sin(t * Math.PI * freq + phase) * amp * 0.55 +
-    Math.sin(t * Math.PI * freq * 1.9 + phase * 0.7) * amp * 0.22
+    Math.sin(t * Math.PI * freq * 1.9 + phase * 0.7) * amp * (0.22 + intensity * 0.08) +
+    Math.sin(t * Math.PI * freq * 2.8 + phase * 1.3) * amp * (0.08 + intensity * 0.05)
 
   const pts = []
 
@@ -49,7 +51,8 @@ export function buildOrganicClipPath(rand = Math.random) {
   for (let i = 1; i <= 3; i++) {
     const t = i / 3
     const y = t * 100
-    const x = 100 - sideAmp * 0.25 + wave(t, 1.8, topPhase, sideAmp) * 0.35 + jitter()
+    const x =
+      100 - sideAmp * 0.25 + wave(t, 1.8, topPhase, sideAmp) * (0.35 + intensity * 0.12) + jitter()
     pts.push(`${Math.min(99, x).toFixed(1)}% ${y.toFixed(1)}%`)
   }
 
@@ -63,18 +66,19 @@ export function buildOrganicClipPath(rand = Math.random) {
   for (let i = 2; i >= 1; i--) {
     const t = i / 3
     const y = t * 100
-    const x = sideAmp * 0.25 + wave(t, 1.8, botPhase, sideAmp) * 0.35 + jitter()
+    const x =
+      sideAmp * 0.25 + wave(t, 1.8, botPhase, sideAmp) * (0.35 + intensity * 0.12) + jitter()
     pts.push(`${Math.max(1, x).toFixed(1)}% ${y.toFixed(1)}%`)
   }
 
   return `polygon(${pts.join(', ')})`
 }
 
-export function seededOrganicHighlight(seed, bgColor = null) {
+export function seededOrganicHighlight(seed, bgColor = null, options = {}) {
   const rand = createSeededRandom(seed)
   const r = (a, b) => a + rand() * (b - a)
   const style = {
-    '--hl-clip': buildOrganicClipPath(rand),
+    '--hl-clip': buildOrganicClipPath(rand, options),
     '--hl-rotate': `${r(-0.35, 0.35).toFixed(2)}deg`,
     '--hl-sx': r(1.01, 1.04).toFixed(3),
     '--hl-sy': r(1.02, 1.06).toFixed(3),
@@ -85,10 +89,10 @@ export function seededOrganicHighlight(seed, bgColor = null) {
   return style
 }
 
-export function randomOrganicHighlight(bgColor = null) {
+export function randomOrganicHighlight(bgColor = null, options = {}) {
   const r = (a, b) => a + Math.random() * (b - a)
   const style = {
-    '--hl-clip': buildOrganicClipPath(),
+    '--hl-clip': buildOrganicClipPath(Math.random, options),
     '--hl-rotate': `${r(-0.35, 0.35).toFixed(2)}deg`,
     '--hl-sx': r(1.01, 1.04).toFixed(3),
     '--hl-sy': r(1.02, 1.06).toFixed(3),

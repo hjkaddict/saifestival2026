@@ -16,33 +16,33 @@
       />
     </figure>
 
-    <div
-      v-for="(item, index) in randomMenus"
-      :key="index"
-      class="paper-label"
-      :class="{ 'is-visible': isLoaded }"
-      :style="{
-        top: isLoaded ? item.top + 'px' : centerPos.y + 'px',
-        left: isLoaded ? item.left + 'px' : centerPos.x + 'px',
-        transform: isLoaded ? `rotate(${item.baseRot}deg) scale(1)` : `rotate(0deg) scale(0.3)`,
-        transitionDelay: isLoaded ? `${index * 0.03}s` : '0s',
-        opacity: isLoaded ? 1 : 0,
-      }"
-      @click="navigate(item.path)"
-      @mouseenter="onMenuHover(true)"
-      @mouseleave="onMenuHover(false)"
-    >
-      <div class="folded-text-container">
-        <div class="slice t-slice organic-highlight organic-highlight--inline" :style="item.styles.top">
-          <span class="text en">// {{ item.name }}</span>
-        </div>
-        <div class="crease-line"></div>
-        <div class="slice b-slice organic-highlight organic-highlight--inline" :style="item.styles.bot">
-          <span class="text ko">{{ item.koName }}</span>
+    <nav class="home-menu-wrapper" aria-label="Main menu">
+      <div
+        v-for="(item, index) in randomMenus"
+        :key="index"
+        class="paper-label"
+        :class="{ 'is-visible': isLoaded }"
+        :style="menuLabelStyle(item, index)"
+        @click="navigate(item.path)"
+        @mouseenter="onMenuHover(true)"
+        @mouseleave="onMenuHover(false)"
+      >
+        <div class="folded-text-container">
+          <div class="slice t-slice organic-highlight organic-highlight--inline" :style="item.styles.top">
+            <span class="text en">{{ item.name }}</span>
+          </div>
+          <div class="crease-line"></div>
+          <div class="slice b-slice organic-highlight organic-highlight--inline" :style="item.styles.bot">
+            <span class="text ko">{{ item.koName }}</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div v-if="!isMobile" class="custom-cursor" :style="{ left: cursorX + 'px', top: cursorY + 'px' }">
+    </nav>
+    <div
+      v-if="!isMobile"
+      class="custom-cursor"
+      :style="{ left: cursorX + 'px', top: cursorY + 'px' }"
+    >
       <div class="arrow-rotate-layer" :style="{ transform: `rotate(${currentAngle}deg)` }">
         <div class="arrow-center-wrapper">
           <div class="long-stroke"></div>
@@ -160,6 +160,15 @@ export default {
       this.centerPos.x = Math.max(0, window.innerWidth / 2 - 110)
       this.centerPos.y = Math.max(0, getVisibleViewportHeight() / 2 - 35)
     },
+    menuLabelStyle(item, index) {
+      return {
+        top: this.isLoaded ? `${item.top}px` : `${this.centerPos.y}px`,
+        left: this.isLoaded ? `${item.left}px` : `${this.centerPos.x}px`,
+        transform: this.isLoaded ? `rotate(${item.baseRot}deg) scale(1)` : `rotate(0deg) scale(0.3)`,
+        transitionDelay: this.isLoaded ? `${index * 0.03}s` : '0s',
+        opacity: this.isLoaded ? 1 : 0,
+      }
+    },
     handleResize() {
       const wasMobile = this.isMobile
       this.checkMobile()
@@ -176,16 +185,17 @@ export default {
     randomSliceStyles() {
       const d = () => (Math.random() > 0.5 ? 1 : -1)
       const f = () => (Math.random() * 12).toFixed(1)
+      const hlOpts = { intensity: 1.75 }
       return {
         top: {
+          ...randomOrganicHighlight('#000000', hlOpts),
           transform: `translateX(${f() * d()}px) rotate(${Math.random() * 6 * d()}deg)`,
           zIndex: Math.random() > 0.5 ? 10 : 1,
-          ...randomOrganicHighlight('#ffff00'),
         },
         bot: {
+          ...randomOrganicHighlight('#000000', hlOpts),
           transform: `translateX(${f() * d()}px) rotate(${Math.random() * 20 * d()}deg)`,
           zIndex: 5,
-          ...randomOrganicHighlight('#ffff00'),
         },
       }
     },
@@ -215,14 +225,13 @@ export default {
       const placed = []
 
       this.randomMenus = this.menus.map((menu) => {
-        let attempts = 0,
-          x,
-          y
-        const iw = 200,
-          ih = 60 // 배치용 가상 박스 크기
+        let attempts = 0
+        let x
+        let y
+        const iw = 200
+        const ih = 60
 
         while (attempts < 150) {
-          // 화면 크기에 비례하여 퍼지는 반경 조절
           const rad = Math.min(w, h) * 0.4
           const ang = Math.random() * Math.PI * 2
           const dist = Math.random() * rad
@@ -230,7 +239,6 @@ export default {
           x = w / 2 + Math.cos(ang) * dist - iw / 2
           y = h / 2 + Math.sin(ang) * dist - ih / 2
 
-          // 화면 밖으로 완전히 나가는 것 방지
           x = Math.max(20, Math.min(x, w - iw - 20))
           y = Math.max(20, Math.min(y, h - ih - 20))
 
@@ -251,6 +259,13 @@ export default {
             }
           }
           attempts++
+        }
+        return {
+          ...menu,
+          top: y,
+          left: x,
+          baseRot: Math.random() * 10 - 5,
+          styles: this.randomSliceStyles(),
         }
       })
     },
@@ -273,16 +288,16 @@ export default {
 
 .entry-shard {
   position: fixed;
-  top: 12vh;
-  right: 4vw;
+  top: 50%;
+  left: 50%;
   width: min(80vw, 680px);
   margin: 0;
   padding: 0;
   border: none;
   z-index: 12;
   pointer-events: none;
-  transform: translate(var(--shard-start-x, 0vw), var(--shard-start-y, -115vh)) rotate(0deg)
-    scale(1.12);
+  transform: translate(-50%, -50%)
+    translate(var(--shard-start-x, 0vw), var(--shard-start-y, -115vh)) rotate(0deg) scale(1.12);
   transform-origin: center center;
   transition: none;
   will-change: transform;
@@ -296,7 +311,9 @@ export default {
   display: block;
   width: 100%;
   height: auto;
-  filter: invert(1);
+  filter: invert(1) brightness(1.06)
+    drop-shadow(0 0 14px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 32px rgba(255, 255, 255, 0.28))
+    drop-shadow(0 2px 12px rgba(0, 0, 0, 0.06));
   mix-blend-mode: multiply;
   user-select: none;
   -webkit-user-drag: none;
@@ -304,24 +321,23 @@ export default {
 
 @keyframes shard-stick-in {
   0% {
-    transform: translate(var(--shard-start-x), var(--shard-start-y)) rotate(0deg) scale(1.12);
+    transform: translate(-50%, -50%) translate(var(--shard-start-x), var(--shard-start-y))
+      rotate(0deg) scale(1.12);
   }
   72% {
-    transform: translate(0, 2vh) rotate(var(--shard-land-rot-hit)) scale(0.97);
+    transform: translate(-50%, calc(-50% + 2vh)) rotate(var(--shard-land-rot-hit)) scale(0.97);
   }
   86% {
-    transform: translate(0, -0.5vh) rotate(var(--shard-land-rot-settle)) scale(1.02);
+    transform: translate(-50%, calc(-50% - 0.5vh)) rotate(var(--shard-land-rot-settle)) scale(1.02);
   }
   100% {
-    transform: translate(0, 0) rotate(var(--shard-land-rot)) scale(1);
+    transform: translate(-50%, -50%) rotate(var(--shard-land-rot)) scale(1);
   }
 }
 
 @media (max-width: 767px) {
   .entry-shard {
-    top: 8vh;
-    right: 2vw;
-    width: min(95vw, 520px);
+    width: min(128vw, 760px);
   }
 }
 
@@ -360,6 +376,9 @@ export default {
   height: 1.5px;
   background: #fff;
   transform: translateX(-200px);
+  box-shadow:
+    0 0 6px rgba(255, 255, 255, 0.55),
+    0 0 16px rgba(255, 240, 200, 0.35);
 }
 
 .arrow-tip {
@@ -369,12 +388,23 @@ export default {
   margin-left: 199px;
   position: absolute;
   clip-path: polygon(0% 25%, 100% 50%, 0% 75%);
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 14px rgba(255, 220, 180, 0.3));
+}
+
+.home-menu-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
 }
 
 .paper-label {
   position: absolute;
   border: none;
   cursor: pointer;
+  pointer-events: auto;
   z-index: 20;
   /* 속도 상향: 시간을 0.6s 정도로 단축하고 큐빅 베지어를 더 공격적으로 수정 */
   transition:
@@ -404,7 +434,7 @@ export default {
 .crease-line {
   width: 100%;
   height: 1px;
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.22);
   z-index: 3;
   position: relative;
   margin: 1px 0;
@@ -412,10 +442,21 @@ export default {
 
 .text {
   font-weight: 500;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   white-space: nowrap;
-  color: #000;
+  color: #fafafa;
   display: block;
+  transition: color 0.22s ease;
+  text-shadow:
+    0 0 2px #fff,
+    0 0 6px rgba(255, 255, 255, 1),
+    0 0 14px rgba(255, 255, 255, 0.95),
+    0 0 26px rgba(255, 255, 255, 0.85),
+    0 0 42px rgba(255, 255, 255, 0.7),
+    0 0 64px rgba(255, 255, 255, 0.55),
+    0 0 92px rgba(255, 255, 255, 0.4),
+    0 0 120px rgba(255, 255, 255, 0.28),
+    0 0 1px rgba(0, 0, 0, 0.35);
 }
 
 .paper-label:hover {
@@ -429,11 +470,11 @@ export default {
 }
 
 .paper-label:hover .text {
-  color: #000;
+  color: #ff1a1a;
 }
 
 .paper-label:hover .crease-line {
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.32);
 }
 
 @media (max-width: 767px) {
@@ -447,6 +488,10 @@ export default {
 
   .paper-label {
     cursor: pointer;
+  }
+
+  .text {
+    font-size: 1.5rem;
   }
 }
 </style>

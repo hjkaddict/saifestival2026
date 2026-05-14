@@ -2,6 +2,30 @@
   <div class="about-container">
     <article class="about-text-wrapper" :key="locale.lang">
       <div class="description-text" v-html="aboutContent"></div>
+
+      <section class="festival-team" aria-labelledby="festival-team-heading">
+        <h2 id="festival-team-heading" class="festival-team__heading">{{ teamHeading }}</h2>
+        <dl class="festival-team__list">
+          <div v-for="(section, idx) in teamSections" :key="idx" class="festival-team__row">
+            <dt class="festival-team__role">{{ section.role }}</dt>
+            <dd class="festival-team__members">
+              <template v-for="(member, mi) in section.members" :key="mi">
+                <span v-if="mi > 0" class="festival-team__sep">, </span>
+                <a
+                  v-if="member.url"
+                  class="festival-team__link"
+                  :href="member.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {{ member.name }}
+                </a>
+                <span v-else class="festival-team__name">{{ member.name }}</span>
+              </template>
+            </dd>
+          </div>
+        </dl>
+      </section>
     </article>
   </div>
 </template>
@@ -9,6 +33,7 @@
 <script>
 import { localeStore } from '@/store/locale.js'
 import { aboutData } from '@/assets/data/about.js'
+import { festivalTeamHeading, getFestivalTeam } from '@/assets/data/festivalTeam.js'
 
 export default {
   name: 'AboutView',
@@ -21,6 +46,12 @@ export default {
   computed: {
     aboutContent() {
       return aboutData[this.locale.lang]
+    },
+    teamHeading() {
+      return festivalTeamHeading[this.locale.lang] || festivalTeamHeading.en
+    },
+    teamSections() {
+      return getFestivalTeam(this.locale.lang)
     },
   },
   mounted() {
@@ -61,7 +92,6 @@ export default {
   justify-content: center;
   position: relative;
   z-index: 10;
-  /* 배경이 투명하면 반전이 일어나지 않으므로 흰색 지정 */
   background-color: #fff;
 }
 
@@ -79,5 +109,68 @@ export default {
   word-break: keep-all;
   font-weight: 400;
   text-align: center;
+}
+
+.festival-team {
+  margin-top: 4rem;
+  padding-top: 0;
+  text-align: left;
+}
+
+.festival-team__heading {
+  margin: 0 0 2rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.festival-team__list {
+  margin: 0;
+  padding: 0;
+}
+
+.festival-team__row {
+  margin: 0 0 0.85rem;
+}
+
+.festival-team__row:last-child {
+  margin-bottom: 0;
+}
+
+.festival-team__role,
+.festival-team__members {
+  margin: 0;
+}
+
+.festival-team__role {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin-bottom: 0.1rem;
+}
+
+.festival-team__members {
+  font-size: 1rem;
+  line-height: 1.45;
+  font-weight: 450;
+}
+
+.festival-team__link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+  transition: opacity 0.15s ease;
+}
+
+.festival-team__link:hover {
+  opacity: 0.55;
+}
+
+.festival-team__name {
+  color: inherit;
 }
 </style>

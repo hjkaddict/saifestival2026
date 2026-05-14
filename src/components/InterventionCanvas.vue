@@ -1,10 +1,5 @@
 <template>
-  <canvas
-    ref="canvasRef"
-    class="fg-canvas"
-    :class="canvasClass"
-    :style="canvasStyle"
-  ></canvas>
+  <canvas ref="canvasRef" class="fg-canvas" :class="canvasClass" :style="canvasStyle"></canvas>
 </template>
 
 <script>
@@ -42,8 +37,9 @@ export default {
   data() {
     return {
       ctx: null,
-      timer: null,
       lines: [],
+      _animRafId: null,
+      _pauseAnimT: 0,
     }
   },
   computed: {
@@ -187,21 +183,42 @@ export default {
       this.lines = []
 
       for (let i = 0; i < lineCount; i++) {
-        const angleRad = (rand() * 80 - 40) * (Math.PI / 180)
-        const lineLength = Math.max(w, h) * (rand() < 0.4 ? 0.4 : 2)
+        const angleBase = (rand() * 80 - 40) * (Math.PI / 180)
+        const lengthBase = Math.max(w, h) * (rand() < 0.4 ? 0.4 : 2)
         const targetX = centerX + (rand() * 400 - 200)
         const targetY = centerY + (rand() * 400 - 200)
 
+        const widthBase = 1 + rand() * 15
+        const wobbleAmpBase = 4 + rand() * 16
+
         this.lines.push({
-          startX: targetX - Math.sin(angleRad) * (lineLength / 2),
-          startY: targetY - Math.cos(angleRad) * (lineLength / 2),
-          angleRad,
-          length: lineLength,
-          lineWidth: 1 + rand() * 15,
+          centerX: targetX,
+          centerY: targetY,
+          angleBase,
+          lengthBase,
+          widthBase,
+          wobbleAmpBase,
+          lengthAmp: lengthBase * (0.06 + rand() * 0.14),
+          lengthOmega: (2 * Math.PI) / (10 + rand() * 18),
+          lengthPhase: rand() * Math.PI * 2,
+          widthAmp: 1.2 + rand() * 7,
+          widthOmega: (2 * Math.PI) / (4 + rand() * 10),
+          widthPhase: rand() * Math.PI * 2,
+          widthMin: 0.6,
+          widthMax: Math.min(24, widthBase + 8),
+          angleAmp: ((rand() * 24 - 12) * Math.PI) / 180,
+          angleOmega: (2 * Math.PI) / (6 + rand() * 14),
+          anglePhase: rand() * Math.PI * 2,
+          wobbleAmpMod: 0.35 + rand() * 0.45,
+          wobbleAmpOmega: (2 * Math.PI) / (7 + rand() * 14),
+          wobbleAmpPhase: rand() * Math.PI * 2,
+          driftAmp: 3 + rand() * 10,
+          driftOmega: (2 * Math.PI) / (20 + rand() * 25),
+          driftPhase: rand() * Math.PI * 2,
+          driftAngle: rand() * Math.PI * 2,
           speedFactor: 0.5 + rand() * 2,
           direction: rand() > 0.5 ? 1 : -1,
           wobbleSeed: rand() * 500,
-          wobbleAmp: 4 + rand() * 16,
           wobbleFreq: 1.5 + rand() * 4,
         })
       }
@@ -264,26 +281,27 @@ export default {
       } else {
         canvas.width = window.innerWidth
         canvas.height = getVisibleViewportHeight()
+        this.generateLines()
       }
       this.updateClipPath()
       this.render()
     },
     startAnimation() {
-      if (this.timer) return
-
-      const loop = () => {
+      if (this._animRafId != null) return
+      if (this.lines.length === 0) {
         this.generateLines()
-        this.render()
-        const randomDelay = Math.random() * (400 - 10) + 10
-        this.timer = setTimeout(loop, randomDelay)
       }
-
-      loop()
+      const loop = () => {
+        this._animRafId = requestAnimationFrame(loop)
+        this.render()
+      }
+      this._animRafId = requestAnimationFrame(loop)
     },
     pauseAnimation() {
-      if (this.timer) {
-        clearTimeout(this.timer)
-        this.timer = null
+      this._pauseAnimT = performance.now() * 0.001
+      if (this._animRafId != null) {
+        cancelAnimationFrame(this._animRafId)
+        this._animRafId = null
       }
     },
     hash1d(n, seed) {
@@ -308,6 +326,19 @@ export default {
       const micro = this.noise1d(t * freq * 11 + seed * 1.7, seed + 91) * 0.35
       return (v + micro) * 2 - 1
     },
+    strokeGlowRgba(alpha) {
+      const c = this.strokeColor
+      if (typeof c !== 'string') return `rgba(255,255,255,${alpha})`
+      const rgba = c.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i)
+      if (rgba) {
+        return `rgba(${rgba[1]},${rgba[2]},${rgba[3]},${alpha})`
+      }
+      const m = c.match(/\d+/g)
+      if (m && m.length >= 3) {
+        return `rgba(${Number(m[0])},${Number(m[1])},${Number(m[2])},${alpha})`
+      }
+      return `rgba(255,255,255,${alpha})`
+    },
     strokeWobblyLine(sX, sY, eX, eY, line) {
       const dx = eX - sX
       const dy = eY - sY
@@ -325,20 +356,51 @@ export default {
       const seed = line.wobbleSeed ?? 0
       const freq = line.wobbleFreq ?? 2.5
 
-      this.ctx.beginPath()
+      const path = new Path2D()
       for (let i = 0; i <= segments; i++) {
-        const t = i / segments
-        const bx = sX + ux * len * t
-        const by = sY + uy * len * t
-        const wobble = this.organicNoise(t, seed, freq)
+        const segT = i / segments
+        const bx = sX + ux * len * segT
+        const by = sY + uy * len * segT
+        const wobble = this.organicNoise(segT, seed, freq)
         const x = bx + perpX * wobble * amp
         const y = by + perpY * wobble * amp
-        if (i === 0) this.ctx.moveTo(x, y)
-        else this.ctx.lineTo(x, y)
+        if (i === 0) path.moveTo(x, y)
+        else path.lineTo(x, y)
       }
+
+      const lw = line.lineWidth
+      const glow = this.strokeGlowRgba.bind(this)
+
+      this.ctx.save()
       this.ctx.lineJoin = 'round'
-      this.ctx.lineCap = 'butt'
-      this.ctx.stroke()
+      this.ctx.lineCap = 'round'
+
+      this.ctx.strokeStyle = glow(0.14)
+      this.ctx.lineWidth = lw * 2.4
+      this.ctx.shadowBlur = Math.min(36, 14 + lw * 1.1)
+      this.ctx.shadowColor = glow(0.55)
+      this.ctx.shadowOffsetX = 0
+      this.ctx.shadowOffsetY = 0
+      this.ctx.stroke(path)
+
+      this.ctx.strokeStyle = glow(0.28)
+      this.ctx.lineWidth = lw * 1.45
+      this.ctx.shadowBlur = Math.min(22, 8 + lw * 0.75)
+      this.ctx.shadowColor = glow(0.42)
+      this.ctx.stroke(path)
+
+      this.ctx.strokeStyle = this.strokeColor
+      this.ctx.lineWidth = lw
+      this.ctx.shadowBlur = Math.min(12, 4 + lw * 0.35)
+      this.ctx.shadowColor = glow(0.35)
+      this.ctx.stroke(path)
+
+      this.ctx.shadowBlur = 0
+      this.ctx.globalAlpha = 0.92
+      this.ctx.stroke(path)
+      this.ctx.globalAlpha = 1
+
+      this.ctx.restore()
     },
     render() {
       const canvas = this.$refs.canvasRef
@@ -349,24 +411,51 @@ export default {
 
       this.ctx.clearRect(0, 0, w, h)
 
-      const offset = this.contained && this.linesKey != null ? this.getContainedOffset() : { x: 0, y: 0 }
+      const offset =
+        this.contained && this.linesKey != null ? this.getContainedOffset() : { x: 0, y: 0 }
       const motionW = this.contained && this.linesKey != null ? window.innerWidth : w
 
+      const animActive = this._animRafId != null
+      const t = animActive ? performance.now() * 0.001 : this._pauseAnimT
+
       this.lines.forEach((line) => {
-        this.ctx.lineWidth = line.lineWidth
+        const len =
+          line.lengthBase + Math.sin(t * line.lengthOmega + line.lengthPhase) * line.lengthAmp
+        const angle =
+          line.angleBase + Math.sin(t * line.angleOmega + line.anglePhase) * line.angleAmp
+        const lw = Math.max(
+          line.widthMin,
+          Math.min(
+            line.widthMax,
+            line.widthBase + Math.sin(t * line.widthOmega + line.widthPhase) * line.widthAmp,
+          ),
+        )
+        const wobbleAmp =
+          line.wobbleAmpBase *
+          (1 + Math.sin(t * line.wobbleAmpOmega + line.wobbleAmpPhase) * line.wobbleAmpMod)
+
+        const driftX = Math.sin(t * line.driftOmega + line.driftPhase) * line.driftAmp
+        const driftY = Math.cos(t * line.driftOmega * 0.9 + line.driftAngle) * line.driftAmp * 0.65
+
+        this.ctx.lineWidth = lw
         this.ctx.strokeStyle = this.strokeColor
 
         const moveX = motionW * 0.2 * progress * line.speedFactor * line.direction
         const stretchDir = line.speedFactor > 1.2 ? 1 : -1
-        const lengthVariation = line.length * (progress * 0.8) * stretchDir
-        const currentLength = line.length + lengthVariation
+        const scrollStretch = len * progress * 0.12 * stretchDir
+        const currentLength = len + scrollStretch
 
-        const sX = line.startX + moveX - offset.x
-        const sY = line.startY - offset.y
-        const eX = sX + Math.sin(line.angleRad) * currentLength
-        const eY = sY + Math.cos(line.angleRad) * currentLength
+        const half = currentLength * 0.5
+        const ux = Math.sin(angle)
+        const uy = Math.cos(angle)
+        const cx = line.centerX + moveX + driftX - offset.x
+        const cy = line.centerY + driftY - offset.y
+        const sX = cx - ux * half
+        const sY = cy - uy * half
+        const eX = cx + ux * half
+        const eY = cy + uy * half
 
-        this.strokeWobblyLine(sX, sY, eX, eY, line)
+        this.strokeWobblyLine(sX, sY, eX, eY, { ...line, lineWidth: lw, wobbleAmp })
       })
     },
   },
