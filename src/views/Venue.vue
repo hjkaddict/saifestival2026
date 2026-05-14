@@ -64,6 +64,7 @@ import { localeStore } from '@/store/locale.js'
 import {
   defaultVenueCenter,
   defaultVenueZoom,
+  venueGoogleMapsUrl,
   venueGrayscaleMapStyles,
   venuePlaceInfo,
 } from '@/assets/data/venueMap.js'
@@ -107,9 +108,11 @@ export default {
   computed: {
     copy() {
       const lang = messages[this.locale.lang] || messages.en
-      const isProd = import.meta.env.PROD
+      const isLocal =
+        typeof window !== 'undefined' &&
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
       return {
-        mapNoKey: isProd ? lang.mapNoKeyProd : lang.mapNoKeyDev,
+        mapNoKey: isLocal ? lang.mapNoKeyDev : lang.mapNoKeyProd,
         mapError: lang.mapError,
       }
     },
@@ -129,8 +132,7 @@ export default {
       return venuePlaceInfo[this.locale.lang] || venuePlaceInfo.en
     },
     venueExternalMapsUrl() {
-      const { lat, lng } = this.venueCenter
-      return `https://www.google.com/maps?q=${lat},${lng}`
+      return venueGoogleMapsUrl
     },
     venueBlocks() {
       return buildVenueBlocks(this.locale.lang)
