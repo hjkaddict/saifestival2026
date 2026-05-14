@@ -55,7 +55,7 @@ export default {
 <style scoped>
 .about-container {
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(var(--app-vh, 1vh) * 100);
   padding: 20vh 10vw;
   display: flex;
   justify-content: center;

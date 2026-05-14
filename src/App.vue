@@ -33,7 +33,18 @@ export default {
       locale: localeStore,
     }
   },
+  mounted() {
+    this.syncDocumentLang()
+  },
+  watch: {
+    'locale.lang'() {
+      this.syncDocumentLang()
+    },
+  },
   methods: {
+    syncDocumentLang() {
+      document.documentElement.lang = this.locale.lang === 'kr' ? 'ko' : 'en'
+    },
     toggleLang() {
       const newLang = this.locale.lang === 'kr' ? 'en' : 'kr'
       this.locale.setLang(newLang)
@@ -102,7 +113,6 @@ body {
   color: #fff;
   /* 1. 패딩 조절: 위아래 6px, 양옆 12px (필요에 따라 더 줄이세요) */
   padding: 6px 12px;
-  font-family: monospace;
   font-size: 0.9rem;
   border: 1px solid #000;
   text-decoration: none;

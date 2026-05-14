@@ -197,9 +197,9 @@ export default {
           icon: {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 8,
-            fillColor: '#000000',
+            fillColor: 'red',
             fillOpacity: 1,
-            strokeColor: '#ffffff',
+            strokeColor: 'black',
             strokeWeight: 2,
           },
         })
@@ -225,7 +225,7 @@ export default {
 <style scoped>
 .venue-container {
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(var(--app-vh, 1vh) * 100);
   padding: 12vh 8vw 10vh;
   display: flex;
   flex-direction: column;
@@ -391,7 +391,6 @@ export default {
   box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.12);
   pointer-events: auto;
   z-index: 2;
-  font-family: monospace;
   font-size: 0.8rem;
   line-height: 1.45;
   color: #000;

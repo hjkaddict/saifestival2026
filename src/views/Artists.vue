@@ -39,7 +39,11 @@
     </transition>
 
     <!-- 커스텀 커서 -->
-    <div class="custom-cursor" :style="{ left: cursorX + 'px', top: cursorY + 'px' }">
+    <div
+      v-if="!isMobile"
+      class="custom-cursor"
+      :style="{ left: cursorX + 'px', top: cursorY + 'px' }"
+    >
       <div class="arrow-rotate-layer" :style="{ transform: `rotate(${currentAngle}deg)` }">
         <div class="arrow-center-wrapper">
           <div class="long-stroke"></div>
@@ -123,10 +127,13 @@ export default {
       isHoveringButton: false,
       randomInfoPos: {},
       randomRotation: 0,
-      bioLimit: 250,
+      isMobile: false,
     }
   },
   computed: {
+    bioLimit() {
+      return this.isMobile ? 100 : 250
+    },
     currentLang() {
       return localeStore.lang
     },
@@ -200,13 +207,29 @@ export default {
     },
   },
   mounted() {
+    this.checkMobile()
     this.setRandomState()
-    window.addEventListener('mousemove', this.updateCursor)
+    if (!this.isMobile) {
+      window.addEventListener('mousemove', this.updateCursor)
+    }
+    window.addEventListener('resize', this.checkMobile)
   },
   beforeUnmount() {
     window.removeEventListener('mousemove', this.updateCursor)
+    window.removeEventListener('resize', this.checkMobile)
   },
   methods: {
+    checkMobile() {
+      const next = window.innerWidth < 768
+      if (next !== this.isMobile) {
+        if (next) {
+          window.removeEventListener('mousemove', this.updateCursor)
+        } else {
+          window.addEventListener('mousemove', this.updateCursor)
+        }
+      }
+      this.isMobile = next
+    },
     updateCursor(e) {
       requestAnimationFrame(() => {
         this.cursorX = e.clientX
@@ -266,11 +289,12 @@ export default {
         this.showLineup = false
         return
       }
+      if (this.showFullBio) {
+        this.showFullBio = false
+        return
+      }
+      if (this.isMobile) return
       if (!this.isHoveringButton) {
-        if (this.showFullBio) {
-          this.showFullBio = false
-          return
-        }
         this.nextArtist()
       }
     },
@@ -305,7 +329,7 @@ export default {
 /* 기존 스타일 유지 및 신규 UI 스타일 추가 */
 .artist-explore-container {
   width: 100vw;
-  height: 100vh;
+  height: calc(var(--app-vh, 1vh) * 100);
   background: #fff;
   overflow: hidden;
   cursor: none !important;
@@ -333,7 +357,6 @@ export default {
   background: #000;
   color: #fff;
   padding: 6px 15px;
-  font-family: monospace;
   font-size: 0.9rem;
   cursor: none !important;
   border: 1px solid #000;
@@ -351,7 +374,7 @@ export default {
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: calc(var(--app-vh, 1vh) * 100);
   background: rgba(255, 255, 255, 0.97);
   z-index: 1100;
   cursor: none !important;
@@ -359,7 +382,6 @@ export default {
 
 .random-name-item {
   position: absolute;
-  font-family: 'Courier New', monospace;
   font-weight: bold;
   text-transform: uppercase;
   cursor: none !important;
@@ -590,6 +612,18 @@ export default {
 }
 
 @media (max-width: 768px) {
+  .artist-explore-container {
+    cursor: auto !important;
+  }
+
+  .ui-btn,
+  .lineup-random-overlay,
+  .random-name-item,
+  .more-btn-inline,
+  .close-x-btn {
+    cursor: pointer !important;
+  }
+
   .ui-top-left {
     top: 20px;
     left: 20px;

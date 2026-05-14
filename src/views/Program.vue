@@ -4,8 +4,13 @@
     <nav class="program-nav">
       <!-- 중앙: 프로그램 드롭다운 메뉴 -->
       <div class="nav-center">
-        <div class="dropdown-wrapper" @mouseenter="showMenu = true" @mouseleave="showMenu = false">
-          <button class="nav-btn main-label">
+        <div
+          ref="dropdownRef"
+          class="dropdown-wrapper"
+          @mouseenter="onDropdownEnter"
+          @mouseleave="onDropdownLeave"
+        >
+          <button type="button" class="nav-btn main-label" @click.stop="toggleProgramMenu">
             {{ locale.lang === 'kr' ? '프로그램' : 'PROGRAM' }}
           </button>
           <transition name="slide-fade">
@@ -31,12 +36,13 @@
           <!-- 프로그램 메타 정보 -->
           <div class="program-meta">
             <h2 class="program-type">
-              <span v-html="pgm.data.title[locale.lang]"></span>
-              <span
-                class="date-time"
-                v-html="pgm.data.period ? pgm.data.period[locale.lang] : pgm.data.date[locale.lang]"
-              ></span>
+              <span class="program-title" v-html="pgm.data.title[locale.lang]"></span>
             </h2>
+            <p
+              v-if="pgm.data.period || pgm.data.date"
+              class="program-date"
+              v-html="pgm.data.period ? pgm.data.period[locale.lang] : pgm.data.date[locale.lang]"
+            ></p>
 
             <div
               v-if="pgm.data.openingHours && pgm.data.openingHours[locale.lang]"
@@ -83,7 +89,7 @@
                     <div class="glitch-line" :style="getArtistLineStyle(artist.glitch)"></div>
                   </div>
                   <div class="artist-info">
-                    <p class="artist-name-main">
+                    <p class="artist-name-main" :style="getArtistNameStyle(artist.glitch)">
                       {{ locale.lang === 'en' ? artist.name_en : artist.name_kr }}
                     </p>
                   </div>
@@ -94,7 +100,11 @@
         </section>
 
         <!-- 섹션 사이 구분선 -->
-        <div v-if="index < shuffledPrograms.length - 1" class="divider-space">
+        <div
+          v-if="index < shuffledPrograms.length - 1"
+          class="divider-space"
+          :data-divider-idx="index"
+        >
           <svg class="line-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
             <line
               x1="0"
@@ -103,7 +113,7 @@
               :y2="lineConfigs[index]?.line1.y2"
               :stroke="lineConfigs[index]?.line1.color"
               :stroke-width="lineConfigs[index]?.line1.weight"
-              :style="getDividerLineStyle(lineConfigs[index]?.line1)"
+              :style="getDividerLineStyle(lineConfigs[index]?.line1, index)"
             />
           </svg>
         </div>
@@ -128,20 +138,47 @@ export default {
       shuffledPrograms: [],
       lineConfigs: [],
       scrollProgress: 0,
+      dividerProgress: [],
+      isMobile: false,
       palette: ['#FF0000', '#FFA500', '#FFFF00', '#00FF00', '#FFC0CB'],
       performanceDays: [],
       showMenu: false, // 드롭다운 노출 여부
     }
   },
   mounted() {
+    this.checkMobile()
     this.initPrograms()
     this.initPerformanceArtists()
-    window.addEventListener('scroll', this.handleScroll)
+    window.addEventListener('scroll', this.handleScroll, { passive: true })
+    window.addEventListener('resize', this.checkMobile)
+    document.addEventListener('click', this.onDocumentClick)
+    this.handleScroll()
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll)
+    window.removeEventListener('resize', this.checkMobile)
+    document.removeEventListener('click', this.onDocumentClick)
   },
   methods: {
+    checkMobile() {
+      this.isMobile = window.innerWidth < 768
+    },
+    toggleProgramMenu() {
+      this.showMenu = !this.showMenu
+    },
+    onDropdownEnter() {
+      if (!this.isMobile) this.showMenu = true
+    },
+    onDropdownLeave() {
+      if (!this.isMobile) this.showMenu = false
+    },
+    onDocumentClick(e) {
+      if (!this.showMenu) return
+      const wrap = this.$refs.dropdownRef
+      if (wrap && !wrap.contains(e.target)) {
+        this.showMenu = false
+      }
+    },
     initPrograms() {
       // 각 데이터에 ID 추가 (스크롤용)
       const baseData = [
@@ -155,6 +192,7 @@ export default {
         line1: this.generateRandomLineParams(),
         line2: this.generateRandomLineParams(),
       }))
+      this.dividerProgress = Array.from({ length: this.lineConfigs.length }, () => 0)
     },
 
     // 🔥 스크롤 이동 로직
@@ -205,6 +243,7 @@ export default {
               skewX: (Math.random() - 0.5) * 30,
               dist: -10 + Math.random() * 20,
               lineColor: this.palette[Math.floor(Math.random() * this.palette.length)],
+              nameRotate: -15 + Math.random() * 30,
             },
           }))
 
@@ -238,6 +277,12 @@ export default {
       }
     },
 
+    getArtistNameStyle(g) {
+      return {
+        transform: `rotate(${g.nameRotate}deg)`,
+      }
+    },
+
     generateRandomLineParams() {
       return {
         y1: 35 + Math.random() * 30,
@@ -254,20 +299,38 @@ export default {
       const docHeight = document.documentElement.scrollHeight - window.innerHeight
       this.scrollProgress = docHeight > 0 ? scrollTop / docHeight : 0
 
-      // 🔥 이 부분이 있어야 InterventionCanvas가 움직입니다.
       window.aboutScrollProgress = this.scrollProgress
       window.dispatchEvent(new Event('scroll-canvas'))
 
-      // 만약 캔버스 내부에서 'scroll' 자체를 듣고 있다면 아래도 유효합니다.
-      // window.dispatchEvent(new Event('scroll'))
+      this.updateDividerProgress()
     },
 
-    getDividerLineStyle(config) {
+    updateDividerProgress() {
+      const dividers = this.$el?.querySelectorAll('.divider-space') || []
+      const vh = window.innerHeight
+
+      dividers.forEach((el, idx) => {
+        const rect = el.getBoundingClientRect()
+        const visible = Math.min(rect.bottom, vh) - Math.max(rect.top, 0)
+        const ratio = visible / Math.max(rect.height, 1)
+        const clamped = Math.max(0, Math.min(1, ratio))
+        const centerDist = Math.abs(rect.top + rect.height / 2 - vh * 0.5) / (vh * 0.5)
+        const centerBoost = Math.max(0, 1 - centerDist)
+        this.dividerProgress[idx] = clamped * centerBoost
+      })
+    },
+
+    getDividerLineStyle(config, index) {
       if (!config) return {}
-      const moveX = this.scrollProgress * config.speed * config.dir
+      const vis = this.dividerProgress[index] ?? 0
+      const speedMult = this.isMobile ? 4.5 : 1.2
+      const moveX = vis * config.speed * config.dir * speedMult
+      const scaleX = 0.04 + vis * 0.96
       return {
-        transform: `translateX(${moveX}px)`,
-        transition: 'transform 0.1s linear',
+        transform: `translateX(${moveX}px) scaleX(${scaleX})`,
+        transformOrigin: 'center center',
+        opacity: 0.15 + vis * 0.85,
+        transition: 'transform 0.12s linear, opacity 0.12s linear',
       }
     },
   },
@@ -298,18 +361,30 @@ export default {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  flex-shrink: 0;
+}
+
+.dropdown-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .nav-btn {
   background: #000;
   color: #fff;
-  padding: 6px 15px;
-  font-family: monospace;
+  padding: 6px 12px;
   font-size: 0.9rem;
   border: 1px solid #000;
   text-decoration: none;
   cursor: pointer;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: auto;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: all 0.2s ease;
 }
 
@@ -319,12 +394,6 @@ export default {
 }
 
 /* 드롭다운 스타일 */
-.dropdown-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .dropdown-content {
   margin-top: 5px;
   display: flex;
@@ -340,7 +409,6 @@ export default {
   background: transparent;
   border: none;
   padding: 8px 20px;
-  font-family: monospace;
   font-size: 0.85rem;
   text-align: center;
   cursor: pointer;
@@ -376,18 +444,27 @@ export default {
   max-width: 900px;
   margin: 0 auto;
   padding: 80px 20px;
-  scroll-margin-top: 100px; /* scrollTo 시 여백 */
+  scroll-margin-top: 100px;
+  text-align: center;
+}
+
+.program-meta {
+  margin-bottom: 1.5rem;
+}
+
+.program-content {
+  text-align: center;
 }
 
 /* ... 이하 기존 CSS 동일 ... */
 .performance-artists-wrapper {
   margin-top: 40px;
+  text-align: center;
 }
 .performance-day-group {
   margin-bottom: 10px;
 }
 .day-title {
-  font-family: monospace;
   font-size: 1.2rem;
   font-weight: 900;
   margin-bottom: 10px;
@@ -430,30 +507,42 @@ export default {
   filter: none !important;
 }
 .artist-name-main {
+  display: inline-block;
   font-size: 1rem;
   font-weight: 500;
   margin: 0;
   text-align: center;
-  font-family: monospace;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.artist-card:hover .artist-name-main {
+  transform: rotate(0deg) !important;
 }
 .program-type {
-  font-family: monospace;
   font-size: 1.8rem;
   font-weight: 900;
-  margin-bottom: 10px;
+  margin: 0 0 0.5rem;
 }
-.date-time {
-  padding-left: 1rem;
+
+.program-title {
+  display: block;
+}
+
+.program-date {
   font-size: 1rem;
   font-weight: 400;
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
 }
+
 .info-group {
   margin-bottom: 25px;
 }
+
 .hours-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
 }
 .hours-box {
   border: 1px solid #000;
@@ -461,15 +550,14 @@ export default {
   border-radius: 2px;
 }
 .hours {
-  font-family: monospace;
   font-size: 0.85rem;
   font-weight: 600;
 }
 .description {
-  font-family: 'Pretendard', sans-serif;
   line-height: 1.8;
   white-space: pre-line;
   word-break: keep-all;
+  text-align: center;
 }
 .divider-space {
   width: 100vw;
@@ -477,6 +565,31 @@ export default {
   margin: 20px 0;
   mix-blend-mode: difference;
 }
+@media (max-width: 768px) {
+  .program-nav {
+    top: 20px;
+    padding: 0 20px;
+  }
+
+  .program-container {
+    padding-top: 88px;
+  }
+
+  .program-section {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+
+  .program-meta {
+    position: sticky;
+    top: 72px;
+    z-index: 150;
+    background: #fff;
+    padding: 12px 0 16px;
+    margin-bottom: 1rem;
+  }
+}
+
 .line-svg {
   width: 100%;
   height: 100%;

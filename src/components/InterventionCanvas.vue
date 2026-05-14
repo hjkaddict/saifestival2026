@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { getVisibleViewportHeight } from '@/utils/viewport.js'
+
 export default {
   name: 'InterventionCanvas',
   data() {
@@ -31,6 +33,7 @@ export default {
   mounted() {
     this.ctx = this.$refs.canvasRef.getContext('2d')
     window.addEventListener('resize', this.handleResize)
+    window.addEventListener('app-vh-change', this.handleResize)
     // 스크롤 연동은 aboutScrollProgress를 갱신하는 화면에서 scroll-canvas만 보냄 (중복 render 방지)
     window.addEventListener('scroll-canvas', this.render)
     window.addEventListener('menu-hover-start', this.pauseAnimation)
@@ -45,6 +48,7 @@ export default {
   beforeUnmount() {
     this.pauseAnimation()
     window.removeEventListener('resize', this.handleResize)
+    window.removeEventListener('app-vh-change', this.handleResize)
     window.removeEventListener('scroll-canvas', this.render)
     window.removeEventListener('menu-hover-start', this.pauseAnimation)
     window.removeEventListener('menu-hover-end', this.resumeFromHover)
@@ -57,7 +61,7 @@ export default {
     },
     generateLines() {
       const w = window.innerWidth
-      const h = window.innerHeight
+      const h = getVisibleViewportHeight()
       const centerX = w / 2
       const centerY = h / 2
       const lineCount = 3 + Math.floor(Math.random() * 5)
@@ -77,13 +81,16 @@ export default {
           lineWidth: 1 + Math.random() * 15,
           speedFactor: 0.5 + Math.random() * 2,
           direction: Math.random() > 0.5 ? 1 : -1,
+          wobbleSeed: Math.random() * 500,
+          wobbleAmp: 4 + Math.random() * 16,
+          wobbleFreq: 1.5 + Math.random() * 4,
         })
       }
     },
     handleResize() {
       if (!this.$refs.canvasRef) return
       this.$refs.canvasRef.width = window.innerWidth
-      this.$refs.canvasRef.height = window.innerHeight
+      this.$refs.canvasRef.height = getVisibleViewportHeight()
       this.render()
     },
     startAnimation() {
@@ -104,6 +111,61 @@ export default {
         this.timer = null
       }
     },
+    hash1d(n, seed) {
+      const x = Math.sin(n * 12.9898 + seed * 78.233) * 43758.5453
+      return x - Math.floor(x)
+    },
+    noise1d(x, seed) {
+      const i = Math.floor(x)
+      const f = x - i
+      const u = f * f * (3 - 2 * f)
+      return this.hash1d(i, seed) * (1 - u) + this.hash1d(i + 1, seed) * u
+    },
+    /** -1 ~ 1, 저·고주파를 섞어 torn edge 느낌 */
+    organicNoise(t, seed, freq) {
+      let v = 0
+      let amp = 1
+      let f = freq
+      for (let o = 0; o < 3; o++) {
+        v += this.noise1d(t * f + seed, seed + o * 19.17) * amp
+        amp *= 0.48
+        f *= 2.15
+      }
+      const micro = this.noise1d(t * freq * 11 + seed * 1.7, seed + 91) * 0.35
+      return (v + micro) * 2 - 1
+    },
+    strokeWobblyLine(sX, sY, eX, eY, line) {
+      const dx = eX - sX
+      const dy = eY - sY
+      const len = Math.hypot(dx, dy)
+      if (len < 1) return
+
+      const ux = dx / len
+      const uy = dy / len
+      const perpX = -uy
+      const perpY = ux
+
+      const step = Math.max(4, Math.min(10, line.lineWidth * 1.2))
+      const segments = Math.max(2, Math.ceil(len / step))
+      const amp = (line.wobbleAmp ?? 10) * (0.55 + line.lineWidth / 18)
+      const seed = line.wobbleSeed ?? 0
+      const freq = line.wobbleFreq ?? 2.5
+
+      this.ctx.beginPath()
+      for (let i = 0; i <= segments; i++) {
+        const t = i / segments
+        const bx = sX + ux * len * t
+        const by = sY + uy * len * t
+        const wobble = this.organicNoise(t, seed, freq)
+        const x = bx + perpX * wobble * amp
+        const y = by + perpY * wobble * amp
+        if (i === 0) this.ctx.moveTo(x, y)
+        else this.ctx.lineTo(x, y)
+      }
+      this.ctx.lineJoin = 'round'
+      this.ctx.lineCap = 'butt'
+      this.ctx.stroke()
+    },
     render() {
       const canvas = this.$refs.canvasRef
       if (!canvas || !this.ctx) return
@@ -114,7 +176,6 @@ export default {
       this.ctx.clearRect(0, 0, w, h)
 
       this.lines.forEach((line) => {
-        this.ctx.beginPath()
         this.ctx.lineWidth = line.lineWidth
         this.ctx.strokeStyle = 'rgb(255, 255, 255)'
 
@@ -128,9 +189,7 @@ export default {
         const eX = sX + Math.sin(line.angleRad) * currentLength
         const eY = sY + Math.cos(line.angleRad) * currentLength
 
-        this.ctx.moveTo(sX, sY)
-        this.ctx.lineTo(eX, eY)
-        this.ctx.stroke()
+        this.strokeWobblyLine(sX, sY, eX, eY, line)
       })
     },
   },
@@ -144,7 +203,7 @@ export default {
   left: 0;
   z-index: 999;
   width: 100vw;
-  height: 100vh;
+  height: calc(var(--app-vh, 1vh) * 100);
   pointer-events: none;
   mix-blend-mode: difference !important;
 }

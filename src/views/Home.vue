@@ -1,5 +1,5 @@
 <template>
-  <div class="menu-universe" ref="universe">
+  <div class="menu-universe" ref="universe" :style="universeStyle">
     <div
       v-for="(item, index) in randomMenus"
       :key="index"
@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    <div class="custom-cursor" :style="{ left: cursorX + 'px', top: cursorY + 'px' }">
+    <div v-if="!isMobile" class="custom-cursor" :style="{ left: cursorX + 'px', top: cursorY + 'px' }">
       <div class="arrow-rotate-layer" :style="{ transform: `rotate(${currentAngle}deg)` }">
         <div class="arrow-center-wrapper">
           <div class="long-stroke"></div>
@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import { getVisibleViewportHeight } from '@/utils/viewport.js'
+
 export default {
   name: 'Home',
   data() {
@@ -52,6 +54,8 @@ export default {
       ],
       randomMenus: [],
       isLoaded: false,
+      isMobile: false,
+      universeMinHeight: null,
       centerPos: { x: 0, y: 0 },
       cursorX: 0,
       cursorY: 0,
@@ -59,12 +63,20 @@ export default {
       currentAngle: Math.random() * 360,
     }
   },
+  computed: {
+    universeStyle() {
+      if (!this.isMobile || !this.universeMinHeight) return {}
+      return { minHeight: `${this.universeMinHeight}px` }
+    },
+  },
   mounted() {
+    this.checkMobile()
     this.updateCenterPos()
     this.generatePositions()
 
-    // 🔥 마우스 이동 이벤트 리스너 추가
-    window.addEventListener('mousemove', this.updateCursor)
+    if (!this.isMobile) {
+      window.addEventListener('mousemove', this.updateCursor)
+    }
 
     requestAnimationFrame(() => {
       setTimeout(() => {
@@ -72,13 +84,17 @@ export default {
       }, 50)
     })
     window.addEventListener('resize', this.handleResize)
+    window.addEventListener('app-vh-change', this.handleResize)
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.handleResize)
-    // 🔥 이벤트 제거
+    window.removeEventListener('app-vh-change', this.handleResize)
     window.removeEventListener('mousemove', this.updateCursor)
   },
   methods: {
+    checkMobile() {
+      this.isMobile = window.innerWidth < 768
+    },
     onMenuHover(isHovering) {
       if (isHovering) {
         // InterventionCanvas에게 멈추라고 신호 보냄
@@ -98,17 +114,58 @@ export default {
       // 메뉴의 대략적인 크기(220x70)를 고려하여 정확히 중앙점 계산
       // window.innerWidth가 작아져도 음수값이 나오지 않도록 처리
       this.centerPos.x = Math.max(0, window.innerWidth / 2 - 110)
-      this.centerPos.y = Math.max(0, window.innerHeight / 2 - 35)
+      this.centerPos.y = Math.max(0, getVisibleViewportHeight() / 2 - 35)
     },
     handleResize() {
+      const wasMobile = this.isMobile
+      this.checkMobile()
+      if (wasMobile !== this.isMobile) {
+        if (this.isMobile) {
+          window.removeEventListener('mousemove', this.updateCursor)
+        } else {
+          window.addEventListener('mousemove', this.updateCursor)
+        }
+      }
       this.updateCenterPos()
-      // 리사이즈 시 퍼진 위치를 재계산하되, 애니메이션 없이 즉시 반영되도록 처리하고 싶다면 별도 로직 필요
-      // 현재는 재계산하여 부드럽게 재배치됩니다.
       this.generatePositions()
+    },
+    randomSliceStyles() {
+      const d = () => (Math.random() > 0.5 ? 1 : -1)
+      const f = () => (Math.random() * 12).toFixed(1)
+      return {
+        top: {
+          transform: `translateX(${f() * d()}px) rotate(${Math.random() * 6 * d()}deg)`,
+          zIndex: Math.random() > 0.5 ? 10 : 1,
+        },
+        bot: {
+          transform: `translateX(${f() * d()}px) rotate(${Math.random() * 20 * d()}deg)`,
+          zIndex: 5,
+        },
+      }
     },
     generatePositions() {
       const w = window.innerWidth
-      const h = window.innerHeight
+      const h = getVisibleViewportHeight()
+
+      if (this.isMobile) {
+        const shuffled = [...this.menus].sort(() => Math.random() - 0.5)
+        const itemH = 70
+        const gap = 28
+        const startY = Math.max(90, h * 0.14)
+        const maxLeft = Math.max(16, w - 220)
+
+        this.randomMenus = shuffled.map((menu, index) => ({
+          ...menu,
+          top: startY + index * (itemH + gap),
+          left: 16 + Math.random() * maxLeft,
+          baseRot: Math.random() * 20 - 10,
+          styles: this.randomSliceStyles(),
+        }))
+        this.universeMinHeight = startY + shuffled.length * (itemH + gap) + 48
+        return
+      }
+
+      this.universeMinHeight = null
       const placed = []
 
       this.randomMenus = this.menus.map((menu) => {
@@ -138,24 +195,13 @@ export default {
 
           if (!overlaps || attempts === 149) {
             placed.push({ x, y })
-            const d = () => (Math.random() > 0.5 ? 1 : -1)
-            const f = () => (Math.random() * 12).toFixed(1)
 
             return {
               ...menu,
               top: y,
               left: x,
               baseRot: Math.random() * 10 - 5,
-              styles: {
-                top: {
-                  transform: `translateX(${f() * d()}px) rotate(${Math.random() * 6 * d()}deg)`,
-                  zIndex: Math.random() > 0.5 ? 10 : 1,
-                },
-                bot: {
-                  transform: `translateX(${f() * d()}px) rotate(${Math.random() * 20 * d()}deg)`,
-                  zIndex: 5,
-                },
-              },
+              styles: this.randomSliceStyles(),
             }
           }
           attempts++
@@ -173,7 +219,7 @@ export default {
 .menu-universe {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: calc(var(--app-vh, 1vh) * 100);
   overflow: hidden;
   background: #fff;
   /* 커서가 메뉴 위에서 기본 화살표로 보이지 않게 처리 */
@@ -266,7 +312,6 @@ export default {
 }
 
 .text {
-  font-family: 'Courier New', 'Pretendard', sans-serif;
   font-weight: 500;
   font-size: 1.3rem;
   white-space: nowrap;
@@ -291,5 +336,19 @@ export default {
 
 .paper-label:hover .crease-line {
   background: white;
+}
+
+@media (max-width: 767px) {
+  .menu-universe {
+    height: auto;
+    min-height: calc(var(--app-vh, 1vh) * 100);
+    overflow-x: hidden;
+    overflow-y: auto;
+    cursor: auto !important;
+  }
+
+  .paper-label {
+    cursor: pointer;
+  }
 }
 </style>
