@@ -3,12 +3,12 @@
     <!-- 메인 페이지('/')가 아닐 때만 노출되는 상단 네비게이션 -->
     <nav v-if="$route.path !== '/'" class="global-nav">
       <!-- 왼쪽: 메인 이동 버튼 -->
-      <router-link to="/" class="nav-btn left-btn">
+      <router-link to="/" class="nav-btn left-btn organic-highlight organic-highlight--btn" :style="navOrganicMain">
         {{ locale.lang === 'kr' ? '메인' : 'MAIN' }}
       </router-link>
 
       <!-- 오른쪽: 언어 전환 버튼 -->
-      <button class="nav-btn right-btn" @click="toggleLang">
+      <button class="nav-btn right-btn organic-highlight organic-highlight--btn" :style="navOrganicLang" @click="toggleLang">
         {{ locale.lang === 'kr' ? 'EN' : '한글' }}
       </button>
     </nav>
@@ -24,6 +24,7 @@
 <script>
 import { localeStore } from '@/store/locale.js'
 import InterventionCanvas from '@/components/InterventionCanvas.vue'
+import { randomOrganicHighlight } from '@/utils/organicHighlight.js'
 
 export default {
   name: 'App',
@@ -31,6 +32,8 @@ export default {
   data() {
     return {
       locale: localeStore,
+      navOrganicMain: randomOrganicHighlight('#000'),
+      navOrganicLang: randomOrganicHighlight('#000'),
     }
   },
   mounted() {
@@ -115,12 +118,10 @@ body {
 /* 두 버튼 공통 스타일 */
 .nav-btn {
   pointer-events: auto;
-  background: #000;
   color: #fff;
   /* 1. 패딩 조절: 위아래 6px, 양옆 12px (필요에 따라 더 줄이세요) */
   padding: 6px 12px;
   font-size: 0.9rem;
-  border: 1px solid #000;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -138,8 +139,11 @@ body {
 }
 
 .nav-btn:hover {
-  background: #fff;
   color: #000;
+}
+
+.nav-btn.organic-highlight:hover::before {
+  background: #fff;
 }
 
 @media (max-width: 768px) {

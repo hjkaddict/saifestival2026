@@ -33,11 +33,11 @@
       @mouseleave="onMenuHover(false)"
     >
       <div class="folded-text-container">
-        <div class="slice t-slice" :style="item.styles.top">
+        <div class="slice t-slice organic-highlight organic-highlight--inline" :style="item.styles.top">
           <span class="text en">// {{ item.name }}</span>
         </div>
         <div class="crease-line"></div>
-        <div class="slice b-slice" :style="item.styles.bot">
+        <div class="slice b-slice organic-highlight organic-highlight--inline" :style="item.styles.bot">
           <span class="text ko">{{ item.koName }}</span>
         </div>
       </div>
@@ -55,6 +55,7 @@
 
 <script>
 import { getVisibleViewportHeight } from '@/utils/viewport.js'
+import { randomOrganicHighlight } from '@/utils/organicHighlight.js'
 
 export default {
   name: 'Home',
@@ -179,10 +180,12 @@ export default {
         top: {
           transform: `translateX(${f() * d()}px) rotate(${Math.random() * 6 * d()}deg)`,
           zIndex: Math.random() > 0.5 ? 10 : 1,
+          ...randomOrganicHighlight('#ffff00'),
         },
         bot: {
           transform: `translateX(${f() * d()}px) rotate(${Math.random() * 20 * d()}deg)`,
           zIndex: 5,
+          ...randomOrganicHighlight('#ffff00'),
         },
       }
     },
@@ -390,10 +393,10 @@ export default {
 
 .slice {
   position: relative;
-  height: 11px;
+  min-height: 1.2em;
+  height: auto;
   display: flex;
   align-items: center;
-  background: white;
   overflow: visible;
   transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -409,7 +412,7 @@ export default {
 
 .text {
   font-weight: 500;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   white-space: nowrap;
   color: #000;
   display: block;
@@ -423,15 +426,14 @@ export default {
 
 .paper-label:hover .slice {
   transform: translateX(0) rotate(0deg) !important;
-  background: #000;
 }
 
 .paper-label:hover .text {
-  color: #fff;
+  color: #000;
 }
 
 .paper-label:hover .crease-line {
-  background: white;
+  background: rgba(0, 0, 0, 0.15);
 }
 
 @media (max-width: 767px) {
@@ -445,147 +447,6 @@ export default {
 
   .paper-label {
     cursor: pointer;
-  }
-
-  .slice {
-    background: transparent;
-    isolation: isolate;
-  }
-
-  .slice::before {
-    content: '';
-    position: absolute;
-    left: -6px;
-    right: -8px;
-    top: -4px;
-    bottom: -4px;
-    background: #ffff00;
-    z-index: -1;
-    clip-path: polygon(
-      0% 30%,
-      4% 12%,
-      9% 26%,
-      15% 8%,
-      21% 24%,
-      28% 6%,
-      35% 22%,
-      42% 10%,
-      50% 28%,
-      58% 7%,
-      65% 23%,
-      72% 9%,
-      79% 25%,
-      86% 6%,
-      93% 20%,
-      98% 12%,
-      100% 28%,
-      100% 70%,
-      96% 88%,
-      91% 74%,
-      85% 92%,
-      79% 76%,
-      72% 94%,
-      65% 78%,
-      58% 93%,
-      50% 72%,
-      42% 90%,
-      35% 76%,
-      28% 94%,
-      21% 80%,
-      14% 92%,
-      7% 78%,
-      0% 68%
-    );
-  }
-
-  .slice.t-slice::before {
-    transform: rotate(-0.45deg) scale(1.02, 1.08);
-    clip-path: polygon(
-      0% 34%,
-      5% 14%,
-      11% 30%,
-      18% 9%,
-      25% 26%,
-      32% 7%,
-      40% 24%,
-      47% 11%,
-      55% 29%,
-      63% 8%,
-      71% 22%,
-      78% 10%,
-      86% 27%,
-      93% 6%,
-      100% 24%,
-      100% 66%,
-      94% 86%,
-      87% 70%,
-      80% 90%,
-      73% 74%,
-      65% 92%,
-      57% 76%,
-      49% 94%,
-      41% 78%,
-      33% 96%,
-      25% 80%,
-      17% 93%,
-      9% 76%,
-      0% 70%
-    );
-  }
-
-  .slice.b-slice::before {
-    transform: rotate(0.4deg) scale(1.01, 1.06);
-    clip-path: polygon(
-      0% 26%,
-      6% 9%,
-      13% 22%,
-      20% 6%,
-      27% 20%,
-      34% 8%,
-      41% 25%,
-      49% 5%,
-      57% 19%,
-      64% 7%,
-      72% 23%,
-      80% 9%,
-      88% 24%,
-      95% 11%,
-      100% 26%,
-      100% 74%,
-      94% 91%,
-      87% 77%,
-      80% 95%,
-      73% 79%,
-      65% 93%,
-      57% 75%,
-      49% 91%,
-      41% 77%,
-      33% 93%,
-      25% 78%,
-      17% 94%,
-      9% 80%,
-      0% 74%
-    );
-  }
-
-  .text {
-    color: #000;
-  }
-
-  .crease-line {
-    background: rgba(0, 0, 0, 0.15);
-  }
-
-  .paper-label:hover .slice {
-    background: transparent;
-  }
-
-  .paper-label:hover .text {
-    color: #000;
-  }
-
-  .paper-label:hover .crease-line {
-    background: rgba(0, 0, 0, 0.15);
   }
 }
 </style>

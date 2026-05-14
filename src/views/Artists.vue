@@ -4,6 +4,8 @@
     class="artist-explore-container"
     :class="{ 'bio-open': showFullBio }"
     @click="handleGlobalClick"
+    @touchstart.passive="onTouchStart"
+    @touchend.passive="onTouchEnd"
   >
     <!-- 빨간 배경: 검은 선 / 사진 위: difference -->
     <InterventionCanvas
@@ -15,7 +17,7 @@
       stack="under"
     />
     <div class="ui-top-center">
-      <div class="ui-btn" @click.stop="toggleLineup">
+      <div class="ui-btn organic-highlight organic-highlight--btn" :style="lineupBtnOrganic" @click.stop="toggleLineup">
         {{ ui.lineupBtn }}
       </div>
     </div>
@@ -92,7 +94,7 @@
 
           <div class="text-content">
             <span class="highlight-wrapper">
-              <span class="name-inline">{{ displayName }}</span>
+              <span class="name-inline organic-highlight organic-highlight--inline" :style="organicTextStyles.name">{{ displayName }}</span>
               <span
                 v-for="(para, index) in bioParagraphs"
                 :key="`bio-${index}`"
@@ -108,7 +110,8 @@
               </span>
               <span v-if="artistWebsite" class="website-wrap">
                 <a
-                  class="website-inline"
+                  class="website-inline organic-highlight organic-highlight--inline"
+                  :style="organicTextStyles.website"
                   :href="artistWebsite"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -129,6 +132,7 @@
 import { artistsData } from '@/assets/data/artists.js'
 import InterventionCanvas from '@/components/InterventionCanvas.vue'
 import { localeStore } from '@/store/locale'
+import { randomOrganicHighlight, ARTISTS_LINEUP_BTN_ORGANIC } from '@/utils/organicHighlight.js'
 
 export default {
   components: { InterventionCanvas },
@@ -149,6 +153,13 @@ export default {
       randomInfoPos: {},
       randomRotation: 0,
       isMobile: false,
+      touchStartX: 0,
+      touchStartY: 0,
+      lineupBtnOrganic: ARTISTS_LINEUP_BTN_ORGANIC,
+      organicTextStyles: {
+        name: randomOrganicHighlight('#000'),
+        website: randomOrganicHighlight('#000'),
+      },
     }
   },
   computed: {
@@ -159,9 +170,11 @@ export default {
       return localeStore.lang
     },
     currentArtist() {
+      const routeId = this.id ?? this.$route?.params?.id
+      if (!routeId) return null
       const found = this.artists.find((a) => {
         const slug = a.name_en.toLowerCase().trim().replace(/\s+/g, '-')
-        return slug === this.id || String(a.id) === String(this.id)
+        return slug === routeId || String(a.id) === String(routeId)
       })
       return found || null
     },
@@ -220,14 +233,16 @@ export default {
   },
   watch: {
     id: {
-      handler(newId, oldId) {
-        if (!newId || newId === 'undefined') {
+      handler(newId) {
+        const routeId = newId ?? this.$route?.params?.id
+        if (!routeId || routeId === 'undefined') {
           this.goToRandomArtist()
           return
         }
         this.setRandomState()
         this.showFullBio = false
         this.isHoveringButton = false
+        this.refreshOrganicStyles()
       },
       immediate: true,
     },
@@ -235,6 +250,7 @@ export default {
   mounted() {
     this.checkMobile()
     this.setRandomState()
+    this.refreshOrganicStyles()
     if (!this.isMobile) {
       window.addEventListener('mousemove', this.updateCursor)
     }
@@ -272,6 +288,12 @@ export default {
       const target = this.artists[randomIndex]
       const targetSlug = target.name_en.toLowerCase().trim().replace(/\s+/g, '-')
       this.$router.replace(`/artists/${targetSlug}`)
+    },
+    refreshOrganicStyles() {
+      this.organicTextStyles = {
+        name: randomOrganicHighlight('#000'),
+        website: randomOrganicHighlight('#000'),
+      }
     },
     setRandomState() {
       const positions = [
@@ -314,6 +336,33 @@ export default {
     },
     toggleBio() {
       this.showFullBio = !this.showFullBio
+    },
+    onTouchStart(e) {
+      if (!this.isMobile) return
+      const touch = e.touches?.[0]
+      if (!touch) return
+      this.touchStartX = touch.clientX
+      this.touchStartY = touch.clientY
+    },
+    onTouchEnd(e) {
+      if (!this.isMobile || this.showLineup || this.showFullBio) return
+      if (e.target.closest('.ui-btn, .more-btn-inline, .close-x-btn, .random-name-item, .website-inline, .nav-btn, a')) {
+        return
+      }
+      const touch = e.changedTouches?.[0]
+      if (!touch) return
+      const dx = touch.clientX - this.touchStartX
+      const dy = touch.clientY - this.touchStartY
+      const minSwipe = 48
+      if (Math.abs(dx) < minSwipe || Math.abs(dx) < Math.abs(dy) * 1.2) return
+      const direction = dx < 0 ? 1 : -1
+      this.goToAdjacentArtist(direction)
+    },
+    goToAdjacentArtist(direction) {
+      if (!this.artists.length) return
+      const nextIdx =
+        (this.currentIndex + direction + this.artists.length) % this.artists.length
+      this.nextArtist(nextIdx)
     },
     handleGlobalClick() {
       if (this.showLineup) {
@@ -385,18 +434,18 @@ export default {
 
 /* 버튼 스타일 (LINE-UP과 동일) */
 .ui-btn {
-  background: #000;
   color: #fff;
   padding: 6px 15px;
   font-size: 0.9rem;
   cursor: pointer;
-  border: 1px solid #000;
   transition: all 0.2s ease;
   white-space: nowrap;
 }
 .ui-btn:hover {
-  background: #fff;
   color: #000;
+}
+.ui-btn.organic-highlight:hover::before {
+  background: #fff;
 }
 
 /* 이하 기존 스타일과 동일 */
@@ -471,9 +520,12 @@ export default {
   display: inline;
 }
 .name-inline,
-.bio-inline,
-.more-btn-inline,
 .website-inline {
+  color: #fff;
+  padding: 0.12em 0.28em;
+}
+.bio-inline,
+.more-btn-inline {
   background: #000;
   color: #fff;
   box-decoration-break: clone;

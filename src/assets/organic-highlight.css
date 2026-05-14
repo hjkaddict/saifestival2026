@@ -1,0 +1,55 @@
+.organic-highlight {
+  position: relative;
+  background: transparent !important;
+  isolation: isolate;
+}
+
+.organic-highlight::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--hl-inset-x, 7px));
+  right: calc(-1 * var(--hl-inset-x, 8px));
+  top: calc(-1 * var(--hl-inset-y, 4px));
+  bottom: calc(-1 * var(--hl-inset-y, 4px));
+  background: var(--organic-bg-color, #ffff00);
+  z-index: -1;
+  clip-path: var(
+    --hl-clip,
+    polygon(
+      0% 18%,
+      8% 10%,
+      18% 16%,
+      28% 9%,
+      38% 15%,
+      50% 11%,
+      62% 16%,
+      72% 8%,
+      82% 14%,
+      92% 10%,
+      100% 17%,
+      100% 83%,
+      92% 91%,
+      82% 85%,
+      72% 92%,
+      62% 86%,
+      50% 90%,
+      38% 84%,
+      28% 91%,
+      18% 85%,
+      8% 89%,
+      0% 82%
+    )
+  );
+  transform: rotate(var(--hl-rotate, 0deg)) scale(var(--hl-sx, 1.04), var(--hl-sy, 1.08));
+  pointer-events: none;
+}
+
+.organic-highlight--inline {
+  display: inline;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.organic-highlight--btn {
+  border-color: transparent !important;
+}

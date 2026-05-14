@@ -10,7 +10,7 @@
           @mouseenter="onDropdownEnter"
           @mouseleave="onDropdownLeave"
         >
-          <button type="button" class="nav-btn main-label" @click.stop="toggleProgramMenu">
+          <button type="button" class="nav-btn main-label organic-highlight organic-highlight--btn" :style="programBtnOrganic" @click.stop="toggleProgramMenu">
             {{ locale.lang === 'kr' ? '프로그램' : 'PROGRAM' }}
           </button>
           <transition name="slide-fade">
@@ -138,6 +138,7 @@ import { programExhibition } from '@/assets/data/program_exhibition.js'
 import { programPerformance } from '@/assets/data/program_performance.js'
 import { programWorkshop } from '@/assets/data/program_workshop.js'
 import { artistsData } from '@/assets/data/artists.js'
+import { randomOrganicHighlight } from '@/utils/organicHighlight.js'
 
 export default {
   name: 'Program',
@@ -151,6 +152,7 @@ export default {
       palette: ['#FF0000', '#FFA500', '#FFFF00', '#00FF00', '#FFC0CB'],
       performanceDays: [],
       showMenu: false, // 드롭다운 노출 여부
+      programBtnOrganic: randomOrganicHighlight('#000'),
     }
   },
   mounted() {
@@ -411,11 +413,9 @@ export default {
 }
 
 .nav-btn {
-  background: #000;
   color: #fff;
   padding: 6px 12px;
   font-size: 0.9rem;
-  border: 1px solid #000;
   text-decoration: none;
   cursor: pointer;
   display: inline-flex;
@@ -428,8 +428,11 @@ export default {
 }
 
 .nav-btn:hover {
-  background: #fff;
   color: #000;
+}
+
+.nav-btn.organic-highlight:hover::before {
+  background: #fff;
 }
 
 /* 드롭다운 스타일 */
