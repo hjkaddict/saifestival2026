@@ -113,7 +113,16 @@
               :y2="lineConfigs[index]?.line1.y2"
               :stroke="lineConfigs[index]?.line1.color"
               :stroke-width="lineConfigs[index]?.line1.weight"
-              :style="getDividerLineStyle(lineConfigs[index]?.line1, index)"
+              :style="getDividerLineStyle(lineConfigs[index]?.line1)"
+            />
+            <line
+              x1="0"
+              :y1="lineConfigs[index]?.line2.y1"
+              x2="100"
+              :y2="lineConfigs[index]?.line2.y2"
+              :stroke="lineConfigs[index]?.line2.color"
+              :stroke-width="lineConfigs[index]?.line2.weight"
+              :style="getDividerLineStyle(lineConfigs[index]?.line2)"
             />
           </svg>
         </div>
@@ -138,7 +147,6 @@ export default {
       shuffledPrograms: [],
       lineConfigs: [],
       scrollProgress: 0,
-      dividerProgress: [],
       isMobile: false,
       palette: ['#FF0000', '#FFA500', '#FFFF00', '#00FF00', '#FFC0CB'],
       performanceDays: [],
@@ -243,7 +251,6 @@ export default {
         line1: this.generateRandomLineParams(),
         line2: this.generateRandomLineParams(),
       }))
-      this.dividerProgress = Array.from({ length: this.lineConfigs.length }, () => 0)
     },
 
     // 🔥 스크롤 이동 로직
@@ -353,36 +360,16 @@ export default {
       window.aboutScrollProgress = this.scrollProgress
       window.dispatchEvent(new Event('scroll-canvas'))
 
-      this.updateDividerProgress()
       this.updateDayTitleStickyState()
     },
 
-    updateDividerProgress() {
-      const dividers = this.$el?.querySelectorAll('.divider-space') || []
-      const vh = window.innerHeight
-
-      dividers.forEach((el, idx) => {
-        const rect = el.getBoundingClientRect()
-        const visible = Math.min(rect.bottom, vh) - Math.max(rect.top, 0)
-        const ratio = visible / Math.max(rect.height, 1)
-        const clamped = Math.max(0, Math.min(1, ratio))
-        const centerDist = Math.abs(rect.top + rect.height / 2 - vh * 0.5) / (vh * 0.5)
-        const centerBoost = Math.max(0, 1 - centerDist)
-        this.dividerProgress[idx] = clamped * centerBoost
-      })
-    },
-
-    getDividerLineStyle(config, index) {
+    getDividerLineStyle(config) {
       if (!config) return {}
-      const vis = this.dividerProgress[index] ?? 0
-      const speedMult = this.isMobile ? 4.5 : 1.2
-      const moveX = vis * config.speed * config.dir * speedMult
-      const scaleX = 0.04 + vis * 0.96
+      const moveX = this.scrollProgress * config.speed * config.dir
       return {
-        transform: `translateX(${moveX}px) scaleX(${scaleX})`,
-        transformOrigin: 'center center',
-        opacity: 0.15 + vis * 0.85,
-        transition: 'transform 0.12s linear, opacity 0.12s linear',
+        transform: `translateX(${moveX}px)`,
+        transition: 'transform 0.1s linear',
+        willChange: 'transform',
       }
     },
   },
@@ -644,6 +631,9 @@ export default {
   height: 200px;
   margin: 20px 0;
   mix-blend-mode: difference;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
 }
 @media (max-width: 768px) {
   .program-nav {

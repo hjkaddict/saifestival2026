@@ -71,16 +71,20 @@ import { buildVenueBlocks } from '@/assets/data/venueIntro.js'
 
 const messages = {
   kr: {
-    mapNoKey:
+    mapNoKeyDev:
       '지도를 보려면 프로젝트 루트에 .env.local 파일을 만들고 VITE_GOOGLE_MAPS_API_KEY=발급받은키 를 넣은 뒤 개발 서버를 다시 실행하세요. Google Cloud에서 Maps JavaScript API를 켜야 합니다.',
+    mapNoKeyProd:
+      'Vercel 대시보드 → Project → Settings → Environment Variables에 VITE_GOOGLE_MAPS_API_KEY 를 추가한 뒤 재배포(Redeploy)하세요. 로컬의 .env.local 값은 Vercel에 자동으로 올라가지 않습니다.',
     mapError:
-      '지도를 불러오지 못했습니다. API 키 제한·결제·Maps JavaScript API 활성화를 확인해 주세요.',
+      '지도를 불러오지 못했습니다. Vercel 배포 URL(예: https://프로젝트명.vercel.app/*)을 Google Cloud API 키의 HTTP 리퍼러 제한에 추가했는지, Maps JavaScript API·결제 설정을 확인해 주세요.',
   },
   en: {
-    mapNoKey:
+    mapNoKeyDev:
       'Add VITE_GOOGLE_MAPS_API_KEY to .env.local and restart the dev server. Enable the Maps JavaScript API for your key in Google Cloud.',
+    mapNoKeyProd:
+      'In Vercel: Project → Settings → Environment Variables, add VITE_GOOGLE_MAPS_API_KEY, then redeploy. Values from .env.local are not uploaded automatically.',
     mapError:
-      'The map could not be loaded. Check API key restrictions, billing, and that Maps JavaScript API is enabled.',
+      'The map could not be loaded. Add your Vercel URL (e.g. https://your-project.vercel.app/*) to the API key HTTP referrer restrictions in Google Cloud, and check billing plus Maps JavaScript API.',
   },
 }
 
@@ -102,7 +106,12 @@ export default {
   },
   computed: {
     copy() {
-      return messages[this.locale.lang] || messages.en
+      const lang = messages[this.locale.lang] || messages.en
+      const isProd = import.meta.env.PROD
+      return {
+        mapNoKey: isProd ? lang.mapNoKeyProd : lang.mapNoKeyDev,
+        mapError: lang.mapError,
+      }
     },
     venueCenter() {
       const lat = parseEnvNumber(import.meta.env.VITE_VENUE_MAP_LAT)
