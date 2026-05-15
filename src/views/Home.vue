@@ -16,9 +16,9 @@
         v-for="(item, index) in randomMenus"
         :key="index"
         class="paper-label"
-        :class="{ 'is-visible': isLoaded }"
+        :class="{ 'is-visible': isLoaded, 'is-active': activeMenuIndex === index }"
         :style="menuLabelStyle(item, index)"
-        @click="navigate(item.path)"
+        @click="onMenuClick(item.path, index, $event)"
         @mouseenter="onMenuHover(true)"
         @mouseleave="onMenuHover(false)"
       >
@@ -58,6 +58,9 @@ export default {
       isMobile: false,
       universeMinHeight: null,
       centerPos: { x: 0, y: 0 },
+      activeMenuIndex: null,
+      pendingNav: null,
+      _navFallbackTimer: null,
     }
   },
   computed: {
@@ -90,6 +93,7 @@ export default {
   beforeUnmount() {
     window.removeEventListener('resize', this.handleResize)
     window.removeEventListener('app-vh-change', this.handleResize)
+    this.clearPendingNav()
   },
   methods: {
     checkMobile() {
@@ -222,6 +226,43 @@ export default {
     },
     navigate(path) {
       this.$router.push(path)
+    },
+    clearPendingNav() {
+      if (this._navFallbackTimer != null) {
+        clearTimeout(this._navFallbackTimer)
+        this._navFallbackTimer = null
+      }
+      this.pendingNav = null
+      this.activeMenuIndex = null
+    },
+    onMenuClick(path, index, event) {
+      if (!this.isMobile) {
+        this.navigate(path)
+        return
+      }
+      if (this.pendingNav) return
+
+      this.pendingNav = path
+      this.activeMenuIndex = index
+
+      const el = event.currentTarget
+      const finish = () => {
+        if (this.pendingNav !== path) return
+        this.clearPendingNav()
+        this.$router.push(path)
+      }
+
+      const onTransitionEnd = (e) => {
+        if (e.target !== el || e.propertyName !== 'transform') return
+        el.removeEventListener('transitionend', onTransitionEnd)
+        finish()
+      }
+      el.addEventListener('transitionend', onTransitionEnd)
+
+      this._navFallbackTimer = setTimeout(() => {
+        el.removeEventListener('transitionend', onTransitionEnd)
+        finish()
+      }, 320)
     },
   },
 }
@@ -438,11 +479,7 @@ export default {
   color: #fafafa;
   display: block;
   transition: color 0.22s ease, text-shadow 0.22s ease;
-  text-shadow:
-    0 0 6px rgba(255, 255, 255, 0.95),
-    0 0 14px rgba(255, 255, 255, 0.65),
-    0 0 26px rgba(255, 255, 255, 0.4),
-    0 0 40px rgba(255, 255, 255, 0.22);
+  text-shadow: var(--text-glow);
 }
 
 .paper-label:hover {
@@ -457,10 +494,7 @@ export default {
 
 .paper-label:hover .text {
   color: #050505;
-  text-shadow:
-    0 0 10px rgba(0, 0, 0, 0.22),
-    0 0 20px rgba(255, 255, 255, 0.55),
-    0 1px 0 rgba(255, 255, 255, 0.85);
+  text-shadow: var(--text-glow-hover);
 }
 
 .paper-label:hover .crease-line {
@@ -482,6 +516,34 @@ export default {
 
   .paper-label {
     cursor: pointer;
+  }
+
+  .paper-label.is-active {
+    transform: scale(1.1) rotate(0deg) !important;
+    z-index: 100;
+    transition: transform 0.2s ease-out;
+  }
+
+  .paper-label.is-active .slice {
+    transform: translateX(0) rotate(0deg) !important;
+  }
+
+  .paper-label.is-active .organic-highlight.organic-highlight--inline::before {
+    background: #f2f2f2 !important;
+    box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, 0.28);
+  }
+
+  .paper-label.is-active .organic-highlight.organic-highlight--inline::after {
+    background: #0a0a0a;
+  }
+
+  .paper-label.is-active .text {
+    color: #050505;
+    text-shadow: var(--text-glow-hover);
+  }
+
+  .paper-label.is-active .crease-line {
+    background: rgba(0, 0, 0, 0.2);
   }
 
   .text {

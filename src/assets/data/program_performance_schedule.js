@@ -5,7 +5,7 @@ export const performanceSchedule = [
     id: 'perf-0710',
     shortLabel: { kr: '7/10 (금)', en: '7/10 Fri' },
     dateLabel: { kr: '7월 10일', en: 'July 10' },
-    naverBookingUrl: 'https://booking.naver.com/booking/12/bizes/276008',
+    naverBookingUrl: null,
     acts: ['The Great △', 'Jiyoung Wi', 'Container', 'Dayoon Lee'],
   },
   {

@@ -11,7 +11,7 @@ export const ticketPage = {
     priceHeading: '요금',
     datesHeading: '회차',
     viewProgramLabel: '프로그램에서 보기',
-    bookLabel: '네이버 예약',
+    bookLabel: '예매',
     bookOpens: '5월 30일 오픈',
   },
   en: {
@@ -21,8 +21,8 @@ export const ticketPage = {
     priceHeading: 'Prices',
     datesHeading: 'Dates',
     viewProgramLabel: 'View in program',
-    bookLabel: 'Book on Naver',
-    bookOpens: 'Opens 30 May',
+    bookLabel: 'Book',
+    bookOpens: 'Open 30th May',
   },
 }
 

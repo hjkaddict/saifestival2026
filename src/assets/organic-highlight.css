@@ -1,3 +1,14 @@
+:root {
+  --text-glow:
+    0 0 4px rgba(255, 255, 255, 0.82),
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 0 18px rgba(255, 255, 255, 0.26);
+  --text-glow-hover:
+    0 0 6px rgba(0, 0, 0, 0.18),
+    0 0 12px rgba(255, 255, 255, 0.38),
+    0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
 .organic-highlight {
   position: relative;
   background: transparent !important;
@@ -80,11 +91,7 @@
 .ui-btn.organic-highlight.organic-highlight--btn,
 a.organic-highlight.organic-highlight--btn {
   color: #fafafa;
-  text-shadow:
-    0 0 6px rgba(255, 255, 255, 0.95),
-    0 0 14px rgba(255, 255, 255, 0.65),
-    0 0 26px rgba(255, 255, 255, 0.4),
-    0 0 40px rgba(255, 255, 255, 0.22);
+  text-shadow: var(--text-glow);
   transition: color 0.22s ease, text-shadow 0.22s ease;
 }
 
@@ -92,10 +99,7 @@ a.organic-highlight.organic-highlight--btn {
 .ui-btn.organic-highlight.organic-highlight--btn:hover,
 a.organic-highlight.organic-highlight--btn:hover {
   color: #050505;
-  text-shadow:
-    0 0 10px rgba(0, 0, 0, 0.22),
-    0 0 20px rgba(255, 255, 255, 0.55),
-    0 1px 0 rgba(255, 255, 255, 0.85);
+  text-shadow: var(--text-glow-hover);
 }
 
 .organic-highlight.organic-highlight--btn:hover::before {

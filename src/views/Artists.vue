@@ -629,11 +629,7 @@ export default {
 .name-inline {
   color: #fafafa;
   padding: 0.12em 0.28em;
-  text-shadow:
-    0 0 6px rgba(255, 255, 255, 0.95),
-    0 0 14px rgba(255, 255, 255, 0.65),
-    0 0 26px rgba(255, 255, 255, 0.4),
-    0 0 40px rgba(255, 255, 255, 0.22);
+  text-shadow: var(--text-glow);
   transition:
     color 0.22s ease,
     text-shadow 0.22s ease;

@@ -138,11 +138,7 @@ export const artistsData = [
     id: 'artist_13',
     name_en: 'Li Qihang',
     name_kr: '리 치항',
-    bio_en: `Li Qihang is an artist based in Amsterdam. Working with sound, text, site, performance and lived situation, she attunes to minor ruptures in everyday life that reveal the seams of reality, opening perceptual spaces where the present feels doubled, misaligned, or already remembered. 
-    
-    Her practice lives at the hinge of this middle zone, drifting between truth and trick, waking and dream, familiar and estranged, as she traces coincidences, temporal disjunctions, and hidden structures within a fragile interval where the real subtly departs from itself without becoming unreal. 
-    
-    In 2022, she initiated the project Mercury Patio, an ongoing process of waiting and riding.`,
+    bio_en: `Li Qihang is an artist based in Amsterdam. In 2022, she initiated the project Mercury Patio, an ongoing process of waiting. Her work follows the slip of reality, where the present is doubled, or already remembered.`,
     bio_kr: ``,
     img: '/images/artists/artist_13.jpg',
     website: 'https://qihang.li/',

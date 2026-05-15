@@ -71,7 +71,15 @@
                 >
                   {{ copy.bookLabel }}
                 </a>
-                <p v-else class="show-card__book-soon">{{ copy.bookLabel }} · {{ copy.bookOpens }}</p>
+                <button
+                  v-else
+                  type="button"
+                  class="show-card__book-btn show-card__book-btn--soon"
+                  disabled
+                  aria-disabled="true"
+                >
+                  {{ copy.bookOpens }}
+                </button>
               </div>
             </li>
           </ul>
@@ -394,24 +402,24 @@ export default {
   background: #000;
   color: #fff;
   font-size: 0.75rem;
+  font-family: inherit;
   letter-spacing: 0.04em;
   text-decoration: none;
   border: 1px solid #000;
+  cursor: pointer;
   transition:
     background 0.15s ease,
     color 0.15s ease;
 }
 
-.show-card__book-btn:hover {
+.show-card__book-btn:hover:not(:disabled) {
   background: #fff;
   color: #000;
 }
 
-.show-card__book-soon {
-  margin: 0.55rem 0 0;
-  font-size: 0.78rem;
-  opacity: 0.5;
-  word-break: keep-all;
+.show-card__book-btn--soon {
+  opacity: 0.55;
+  cursor: default;
 }
 
 .ticket-footnotes {

@@ -344,20 +344,21 @@ export default {
       this.performanceDays = performanceSchedule.map((day) => {
         const lineup = resolvePerformanceActs(day.acts)
           .sort(() => Math.random() - 0.5)
-          .map((item) => {
+          .flatMap((item) => {
             if (item.kind === 'solo') {
-              return {
-                kind: 'solo',
-                key: item.artist.id,
-                artist: attachGlitch(item.artist),
-              }
+              return [
+                {
+                  kind: 'solo',
+                  key: item.artist.id,
+                  artist: attachGlitch(item.artist),
+                },
+              ]
             }
-            return {
-              kind: 'duo',
-              key: item.id,
-              displayName: item.label,
-              coverArtist: attachGlitch(item.artists[0]),
-            }
+            return item.artists.map((artist) => ({
+              kind: 'solo',
+              key: `${item.id}-${artist.id}`,
+              artist: attachGlitch(artist),
+            }))
           })
 
         return {
