@@ -80,11 +80,18 @@ export default {
     requestAnimationFrame(() => {
       setTimeout(() => {
         this.shardLanded = true
-        requestAnimationFrame(() => {
+        const revealMenus = () => {
           requestAnimationFrame(() => {
-            this.isLoaded = true
+            requestAnimationFrame(() => {
+              this.isLoaded = true
+            })
           })
-        })
+        }
+        if (this.isMobile) {
+          setTimeout(revealMenus, 1500)
+        } else {
+          revealMenus()
+        }
       }, 60)
     })
     window.addEventListener('resize', this.handleResize)
@@ -504,6 +511,64 @@ export default {
 @media (max-width: 767px) {
   .entry-shard__inner {
     height: calc(var(--app-vh, 1vh) * 86);
+    perspective: none;
+    transform-style: flat;
+  }
+
+  .entry-shard__wing {
+    transform-style: flat;
+    will-change: transform;
+  }
+
+  .entry-shard__wing--left {
+    transform: scaleX(0.06);
+  }
+
+  .entry-shard__wing--right {
+    transform: scaleX(0.06);
+  }
+
+  .entry-shard__face {
+    filter: invert(1) brightness(1.06);
+    mix-blend-mode: normal;
+  }
+
+  .entry-shard.is-landed .entry-shard__wing--left {
+    animation: shard-wing-open-left 1.5s cubic-bezier(0.28, 0.82, 0.34, 1) forwards;
+  }
+
+  .entry-shard.is-landed .entry-shard__wing--right {
+    animation: shard-wing-open-right 1.5s cubic-bezier(0.28, 0.82, 0.34, 1) forwards;
+  }
+
+  @keyframes shard-wing-open-left {
+    0% {
+      transform: scaleX(0.06);
+    }
+    55% {
+      transform: scaleX(1.04);
+    }
+    76% {
+      transform: scaleX(0.98);
+    }
+    100% {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes shard-wing-open-right {
+    0% {
+      transform: scaleX(0.06);
+    }
+    55% {
+      transform: scaleX(1.04);
+    }
+    76% {
+      transform: scaleX(0.98);
+    }
+    100% {
+      transform: scaleX(1);
+    }
   }
 
   .menu-universe {

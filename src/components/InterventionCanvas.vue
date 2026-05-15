@@ -43,6 +43,7 @@ export default {
       _pauseAnimT: null,
       /** 논리 시간 t = performance.now()/1000 - _animClockOffset */
       _animClockOffset: 0,
+      _homeStartTimer: null,
     }
   },
   computed: {
@@ -70,8 +71,9 @@ export default {
             this._pauseAnimT = null
             this._animClockOffset = 0
           }
-          this.startAnimation()
+          this.scheduleHomeAnimation()
         } else {
+          this.cancelHomeAnimationSchedule()
           this.pauseAnimation()
           if (!contained && this.lines.length === 0) {
             this.generateLines()
@@ -122,10 +124,11 @@ export default {
     })
 
     if (this.$route.path === '/') {
-      this.startAnimation()
+      this.scheduleHomeAnimation()
     }
   },
   beforeUnmount() {
+    this.cancelHomeAnimationSchedule()
     this.pauseAnimation()
     this._resizeObserver?.disconnect()
     this._resizeObserver = null
@@ -140,13 +143,39 @@ export default {
     window.removeEventListener('menu-hover-end', this.resumeFromHover)
   },
   methods: {
+    isMobileViewport() {
+      return window.innerWidth < 768
+    },
+    homeIntroDelayMs() {
+      /* 모바일: 샤드 펼침과 같이 시작(메뉴·3D 부하는 1.5s 뒤로 분리) */
+      return this.isMobileViewport() ? 80 : 0
+    },
+    scheduleHomeAnimation() {
+      this.cancelHomeAnimationSchedule()
+      if (this.$route.path !== '/' || this.contained) return
+      const delay = this.homeIntroDelayMs()
+      if (delay === 0) {
+        this.startAnimation()
+        return
+      }
+      this._homeStartTimer = setTimeout(() => {
+        this._homeStartTimer = null
+        if (this.$route.path === '/') this.startAnimation()
+      }, delay)
+    },
+    cancelHomeAnimationSchedule() {
+      if (this._homeStartTimer != null) {
+        clearTimeout(this._homeStartTimer)
+        this._homeStartTimer = null
+      }
+    },
     onScrollCanvas() {
       this.render()
       this.updateClipPath()
     },
     resumeFromHover() {
       if (this.$route.path === '/') {
-        this.startAnimation()
+        this.scheduleHomeAnimation()
       }
     },
     hashKey(key) {
@@ -390,32 +419,34 @@ export default {
 
       const lw = line.lineWidth
       const stroke = line.strokeColor ?? this.strokeColor
-      const glow = (a) => this.strokeGlowRgba(stroke, a)
 
       this.ctx.save()
       this.ctx.lineJoin = 'round'
       this.ctx.lineCap = 'round'
-
-      /* 얇은 글로우 2회 + 코어 1회 (blur 다중 stroke 완화) */
-      this.ctx.strokeStyle = glow(0.13)
-      this.ctx.lineWidth = lw * 1.75
-      this.ctx.shadowBlur = Math.min(14, 5 + lw * 0.5)
-      this.ctx.shadowColor = glow(0.36)
-      this.ctx.shadowOffsetX = 0
-      this.ctx.shadowOffsetY = 0
-      this.ctx.stroke(path)
-
-      this.ctx.strokeStyle = glow(0.26)
-      this.ctx.lineWidth = lw * 1.12
-      this.ctx.shadowBlur = Math.min(5, 1.5 + lw * 0.22)
-      this.ctx.shadowColor = glow(0.28)
-      this.ctx.stroke(path)
-
       this.ctx.shadowBlur = 0
       this.ctx.strokeStyle = stroke
       this.ctx.lineWidth = lw
-      this.ctx.stroke(path)
 
+      if (!this.isMobileViewport()) {
+        const glow = (a) => this.strokeGlowRgba(stroke, a)
+        this.ctx.strokeStyle = glow(0.13)
+        this.ctx.lineWidth = lw * 1.75
+        this.ctx.shadowBlur = Math.min(14, 5 + lw * 0.5)
+        this.ctx.shadowColor = glow(0.36)
+        this.ctx.stroke(path)
+
+        this.ctx.strokeStyle = glow(0.26)
+        this.ctx.lineWidth = lw * 1.12
+        this.ctx.shadowBlur = Math.min(5, 1.5 + lw * 0.22)
+        this.ctx.shadowColor = glow(0.28)
+        this.ctx.stroke(path)
+
+        this.ctx.shadowBlur = 0
+        this.ctx.strokeStyle = stroke
+        this.ctx.lineWidth = lw
+      }
+
+      this.ctx.stroke(path)
       this.ctx.restore()
     },
     render() {
