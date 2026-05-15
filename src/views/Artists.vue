@@ -532,7 +532,10 @@ export default {
   padding: 6px 15px;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: color 0.22s ease, text-shadow 0.22s ease, transform 0.2s ease;
+  transition:
+    color 0.22s ease,
+    text-shadow 0.22s ease,
+    transform 0.2s ease;
   white-space: nowrap;
 }
 .ui-top-center .ui-btn:hover {
@@ -582,7 +585,8 @@ export default {
 
 /* 현재 페이지 아티스트 — 빨간 글자만 (글로우 없음) */
 .lineup-random-overlay .random-name-item.active.nav-btn.organic-highlight.organic-highlight--btn,
-.lineup-random-overlay .random-name-item.active.nav-btn.organic-highlight.organic-highlight--btn:hover {
+.lineup-random-overlay
+  .random-name-item.active.nav-btn.organic-highlight.organic-highlight--btn:hover {
   color: #ff3300 !important;
 }
 
@@ -630,7 +634,9 @@ export default {
     0 0 14px rgba(255, 255, 255, 0.65),
     0 0 26px rgba(255, 255, 255, 0.4),
     0 0 40px rgba(255, 255, 255, 0.22);
-  transition: color 0.22s ease, text-shadow 0.22s ease;
+  transition:
+    color 0.22s ease,
+    text-shadow 0.22s ease;
 }
 .bio-inline,
 .more-btn-inline {
