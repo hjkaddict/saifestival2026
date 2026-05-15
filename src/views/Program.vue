@@ -18,8 +18,10 @@
               <button
                 v-for="pgm in shuffledPrograms"
                 :key="pgm.data.id"
+                type="button"
+                class="dropdown-item nav-btn organic-highlight organic-highlight--btn"
+                :style="pgm.dropdownOrganic"
                 @click="scrollToSection(pgm.data.id)"
-                class="dropdown-item"
               >
                 {{ pgm.data.title[locale.lang] }}
               </button>
@@ -277,7 +279,12 @@ export default {
         { data: { ...programPerformance, id: 'performance' }, isPerformance: true },
         { data: { ...programWorkshop, id: 'workshop' }, isPerformance: false },
       ]
-      this.shuffledPrograms = baseData.sort(() => Math.random() - 0.5)
+      this.shuffledPrograms = baseData
+        .sort(() => Math.random() - 0.5)
+        .map((entry) => ({
+          ...entry,
+          dropdownOrganic: randomOrganicHighlight('#000'),
+        }))
 
       this.lineConfigs = Array.from({ length: this.shuffledPrograms.length - 1 }, () => ({
         line1: this.generateRandomLineParams(),
@@ -463,7 +470,6 @@ export default {
 }
 
 .nav-btn {
-  color: #fff;
   padding: 6px 12px;
   font-size: 0.9rem;
   text-decoration: none;
@@ -477,39 +483,27 @@ export default {
   transition: all 0.2s ease;
 }
 
-.nav-btn:hover {
-  color: #000;
-}
-
-.nav-btn.organic-highlight:hover::before {
-  background: #fff;
-}
-
 /* 드롭다운 스타일 */
 .dropdown-content {
-  margin-top: 5px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  background: #fff;
-  border: 1px solid #000;
-  padding: 5px;
-  box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.1);
+  align-items: stretch;
+  gap: 10px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
 }
 
 .dropdown-item {
   background: transparent;
   border: none;
-  padding: 8px 20px;
-  font-size: 0.85rem;
+  width: 100%;
+  font-size: 0.9rem;
   text-align: center;
   cursor: pointer;
   white-space: nowrap;
-}
-
-.dropdown-item:hover {
-  background: #000;
-  color: #fff;
 }
 
 /* 애니메이션 */

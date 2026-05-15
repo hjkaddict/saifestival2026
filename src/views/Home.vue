@@ -1,19 +1,14 @@
 <template>
   <div class="menu-universe" ref="universe" :style="universeStyle">
-    <figure
-      class="entry-shard"
-      :class="{ 'is-landed': shardLanded }"
-      :style="shardFlightStyle"
-      aria-hidden="true"
-    >
-      <img
-        src="/images/home/sai-festival-shard.png"
-        alt=""
-        class="entry-shard__img"
-        width="491"
-        height="508"
-        decoding="async"
-      />
+    <figure class="entry-shard" :class="{ 'is-landed': shardLanded }" aria-hidden="true">
+      <div class="entry-shard__inner">
+        <div class="entry-shard__wing entry-shard__wing--left">
+          <div class="entry-shard__face entry-shard__face--left"></div>
+        </div>
+        <div class="entry-shard__wing entry-shard__wing--right">
+          <div class="entry-shard__face entry-shard__face--right"></div>
+        </div>
+      </div>
     </figure>
 
     <nav class="home-menu-wrapper" aria-label="Main menu">
@@ -38,18 +33,6 @@
         </div>
       </div>
     </nav>
-    <div
-      v-if="!isMobile"
-      class="custom-cursor"
-      :style="{ left: cursorX + 'px', top: cursorY + 'px' }"
-    >
-      <div class="arrow-rotate-layer" :style="{ transform: `rotate(${currentAngle}deg)` }">
-        <div class="arrow-center-wrapper">
-          <div class="long-stroke"></div>
-          <div class="arrow-tip"></div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -72,14 +55,9 @@ export default {
       randomMenus: [],
       isLoaded: false,
       shardLanded: false,
-      shardFlight: null,
       isMobile: false,
       universeMinHeight: null,
       centerPos: { x: 0, y: 0 },
-      cursorX: 0,
-      cursorY: 0,
-      // 처음 진입 시 랜덤한 각도 하나만 딱 정해둡니다.
-      currentAngle: Math.random() * 360,
     }
   },
   computed: {
@@ -90,35 +68,21 @@ export default {
       }
       return style
     },
-    shardFlightStyle() {
-      if (!this.shardFlight) return {}
-      const { startX, startY, landRot } = this.shardFlight
-      return {
-        '--shard-start-x': startX,
-        '--shard-start-y': startY,
-        '--shard-land-rot': `${landRot}deg`,
-        '--shard-land-rot-hit': `${landRot + 2.5}deg`,
-        '--shard-land-rot-settle': `${landRot - 1.2}deg`,
-      }
-    },
   },
   mounted() {
     this.checkMobile()
-    this.initShardFlight()
     this.updateCenterPos()
     this.generatePositions()
-
-    if (!this.isMobile) {
-      window.addEventListener('mousemove', this.updateCursor)
-    }
 
     requestAnimationFrame(() => {
       setTimeout(() => {
         this.shardLanded = true
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            this.isLoaded = true
+          })
+        })
       }, 60)
-      setTimeout(() => {
-        this.isLoaded = true
-      }, 820)
     })
     window.addEventListener('resize', this.handleResize)
     window.addEventListener('app-vh-change', this.handleResize)
@@ -126,18 +90,10 @@ export default {
   beforeUnmount() {
     window.removeEventListener('resize', this.handleResize)
     window.removeEventListener('app-vh-change', this.handleResize)
-    window.removeEventListener('mousemove', this.updateCursor)
   },
   methods: {
     checkMobile() {
       this.isMobile = window.innerWidth < 768
-    },
-    initShardFlight() {
-      this.shardFlight = {
-        startX: '0vw',
-        startY: '-115vh',
-        landRot: 20,
-      }
     },
     onMenuHover(isHovering) {
       if (isHovering) {
@@ -148,12 +104,6 @@ export default {
         window.dispatchEvent(new CustomEvent('menu-hover-end'))
       }
     },
-    updateCursor(e) {
-      requestAnimationFrame(() => {
-        this.cursorX = e.clientX
-        this.cursorY = e.clientY
-      })
-    },
     updateCenterPos() {
       // 메뉴의 대략적인 크기(220x70)를 고려하여 정확히 중앙점 계산
       // window.innerWidth가 작아져도 음수값이 나오지 않도록 처리
@@ -161,31 +111,32 @@ export default {
       this.centerPos.y = Math.max(0, getVisibleViewportHeight() / 2 - 35)
     },
     menuLabelStyle(item, index) {
+      if (!this.isLoaded) {
+        return {
+          top: `${this.centerPos.y}px`,
+          left: `${this.centerPos.x}px`,
+          transform: 'translateZ(0) rotate(45deg) scale(0.035, 0.14)',
+          transitionDelay: '0s',
+          opacity: 1,
+        }
+      }
       return {
-        top: this.isLoaded ? `${item.top}px` : `${this.centerPos.y}px`,
-        left: this.isLoaded ? `${item.left}px` : `${this.centerPos.x}px`,
-        transform: this.isLoaded ? `rotate(${item.baseRot}deg) scale(1)` : `rotate(0deg) scale(0.3)`,
-        transitionDelay: this.isLoaded ? `${index * 0.03}s` : '0s',
-        opacity: this.isLoaded ? 1 : 0,
+        top: `${item.top}px`,
+        left: `${item.left}px`,
+        transform: `rotate(${item.baseRot}deg) scale(1)`,
+        transitionDelay: `${index * 0.045}s`,
+        opacity: 1,
       }
     },
     handleResize() {
-      const wasMobile = this.isMobile
       this.checkMobile()
-      if (wasMobile !== this.isMobile) {
-        if (this.isMobile) {
-          window.removeEventListener('mousemove', this.updateCursor)
-        } else {
-          window.addEventListener('mousemove', this.updateCursor)
-        }
-      }
       this.updateCenterPos()
       this.generatePositions()
     },
     randomSliceStyles() {
       const d = () => (Math.random() > 0.5 ? 1 : -1)
       const f = () => (Math.random() * 12).toFixed(1)
-      const hlOpts = { intensity: 1.75 }
+      const hlOpts = { intensity: 1.0 }
       return {
         top: {
           ...randomOrganicHighlight('#000000', hlOpts),
@@ -283,112 +234,118 @@ export default {
   height: calc(var(--app-vh, 1vh) * 100);
   overflow: hidden;
   background: #fff;
-  cursor: none !important;
+  cursor: auto;
 }
 
 .entry-shard {
   position: fixed;
   top: 50%;
   left: 50%;
-  width: min(80vw, 680px);
   margin: 0;
   padding: 0;
   border: none;
-  z-index: 12;
+  z-index: 1;
   pointer-events: none;
-  transform: translate(-50%, -50%)
-    translate(var(--shard-start-x, 0vw), var(--shard-start-y, -115vh)) rotate(0deg) scale(1.12);
+  transform: translate(-50%, -50%) rotate(45deg);
   transform-origin: center center;
   transition: none;
-  will-change: transform;
 }
 
-.entry-shard.is-landed {
-  animation: shard-stick-in 1.05s cubic-bezier(0.11, 0.98, 0.14, 1) forwards;
+.entry-shard__inner {
+  display: flex;
+  height: calc(var(--app-vh, 1vh) * 100);
+  aspect-ratio: 491 / 508;
+  perspective: 2200px;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  isolation: isolate;
 }
 
-.entry-shard__img {
-  display: block;
-  width: 100%;
-  height: auto;
-  filter: invert(1) brightness(1.06)
-    drop-shadow(0 0 14px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 32px rgba(255, 255, 255, 0.28))
-    drop-shadow(0 2px 12px rgba(0, 0, 0, 0.06));
+.entry-shard__wing {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.entry-shard__wing--left {
+  transform-origin: right center;
+  transform: rotateY(-82deg);
+}
+
+.entry-shard__wing--right {
+  margin-left: -2px;
+  transform-origin: left center;
+  transform: rotateY(82deg);
+}
+
+.entry-shard__face {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background-image: url(/images/home/sai-festival-shard.png);
+  background-repeat: no-repeat;
+  background-size: 200% 100%;
+  filter: invert(1) brightness(1.06) drop-shadow(0 0 12px rgba(255, 255, 255, 0.35))
+    drop-shadow(0 2px 6px rgba(0, 0, 0, 0.08));
   mix-blend-mode: multiply;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   user-select: none;
-  -webkit-user-drag: none;
+  transform: translateZ(0);
 }
 
-@keyframes shard-stick-in {
+.entry-shard__face--left {
+  left: 0;
+  right: -3px;
+  background-position: left center;
+}
+
+.entry-shard__face--right {
+  left: -3px;
+  right: 0;
+  background-position: right center;
+}
+
+/* 접힘 펼침 (날개 애니 duration) */
+.entry-shard.is-landed .entry-shard__wing--left {
+  animation: shard-wing-left 2.35s cubic-bezier(0.28, 0.82, 0.34, 1) forwards;
+}
+
+.entry-shard.is-landed .entry-shard__wing--right {
+  animation: shard-wing-right 2.35s cubic-bezier(0.28, 0.82, 0.34, 1) forwards;
+}
+
+@keyframes shard-wing-left {
   0% {
-    transform: translate(-50%, -50%) translate(var(--shard-start-x), var(--shard-start-y))
-      rotate(0deg) scale(1.12);
+    transform: rotateY(-82deg);
   }
-  72% {
-    transform: translate(-50%, calc(-50% + 2vh)) rotate(var(--shard-land-rot-hit)) scale(0.97);
+  55% {
+    transform: rotateY(6deg);
   }
-  86% {
-    transform: translate(-50%, calc(-50% - 0.5vh)) rotate(var(--shard-land-rot-settle)) scale(1.02);
+  76% {
+    transform: rotateY(-3deg);
   }
   100% {
-    transform: translate(-50%, -50%) rotate(var(--shard-land-rot)) scale(1);
+    transform: rotateY(0deg);
   }
 }
 
-@media (max-width: 767px) {
-  .entry-shard {
-    width: min(128vw, 760px);
+@keyframes shard-wing-right {
+  0% {
+    transform: rotateY(82deg);
   }
-}
-
-/* 🔥 커스텀 커서 스타일 (Artists.vue와 동일) */
-.custom-cursor {
-  position: fixed;
-  pointer-events: none;
-  z-index: 100000;
-  /* 핵심: 배경 및 글자와 색상 반전 */
-  mix-blend-mode: difference;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backface-visibility: hidden;
-}
-
-.arrow-rotate-layer {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 0;
-  height: 0;
-  /* 각도 변경 시 너무 툭툭 끊기지 않게 약간의 트랜지션 추가 가능 */
-}
-
-.arrow-center-wrapper {
-  display: flex;
-  align-items: center;
-  position: relative;
-}
-
-.long-stroke {
-  /* 선의 길이를 메뉴 너비에 맞춰 조절 가능 (예: 300px ~ 500px) */
-  width: 400px;
-  height: 1.5px;
-  background: #fff;
-  transform: translateX(-200px);
-  box-shadow:
-    0 0 6px rgba(255, 255, 255, 0.55),
-    0 0 16px rgba(255, 240, 200, 0.35);
-}
-
-.arrow-tip {
-  width: 14px;
-  height: 14px;
-  background: #fff;
-  margin-left: 199px;
-  position: absolute;
-  clip-path: polygon(0% 25%, 100% 50%, 0% 75%);
-  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 14px rgba(255, 220, 180, 0.3));
+  55% {
+    transform: rotateY(-6deg);
+  }
+  76% {
+    transform: rotateY(3deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
 }
 
 .home-menu-wrapper {
@@ -398,6 +355,41 @@ export default {
   right: 0;
   bottom: 0;
   pointer-events: none;
+  z-index: 200;
+  transform: translateZ(0);
+  contain: layout;
+}
+
+/* 검은 유기 면(::before) 아래, 같은 clip으로 조금 큰 흰 링 */
+.home-menu-wrapper .organic-highlight.organic-highlight--inline::before,
+.home-menu-wrapper .organic-highlight.organic-highlight--inline::after {
+  transition: background 0.22s ease, box-shadow 0.22s ease;
+}
+
+.home-menu-wrapper .organic-highlight.organic-highlight--inline::after {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--hl-inset-x, 7px));
+  right: calc(-1 * var(--hl-inset-x, 8px));
+  top: calc(-1 * var(--hl-inset-y, 4px));
+  bottom: calc(-1 * var(--hl-inset-y, 4px));
+  background: #fff;
+  z-index: -2;
+  clip-path: var(--hl-clip);
+  transform: rotate(var(--hl-rotate, 0deg))
+    scale(calc(var(--hl-sx, 1.04) * 1.08), calc(var(--hl-sy, 1.08) * 1.08));
+  transform-origin: center center;
+  pointer-events: none;
+}
+
+/* 호버: 면·링·안쪽 테두리 느낌 반전 (검↔밝) */
+.home-menu-wrapper .paper-label:hover .organic-highlight.organic-highlight--inline::before {
+  background: #f2f2f2 !important;
+  box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, 0.28);
+}
+
+.home-menu-wrapper .paper-label:hover .organic-highlight.organic-highlight--inline::after {
+  background: #0a0a0a;
 }
 
 .paper-label {
@@ -405,14 +397,13 @@ export default {
   border: none;
   cursor: pointer;
   pointer-events: auto;
-  z-index: 20;
-  /* 속도 상향: 시간을 0.6s 정도로 단축하고 큐빅 베지어를 더 공격적으로 수정 */
+  z-index: 10;
+  transform-origin: center center;
   transition:
-    top 0.6s cubic-bezier(0.23, 1, 0.32, 1),
-    left 0.6s cubic-bezier(0.23, 1, 0.32, 1),
-    transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
-    opacity 0.4s ease;
-  will-change: top, left, transform; /* 성능 최적화 */
+    top 0.95s cubic-bezier(0.18, 1.05, 0.32, 1),
+    left 0.95s cubic-bezier(0.18, 1.05, 0.32, 1),
+    transform 0.92s cubic-bezier(0.2, 1.12, 0.36, 1),
+    opacity 0.35s ease;
 }
 
 .folded-text-container {
@@ -446,17 +437,12 @@ export default {
   white-space: nowrap;
   color: #fafafa;
   display: block;
-  transition: color 0.22s ease;
+  transition: color 0.22s ease, text-shadow 0.22s ease;
   text-shadow:
-    0 0 2px #fff,
-    0 0 6px rgba(255, 255, 255, 1),
-    0 0 14px rgba(255, 255, 255, 0.95),
-    0 0 26px rgba(255, 255, 255, 0.85),
-    0 0 42px rgba(255, 255, 255, 0.7),
-    0 0 64px rgba(255, 255, 255, 0.55),
-    0 0 92px rgba(255, 255, 255, 0.4),
-    0 0 120px rgba(255, 255, 255, 0.28),
-    0 0 1px rgba(0, 0, 0, 0.35);
+    0 0 6px rgba(255, 255, 255, 0.95),
+    0 0 14px rgba(255, 255, 255, 0.65),
+    0 0 26px rgba(255, 255, 255, 0.4),
+    0 0 40px rgba(255, 255, 255, 0.22);
 }
 
 .paper-label:hover {
@@ -470,14 +456,22 @@ export default {
 }
 
 .paper-label:hover .text {
-  color: #ff1a1a;
+  color: #050505;
+  text-shadow:
+    0 0 10px rgba(0, 0, 0, 0.22),
+    0 0 20px rgba(255, 255, 255, 0.55),
+    0 1px 0 rgba(255, 255, 255, 0.85);
 }
 
 .paper-label:hover .crease-line {
-  background: rgba(255, 255, 255, 0.32);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 767px) {
+  .entry-shard__inner {
+    height: calc(var(--app-vh, 1vh) * 86);
+  }
+
   .menu-universe {
     height: auto;
     min-height: calc(var(--app-vh, 1vh) * 100);

@@ -17,7 +17,8 @@
       <router-view />
     </main>
 
-    <InterventionCanvas v-if="!isArtistsRoute" />
+    <!-- Artists 구간에서도 인스턴스 유지(v-show)해야 홈에서 온 선 상태가 보존됨 -->
+    <InterventionCanvas v-show="!isArtistsRoute" />
   </div>
 </template>
 
@@ -118,7 +119,7 @@ body {
 /* 두 버튼 공통 스타일 */
 .nav-btn {
   pointer-events: auto;
-  color: #fff;
+  /* 글자색·글로우는 organic-highlight.css (--btn) */
   /* 1. 패딩 조절: 위아래 6px, 양옆 12px (필요에 따라 더 줄이세요) */
   padding: 6px 12px;
   font-size: 0.9rem;
@@ -136,14 +137,6 @@ body {
 
   /* 4. 글자가 한 줄로 나오게 고정 */
   white-space: nowrap;
-}
-
-.nav-btn:hover {
-  color: #000;
-}
-
-.nav-btn.organic-highlight:hover::before {
-  background: #fff;
 }
 
 @media (max-width: 768px) {

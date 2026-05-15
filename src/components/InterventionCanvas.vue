@@ -39,7 +39,10 @@ export default {
       ctx: null,
       lines: [],
       _animRafId: null,
-      _pauseAnimT: 0,
+      /** 멈춘 순간의 논리 애니 시간(초). 재개 시 offset과 맞춰 연속으로 이어짐 */
+      _pauseAnimT: null,
+      /** 논리 시간 t = performance.now()/1000 - _animClockOffset */
+      _animClockOffset: 0,
     }
   },
   computed: {
@@ -59,12 +62,20 @@ export default {
   watch: {
     '$route.path': {
       immediate: true,
-      handler(newPath) {
+      handler(newPath, oldPath) {
+        const contained = this.contained
         if (newPath === '/') {
+          if (!contained) this.generateLines()
+          if (oldPath != null && oldPath !== '/') {
+            this._pauseAnimT = null
+            this._animClockOffset = 0
+          }
           this.startAnimation()
         } else {
           this.pauseAnimation()
-          if (this.lines.length === 0) {
+          if (!contained && this.lines.length === 0) {
+            this.generateLines()
+          } else if (contained && this.lines.length === 0) {
             this.generateLines()
           }
           this.render()
@@ -281,7 +292,9 @@ export default {
       } else {
         canvas.width = window.innerWidth
         canvas.height = getVisibleViewportHeight()
-        this.generateLines()
+        if (this.lines.length === 0 || this.$route.path === '/') {
+          this.generateLines()
+        }
       }
       this.updateClipPath()
       this.render()
@@ -291,6 +304,9 @@ export default {
       if (this.lines.length === 0) {
         this.generateLines()
       }
+      if (this._pauseAnimT != null) {
+        this._animClockOffset = performance.now() * 0.001 - this._pauseAnimT
+      }
       const loop = () => {
         this._animRafId = requestAnimationFrame(loop)
         this.render()
@@ -298,8 +314,8 @@ export default {
       this._animRafId = requestAnimationFrame(loop)
     },
     pauseAnimation() {
-      this._pauseAnimT = performance.now() * 0.001
       if (this._animRafId != null) {
+        this._pauseAnimT = performance.now() * 0.001 - this._animClockOffset
         cancelAnimationFrame(this._animRafId)
         this._animRafId = null
       }
@@ -326,12 +342,16 @@ export default {
       const micro = this.noise1d(t * freq * 11 + seed * 1.7, seed + 91) * 0.35
       return (v + micro) * 2 - 1
     },
-    strokeGlowRgba(alpha) {
-      const c = this.strokeColor
+    strokeGlowRgba(color, alpha) {
+      const c = color
       if (typeof c !== 'string') return `rgba(255,255,255,${alpha})`
       const rgba = c.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i)
       if (rgba) {
         return `rgba(${rgba[1]},${rgba[2]},${rgba[3]},${alpha})`
+      }
+      const hex = c.match(/^#([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i)
+      if (hex) {
+        return `rgba(${parseInt(hex[1], 16)},${parseInt(hex[2], 16)},${parseInt(hex[3], 16)},${alpha})`
       }
       const m = c.match(/\d+/g)
       if (m && m.length >= 3) {
@@ -369,7 +389,8 @@ export default {
       }
 
       const lw = line.lineWidth
-      const glow = this.strokeGlowRgba.bind(this)
+      const stroke = line.strokeColor ?? this.strokeColor
+      const glow = (a) => this.strokeGlowRgba(stroke, a)
 
       this.ctx.save()
       this.ctx.lineJoin = 'round'
@@ -389,7 +410,7 @@ export default {
       this.ctx.shadowColor = glow(0.42)
       this.ctx.stroke(path)
 
-      this.ctx.strokeStyle = this.strokeColor
+      this.ctx.strokeStyle = stroke
       this.ctx.lineWidth = lw
       this.ctx.shadowBlur = Math.min(12, 4 + lw * 0.35)
       this.ctx.shadowColor = glow(0.35)
@@ -416,7 +437,9 @@ export default {
       const motionW = this.contained && this.linesKey != null ? window.innerWidth : w
 
       const animActive = this._animRafId != null
-      const t = animActive ? performance.now() * 0.001 : this._pauseAnimT
+      const t = animActive
+        ? performance.now() * 0.001 - this._animClockOffset
+        : this._pauseAnimT ?? 0
 
       this.lines.forEach((line) => {
         const len =
@@ -438,7 +461,6 @@ export default {
         const driftY = Math.cos(t * line.driftOmega * 0.9 + line.driftAngle) * line.driftAmp * 0.65
 
         this.ctx.lineWidth = lw
-        this.ctx.strokeStyle = this.strokeColor
 
         const moveX = motionW * 0.2 * progress * line.speedFactor * line.direction
         const stretchDir = line.speedFactor > 1.2 ? 1 : -1

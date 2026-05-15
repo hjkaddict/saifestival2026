@@ -2,12 +2,18 @@
   <div
     v-if="currentArtist"
     class="artist-explore-container"
-    :class="{ 'bio-open': showFullBio }"
+    :class="{ 'bio-open': showFullBio, 'lineup-open': showLineup }"
     @click="handleGlobalClick"
     @touchstart.passive="onTouchStart"
     @touchend.passive="onTouchEnd"
   >
-    <!-- 빨간 배경: 검은 선 / 사진 위: difference -->
+    <div
+      v-show="previousArtistBgUrl"
+      class="artist-previous-bg"
+      :style="previousBgStyle"
+      aria-hidden="true"
+    />
+    <!-- 이전 아티스트 사진(전환 전) 풀스크린 배경 / 그 위에 라인·현재 사진 -->
     <InterventionCanvas
       v-if="currentArtist"
       :key="`lines-under-${currentArtist.id}`"
@@ -17,7 +23,11 @@
       stack="under"
     />
     <div class="ui-top-center">
-      <div class="ui-btn organic-highlight organic-highlight--btn" :style="lineupBtnOrganic" @click.stop="toggleLineup">
+      <div
+        class="ui-btn organic-highlight organic-highlight--btn"
+        :style="lineupBtnOrganic"
+        @click.stop="toggleLineup"
+      >
         {{ ui.lineupBtn }}
       </div>
     </div>
@@ -28,9 +38,9 @@
         <div
           v-for="(artist, index) in randomLineupItems"
           :key="artist.id"
-          class="random-name-item"
+          class="random-name-item nav-btn organic-highlight organic-highlight--btn"
           :class="{ active: currentArtist.id === artist.id }"
-          :style="artist.style"
+          :style="[artist.style, artist.lineupOrganic]"
           @click.stop="jumpToArtist(artist.originalIndex)"
         >
           {{ currentLang === 'kr' ? artist.name_kr : artist.name_en }}
@@ -38,16 +48,15 @@
       </div>
     </transition>
 
-    <!-- 커스텀 커서 -->
+    <!-- 데스크톱: 긴 화살표 커서 — 버튼·링 위에서는 숨김 -->
     <div
-      v-if="!isMobile && !isHoveringButton"
+      v-if="!isMobile && !isHoveringButton && !showLineup"
       class="custom-cursor"
       :style="{ left: cursorX + 'px', top: cursorY + 'px' }"
     >
       <div class="arrow-rotate-layer" :style="{ transform: `rotate(${currentAngle}deg)` }">
         <div class="arrow-center-wrapper">
           <div class="long-stroke"></div>
-          <!-- 화살표 머리 -->
           <div class="arrow-tip"></div>
         </div>
       </div>
@@ -57,7 +66,30 @@
     <transition :name="animMode">
       <div :key="currentArtist.id" class="artist-stage" :style="dynamicStyles">
         <div class="image-box">
-          <img :src="currentArtist.img" :alt="currentArtist.name_en" />
+          <div
+            class="image-torn"
+            role="img"
+            :aria-label="currentArtist.name_en"
+            :style="{ '--slit-angle': `${slitAngleDeg}deg` }"
+          >
+            <img class="image-torn__sizer" :src="currentArtist.img" alt="" decoding="async" />
+            <div class="image-torn__layers" aria-hidden="true">
+              <img
+                class="image-torn__full"
+                :class="{ 'image-torn__full--slit': !!previousArtistBgUrl }"
+                :src="currentArtist.img"
+                alt=""
+                decoding="async"
+              />
+              <img
+                v-if="previousArtistBgUrl"
+                class="image-torn__slit-blend"
+                :src="currentArtist.img"
+                alt=""
+                decoding="async"
+              />
+            </div>
+          </div>
           <div class="image-canvas-wrap" aria-hidden="true">
             <InterventionCanvas
               :key="`lines-photo-${currentArtist.id}`"
@@ -94,13 +126,18 @@
 
           <div class="text-content">
             <span class="highlight-wrapper">
-              <span class="name-inline organic-highlight organic-highlight--inline" :style="organicTextStyles.name">{{ displayName }}</span>
+              <span
+                class="name-inline organic-highlight organic-highlight--inline"
+                :style="organicTextStyles.name"
+                >{{ displayName }}</span
+              >
               <span
                 v-for="(para, index) in bioParagraphs"
                 :key="`bio-${index}`"
                 class="bio-inline"
                 :class="{ 'bio-inline--first': index === 0 }"
-              >{{ para }}</span>
+                >{{ para }}</span
+              >
               <span
                 v-if="!showFullBio && isLongBio"
                 class="more-btn-inline"
@@ -158,8 +195,10 @@ export default {
       lineupBtnOrganic: ARTISTS_LINEUP_BTN_ORGANIC,
       organicTextStyles: {
         name: randomOrganicHighlight('#000'),
-        website: randomOrganicHighlight('#000'),
+        website: randomOrganicHighlight('#0000ff'),
       },
+      previousArtistBgUrl: '',
+      slitAngleDeg: Math.random() * 360,
     }
   },
   computed: {
@@ -230,8 +269,21 @@ export default {
         '--enter-y': `${-this.moveY}px`,
       }
     },
+    previousBgStyle() {
+      if (!this.previousArtistBgUrl) return {}
+      return {
+        backgroundImage: `url(${JSON.stringify(this.previousArtistBgUrl)})`,
+      }
+    },
   },
   watch: {
+    currentArtist: {
+      handler(to, from) {
+        if (from?.img && to && from.id !== to.id) {
+          this.previousArtistBgUrl = from.img
+        }
+      },
+    },
     id: {
       handler(newId) {
         const routeId = newId ?? this.$route?.params?.id
@@ -240,9 +292,13 @@ export default {
           return
         }
         this.setRandomState()
+        this.rollSlitAngle()
         this.showFullBio = false
         this.isHoveringButton = false
+        this.showLineup = false
+        this.randomLineupItems = []
         this.refreshOrganicStyles()
+        this.$nextTick(() => this.ensureInitialPreviousBg())
       },
       immediate: true,
     },
@@ -278,7 +334,7 @@ export default {
         this.cursorY = e.clientY
         if (!this.isMobile) {
           this.isHoveringButton = !!e.target.closest(
-            '.ui-btn, .more-btn-inline, .close-x-btn, .random-name-item, .nav-btn, .website-inline, .website-wrap',
+            '.ui-btn, .more-btn-inline, .close-x-btn, .random-name-item, .nav-btn, .website-inline, .website-wrap, a.organic-highlight--btn, button.organic-highlight--btn',
           )
         }
       })
@@ -292,7 +348,7 @@ export default {
     refreshOrganicStyles() {
       this.organicTextStyles = {
         name: randomOrganicHighlight('#000'),
-        website: randomOrganicHighlight('#000'),
+        website: randomOrganicHighlight('#0000ff'),
       }
     },
     setRandomState() {
@@ -304,8 +360,23 @@ export default {
       this.randomInfoPos = positions[Math.floor(Math.random() * positions.length)]
       this.randomRotation = (Math.random() * 8 - 4).toFixed(1)
     },
+    rollSlitAngle() {
+      this.slitAngleDeg = Math.random() * 360
+    },
+    /** 첫 진입 등 이전 전환이 없을 때: 다른 아티스트 사진을 배경·슬릿용으로 채움 */
+    ensureInitialPreviousBg() {
+      if (this.previousArtistBgUrl) return
+      const cur = this.currentArtist
+      if (!cur?.img) return
+      const others = this.artists.filter((a) => a.id !== cur.id && a.img)
+      if (!others.length) return
+      const pick = others[Math.floor(Math.random() * others.length)]
+      this.previousArtistBgUrl = pick.img
+    },
     toggleLineup() {
-      if (!this.showLineup) this.generateNonOverlappingLineup()
+      if (!this.showLineup && this.randomLineupItems.length === 0) {
+        this.generateNonOverlappingLineup()
+      }
       this.showLineup = !this.showLineup
     },
     generateNonOverlappingLineup() {
@@ -325,11 +396,11 @@ export default {
         const rot = Math.random() * 20 - 10
         return {
           ...artist,
+          lineupOrganic: randomOrganicHighlight('#000'),
           style: {
             top: `${top}%`,
             left: `${left}%`,
-            transform: `rotate(${rot}deg)`,
-            fontSize: isMobile ? '1.1rem' : '1.6rem',
+            '--lineup-rot': `${rot}deg`,
           },
         }
       })
@@ -346,7 +417,11 @@ export default {
     },
     onTouchEnd(e) {
       if (!this.isMobile || this.showLineup || this.showFullBio) return
-      if (e.target.closest('.ui-btn, .more-btn-inline, .close-x-btn, .random-name-item, .website-inline, .nav-btn, a')) {
+      if (
+        e.target.closest(
+          '.ui-btn, .more-btn-inline, .close-x-btn, .random-name-item, .website-inline, .nav-btn, a',
+        )
+      ) {
         return
       }
       const touch = e.changedTouches?.[0]
@@ -360,11 +435,10 @@ export default {
     },
     goToAdjacentArtist(direction) {
       if (!this.artists.length) return
-      const nextIdx =
-        (this.currentIndex + direction + this.artists.length) % this.artists.length
+      const nextIdx = (this.currentIndex + direction + this.artists.length) % this.artists.length
       this.nextArtist(nextIdx)
     },
-    handleGlobalClick() {
+    handleGlobalClick(e) {
       if (this.showLineup) {
         this.showLineup = false
         return
@@ -374,9 +448,15 @@ export default {
         return
       }
       if (this.isMobile) return
-      if (!this.isHoveringButton) {
-        this.nextArtist()
+      const el = e?.target
+      if (
+        el?.closest(
+          '.ui-btn, .more-btn-inline, .close-x-btn, .random-name-item, .nav-btn, .website-inline, .website-wrap',
+        )
+      ) {
+        return
       }
+      this.nextArtist()
     },
     jumpToArtist(index) {
       this.showLineup = false
@@ -410,10 +490,23 @@ export default {
 .artist-explore-container {
   width: 100vw;
   height: calc(var(--app-vh, 1vh) * 100);
-  background: #ffff00;
+  background: #fff;
   overflow: hidden;
-  cursor: none !important;
+  cursor: none;
   position: relative;
+}
+
+.artist-explore-container.lineup-open {
+  cursor: default;
+}
+
+.artist-previous-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
 /* 상단 버튼 공통 레이아웃 */
@@ -432,20 +525,19 @@ export default {
   z-index: 1200;
 }
 
-/* 버튼 스타일 (LINE-UP과 동일) */
+/* 버튼 스타일 — 전역 organic-highlight--btn + 호버 시 살짝 튀어나옴 */
 .ui-btn {
-  color: #fff;
+  position: relative;
+  transform-origin: center center;
   padding: 6px 15px;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.22s ease, text-shadow 0.22s ease, transform 0.2s ease;
   white-space: nowrap;
 }
-.ui-btn:hover {
-  color: #000;
-}
-.ui-btn.organic-highlight:hover::before {
-  background: #fff;
+.ui-top-center .ui-btn:hover {
+  transform: scale(1.14);
+  z-index: 1300;
 }
 
 /* 이하 기존 스타일과 동일 */
@@ -457,37 +549,48 @@ export default {
   height: calc(var(--app-vh, 1vh) * 100);
   background: rgba(255, 255, 255, 0.97);
   z-index: 1100;
-  cursor: none !important;
+  cursor: default;
 }
 
 .random-name-item {
   position: absolute;
-  font-weight: bold;
+  transform: rotate(var(--lineup-rot, 0deg)) scale(1);
+  transform-origin: center center;
+  font-size: 0.9rem;
+  font-weight: 600;
   text-transform: uppercase;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.3s ease;
-  padding: 5px;
-  opacity: 0.4;
-  color: #000;
+  opacity: 0.82;
+  transition:
+    transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    opacity 0.25s ease,
+    z-index 0s linear;
+}
+
+/* 라인업 이름: 전역 organic btn 텍스트 글로우 제거 */
+.lineup-random-overlay .random-name-item.nav-btn.organic-highlight.organic-highlight--btn,
+.lineup-random-overlay .random-name-item.nav-btn.organic-highlight.organic-highlight--btn:hover {
+  text-shadow: none !important;
 }
 
 .random-name-item.active {
   opacity: 1;
-  color: #ff3300;
-  font-size: 1.25em;
-  z-index: 100;
-  text-decoration: underline;
-  text-underline-offset: 8px;
-  text-decoration-thickness: 2px;
+  z-index: 200;
+  transform: rotate(var(--lineup-rot, 0deg)) scale(1.12);
+}
+
+/* 현재 페이지 아티스트 — 빨간 글자만 (글로우 없음) */
+.lineup-random-overlay .random-name-item.active.nav-btn.organic-highlight.organic-highlight--btn,
+.lineup-random-overlay .random-name-item.active.nav-btn.organic-highlight.organic-highlight--btn:hover {
+  color: #ff3300 !important;
 }
 
 .random-name-item:hover {
   opacity: 1;
-  color: #ff3300;
-  transform: scale(1.1) rotate(0deg) !important;
+  z-index: 220;
+  transform: rotate(var(--lineup-rot, 0deg)) scale(1.14) !important;
 }
-
 
 .info-layer-wide {
   position: absolute;
@@ -519,10 +622,15 @@ export default {
 .highlight-wrapper {
   display: inline;
 }
-.name-inline,
-.website-inline {
-  color: #fff;
+.name-inline {
+  color: #fafafa;
   padding: 0.12em 0.28em;
+  text-shadow:
+    0 0 6px rgba(255, 255, 255, 0.95),
+    0 0 14px rgba(255, 255, 255, 0.65),
+    0 0 26px rgba(255, 255, 255, 0.4),
+    0 0 40px rgba(255, 255, 255, 0.22);
+  transition: color 0.22s ease, text-shadow 0.22s ease;
 }
 .bio-inline,
 .more-btn-inline {
@@ -539,6 +647,8 @@ export default {
 .website-inline {
   display: inline;
   font-size: 0.85rem;
+  padding: 0.12em 0.28em;
+  color: #fff;
   text-decoration: underline;
   text-underline-offset: 3px;
   cursor: pointer;
@@ -599,17 +709,103 @@ export default {
   line-height: 0;
   isolation: isolate;
 }
+.image-torn {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+  /* 슬릿 방향 = linear-gradient 각도(0=위쪽); 전환마다 rollSlitAngle */
+  --slit-angle: 180deg;
+  --slit-half: 1.2%;
+  --slit-blend-opacity: 0.44;
+}
+.image-torn__sizer {
+  display: block;
+  visibility: hidden;
+  pointer-events: none;
+  max-width: 90vw;
+  max-height: 90vh;
+  min-width: 50vw;
+  object-fit: contain;
+}
+.image-torn__layers {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.image-torn__full {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+}
+/* 한 장 유지 + 중앙만 뚫음 → 뒤(.artist-previous-bg); 그 위에 slit-blend로 현재도 겹침 */
+.image-torn__full--slit {
+  -webkit-mask-image: linear-gradient(
+    var(--slit-angle),
+    #000 0%,
+    #000 calc(50% - var(--slit-half)),
+    transparent calc(50% - var(--slit-half)),
+    transparent calc(50% + var(--slit-half)),
+    #000 calc(50% + var(--slit-half)),
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    var(--slit-angle),
+    #000 0%,
+    #000 calc(50% - var(--slit-half)),
+    transparent calc(50% - var(--slit-half)),
+    transparent calc(50% + var(--slit-half)),
+    #000 calc(50% + var(--slit-half)),
+    #000 100%
+  );
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.image-torn__slit-blend {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  pointer-events: none;
+  opacity: var(--slit-blend-opacity);
+  -webkit-mask-image: linear-gradient(
+    var(--slit-angle),
+    transparent 0%,
+    transparent calc(50% - var(--slit-half)),
+    #000 calc(50% - var(--slit-half)),
+    #000 calc(50% + var(--slit-half)),
+    transparent calc(50% + var(--slit-half)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    var(--slit-angle),
+    transparent 0%,
+    transparent calc(50% - var(--slit-half)),
+    #000 calc(50% - var(--slit-half)),
+    #000 calc(50% + var(--slit-half)),
+    transparent calc(50% + var(--slit-half)),
+    transparent 100%
+  );
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
 .image-canvas-wrap {
   position: absolute;
   inset: 0;
   pointer-events: none;
   overflow: hidden;
-}
-.image-box img {
-  max-width: 90vw;
-  max-height: 90vh;
-  min-width: 50vw;
-  object-fit: contain;
 }
 
 .close-x-btn {
@@ -708,6 +904,44 @@ export default {
     cursor: pointer !important;
   }
 
+  /* 라인업: 절대좌표·회전 제거 후 세로 나열 — 긴 이름도 겹치지 않게 */
+  .lineup-random-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 72px 16px 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .lineup-random-overlay .random-name-item {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100%;
+    max-width: 100%;
+    transform: none !important;
+    font-size: 1.08rem;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    text-align: center;
+    padding: 1px 4px;
+    line-height: 1.22;
+    box-sizing: border-box;
+  }
+
+  .lineup-random-overlay .random-name-item.active {
+    transform: scale(1.08) !important;
+  }
+
+  .lineup-random-overlay .random-name-item:hover {
+    transform: scale(1.08) !important;
+  }
+
   .ui-top-left {
     top: 20px;
     left: 20px;
@@ -715,9 +949,13 @@ export default {
   .ui-top-center {
     top: 20px;
   }
-  .image-box img {
+  .image-torn__sizer {
     max-width: 90vw;
     max-height: 60vh;
+  }
+  .image-torn {
+    --slit-half: 1.35%;
+    --slit-blend-opacity: 0.48;
   }
 
   .name-inline {
