@@ -140,6 +140,30 @@ body {
 }
 
 @media (max-width: 768px) {
+  html,
+  body {
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button,
+  a,
+  input,
+  select,
+  textarea,
+  label,
+  summary,
+  .nav-btn,
+  .organic-highlight--btn,
+  .paper-label,
+  .ui-btn,
+  .more-btn-inline,
+  .close-x-btn,
+  .random-name-item {
+    touch-action: manipulation;
+  }
+
   .global-nav {
     top: 20px;
     padding: 0 20px;

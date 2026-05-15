@@ -190,7 +190,7 @@ export default {
       }
       const centerX = w / 2
       const centerY = h / 2
-      const lineCount = 3 + Math.floor(rand() * 5)
+      const lineCount = 3 + Math.floor(rand() * 3)
       this.lines = []
 
       for (let i = 0; i < lineCount; i++) {
@@ -370,7 +370,7 @@ export default {
       const perpX = -uy
       const perpY = ux
 
-      const step = Math.max(4, Math.min(10, line.lineWidth * 1.2))
+      const step = Math.max(5, Math.min(12, line.lineWidth * 1.35))
       const segments = Math.max(2, Math.ceil(len / step))
       const amp = (line.wobbleAmp ?? 10) * (0.55 + line.lineWidth / 18)
       const seed = line.wobbleSeed ?? 0
@@ -396,30 +396,25 @@ export default {
       this.ctx.lineJoin = 'round'
       this.ctx.lineCap = 'round'
 
-      this.ctx.strokeStyle = glow(0.14)
-      this.ctx.lineWidth = lw * 2.4
-      this.ctx.shadowBlur = Math.min(36, 14 + lw * 1.1)
-      this.ctx.shadowColor = glow(0.55)
+      /* 얇은 글로우 2회 + 코어 1회 (blur 다중 stroke 완화) */
+      this.ctx.strokeStyle = glow(0.13)
+      this.ctx.lineWidth = lw * 1.75
+      this.ctx.shadowBlur = Math.min(14, 5 + lw * 0.5)
+      this.ctx.shadowColor = glow(0.36)
       this.ctx.shadowOffsetX = 0
       this.ctx.shadowOffsetY = 0
       this.ctx.stroke(path)
 
-      this.ctx.strokeStyle = glow(0.28)
-      this.ctx.lineWidth = lw * 1.45
-      this.ctx.shadowBlur = Math.min(22, 8 + lw * 0.75)
-      this.ctx.shadowColor = glow(0.42)
-      this.ctx.stroke(path)
-
-      this.ctx.strokeStyle = stroke
-      this.ctx.lineWidth = lw
-      this.ctx.shadowBlur = Math.min(12, 4 + lw * 0.35)
-      this.ctx.shadowColor = glow(0.35)
+      this.ctx.strokeStyle = glow(0.26)
+      this.ctx.lineWidth = lw * 1.12
+      this.ctx.shadowBlur = Math.min(5, 1.5 + lw * 0.22)
+      this.ctx.shadowColor = glow(0.28)
       this.ctx.stroke(path)
 
       this.ctx.shadowBlur = 0
-      this.ctx.globalAlpha = 0.92
+      this.ctx.strokeStyle = stroke
+      this.ctx.lineWidth = lw
       this.ctx.stroke(path)
-      this.ctx.globalAlpha = 1
 
       this.ctx.restore()
     },
@@ -439,7 +434,7 @@ export default {
       const animActive = this._animRafId != null
       const t = animActive
         ? performance.now() * 0.001 - this._animClockOffset
-        : this._pauseAnimT ?? 0
+        : (this._pauseAnimT ?? 0)
 
       this.lines.forEach((line) => {
         const len =
