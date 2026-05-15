@@ -34,6 +34,7 @@ export const artistsData = [
     그는 CD 플레이어의 오작동을 이용해 작업한 DANTHRAX와 같은 솔로 앨범들을 발표해 왔으며, 진상태 및 Devin DiSanto와 함께한 앨범들은 Erstwhile Records에서 발매되었다. 2000년부터는 레이블 Balloon & Needle에서 앨범 프로듀싱과 디자인을 맡고 있다. 또한, 슬로우코어 밴드 Through the Sloe와 둠 메탈 밴드 Vomit & Tear의 멤버로도 활동 중이다.
 `,
     img: '/images/artists/artist_03.jpg',
+    objectPosition: '26% center',
     website: 'http://www.balloonnneedle.com/',
   },
   {
@@ -100,6 +101,7 @@ export const artistsData = [
     bio_kr: `'영혼은 장르를 통해 만들어지는가’라는 질문을 가지고 작업한다. 
     현재 서울에서 활동 중이다.`,
     img: '/images/artists/artist_09.jpg',
+    objectPosition: '58% center',
     website: 'https://www.instagram.com/_drumshe',
   },
   {
@@ -206,6 +208,7 @@ export const artistsData = [
     In 2026, he joined The GingerEnsemble as a new member. `,
     bio_kr: ``,
     img: '/images/artists/artist_19.jpg',
+    objectPosition: '26% center',
     website: 'https://www.seijimorimoto.com/',
   },
   {

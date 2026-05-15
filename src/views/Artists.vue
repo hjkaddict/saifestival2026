@@ -70,7 +70,10 @@
             class="image-torn"
             role="img"
             :aria-label="currentArtist.name_en"
-            :style="{ '--slit-angle': `${slitAngleDeg}deg` }"
+            :style="{
+              '--slit-angle': `${slitAngleDeg}deg`,
+              '--artist-img-position': currentArtist.objectPosition || 'center center',
+            }"
           >
             <img class="image-torn__sizer" :src="currentArtist.img" alt="" decoding="async" />
             <div class="image-torn__layers" aria-hidden="true">
@@ -198,6 +201,7 @@ export default {
         website: randomOrganicHighlight('#0000ff'),
       },
       previousArtistBgUrl: '',
+      previousArtistBgPosition: 'center center',
       slitAngleDeg: Math.random() * 360,
     }
   },
@@ -273,6 +277,7 @@ export default {
       if (!this.previousArtistBgUrl) return {}
       return {
         backgroundImage: `url(${JSON.stringify(this.previousArtistBgUrl)})`,
+        backgroundPosition: this.previousArtistBgPosition,
       }
     },
   },
@@ -281,6 +286,7 @@ export default {
       handler(to, from) {
         if (from?.img && to && from.id !== to.id) {
           this.previousArtistBgUrl = from.img
+          this.previousArtistBgPosition = from.objectPosition || 'center center'
         }
       },
     },
@@ -352,6 +358,11 @@ export default {
       }
     },
     setRandomState() {
+      if (this.isMobile) {
+        this.randomInfoPos = { bottom: '10%', left: '5%', right: '5%', top: 'auto' }
+        this.randomRotation = '0'
+        return
+      }
       const positions = [
         { top: '15%', left: '5%' },
         { top: '60%', left: '5%' },
@@ -372,6 +383,7 @@ export default {
       if (!others.length) return
       const pick = others[Math.floor(Math.random() * others.length)]
       this.previousArtistBgUrl = pick.img
+      this.previousArtistBgPosition = pick.objectPosition || 'center center'
     },
     toggleLineup() {
       if (!this.showLineup && this.randomLineupItems.length === 0) {
@@ -742,7 +754,7 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  object-position: center center;
+  object-position: var(--artist-img-position, center center);
 }
 /* 한 장 유지 + 중앙만 뚫음 → 뒤(.artist-previous-bg); 그 위에 slit-blend로 현재도 겹침 */
 .image-torn__full--slit {
@@ -777,7 +789,7 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  object-position: center center;
+  object-position: var(--artist-img-position, center center);
   pointer-events: none;
   opacity: var(--slit-blend-opacity);
   -webkit-mask-image: linear-gradient(
@@ -951,13 +963,55 @@ export default {
   .ui-top-center {
     top: 20px;
   }
-  .image-torn__sizer {
-    max-width: 90vw;
-    max-height: 60vh;
+
+  .artist-stage {
+    align-items: stretch;
+    justify-content: stretch;
   }
+
+  .image-box {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .artist-previous-bg {
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
   .image-torn {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
     --slit-half: 1.35%;
     --slit-blend-opacity: 0.48;
+  }
+
+  .image-torn__sizer {
+    display: none;
+  }
+
+  .image-torn__layers {
+    position: absolute;
+    inset: 0;
+  }
+
+  .image-torn__full,
+  .image-torn__slit-blend {
+    object-fit: cover;
+    object-position: var(--artist-img-position, center center);
+  }
+
+  .info-layer-wide {
+    width: auto;
+    max-width: none;
+    max-height: 42vh;
+    z-index: 30;
   }
 
   .name-inline {
