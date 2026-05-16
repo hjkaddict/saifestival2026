@@ -3,6 +3,7 @@ export const artistsData = [
     id: 'artist_01',
     name_en: 'Andrew Ross',
     name_kr: '앤드류 로스',
+    nationality: 'US',
     bio_en: `Andrew Ross is an artist working within the intersections of assemblage sculpture and digital imaging. He received his BFA from The Cooper Union in 2011, where he was awarded the Gelman Trust Award for Excellence in Sculpture. He attended Skowhegan School of Painting and Sculpture in 2011. He’s been a resident or fellow of programs including The Windgate Artist in Residence at SUNY Purchase College of Art and Design, ISCP, The Triangle Arts Association, The Drawing Center’s Open Sessions, LMCC’s Swing Space, The Macedonia Institute, The Bruce High Quality Foundation, Atelier Mondial, and Two Trees’ Cultural Space Subsidy Program. Ross has exhibited in group exhibitions at The Hessel Museum, The Drawing Center, The Studio Museum in Harlem, Artists Space, Center for the Humanities at CUNY, White Columns, and Greene Naftali. He has staged solo exhibitions at Kai Matsumiya Fine Arts Gallery, The Gallery at Heimbold Visual Arts Center, Signal, American Medium, Clima Gallery, and False Flag. Ross’ work has been reviewed in Artforum, Art in America, Cultured, Flash Art, Mousse, and the Brooklyn Rail. He is currently an Adjunct Professor at SUNY New Paltz and The Cooper Union for the Advancement of Science and Art.
 `,
     bio_kr: ``,
@@ -13,6 +14,7 @@ export const artistsData = [
     id: 'artist_02',
     name_en: 'Audrey Chen',
     name_kr: '오드리 첸',
+    nationality: 'US/DE',
     bio_en: `As a 2nd generation Taiwanese American (born 1976) living in Berlin, Audrey Chen's work continuously explores the displacement of story and history due to the migration and integration processes, loss and adoption of language, untold stories, and how the past can be accessed through inherited and lived experience. Her practice is deeply intertwined with this act of invocation, calling upon the physical body to remember beyond the limitations of its own memory. Through extreme, un-processed hyperextensions of her voice in tandem with the chaotic glitch of a Ciat Lonbarde “Fourses” synthesiser, she invokes a highly amplified joint resonant body/space transforming itself in a feedback loop of imagination, touch, vibration, sound and aural sensation. For over two decades, she has been touring extensively, appearing worldwide and aside from her solo concerts, Chen performs currently in her longest running duo project since 2005 with Phil Minton; as BEAM SPLITTER with trombonist Henrik Munkeby Nørstebø; as MOPCUT with Lukas Koenig and Julien Desprez with regular guest MC Dälek; with electronic music artist Kaffe Matthews; with American sound artist Nick Klein, in duo for voice/live digital process with Mexican sound artist Hugo Esquinca and in trio with Vietnamese/German and Singaporean artists Nguyễn + Transitory.
     She has shown her work at festivals/venues such as: Festival Beyond Innocence (Osaka, JP), Maerzmusik, CTM Festival, Berghain, (Berlin, DE),  Unsound Festival (Krakow, PL), 2PI Festival (Hangzhou, CN), Musique Actuelle de Victoriaville/FIMAV (CA), Festival Ecuatoriano de Música Contemporánea (Quito,Ecuador), Meteo Festival (Mulhouse, FR), Angelica Festival (Bologna, IT), Zacheta National Gallery (Warsaw, PL), Museé du quai Branly, Radio France (Paris, FR), Auditorio de Tenerife (Tenerife, ES), Teatro Colon (Buenos Aires, AR), Teatro Fondamenta Nuove (Venice, IT), DOM (Moscow, RU), Wien Modern, Wiener Konzerthaus (Vienna, AT), Lille Opera (Lille, FR) and Robert Wilson's Watermill Center (Water Mill, NY, US) among many others.
     Writing for The Wire, Julien Cowlez describes her practice as »uncompromising and idiosyncratic music, tightly disciplined yet acoustically wild and heavy with implication. Her ultra-verbal vocalising, often reminiscent of the visceral and emotionally charged sound poetry of François Dufréne or Henri Chopin, exposes physiological aspects of utterance that are concealed within standardised articulation and day to day speech. Fleshy, breath-driven and flecked with spittle, Chen's voice emanates not just from her mouth but from an ensemble of upper body surfaces, channels, passages, and cavities.«
@@ -25,6 +27,7 @@ export const artistsData = [
     id: 'artist_03',
     name_en: 'Choi Joonyong',
     name_kr: '최준용',
+    nationality: 'KR',
     bio_en: `Choi Joonyong is a musician from Seoul, South Korea. In 1996, he founded Astronoise, the first noise project in Korea, with Hong Chulki. His work explores control and failure in improvisation and composition. Recently, he has been focusing on performances that highlight inferior sound and playing.
     
     He has released solo albums such as DANTHRAX, which was created using the malfunction of CD players. Album with Jin Sangtae and Devin DiSanto were released under Erstwhile Records. Since 2000, he has been producing and designing albums for the label Balloon & Needle. He is also a member of the slowcore band Through the Sloe and the doom metal band Vomit & Tear.
@@ -41,6 +44,7 @@ export const artistsData = [
     id: 'artist_04',
     name_en: 'Container',
     name_kr: '컨테이너',
+    nationality: 'US/UK',
     bio_en: `Container is the solo project of American-born, UK-based musician Ren Schofield, who since 2009 has been honing a signature sound combining his background in noise-rock and tape music with techno and rhythmic electronics. Characterized by propulsive beats and liberal doses of distortion, Container’s deranged sonic meld has been welcomed at club nights, noise basements, electronic festivals, and punk shows alike. His 6 LP’s and 4 EP’s (for labels like Alter and Editions Mego oﬀshoot Spectrum Spools) have boggled brains around the globe, cementing Container as a distinctive and oﬀ-kilter figure in modern electronic music.`,
     bio_kr: ``,
     img: '/images/artists/artist_04.jpg',
@@ -50,6 +54,7 @@ export const artistsData = [
     id: 'artist_05',
     name_en: 'Dayoon Lee',
     name_kr: '이다윤',
+    nationality: 'KR',
     bio_en: `Dayoon Lee (b. 2007, Seoul) musician. He has explored unintended performances arising from malfunctions in sound equipment. Currently, she investigates the characteristics of such unintended performance practices by combining intentional playing with amplified electronic objects, and incorporates these qualities into her music. He also founded the experimental music label “The Geoul Records” and intermittently curates the performance series “Flexion Paths.”`,
     bio_kr: `이다윤 (b.2007, 서울) 음악가. 음향장치의 오작동으로 발생되는 비의도적 연주를 탐구해 왔다. 현재는 의도적 연주와 증폭된 전자 사물을 활용하여 비의도적 연주 방식이 가진 특성을 파악하고, 이것을 부분적으로 음악에 적용시키고 있다. 또한 실험음악 음반사 "The Geoul Records" 를 설립하였으며, 공연 시리즈 "Flexion Paths" 를 간헐적으로 기획한다.`,
     img: '/images/artists/artist_05.jpg',
@@ -59,6 +64,7 @@ export const artistsData = [
     id: 'artist_06',
     name_en: 'dianaband',
     name_kr: '다이애나밴드',
+    nationality: 'KR',
     bio_en: `dianaband understand sound and sonic environments as the mediatory presence of communality and ecosystem, practicing listening, making, and sounding as methods to connect with worlds beyond the human. Engaging in the process of listening-responding in a world dispersed without a center is an inquiring journey to contemplate with whom and how we shall connect here and now.
     
     The solo exhibition 《Conversation about the ROOT》 (Seoul Museum of Art/SeMA Storage, 2021) proposed relation-listening within a sonic environment where incidents occurring among objects form a community through sound and movement. This was followed by the serial work of building object ecosystems, 《Dots, speaking nearby dots》 (Coreana Museum of Art, 2022), expanding the scope of listening to countless ’dots’ encompassing space, matter, and environment. The soundwalk performance 《Heading ears, flowing steps, unfolded thought》 (Arts Council Korea, 2024) develops listening devices that pay attention to the passive and situated nature of relation-listening and proposes a communal listening to the incident-world guided by endlessly dispersing consciousness and steps along Hongjecheon Stream in Seoul.
@@ -74,6 +80,7 @@ export const artistsData = [
     id: 'artist_07',
     name_en: 'Eric Wong',
     name_kr: '에릭 웡',
+    nationality: 'HK/DE',
     bio_en: `Eric Wong (b.1981) is a Minneapolis born, Hong Kong raised, Berlin based musician and sound artist whose work involves auditory perception and the exploration of human relationships with sonic environments. He often incorporates spatialized sound and reduced expressions in his work, focusing on fewer gestures instead of constructing linear sonic narratives.
     
     Wong has performed at venues, series, and festivals including Volksbühne (Berlin), Hebbel am Ufer (Berlin), Cafe OTO (London), Twenty Alpha (Hong Kong), KM28 (Berlin), Indexical (Santa Cruz), Ftarri (Tokyo), 411 Kent Avenue (Brooklyn), ausland (Berlin), Eroteme (Mnachester), exploratorium (Berlin), Schönegg Varieté (Zürich), PAS (Berlin), Project [BLANK] (San Diego), Record Shop (Brooklyn), Q-O2 (Brussels), MIT Spatial Sound Lab (Cambridge), piccolo (Providence), Richten25 (Berlin), Les 26 Chaises (Paris), OTOOTO (Tokyo), Ting Shuo Hear Say (Tainan), CuteLab (Brooklyn), Moozak (Vienna), Hošek Contemporary (Berlin), Labor Sonor (Berlin), Mullhaus Festival (Luzern), Freespace Noise Fest (Hong Kong), Cynetart (Dresden), Internationales Klangkunstfest (Berlin), Blaues Rauschen (Herne), Soundance Festival (Berlin), Festival Experimentelle Musik (Munich), Sound Forms (Hong Kong), and High Desert Soundings (Wonder Valley) 
@@ -87,6 +94,7 @@ export const artistsData = [
     id: 'artist_08',
     name_en: 'Evicshen',
     name_kr: '에빅셴',
+    nationality: 'US',
     bio_en: `Victoria Shen (Evicshen) is a San Francisco–based experimental sound artist, performer, and instrument builder whose work deconstructs and reimagines turntablism through a rigorously DIY and materially driven practice. Using custom-built devices, ranging from modified turntables and resin records to electromagnetic tools, nails as styli, and kinetic sound objects, she explores the body as both interface and site of inscription, foregrounding gesture, friction, and instability. Her performances unfold as volatile, physically charged environments that blur composition and improvisation, often evoking micro-narratives of tension, dominance, and release. Drawing from histories of noise, experimental music, and modernist abstraction, her work resists fixed meaning while remaining deeply attuned to the cultural and political resonances embedded in sound, material, and performance.`,
     bio_kr: ``,
     img: '/images/artists/artist_08.jpg',
@@ -96,6 +104,7 @@ export const artistsData = [
     id: 'artist_09',
     name_en: 'Haryung Lee',
     name_kr: '이하령',
+    nationality: 'KR',
     bio_en: `Haryung Lee explores the question, ‘Is the soul formed by genre?' 
     She is currently living and working in Seoul.`,
     bio_kr: `'영혼은 장르를 통해 만들어지는가’라는 질문을 가지고 작업한다. 
@@ -108,6 +117,7 @@ export const artistsData = [
     id: 'artist_10',
     name_en: 'HELM',
     name_kr: '헬름',
+    nationality: 'UK',
     bio_en: `Born and raised in London (England), HELM is an electronic musician known for his intuitive approach to sound design and immersive sonic landscapes. Taking elements from drone, noise, ambient, and industrial music, HELM creates dense, textured compositions that challenge the boundaries of conventional electronic music. His work explores the intersection of abstract sound and physical space, using both analogue and digital techniques to craft deeply atmospheric pieces.
     HELM has released critically acclaimed albums on labels like Dais, PAN, and his own imprint Alter, maintaining a consistent presence in the experimental music scene for over a decade.
     HELM has also toured extensively across 5 continents, performing in cities as far-flung as Cairo, Tokyo, New York, Melbourne, Tunis and Athens. His live performances range from being both brutal and delicate, often incorporating the abstract visuals of his collaborators to enhance the journey and transform the regular gig environment. He has performed in venues as legendary and diverse as Berghain, Tate Modern, and The Tote in Melbourne, demonstrating the ability for his music to resonate across settings from major art institutions to clubs and intimate rock’n’roll dive bars.
@@ -120,6 +130,7 @@ export const artistsData = [
     id: 'artist_11',
     name_en: 'Hugo Esquinca',
     name_kr: '휴고 에스킨카',
+    nationality: 'MX/NL',
     bio_en: `Hugo Esquinca (Mexico City, 1990) produces actions and conditions utilising audio electronics at excessive levels of amplification.
     His work has been presented in diverse contexts and venues such as EMPAC-New York,  Stedelijk Museum, Muziekgebouw-Amsterdam, National Centre for Contemporary Arts NCCA-Moscow, HANGAR-Barcelona, Museum Nikola Tesla-Zagreb, Festspielhaus HELLERAU-Dresden, CONCRETE Alserkal-Dubai, Namba BEARS-Osaka, 20000V-Tokyo, MIRA Ploschad of Modern Art Siberia-Krasnoyarsk, Le Centquatre-Paris, Fondazione Antonio Ratti-Como, Ujazdowski Castle for Contemporary Art-Warsaw, Palacio de la Escuela de Medicina-CDMX, ARTER Museum-Istanbul, Haus der Berliner Festspiele, Akademie der Künste, Radialsystem, Haus der Kulturen der Welt, Tresor and Berghain-Berlin among others.
     Esquinca is currently a PhD researcher at the Erasmus Institute for Philosophy and Technology in Rotterdam under the supervision of Yuk Hui.`,
@@ -131,6 +142,7 @@ export const artistsData = [
     id: 'artist_12',
     name_en: 'Jiyoung Wi',
     name_kr: '위지영',
+    nationality: 'KR/NL',
     bio_en: `Jiyoung Wi (she/her) is a musician/improviser and fiction writer floating between Rotterdam and Seoul. Her bifocal practice explores narrative possibilities in non-image-based mediums. She has developed a series of ‘sound fiction’ works focusing on the tentative reciprocity between sound and text. As a self-punitive improviser, she confronts the thresholds of sonic immediacy through negative virtuosity and risk-taking gestures She has performed at Volksbühne (DE), Café OTO (UK), Columbia University (US), Sonic Acts (NL), Silent Green (DE), Les Siestes Festival (FR), AN(8)X Festival (DE), the Royal Academy of Fine Arts Antwerp (BE), Tama Art University (JP), and Society for Arts and Technology (CA), among others. She has also contributed as a sound producer to exhibitions and performances at the Sharjah Biennial (UAE), The National Museum of Modern and Contemporary Art, Gwacheon (KR), SeMA (KR), Ilmin Museum of Art (KR), Oil Tank Culture Park (KR), Insa Art Space (KR), and Leeum Museum of Art (KR), among others.`,
     bio_kr: `위지영은 네덜란드 로테르담과 대한민국 서울을 오가며 활동하는 음악가이자 즉흥 연주자, 소설가이다. 비가시적 매체인 텍스트와 사운드 사이에서 내러티브의 잠세적 가능태를 탐색하는 ‘사운드 픽션’ 시리즈를 만들고 있다. 또한 자기처벌적인 즉흥 연주자로서, 반(反) 비르투오조시티, 위험 감수의 제스처를 통해 소리의 즉각성과 그 한계를 마주한다. 위지영은 Volksbühne(독일), Cafe OTO(영국), 콜롬비아 대학교(미국), Sonic Acts(네덜란드), Silent Green(독일), Les Siestes Festival(프랑스), AN(8)X Festival(독일), 앤트워프 왕립 예술학교(벨기에), 타마 예술 대학(일본), Society for Arts and Technology(캐나다) 등 13개국에서 공연을 선보였다. 또한 샤르자 비엔날레(아랍 에미리트), 국립현대미술관 과천관, 서울시립미술관, 일민미술관, 리움미술관, 인사미술공간, 문화비축기지 등에서 열린 전시에 사운드 프로덕션으로 참여했다.`,
     img: '/images/artists/artist_12.jpg',
@@ -140,6 +152,7 @@ export const artistsData = [
     id: 'artist_13',
     name_en: 'Li Qihang',
     name_kr: '리 치항',
+    nationality: 'CN/NL',
     bio_en: `Li Qihang is an artist based in Amsterdam. In 2022, she initiated the project Mercury Patio, an ongoing process of waiting. Her work follows the slip of reality, where the present is doubled, or already remembered.`,
     bio_kr: ``,
     img: '/images/artists/artist_13.jpg',
@@ -149,6 +162,7 @@ export const artistsData = [
     id: 'artist_14',
     name_en: 'Luciano Maggiore',
     name_kr: '루치아노 마조레',
+    nationality: 'IT/UK',
     bio_en: `Luciano Maggiore was born in Palermo and lives in London.
     His musical research is rooted in electroacoustics, a field in which he has explored performative components, particularly in relation to the perception of the musical act and the obscurity that emanates from it.
     Working with bodily sounds, small acoustic objects, playback devices and speakers, he investigates mechanisms of sound diffusion and staging, using different media as effects. He is interested in repetition and endurance, and his work moves across areas such as behaviourism, non-human animal languages, dance, and folklore.
@@ -161,6 +175,7 @@ export const artistsData = [
     id: 'artist_15',
     name_en: 'minsungsig',
     name_kr: '민성식',
+    nationality: 'KR',
     bio_en: ``,
     bio_kr: ``,
     img: '/images/artists/artist_15.jpg',
@@ -170,6 +185,7 @@ export const artistsData = [
     id: 'artist_16',
     name_en: 'Nick Klein',
     name_kr: '닉 클라인',
+    nationality: 'US/DE',
     bio_en: `Nick Klein is an artist working in sound and art and sometimes (begrudgingly) sound art with a lean towards the social potential in those modalities as they interact. Klein has recorded a large amount of music for tape, CD, digital file, and vinyl editions for music labels around the world, as well as running his own amorphous label project PL (primitive languages, Psychic Liberation, etc). Concurrently, to the best of his ability, he has shown work in visual art contexts. Klein is uninterested in the prohibitive ideological tropes and circumstances that both contexts offer, and focuses the intent of his work on trying to see what productive energy comes from the friction between the two. Klein likes loud volume, cooking, offline community building, records, bars, synthesizers, and comedy.
     Klein is currently located in Berlin. Klein had operated a monthly radio show on Montez Press Radio since its inception until 2025 amassing a library of over 50 unique interviews with important contemporary sonic practitioners. Klein has also ran an ambitious monthly invitational program beginning at the Volksbühne Roter Salon, now hosted at the Silent Green Kuppelhalle, titled Psychic Liberation Night. From December of 2023 to June of 2024 the Psychic Liberation Night was awarded the second highest funding to operate the series by Germany’s Musikfondsprogram. Klein has collaborated in various capacities and medial materializations with Wilted Woman, Audrey Chen, Das Ding, Hugo Esquinca, Jean-Louis Huhta, Erik Nystrand, Scant, Philip Maier, Makoto Oshiro and many more. Since 2013, Klein has ran the label “PL” (Primitive Languages, Psychic Liberation, Potentially Listenable etc) and currently collaborates on the free internet label FLMPP with Adam Campbell and Diego Behncke.
     Klein has performed and shown works in contexts and festivals like Sonic Acts Biennial (NL), Artsite Soje (KR), The Amant Foundation (USA), Julia Stoschek Foundation (DE), SARA’S (USA), MOMA PS1 (USA), De La Cruz Collection (USA), Volksbühne (DE), Empty Gallery (HK), Berghain (DE), Tresor (DE), Seendosi (SK), Cafe Sismo (CDMX), Cafe Oto (UK), Folkteatern (SE), Burning Fleshtival (USA), Herrensauna (DE), and Summer Scum (USA). 
@@ -182,6 +198,7 @@ export const artistsData = [
     id: 'artist_17',
     name_en: 'oolongradio',
     name_kr: '우롱라디오',
+    nationality: 'KR/DE',
     bio_en: `oolongradio is a radio-based art project run by sunkyu and hjk. We do listening, recording, transmitting, making, performing, sometimes organizing events.`,
     bio_kr: `우롱라디오는 김형중과 이선규가 운영하는 라디오 기반의 예술 프로젝트이다. 우리는 듣고, 녹음하고, 송출하고, 만들고, 퍼포먼스를 하며, 때때로 이벤트를 기획한다.
 `,
@@ -192,6 +209,7 @@ export const artistsData = [
     id: 'artist_18',
     name_en: 'EVOL',
     name_kr: '이볼',
+    nationality: 'ES',
     bio_en: `Stephen Sharp and Roc Jiménez de Cisneros like to deform musical objects. Fuelled by analogies about bending and stretching to resynthesise and liquify their favourite dance music tropes, their work is a love letter to techno culture written from a different continuum. Equally austere and maximalist, their music is a blend of bouncy patterns, hyper-deformed acid lines and screeching alarm-like sounds. EVOL records have been published on labels such as Diagonal, iDEAL, Superpang, Presto!?, Editions Mego, or their very own Alku.`,
     bio_kr: ``,
     img: '/images/artists/artist_18.jpg',
@@ -201,6 +219,7 @@ export const artistsData = [
     id: 'artist_19',
     name_en: 'Seiji Morimoto',
     name_kr: '세이지 모리모토',
+    nationality: 'JP/DE',
     bio_en: `Seiji Morimoto is a Japanese artist based in Berlin since 2003 who works in  performance, composition, installation and video. He focuses on fragile, unstable acoustic phenomena between everyday objects and technological media. The search for small, differentiated structures and the attempt to discover these random phenomena through and within technological media determine his work.  He has collaborated in various formats with artists such as Takehisa Kosugi, Olivier Di Placido, Francesco Cavaliere, Tomoko Sauvage, Ignaz Schick, Luciano Maggiore, Crys Cole, Felicity Mangan, Alessandra Eramo, Seijiro Murayama, Hannes Lingens, Derek Shirley, Eric Wong, Olaf Rupp, Clare Cooper, Katsura Yamauchi, Makoto Oshiro, Yan Jun, Mario de Vega, Liz Allbee, Andreas Voccia, Heather Frasch, Eva-Maria Houben, Grgur Savic, Mizuki Ishikawa, and many others. 
     He has performed and exhibited in many international festivals/projects in Europe and Asia. 
     Morimoto runs the label emitter micro with Kris Limbach and Pierce Warnecke and is the curator of the concert series Experimentik at tik in Berlin. 
@@ -215,6 +234,7 @@ export const artistsData = [
     id: 'artist_20',
     name_en: 'Sollee Kim',
     name_kr: '김솔이',
+    nationality: 'KR',
     bio_en: `Sollee Kim works from the belief that “meaning cannot transcend its creator,” throwing herself into situations in pursuit of this unresolved question. Her sculptures do not attempt to assign fixed meaning; rather, they emerge as performative entities, constantly evolving through the act of naming. In her work, naming functions as a linguistic act that situates sculpture not as a fixed object, but as something whose meaning shifts through relations and performative contexts.
     Through acts of transformation and destruction of objects, she explores the moment when a sculpture slips out of the artist’s control and begins to generate its own meaning. This inquiry was developed experimentally in the IAS project Kula! (2020), and was later expanded in her solo exhibition at YPC SPACE (2023), where she investigated sculpture not merely as physical form but to its dynamic reconfiguration within performative and relational contexts—further extending this to a study of femininity.
     Her sculptures as an object examine the tension between incompletion, deferral, and closure, and ask how sculpture intersects with fragments of time, history, and sensation within a recursive causality of omen and curse. Positioned at the edge of evaporation, misalignment, or fragmented boundaries, her sculptures imagine monuments to fates destined for disappearance, and reveal how unresolved sensations and memories intervene in the present as forms resistant to completion.
@@ -230,6 +250,7 @@ export const artistsData = [
     id: 'artist_21',
     name_en: 'The Great △',
     name_kr: '여름의 대△',
+    nationality: 'JP',
     bio_en: `The Great △ is a trio by Makoto Oshiro, Takahiro Kawaguchi and Satoshi Yashiro, which started out from the exhibition “Great △” held in 2010 at gallery Baikado (Osaka). They occasionally gather and do live performances.`,
     bio_kr: ``,
     img: '/images/artists/artist_21.jpg',
@@ -239,6 +260,7 @@ export const artistsData = [
     id: 'artist_22',
     name_en: 'Tuukka Laurila',
     name_kr: '투카 라우리라',
+    nationality: 'FI/FR',
     bio_en: `Tuukka Laurila is a Finnish artist, curator and educator based in Paris. 
 In 2016 he founded The Community, evolving it from an experimental, multidisciplinary art space into an independent curatorial institution. He has worked with more than 350 artists and collaborated closely with institutions and estates including the Tom of Finland Foundation and the Tove Jansson Estate. In 2024 he co-founded The Salon, a new art fair developed with NADA that rethinks the structure of an art fair.
 His studio practice starts from found, discarded, and surplus materials. He has consistently been more interested in the conditions of making than in finished objects. This thinking extends into his workshops, which grow into living installations and shared environments, often activated through their participants, guests, students, collaborators and communities.
@@ -251,24 +273,26 @@ Laurila's work has been featured in the New York Times, Artforum, The Guardian, 
     id: 'artist_23',
     name_en: 'Tzu Ni',
     name_kr: '쯔 니',
+    nationality: 'TW/NL',
     bio_en: `Tzu Ni is a Taiwanese sound and installation artist based in the Netherlands. She believes in the flexibility of human bodies and approaches the intersection of technology and humanity as a generative space, seeking a balance between institutional and non-institutional contexts.
 Her practice unfolds the feminine body within sonic decay and subtle forces such as wind, resonance, and vibration, weaving together subconscious narratives and field recordings.
 Working at the intersection of embodied listening and spatial poetics, she constructs environments where sound becomes a medium between intimacy, resistance, and relational knowledge. Her recent performances include Oscillation Festival, Default Den Haag, and Sonic Acts. Her sound commissions and collaborations include the Taiwan Pavilion at the Venice Biennale, Taipei Fine Arts Museum, and the Asian Culture Center.
 `,
     bio_kr: ``,
     img: '/images/artists/artist_23.jpg',
+    objectPosition: '64% center',
     website: 'https://iitzunii.xyz/',
   },
   {
     id: 'artist_24',
     name_en: 'Yan Jun',
     name_kr: '얀 준',
+    nationality: 'CN',
     bio_en: `yan jun, a musician and poet based in beijing.
     he makes music by experimental means. sometimes the result is not music. 
     he uses body and voice, feedback noise, field recording and situations, and concepts.
     he collects people's sleep recording (sleepingsorg.bandcamp.com).
-    he screams in plastic bags.
-    see yanjun.org`,
+    he screams in plastic bags.`,
     bio_kr: ``,
     img: '/images/artists/artist_24.jpg',
     website: 'https://yanjun.org/',
@@ -277,6 +301,7 @@ Working at the intersection of embodied listening and spatial poetics, she const
     id: 'artist_25',
     name_en: 'Zhao Ziyi',
     name_kr: '자오 쯔이',
+    nationality: 'CN',
     bio_en: `Zhao Ziyi was born in Beijing in 2007 with a simple sound and a difficult-to-use body. In 2025, he released his debut solo CD album Sorry (Sub Jam). Also in the same year, his duo project "Nichijo" with Yang Kuku (from Ghostmass) released the double-cassette album One, Two (Sub Jam) and the full-length album The cheapest Japanese cuisine in the World (Zoomin’ Night).
     
     Beginning in 2023, he has organized the annual You and Me Festival in Beijing every summer. In 2024, he co-founded the venue xiaozu, an exceptionally small, multifaceted space located in central Beijing.

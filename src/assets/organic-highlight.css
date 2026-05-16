@@ -1,112 +1,54 @@
-:root {
-  --text-glow:
-    0 0 4px rgba(255, 255, 255, 0.82),
-    0 0 10px rgba(255, 255, 255, 0.5),
-    0 0 18px rgba(255, 255, 255, 0.26);
-  --text-glow-hover:
-    0 0 6px rgba(0, 0, 0, 0.18),
-    0 0 12px rgba(255, 255, 255, 0.38),
-    0 1px 0 rgba(255, 255, 255, 0.72);
-}
+/* Flat: 검정 배경 + 흰 글씨만 (유기 clip·흰 링·글로우 없음) */
 
 .organic-highlight {
   position: relative;
-  background: transparent !important;
-  isolation: isolate;
+  background: #000 !important;
+  color: #fff !important;
+  isolation: auto;
+  box-shadow: none;
 }
 
-.organic-highlight::before {
-  content: '';
-  position: absolute;
-  left: calc(-1 * var(--hl-inset-x, 7px));
-  right: calc(-1 * var(--hl-inset-x, 8px));
-  top: calc(-1 * var(--hl-inset-y, 4px));
-  bottom: calc(-1 * var(--hl-inset-y, 4px));
-  background: var(--organic-bg-color, #ffff00);
-  z-index: -1;
-  clip-path: var(
-    --hl-clip,
-    polygon(
-      0% 18%,
-      8% 10%,
-      18% 16%,
-      28% 9%,
-      38% 15%,
-      50% 11%,
-      62% 16%,
-      72% 8%,
-      82% 14%,
-      92% 10%,
-      100% 17%,
-      100% 83%,
-      92% 91%,
-      82% 85%,
-      72% 92%,
-      62% 86%,
-      50% 90%,
-      38% 84%,
-      28% 91%,
-      18% 85%,
-      8% 89%,
-      0% 82%
-    )
-  );
-  transform: rotate(var(--hl-rotate, 0deg)) scale(var(--hl-sx, 1.04), var(--hl-sy, 1.08));
-  pointer-events: none;
+.organic-highlight::before,
+.organic-highlight::after {
+  content: none !important;
+  display: none !important;
 }
 
 .organic-highlight--inline {
   display: inline;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
+  padding: 0.12em 0.35em;
 }
 
 .organic-highlight--btn {
-  border-color: transparent !important;
-}
-
-/* 홈 메뉴와 동일: 글로우 텍스트 + 유기 면(::before) + 흰 링(::after), 호버 시 반전 */
-.organic-highlight.organic-highlight--btn::before,
-.organic-highlight.organic-highlight--btn::after {
-  transition: background 0.22s ease, box-shadow 0.22s ease;
-}
-
-.organic-highlight.organic-highlight--btn::after {
-  content: '';
-  position: absolute;
-  left: calc(-1 * var(--hl-inset-x, 7px));
-  right: calc(-1 * var(--hl-inset-x, 8px));
-  top: calc(-1 * var(--hl-inset-y, 4px));
-  bottom: calc(-1 * var(--hl-inset-y, 4px));
-  background: #fff;
-  z-index: -2;
-  clip-path: var(--hl-clip);
-  transform: rotate(var(--hl-rotate, 0deg))
-    scale(calc(var(--hl-sx, 1.04) * 1.08), calc(var(--hl-sy, 1.08) * 1.08));
-  transform-origin: center center;
-  pointer-events: none;
+  border: none !important;
+  border-radius: 0;
 }
 
 .nav-btn.organic-highlight.organic-highlight--btn,
 .ui-btn.organic-highlight.organic-highlight--btn,
-a.organic-highlight.organic-highlight--btn {
-  color: #fafafa;
-  text-shadow: var(--text-glow);
-  transition: color 0.22s ease, text-shadow 0.22s ease;
+a.organic-highlight.organic-highlight--btn,
+button.organic-highlight.organic-highlight--btn {
+  color: #fff !important;
+  background: #000 !important;
+  text-shadow: none;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    opacity 0.15s ease;
 }
 
 .nav-btn.organic-highlight.organic-highlight--btn:hover,
+.nav-btn.organic-highlight.organic-highlight--btn:focus-visible,
 .ui-btn.organic-highlight.organic-highlight--btn:hover,
-a.organic-highlight.organic-highlight--btn:hover {
-  color: #050505;
-  text-shadow: var(--text-glow-hover);
-}
-
-.organic-highlight.organic-highlight--btn:hover::before {
-  background: #f2f2f2 !important;
-  box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, 0.28);
-}
-
-.organic-highlight.organic-highlight--btn:hover::after {
-  background: #0a0a0a;
+.ui-btn.organic-highlight.organic-highlight--btn:focus-visible,
+a.organic-highlight.organic-highlight--btn:hover,
+a.organic-highlight.organic-highlight--btn:focus-visible,
+button.organic-highlight.organic-highlight--btn:hover,
+button.organic-highlight.organic-highlight--btn:focus-visible {
+  color: #fff !important;
+  background: #2a2a2a !important;
+  text-shadow: none;
+  outline: none;
 }

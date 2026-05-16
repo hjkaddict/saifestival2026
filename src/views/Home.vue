@@ -16,18 +16,29 @@
         v-for="(item, index) in randomMenus"
         :key="index"
         class="paper-label"
-        :class="{ 'is-visible': isLoaded, 'is-active': activeMenuIndex === index }"
+        :class="{
+          'is-visible': isLoaded,
+          'is-active': activeMenuIndex === index,
+          'paper-label--disabled': item.disabled,
+        }"
+        :aria-disabled="item.disabled ? 'true' : 'false'"
         :style="menuLabelStyle(item, index)"
-        @click="onMenuClick(item.path, index, $event)"
-        @mouseenter="onMenuHover(true)"
-        @mouseleave="onMenuHover(false)"
+        @click="onMenuClick(item, index, $event)"
+        @mouseenter="onMenuLabelEnter(item)"
+        @mouseleave="onMenuLabelLeave(item)"
       >
         <div class="folded-text-container">
-          <div class="slice t-slice organic-highlight organic-highlight--inline" :style="item.styles.top">
+          <div
+            class="slice t-slice organic-highlight organic-highlight--inline"
+            :style="item.styles.top"
+          >
             <span class="text en">{{ item.name }}</span>
           </div>
           <div class="crease-line"></div>
-          <div class="slice b-slice organic-highlight organic-highlight--inline" :style="item.styles.bot">
+          <div
+            class="slice b-slice organic-highlight organic-highlight--inline"
+            :style="item.styles.bot"
+          >
             <span class="text ko">{{ item.koName }}</span>
           </div>
         </div>
@@ -49,7 +60,7 @@ export default {
         { name: 'Program', koName: '프로그램', path: '/program' },
         { name: 'Venue', koName: '장소', path: '/venue' },
         { name: 'Ticket', koName: '티켓', path: '/ticket' },
-        { name: 'Archive', koName: '아카이브', path: '/archive' },
+        { name: 'Archive', koName: '아카이브', path: '/archive', disabled: true },
         { name: 'About', koName: '사–이', path: '/about' },
       ],
       randomMenus: [],
@@ -80,18 +91,11 @@ export default {
     requestAnimationFrame(() => {
       setTimeout(() => {
         this.shardLanded = true
-        const revealMenus = () => {
+        requestAnimationFrame(() => {
           requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              this.isLoaded = true
-            })
+            this.isLoaded = true
           })
-        }
-        if (this.isMobile) {
-          setTimeout(revealMenus, 1500)
-        } else {
-          revealMenus()
-        }
+        })
       }, 60)
     })
     window.addEventListener('resize', this.handleResize)
@@ -114,6 +118,12 @@ export default {
         // 다시 시작하라고 신호 보냄
         window.dispatchEvent(new CustomEvent('menu-hover-end'))
       }
+    },
+    onMenuLabelEnter(item) {
+      this.onMenuHover(true)
+    },
+    onMenuLabelLeave() {
+      this.onMenuHover(false)
     },
     updateCenterPos() {
       // 메뉴의 대략적인 크기(220x70)를 고려하여 정확히 중앙점 계산
@@ -242,16 +252,18 @@ export default {
       this.pendingNav = null
       this.activeMenuIndex = null
     },
-    onMenuClick(path, index, event) {
+    onMenuClick(item, index, event) {
+      if (item.disabled) return
       if (!this.isMobile) {
-        this.navigate(path)
+        this.navigate(item.path)
         return
       }
       if (this.pendingNav) return
 
-      this.pendingNav = path
+      this.pendingNav = item.path
       this.activeMenuIndex = index
 
+      const path = item.path
       const el = event.currentTarget
       const finish = () => {
         if (this.pendingNav !== path) return
@@ -408,38 +420,6 @@ export default {
   contain: layout;
 }
 
-/* 검은 유기 면(::before) 아래, 같은 clip으로 조금 큰 흰 링 */
-.home-menu-wrapper .organic-highlight.organic-highlight--inline::before,
-.home-menu-wrapper .organic-highlight.organic-highlight--inline::after {
-  transition: background 0.22s ease, box-shadow 0.22s ease;
-}
-
-.home-menu-wrapper .organic-highlight.organic-highlight--inline::after {
-  content: '';
-  position: absolute;
-  left: calc(-1 * var(--hl-inset-x, 7px));
-  right: calc(-1 * var(--hl-inset-x, 8px));
-  top: calc(-1 * var(--hl-inset-y, 4px));
-  bottom: calc(-1 * var(--hl-inset-y, 4px));
-  background: #fff;
-  z-index: -2;
-  clip-path: var(--hl-clip);
-  transform: rotate(var(--hl-rotate, 0deg))
-    scale(calc(var(--hl-sx, 1.04) * 1.08), calc(var(--hl-sy, 1.08) * 1.08));
-  transform-origin: center center;
-  pointer-events: none;
-}
-
-/* 호버: 면·링·안쪽 테두리 느낌 반전 (검↔밝) */
-.home-menu-wrapper .paper-label:hover .organic-highlight.organic-highlight--inline::before {
-  background: #f2f2f2 !important;
-  box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, 0.28);
-}
-
-.home-menu-wrapper .paper-label:hover .organic-highlight.organic-highlight--inline::after {
-  background: #0a0a0a;
-}
-
 .paper-label {
   position: absolute;
   border: none;
@@ -480,13 +460,18 @@ export default {
 }
 
 .text {
-  font-weight: 500;
+  font-weight: 100;
   font-size: 1.2rem;
   white-space: nowrap;
-  color: #fafafa;
+  color: #fff;
   display: block;
-  transition: color 0.22s ease, text-shadow 0.22s ease;
-  text-shadow: var(--text-glow);
+  transition: opacity 0.15s ease;
+  text-shadow: none;
+}
+
+.paper-label--disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
 }
 
 .paper-label:hover {
@@ -499,76 +484,17 @@ export default {
   transform: translateX(0) rotate(0deg) !important;
 }
 
-.paper-label:hover .text {
-  color: #050505;
-  text-shadow: var(--text-glow-hover);
+.paper-label:hover .organic-highlight.organic-highlight--inline {
+  background: #2a2a2a !important;
 }
 
 .paper-label:hover .crease-line {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 @media (max-width: 767px) {
   .entry-shard__inner {
     height: calc(var(--app-vh, 1vh) * 86);
-    perspective: none;
-    transform-style: flat;
-  }
-
-  .entry-shard__wing {
-    transform-style: flat;
-    will-change: transform;
-  }
-
-  .entry-shard__wing--left {
-    transform: scaleX(0.06);
-  }
-
-  .entry-shard__wing--right {
-    transform: scaleX(0.06);
-  }
-
-  .entry-shard__face {
-    filter: invert(1) brightness(1.06);
-    mix-blend-mode: normal;
-  }
-
-  .entry-shard.is-landed .entry-shard__wing--left {
-    animation: shard-wing-open-left 1.5s cubic-bezier(0.28, 0.82, 0.34, 1) forwards;
-  }
-
-  .entry-shard.is-landed .entry-shard__wing--right {
-    animation: shard-wing-open-right 1.5s cubic-bezier(0.28, 0.82, 0.34, 1) forwards;
-  }
-
-  @keyframes shard-wing-open-left {
-    0% {
-      transform: scaleX(0.06);
-    }
-    55% {
-      transform: scaleX(1.04);
-    }
-    76% {
-      transform: scaleX(0.98);
-    }
-    100% {
-      transform: scaleX(1);
-    }
-  }
-
-  @keyframes shard-wing-open-right {
-    0% {
-      transform: scaleX(0.06);
-    }
-    55% {
-      transform: scaleX(1.04);
-    }
-    76% {
-      transform: scaleX(0.98);
-    }
-    100% {
-      transform: scaleX(1);
-    }
   }
 
   .menu-universe {
@@ -579,11 +505,15 @@ export default {
     cursor: auto !important;
   }
 
-  .paper-label {
+  .paper-label:not(.paper-label--disabled) {
     cursor: pointer;
   }
 
-  .paper-label.is-active {
+  .paper-label--disabled {
+    cursor: not-allowed;
+  }
+
+  .paper-label.is-active:not(.paper-label--disabled) {
     transform: scale(1.1) rotate(0deg) !important;
     z-index: 100;
     transition: transform 0.2s ease-out;
@@ -593,26 +523,16 @@ export default {
     transform: translateX(0) rotate(0deg) !important;
   }
 
-  .paper-label.is-active .organic-highlight.organic-highlight--inline::before {
-    background: #f2f2f2 !important;
-    box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, 0.28);
-  }
-
-  .paper-label.is-active .organic-highlight.organic-highlight--inline::after {
-    background: #0a0a0a;
-  }
-
-  .paper-label.is-active .text {
-    color: #050505;
-    text-shadow: var(--text-glow-hover);
+  .paper-label.is-active .organic-highlight.organic-highlight--inline {
+    background: #2a2a2a !important;
   }
 
   .paper-label.is-active .crease-line {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.25);
   }
 
   .text {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
 }
 </style>

@@ -32,18 +32,37 @@
       </div>
     </div>
 
-    <!-- 라인업 오버레이 -->
+    <!-- 라인업: 이름만 · 구분, 일렬 + 뷰포트 너비에 따라 자연 줄바꿈(궁서체·가운데) -->
     <transition name="fade">
-      <div v-if="showLineup" class="lineup-random-overlay" @click.stop="showLineup = false">
-        <div
-          v-for="(artist, index) in randomLineupItems"
-          :key="artist.id"
-          class="random-name-item nav-btn organic-highlight organic-highlight--btn"
-          :class="{ active: currentArtist.id === artist.id }"
-          :style="[artist.style, artist.lineupOrganic]"
-          @click.stop="jumpToArtist(artist.originalIndex)"
-        >
-          {{ currentLang === 'kr' ? artist.name_kr : artist.name_en }}
+      <div
+        v-if="showLineup"
+        class="lineup-random-overlay"
+        @click.self="showLineup = false"
+      >
+        <div class="lineup-names-shell" @click.stop>
+          <div class="lineup-names-flow">
+            <span
+              v-for="(artist, idx) in lineupArtistsShuffled"
+              :key="artist.id"
+              class="lineup-name-unit"
+            >
+              <button
+                type="button"
+                class="lineup-name-link"
+                :class="{ 'lineup-name-link--active': currentArtist.id === artist.id }"
+                @click.stop="jumpToArtist(artist.originalIndex)"
+              >
+                {{ currentLang === 'kr' ? artist.name_kr : artist.name_en }}
+              </button>
+              <span
+                v-if="idx < lineupArtistsShuffled.length - 1"
+                class="lineup-name-sep"
+                aria-hidden="true"
+              >
+                ·
+              </span>
+            </span>
+          </div>
         </div>
       </div>
     </transition>
@@ -133,6 +152,11 @@
                 class="name-inline organic-highlight organic-highlight--inline"
                 :style="organicTextStyles.name"
                 >{{ displayName }}</span
+              ><span
+                v-if="displayNationality"
+                class="name-nationality organic-highlight organic-highlight--inline"
+                :style="organicTextStyles.name"
+                >&nbsp;({{ displayNationality }})</span
               >
               <span
                 v-for="(para, index) in bioParagraphs"
@@ -151,7 +175,6 @@
               <span v-if="artistWebsite" class="website-wrap">
                 <a
                   class="website-inline organic-highlight organic-highlight--inline"
-                  :style="organicTextStyles.website"
                   :href="artistWebsite"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -188,7 +211,7 @@ export default {
       animMode: 'artist-move',
       showFullBio: false,
       showLineup: false,
-      randomLineupItems: [],
+      lineupArtistsShuffled: [],
       isHoveringButton: false,
       randomInfoPos: {},
       randomRotation: 0,
@@ -198,7 +221,7 @@ export default {
       lineupBtnOrganic: ARTISTS_LINEUP_BTN_ORGANIC,
       organicTextStyles: {
         name: randomOrganicHighlight('#000'),
-        website: randomOrganicHighlight('#0000ff'),
+        website: {},
       },
       previousArtistBgUrl: '',
       previousArtistBgPosition: 'center center',
@@ -229,6 +252,12 @@ export default {
     },
     displayName() {
       return this.currentLang === 'kr' ? this.currentArtist.name_kr : this.currentArtist.name_en
+    },
+    displayNationality() {
+      const raw = this.currentArtist?.nationality
+      if (raw == null) return ''
+      const s = String(raw).trim()
+      return s
     },
     bioParagraphs() {
       const text = this.showFullBio
@@ -302,7 +331,7 @@ export default {
         this.showFullBio = false
         this.isHoveringButton = false
         this.showLineup = false
-        this.randomLineupItems = []
+        this.lineupArtistsShuffled = []
         this.refreshOrganicStyles()
         this.$nextTick(() => this.ensureInitialPreviousBg())
       },
@@ -340,7 +369,7 @@ export default {
         this.cursorY = e.clientY
         if (!this.isMobile) {
           this.isHoveringButton = !!e.target.closest(
-            '.ui-btn, .more-btn-inline, .close-x-btn, .random-name-item, .nav-btn, .website-inline, .website-wrap, a.organic-highlight--btn, button.organic-highlight--btn',
+            '.ui-btn, .more-btn-inline, .close-x-btn, .lineup-name-link, .nav-btn, .website-inline, .website-wrap, a.organic-highlight--btn, button.organic-highlight--btn',
           )
         }
       })
@@ -354,7 +383,7 @@ export default {
     refreshOrganicStyles() {
       this.organicTextStyles = {
         name: randomOrganicHighlight('#000'),
-        website: randomOrganicHighlight('#0000ff'),
+        website: {},
       }
     },
     setRandomState() {
@@ -386,36 +415,15 @@ export default {
       this.previousArtistBgPosition = pick.objectPosition || 'center center'
     },
     toggleLineup() {
-      if (!this.showLineup && this.randomLineupItems.length === 0) {
-        this.generateNonOverlappingLineup()
+      if (!this.showLineup) {
+        this.shuffleLineupArtists()
       }
       this.showLineup = !this.showLineup
     },
-    generateNonOverlappingLineup() {
-      const isMobile = window.innerWidth < 768
-      const cols = isMobile ? 2 : 4
-      const rows = Math.ceil(this.artists.length / cols)
-      const cellW = 80 / cols
-      const cellH = 70 / rows
-      const artistPool = this.artists.map((a, idx) => ({ ...a, originalIndex: idx }))
-      const shuffled = artistPool.sort(() => Math.random() - 0.5)
-
-      this.randomLineupItems = shuffled.map((artist, i) => {
-        const col = i % cols
-        const row = Math.floor(i / cols)
-        const top = 15 + row * cellH + Math.random() * (cellH * 0.4)
-        const left = 10 + col * cellW + Math.random() * (cellW * 0.4)
-        const rot = Math.random() * 20 - 10
-        return {
-          ...artist,
-          lineupOrganic: randomOrganicHighlight('#000'),
-          style: {
-            top: `${top}%`,
-            left: `${left}%`,
-            '--lineup-rot': `${rot}deg`,
-          },
-        }
-      })
+    /** 라인업: 순서만 랜덤, 줄바꿈은 CSS wrap */
+    shuffleLineupArtists() {
+      const pool = this.artists.map((a, idx) => ({ ...a, originalIndex: idx }))
+      this.lineupArtistsShuffled = [...pool].sort(() => Math.random() - 0.5)
     },
     toggleBio() {
       this.showFullBio = !this.showFullBio
@@ -431,7 +439,7 @@ export default {
       if (!this.isMobile || this.showLineup || this.showFullBio) return
       if (
         e.target.closest(
-          '.ui-btn, .more-btn-inline, .close-x-btn, .random-name-item, .website-inline, .nav-btn, a',
+          '.ui-btn, .more-btn-inline, .close-x-btn, .lineup-name-link, .website-inline, .nav-btn, a',
         )
       ) {
         return
@@ -463,7 +471,7 @@ export default {
       const el = e?.target
       if (
         el?.closest(
-          '.ui-btn, .more-btn-inline, .close-x-btn, .random-name-item, .nav-btn, .website-inline, .website-wrap',
+          '.ui-btn, .more-btn-inline, .close-x-btn, .lineup-name-link, .nav-btn, .website-inline, .website-wrap',
         )
       ) {
         return
@@ -519,6 +527,11 @@ export default {
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
+  /* 뒤(이전) 아티스트: 살짝 흐리고 덜 선명하게 */
+  opacity: 0.68;
+  filter: blur(3px);
+  transform: scale(1.04);
+  transform-origin: center center;
 }
 
 /* 상단 버튼 공통 레이아웃 */
@@ -537,7 +550,7 @@ export default {
   z-index: 1200;
 }
 
-/* 버튼 스타일 — 전역 organic-highlight--btn + 호버 시 살짝 튀어나옴 */
+/* 버튼: 전역 flat organic + 호버 살짝 확대 */
 .ui-btn {
   position: relative;
   transform-origin: center center;
@@ -555,57 +568,85 @@ export default {
   z-index: 1300;
 }
 
-/* 이하 기존 스타일과 동일 */
+/* 라인업: 이름만 · 구분, 궁서체, 가운데 */
 .lineup-random-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: calc(var(--app-vh, 1vh) * 100);
+  inset: 0;
+  width: 100%;
+  min-height: calc(var(--app-vh, 1vh) * 100);
+  box-sizing: border-box;
   background: rgba(255, 255, 255, 0.97);
   z-index: 1100;
   cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 88px 28px 40px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-.random-name-item {
-  position: absolute;
-  transform: rotate(var(--lineup-rot, 0deg)) scale(1);
-  transform-origin: center center;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-transform: uppercase;
+.lineup-names-shell {
+  max-width: min(100%, 52rem);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.lineup-names-flow {
+  margin: 0;
+  padding: 0;
+  font-family:
+    '궁서',
+    'Gungsuh',
+    'New Batang',
+    'Batang',
+    'AppleMyungjo',
+    'Times New Roman',
+    serif;
+  font-size: clamp(0.95rem, 2.4vw, 1.25rem);
+  line-height: 1.65;
+  color: #000;
+  text-align: center;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.lineup-name-unit {
+  display: inline;
+}
+
+.lineup-name-link {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: #000;
   cursor: pointer;
-  white-space: nowrap;
-  opacity: 0.82;
-  transition:
-    transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    opacity 0.25s ease,
-    z-index 0s linear;
+  text-decoration: none;
+  vertical-align: baseline;
 }
 
-/* 라인업 이름: 전역 organic btn 텍스트 글로우 제거 */
-.lineup-random-overlay .random-name-item.nav-btn.organic-highlight.organic-highlight--btn,
-.lineup-random-overlay .random-name-item.nav-btn.organic-highlight.organic-highlight--btn:hover {
-  text-shadow: none !important;
+.lineup-name-link:hover,
+.lineup-name-link:focus-visible {
+  text-decoration: underline;
+  outline: none;
 }
 
-.random-name-item.active {
-  opacity: 1;
-  z-index: 200;
-  transform: rotate(var(--lineup-rot, 0deg)) scale(1.12);
+.lineup-name-link--active {
+  color: #b00000;
+  font-weight: 700;
 }
 
-/* 현재 페이지 아티스트 — 빨간 글자만 (글로우 없음) */
-.lineup-random-overlay .random-name-item.active.nav-btn.organic-highlight.organic-highlight--btn,
-.lineup-random-overlay
-  .random-name-item.active.nav-btn.organic-highlight.organic-highlight--btn:hover {
-  color: #ff3300 !important;
+.lineup-name-sep {
+  color: #000;
+  user-select: none;
+  pointer-events: none;
 }
-
-.random-name-item:hover {
-  opacity: 1;
-  z-index: 220;
-  transform: rotate(var(--lineup-rot, 0deg)) scale(1.14) !important;
+.lineup-name-sep::before,
+.lineup-name-sep::after {
+  content: ' ';
 }
 
 .info-layer-wide {
@@ -639,12 +680,16 @@ export default {
   display: inline;
 }
 .name-inline {
-  color: #fafafa;
+  color: #fff;
   padding: 0.12em 0.28em;
-  text-shadow: var(--text-glow);
-  transition:
-    color 0.22s ease,
-    text-shadow 0.22s ease;
+  text-shadow: none;
+  transition: opacity 0.15s ease;
+}
+.name-nationality {
+  color: #fff;
+  padding: 0.12em 0.28em;
+  text-shadow: none;
+  transition: opacity 0.15s ease;
 }
 .bio-inline,
 .more-btn-inline {
@@ -657,6 +702,19 @@ export default {
 .website-wrap {
   display: block;
   margin-top: 1.5rem;
+}
+/* 홈페이지 링크만 선명한 파란 배경 + 흰 글씨 (전역 organic 검정 덮어씀) */
+.website-inline.organic-highlight.organic-highlight--inline {
+  background: rgb(0, 0, 255) !important;
+  color: #fff !important;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.website-inline.organic-highlight.organic-highlight--inline:hover,
+.website-inline.organic-highlight.organic-highlight--inline:focus-visible {
+  background: rgb(0, 0, 255) !important;
+  color: #fff !important;
+  outline: none;
 }
 .website-inline {
   display: inline;
@@ -693,6 +751,12 @@ export default {
   font-weight: bold;
   text-transform: uppercase;
   font-size: 1.2rem;
+}
+.name-nationality {
+  font-weight: 600;
+  text-transform: none;
+  font-size: 0.92em;
+  letter-spacing: 0.04em;
 }
 .bio-inline {
   display: inline;
@@ -731,14 +795,17 @@ export default {
   --slit-angle: 180deg;
   --slit-half: 1.2%;
   --slit-blend-opacity: 0.44;
+  /* 데스크탑: 높이만 통일. 가로는 비율대로(sizer) — 좌우 잘리지 않음(contain) */
+  --artist-frame-h: min(90vh, calc(var(--app-vh, 1vh) * 90));
+  height: var(--artist-frame-h);
 }
 .image-torn__sizer {
   display: block;
   visibility: hidden;
   pointer-events: none;
+  height: var(--artist-frame-h);
+  width: auto;
   max-width: 90vw;
-  max-height: 90vh;
-  min-width: 50vw;
   object-fit: contain;
 }
 .image-torn__layers {
@@ -911,49 +978,15 @@ export default {
 
   .ui-btn,
   .lineup-random-overlay,
-  .random-name-item,
+  .lineup-name-link,
   .more-btn-inline,
   .close-x-btn,
   .website-inline {
     cursor: pointer !important;
   }
 
-  /* 라인업: 절대좌표·회전 제거 후 세로 나열 — 긴 이름도 겹치지 않게 */
   .lineup-random-overlay {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
-    gap: 0;
-    padding: 72px 16px 20px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .lineup-random-overlay .random-name-item {
-    position: relative !important;
-    top: auto !important;
-    left: auto !important;
-    width: 100%;
-    max-width: 100%;
-    transform: none !important;
-    font-size: 1.08rem;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    text-align: center;
-    padding: 1px 4px;
-    line-height: 1.22;
-    box-sizing: border-box;
-  }
-
-  .lineup-random-overlay .random-name-item.active {
-    transform: scale(1.08) !important;
-  }
-
-  .lineup-random-overlay .random-name-item:hover {
-    transform: scale(1.08) !important;
+    padding: 76px 18px 32px;
   }
 
   .ui-top-left {
@@ -988,6 +1021,7 @@ export default {
     width: 100%;
     height: 100%;
     display: block;
+    margin: 0;
     --slit-half: 1.35%;
     --slit-blend-opacity: 0.48;
   }

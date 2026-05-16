@@ -85,6 +85,8 @@
                     v-if="item.kind === 'solo'"
                     :to="`/artists/${formatSlug(item.artist.name_en)}`"
                     class="artist-card"
+                    :class="{ 'artist-card--touch-resolve': performanceArtistResolvingKey === item.key }"
+                    @click="onPerformanceArtistLinkClick($event, item.key, `/artists/${formatSlug(item.artist.name_en)}`)"
                   >
                     <div class="glitch-wrapper">
                       <div class="slice top" :style="getSliceStyle(item.artist.glitch, 'top')">
@@ -164,6 +166,25 @@ import { programWorkshop } from '@/assets/data/program_workshop.js'
 import { performanceSchedule, resolvePerformanceActs } from '@/assets/data/program_performance_schedule.js'
 import { randomOrganicHighlight } from '@/utils/organicHighlight.js'
 
+/** 탭이 살아 있는 동안 프로그램 랜덤 레이아웃 고정 (백 네비 시 순서·그리드가 바뀌지 않게) */
+const PROGRAM_LAYOUT_CACHE_KEY = 'saifestival:program:layout:v1'
+
+const SECTION_IDS = ['exhibition', 'performance', 'workshop']
+
+function isProgramLayoutCacheValid(parsed) {
+  const { shuffledPrograms, lineConfigs, performanceDays } = parsed || {}
+  if (!Array.isArray(shuffledPrograms) || shuffledPrograms.length !== 3) return false
+  const gotIds = shuffledPrograms.map((p) => p?.data?.id).filter(Boolean).sort()
+  if (gotIds.join(',') !== [...SECTION_IDS].sort().join(',')) return false
+  if (!Array.isArray(lineConfigs) || lineConfigs.length !== 2) return false
+  if (!Array.isArray(performanceDays) || performanceDays.length !== performanceSchedule.length) {
+    return false
+  }
+  const dayIds = performanceDays.map((d) => d?.id).join(',')
+  const expectedDayIds = performanceSchedule.map((d) => d.id).join(',')
+  return dayIds === expectedDayIds
+}
+
 export default {
   name: 'Program',
   data() {
@@ -177,12 +198,17 @@ export default {
       performanceDays: [],
       showMenu: false, // 드롭다운 노출 여부
       programBtnOrganic: randomOrganicHighlight('#000'),
+      performanceArtistNavTimer: null,
+      performanceArtistResolvingKey: null,
     }
   },
   mounted() {
     this.checkMobile()
-    this.initPrograms()
-    this.initPerformanceArtists()
+    if (!this.restoreProgramLayoutFromCache()) {
+      this.initPrograms()
+      this.initPerformanceArtists()
+      this.persistProgramLayoutToCache()
+    }
     window.addEventListener('scroll', this.handleScroll, { passive: true })
     window.addEventListener('resize', this.onViewportChange)
     document.addEventListener('click', this.onDocumentClick)
@@ -201,10 +227,32 @@ export default {
     window.removeEventListener('scroll', this.handleScroll)
     window.removeEventListener('resize', this.onViewportChange)
     document.removeEventListener('click', this.onDocumentClick)
+    if (this.performanceArtistNavTimer) {
+      clearTimeout(this.performanceArtistNavTimer)
+      this.performanceArtistNavTimer = null
+    }
   },
   methods: {
     checkMobile() {
       this.isMobile = window.innerWidth < 768
+    },
+    /**
+     * 모바일: 아티스트 카드 글리치 → 정렬 전환(0.6s) 후 아티스트 페이지로 이동
+     */
+    onPerformanceArtistLinkClick(e, itemKey, to) {
+      if (!this.isMobile) return
+      e.preventDefault()
+      if (this.performanceArtistNavTimer) {
+        clearTimeout(this.performanceArtistNavTimer)
+        this.performanceArtistNavTimer = null
+      }
+      this.performanceArtistResolvingKey = itemKey
+      const ms = 620
+      this.performanceArtistNavTimer = setTimeout(() => {
+        this.performanceArtistNavTimer = null
+        this.performanceArtistResolvingKey = null
+        this.$router.push(to)
+      }, ms)
     },
     onViewportChange() {
       this.checkMobile()
@@ -270,6 +318,36 @@ export default {
       const wrap = this.$refs.dropdownRef
       if (wrap && !wrap.contains(e.target)) {
         this.showMenu = false
+      }
+    },
+    restoreProgramLayoutFromCache() {
+      if (typeof sessionStorage === 'undefined') return false
+      try {
+        const raw = sessionStorage.getItem(PROGRAM_LAYOUT_CACHE_KEY)
+        if (!raw) return false
+        const parsed = JSON.parse(raw)
+        if (!isProgramLayoutCacheValid(parsed)) return false
+        this.shuffledPrograms = parsed.shuffledPrograms
+        this.lineConfigs = parsed.lineConfigs
+        this.performanceDays = parsed.performanceDays
+        return true
+      } catch {
+        return false
+      }
+    },
+    persistProgramLayoutToCache() {
+      if (typeof sessionStorage === 'undefined') return
+      try {
+        sessionStorage.setItem(
+          PROGRAM_LAYOUT_CACHE_KEY,
+          JSON.stringify({
+            shuffledPrograms: this.shuffledPrograms,
+            lineConfigs: this.lineConfigs,
+            performanceDays: this.performanceDays,
+          }),
+        )
+      } catch {
+        /* quota / private mode */
       }
     },
     initPrograms() {
@@ -532,10 +610,10 @@ export default {
   max-width: none;
   width: 100%;
   margin: 0;
-  padding: 80px 30px;
+  padding: 80px clamp(28px, 8vw, 100px);
   box-sizing: border-box;
   scroll-margin-top: 100px;
-  text-align: left;
+  text-align: center;
   overflow: visible;
 }
 
@@ -546,7 +624,7 @@ export default {
 .program-meta {
   width: fit-content;
   max-width: 100%;
-  margin: 0 0 1rem;
+  margin: 0 auto 1rem;
   background: #fff;
   padding: 6px 12px;
 }
@@ -564,33 +642,41 @@ export default {
   margin-bottom: 0;
 }
 
-.program-meta .hours-container {
-  gap: 4px;
-}
-
 .program-content {
-  text-align: left;
+  text-align: center;
+  max-width: min(52rem, 100%);
+  margin-inline: auto;
 }
 
 /* ... 이하 기존 CSS 동일 ... */
 .performance-artists-wrapper {
   margin-top: 40px;
-  text-align: left;
+  text-align: center;
+  max-width: min(72rem, 100%);
+  margin-inline: auto;
 }
 .performance-day-group {
   margin-bottom: 10px;
   overflow: visible;
+  text-align: center;
 }
 .day-title {
   font-size: 1.2rem;
   font-weight: 900;
-  margin: 0 0 10px;
-  border-bottom: 2px solid #000;
-  display: inline-block;
+  margin: 0 auto 10px;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px 10px;
+  background: #fff;
 }
 .artist-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  /* auto-fit: 빈 열을 접어서 4명(Jul 10·18)처럼 한 줄이 덜 찼을 때도 묶음이 가운데로 옴 (auto-fill은 빈 열이 남음) */
+  grid-template-columns: repeat(auto-fit, minmax(180px, 200px));
+  justify-content: center;
+  justify-items: stretch;
+  gap: 16px 14px;
   padding-bottom: 20px;
 }
 .artist-card {
@@ -599,7 +685,7 @@ export default {
   padding-bottom: 10px;
 }
 .artist-info {
-  text-align: left;
+  text-align: center;
 }
 .glitch-wrapper {
   position: relative;
@@ -631,7 +717,7 @@ export default {
   font-size: 1rem;
   font-weight: 500;
   margin: 0;
-  text-align: left;
+  text-align: center;
   transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .artist-card:hover .artist-name-main {
@@ -661,23 +747,23 @@ export default {
 .hours-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
+  align-items: center;
+  gap: 0;
 }
 .hours-box {
-  border: 1px solid #000;
-  padding: 4px 10px;
-  border-radius: 2px;
+  padding: 0;
 }
 .hours {
   font-size: 0.85rem;
   font-weight: 600;
+  line-height: 1.15;
+  display: block;
 }
 .description {
   line-height: 1.8;
   white-space: pre-line;
   word-break: keep-all;
-  text-align: left;
+  text-align: center;
 }
 .divider-space {
   width: 100vw;
@@ -701,15 +787,15 @@ export default {
   .program-section {
     padding-top: 48px;
     padding-bottom: 48px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: clamp(20px, 6vw, 40px);
+    padding-right: clamp(20px, 6vw, 40px);
   }
 
   .program-meta {
     position: sticky;
     top: var(--program-sticky-top, 72px);
     z-index: 1500;
-    margin-bottom: 0.75rem;
+    margin: 0 auto 0.75rem;
     padding: 5px 10px;
   }
 
@@ -723,15 +809,22 @@ export default {
     z-index: 1400;
     width: fit-content;
     max-width: 100%;
-    margin: 0 0 8px;
-    padding: 4px 10px;
-    background: #fff;
+    margin: 0 auto 8px;
   }
 
   .day-title--past {
     visibility: hidden;
     opacity: 0;
     pointer-events: none;
+  }
+
+  /* 터치: 호버와 동일하게 슬라이스·이름 정렬 후 라우팅(.onPerformanceArtistLinkClick) */
+  .artist-card--touch-resolve .slice {
+    transform: translate(0, 0) skewX(0) !important;
+    filter: none !important;
+  }
+  .artist-card--touch-resolve .artist-name-main {
+    transform: rotate(0deg) !important;
   }
 }
 
