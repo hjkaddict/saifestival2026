@@ -293,6 +293,39 @@ html::before {
   }
 }
 
+@media (max-width: 768px), (hover: none), (pointer: coarse) {
+  html,
+  body {
+    text-shadow:
+      0 0 0.35px rgba(10, 10, 10, 0.28),
+      0.2px 0.12px 0 rgba(10, 10, 10, 0.12);
+  }
+
+  :where(
+    a,
+    button,
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    span,
+    li,
+    dt,
+    dd,
+    label,
+    small,
+    strong,
+    em,
+    figcaption,
+    blockquote
+  ) {
+    filter: blur(0.08px) contrast(1.04);
+  }
+}
+
 #app-root {
   display: flex;
   flex-direction: column;
