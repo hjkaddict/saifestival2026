@@ -90,10 +90,10 @@
                   >
                     <div class="glitch-wrapper">
                       <div class="slice top" :style="getSliceStyle(item.artist.glitch, 'top')">
-                        <img :src="item.artist.img" class="artist-img" />
+                        <img v-fade-in-img :src="item.artist.img" class="artist-img" />
                       </div>
                       <div class="slice bottom" :style="getSliceStyle(item.artist.glitch, 'bottom')">
-                        <img :src="item.artist.img" class="artist-img" />
+                        <img v-fade-in-img :src="item.artist.img" class="artist-img" />
                       </div>
                       <div class="glitch-line" :style="getArtistLineStyle(item.artist.glitch)"></div>
                     </div>
@@ -106,10 +106,10 @@
                   <div v-else class="artist-card artist-card--duo">
                     <div class="glitch-wrapper">
                       <div class="slice top" :style="getSliceStyle(item.coverArtist.glitch, 'top')">
-                        <img :src="item.coverArtist.img" class="artist-img" />
+                        <img v-fade-in-img :src="item.coverArtist.img" class="artist-img" />
                       </div>
                       <div class="slice bottom" :style="getSliceStyle(item.coverArtist.glitch, 'bottom')">
-                        <img :src="item.coverArtist.img" class="artist-img" />
+                        <img v-fade-in-img :src="item.coverArtist.img" class="artist-img" />
                       </div>
                       <div class="glitch-line" :style="getArtistLineStyle(item.coverArtist.glitch)"></div>
                     </div>

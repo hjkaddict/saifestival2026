@@ -43,12 +43,29 @@ const routes = [
 
 const SCROLL_STORE_PREFIX = 'saifestival:scroll:'
 
+/** App.vue `page-fade` duration와 맞출 것 (mode out-in = 퇴장+진입 순차) */
+const PAGE_TRANSITION_MS = 340
+
 function scrollStoreKey(fullPath) {
   return `${SCROLL_STORE_PREFIX}${fullPath}`
 }
 
-/** 이전 페이지 레이아웃이 잡힌 뒤 스크롤 복원 (뒤로/앞으로 가기) */
-function waitForLayoutThenScroll() {
+function readStoredScroll(fullPath) {
+  if (typeof window === 'undefined') return null
+  try {
+    const raw = sessionStorage.getItem(scrollStoreKey(fullPath))
+    if (!raw) return null
+    const { left, top } = JSON.parse(raw)
+    if (typeof top !== 'number' || !Number.isFinite(top)) return null
+    const l = typeof left === 'number' && Number.isFinite(left) ? left : 0
+    return { left: l, top }
+  } catch {
+    return null
+  }
+}
+
+/** 일반 이동(push)·맨 위 정렬 */
+function waitLayoutQuick() {
   return new Promise((resolve) => {
     nextTick(() => {
       requestAnimationFrame(() => {
@@ -60,11 +77,39 @@ function waitForLayoutThenScroll() {
   })
 }
 
+/**
+ * 뒤로/앞으로 가기 등 스크롤 복원: router-view transition(out-in) 후에 적용해야
+ * 잘못된 높이로 스크롤되거나 이후 맨 위로 덮이는 현상을 줄입니다.
+ */
+function waitAfterRouteTransition() {
+  return new Promise((resolve) => {
+    nextTick(() => {
+      const reduce =
+        typeof window !== 'undefined' &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      const ms = reduce ? 0 : PAGE_TRANSITION_MS * 2 + 80
+      setTimeout(() => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            resolve()
+          })
+        })
+      }, ms)
+    })
+  })
+}
+
 function parseSaved(savedPosition) {
   if (!savedPosition) return null
   const left = savedPosition.left ?? savedPosition.x ?? 0
   const top = savedPosition.top ?? savedPosition.y ?? 0
   return { left, top }
+}
+
+/** 접근성: 모션 줄이기 설정이면 즉시 스크롤 */
+function scrollMotion() {
+  if (typeof window === 'undefined') return 'auto'
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
 }
 
 if (typeof window !== 'undefined') {
@@ -82,46 +127,53 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    const normalized = parseSaved(savedPosition)
+    const stored = readStoredScroll(to.fullPath)
+    const wasPop = navigatedByPopState
+    if (typeof window !== 'undefined') {
+      navigatedByPopState = false
+    }
 
-    const restore = (left, top) =>
-      waitForLayoutThenScroll().then(() => ({
+    const restoreDelayed = (left, top) =>
+      waitAfterRouteTransition().then(() => ({
         left,
         top,
-        behavior: 'auto',
+        behavior: scrollMotion(),
       }))
 
+    const restoreQuick = (left, top) =>
+      waitLayoutQuick().then(() => ({
+        left,
+        top,
+        behavior: scrollMotion(),
+      }))
+
+    /* popstate: 세션에 저장한 위치가 가장 정확 (Vue history.state.scroll 이 0,0으로 오는 경우 많음) */
+    if (wasPop && stored) {
+      return restoreDelayed(stored.left, stored.top)
+    }
+
+    const normalized = parseSaved(savedPosition)
     if (normalized) {
-      navigatedByPopState = false
-      return restore(normalized.left, normalized.top)
-    }
-
-    if (navigatedByPopState && typeof window !== 'undefined') {
-      navigatedByPopState = false
-      try {
-        const raw = sessionStorage.getItem(scrollStoreKey(to.fullPath))
-        if (raw) {
-          const { left, top } = JSON.parse(raw)
-          if (typeof top === 'number' && Number.isFinite(top)) {
-            return restore(typeof left === 'number' && Number.isFinite(left) ? left : 0, top)
-          }
-        }
-      } catch {
-        /* ignore */
+      if (
+        stored &&
+        normalized.top === 0 &&
+        normalized.left === 0 &&
+        (stored.top > 0 || stored.left > 0)
+      ) {
+        return restoreDelayed(stored.left, stored.top)
       }
+      return restoreQuick(normalized.left, normalized.top)
     }
-
-    navigatedByPopState = false
 
     if (to.hash) {
-      return waitForLayoutThenScroll().then(() => ({
+      return waitAfterRouteTransition().then(() => ({
         el: to.hash,
         top: 100,
-        behavior: 'smooth',
+        behavior: scrollMotion(),
       }))
     }
 
-    return waitForLayoutThenScroll().then(() => ({ top: 0, left: 0, behavior: 'auto' }))
+    return restoreQuick(0, 0)
   },
 })
 

@@ -94,9 +94,15 @@
               '--artist-img-position': currentArtist.objectPosition || 'center center',
             }"
           >
-            <img class="image-torn__sizer" :src="currentArtist.img" alt="" decoding="async" />
+            <img
+              class="image-torn__sizer"
+              :src="currentArtist.img"
+              alt=""
+              decoding="async"
+            />
             <div class="image-torn__layers" aria-hidden="true">
               <img
+                v-fade-in-img
                 class="image-torn__full"
                 :class="{ 'image-torn__full--slit': !!previousArtistBgUrl }"
                 :src="currentArtist.img"

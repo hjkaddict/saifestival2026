@@ -10,6 +10,7 @@
         <picture class="venue-photo__media">
           <source type="image/webp" :srcset="block.srcWebp" />
           <img
+            v-fade-in-img
             :src="block.srcJpeg"
             :alt="block.alt"
             :loading="idx === 0 ? 'eager' : 'lazy'"

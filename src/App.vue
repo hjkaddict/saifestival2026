@@ -14,7 +14,11 @@
     </nav>
 
     <main class="router-stage">
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <transition name="page-fade" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </main>
 
     <footer
@@ -161,6 +165,14 @@ body {
   width: 100%;
   position: relative;
   background-color: #fff;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.router-stage {
+  flex: 1 0 auto;
+  width: 100%;
+  position: relative;
 }
 /* 네비게이션 컨테이너 수정 (화면 밖으로 나가는 문제 해결) */
 .global-nav {

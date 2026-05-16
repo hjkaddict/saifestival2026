@@ -64,24 +64,20 @@ export default {
   watch: {
     '$route.path': {
       immediate: true,
-      handler(newPath, oldPath) {
+      handler(newPath) {
         const contained = this.contained
         if (newPath === '/') {
-          if (!contained) this.generateLines()
-          if (oldPath != null && oldPath !== '/') {
-            this._pauseAnimT = null
-            this._animClockOffset = 0
+          if (!contained && this.lines.length === 0) {
+            this.generateLines()
           }
-          this.startAnimation()
         } else {
-          this.pauseAnimation()
           if (!contained && this.lines.length === 0) {
             this.generateLines()
           } else if (contained && this.lines.length === 0) {
             this.generateLines()
           }
-          this.render()
         }
+        this.startAnimation()
       },
     },
     linesKey() {
@@ -122,10 +118,6 @@ export default {
       }
       this.updateClipPath()
     })
-
-    if (this.$route.path === '/') {
-      this.startAnimation()
-    }
   },
   beforeUnmount() {
     this.pauseAnimation()
@@ -147,9 +139,7 @@ export default {
       this.updateClipPath()
     },
     resumeFromHover() {
-      if (this.$route.path === '/') {
-        this.startAnimation()
-      }
+      this.startAnimation()
     },
     hashKey(key) {
       const s = String(key)
@@ -294,7 +284,7 @@ export default {
       } else {
         canvas.width = window.innerWidth
         canvas.height = getVisibleViewportHeight()
-        if (this.lines.length === 0 || this.$route.path === '/') {
+        if (this.lines.length === 0) {
           this.generateLines()
         }
       }
