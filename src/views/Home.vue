@@ -241,12 +241,18 @@ export default {
 
 .home-text__contact-link {
   display: block;
-  color: inherit;
+  background: transparent;
+  color: #0a0a0a;
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
+.home-text__contact-link:visited,
+.home-text__contact-link:active,
 .home-text__contact-link:hover,
 .home-text__contact-link:focus-visible {
+  background: transparent;
+  color: #0a0a0a;
   outline: none;
 }
 
@@ -375,8 +381,18 @@ export default {
 
 .home-text__link {
   display: inline-block;
-  color: inherit;
+  background: transparent;
+  color: #0a0a0a;
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.home-text__link:visited,
+.home-text__link:active,
+.home-text__link:hover,
+.home-text__link:focus-visible {
+  background: transparent;
+  color: #0a0a0a;
 }
 
 .home-text__link:focus-visible {
@@ -420,6 +436,15 @@ export default {
 .home-text__muted {
   display: inline-block;
   opacity: 0.55;
+}
+
+.home-text__en,
+.home-text__ko,
+.home-text__gap,
+.home-text__split,
+.home-text__split-ghost,
+.home-text__split-half {
+  background: transparent;
 }
 
 .home-text__sep {

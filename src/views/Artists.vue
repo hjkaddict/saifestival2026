@@ -746,8 +746,8 @@ export default {
   width: fit-content;
   margin: 0.45rem 0 0;
   padding: 0 0.18em 0.02em;
-  background: rgb(0, 0, 255);
-  color: #fff;
+  background: transparent;
+  color: #0a0a0a;
   font-size: 0.82em;
   text-decoration: none;
 }
@@ -774,7 +774,7 @@ export default {
 }
 
 .artist-detail__website:focus-visible {
-  outline: 1px solid rgb(0, 0, 255);
+  outline: 1px solid currentColor;
   outline-offset: 0.15em;
 }
 
