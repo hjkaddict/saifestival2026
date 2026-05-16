@@ -82,7 +82,7 @@ function shuffleInPlace(arr) {
 }
 
 /** 라틴(영문 메뉴명): 갈라짐 약하게 — 한글은 읽기 유지용 기본 배율 1 */
-const HOME_SPLIT_SCALE_LATIN = 0.38
+const HOME_SPLIT_SCALE_LATIN = 0.56
 
 function homePathHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
@@ -172,8 +172,7 @@ export default {
   opacity: 0;
   pointer-events: none;
   user-select: none;
-  transition:
-    opacity var(--home-split-merge-duration) var(--home-split-merge-easing);
+  transition: opacity var(--home-split-merge-duration) var(--home-split-merge-easing);
 }
 
 /* 전체 글자를 두 번 그린 뒤, 위/아래 반만 잘라 각각 좌·우로 밀기 */
@@ -183,8 +182,7 @@ export default {
   top: 0;
   pointer-events: none;
   user-select: none;
-  transition:
-    opacity var(--home-split-merge-duration) var(--home-split-merge-easing);
+  transition: opacity var(--home-split-merge-duration) var(--home-split-merge-easing);
 }
 
 /* 위·아래 이동량(px)은 splitRandomStyle(item)가 --home-split-shift-top/bottom 로 주입 */

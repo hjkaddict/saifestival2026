@@ -45,7 +45,7 @@ import { artistsData } from '@/assets/data/artists.js'
 import { localeStore } from '@/store/locale.js'
 
 /** 영문 이름·코드: 갈라짐 약하게 (한글 UI일 때는 1) */
-const ARTISTS_SPLIT_SCALE_LATIN = 0.38
+const ARTISTS_SPLIT_SCALE_LATIN = 0.56
 
 function artistSeedHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
@@ -149,8 +149,7 @@ export default {
   opacity: 0;
   pointer-events: none;
   user-select: none;
-  transition:
-    opacity var(--home-split-merge-duration) var(--home-split-merge-easing);
+  transition: opacity var(--home-split-merge-duration) var(--home-split-merge-easing);
 }
 
 .home-text__split-half {
@@ -159,8 +158,7 @@ export default {
   top: 0;
   pointer-events: none;
   user-select: none;
-  transition:
-    opacity var(--home-split-merge-duration) var(--home-split-merge-easing);
+  transition: opacity var(--home-split-merge-duration) var(--home-split-merge-easing);
 }
 
 .home-text__split-half--top {
