@@ -68,6 +68,7 @@ import { localeStore } from '@/store/locale.js'
 
 const NAV_SPLIT_SCALE_LATIN = 0.56
 const MOBILE_LINK_DELAY_MS = 360
+const SCROLLBAR_REVEAL_MS = 520
 
 function navSeedHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
@@ -79,16 +80,25 @@ export default {
     return {
       locale: localeStore,
       artistLineupOpen: false,
+      activeScrollbarElements: new Set(),
+      scrollbarRevealTimers: new WeakMap(),
     }
   },
   mounted() {
     this.syncDocumentLang()
     window.addEventListener('artists-lineup-state', this.onArtistLineupState)
     window.addEventListener('click', this.handleMobileLinkClick, true)
+    document.addEventListener('scroll', this.revealScrollbarDuringScroll, true)
   },
   beforeUnmount() {
     window.removeEventListener('artists-lineup-state', this.onArtistLineupState)
     window.removeEventListener('click', this.handleMobileLinkClick, true)
+    document.removeEventListener('scroll', this.revealScrollbarDuringScroll, true)
+    this.activeScrollbarElements.forEach((element) => {
+      window.clearTimeout(this.scrollbarRevealTimers.get(element))
+      element.classList.remove('is-scrolling')
+    })
+    this.activeScrollbarElements.clear()
   },
   watch: {
     'locale.lang'() {
@@ -112,18 +122,46 @@ export default {
     onArtistLineupState(event) {
       this.artistLineupOpen = Boolean(event.detail?.open)
     },
+    revealScrollbarDuringScroll(event) {
+      const target =
+        event.target === document
+          ? document.scrollingElement || document.documentElement
+          : event.target
+
+      if (!(target instanceof Element)) return
+
+      target.classList.add('is-scrolling')
+      this.activeScrollbarElements.add(target)
+
+      window.clearTimeout(this.scrollbarRevealTimers.get(target))
+      this.scrollbarRevealTimers.set(
+        target,
+        window.setTimeout(() => {
+          target.classList.remove('is-scrolling')
+          this.activeScrollbarElements.delete(target)
+        }, SCROLLBAR_REVEAL_MS),
+      )
+    },
     shouldDelayMobileLinks() {
       if (typeof window === 'undefined') return false
       return window.matchMedia('(hover: none), (pointer: coarse), (max-width: 768px)').matches
     },
     handleMobileLinkClick(event) {
       if (!this.shouldDelayMobileLinks()) return
-      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
         return
       }
 
       const link = event.target?.closest?.('a[href]')
-      if (!link || link.dataset.mobileDelay === 'skip' || link.dataset.mobileActivating === 'true') return
+      if (!link || link.dataset.mobileDelay === 'skip' || link.dataset.mobileActivating === 'true')
+        return
       if (link.hasAttribute('download') || link.getAttribute('aria-disabled') === 'true') return
 
       const href = link.getAttribute('href')
@@ -191,18 +229,50 @@ export default {
 </script>
 
 <style>
-/* ... 전역 스타일 (스크롤바 등) 유지 ... */
-
-::-webkit-scrollbar {
-  width: 4px;
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 1px;
+  height: 1px;
 }
 
-::-webkit-scrollbar-track {
-  background: #ffffff;
+html::-webkit-scrollbar-button,
+body::-webkit-scrollbar-button,
+*::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #000000;
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track,
+html::-webkit-scrollbar-track-piece,
+body::-webkit-scrollbar-track-piece,
+*::-webkit-scrollbar-track-piece {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 0;
+}
+
+.is-scrolling::-webkit-scrollbar-thumb {
+  background: #000;
+}
+
+html,
+body,
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.is-scrolling {
+  scrollbar-color: #000 transparent;
 }
 
 html,

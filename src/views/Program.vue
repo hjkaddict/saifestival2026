@@ -14,14 +14,11 @@
             class="program-section__date"
             v-html="localized(program.data.period || program.data.date)"
           ></p>
-          <div v-if="localized(program.data.openingHours)" class="program-section__hours">
-            <p
-              v-for="(time, idx) in localized(program.data.openingHours).split('/')"
-              :key="idx"
-              class="program-section__hour"
-              v-html="time.trim()"
-            ></p>
-          </div>
+          <p
+            v-if="localized(program.data.openingHours)"
+            class="program-section__hour"
+            v-html="localized(program.data.openingHours)"
+          ></p>
         </header>
 
         <div
@@ -91,6 +88,75 @@
             </p>
           </section>
         </div>
+
+        <div v-if="program.id === 'workshop'" class="program-section__schedule">
+          <section
+            v-for="day in workshopDays"
+            :id="day.id"
+            :key="day.id"
+            class="program-day"
+          >
+            <h2 class="program-day__date">{{ localized(day.dateLabel) }}</h2>
+            <p class="program-day__lineup">
+              <template v-for="entry in day.entries" :key="entry.id">
+                <router-link
+                  v-if="entry.detail"
+                  class="program-day__artist program-day__artist--workshop"
+                  :to="`/program/workshop/${entry.detail.id}`"
+                >
+                  <span class="program-day__time">{{ localized(entry.time) }}</span>
+                  <span class="program-day__workshop-title">
+                    <span
+                      v-for="(labelPart, labelIdx) in splitLabelParts(workshopEntryLabel(entry))"
+                      :key="`${entry.id}-label-${labelIdx}`"
+                      class="program-day__split program-day__workshop-title-text"
+                      :style="splitStyleForWorkshopLabel(labelPart)"
+                    >
+                      <span class="program-day__split-ghost">{{ labelPart }}</span>
+                      <span
+                        class="program-day__split-half program-day__split-half--top"
+                        aria-hidden="true"
+                      >
+                        {{ labelPart }}
+                      </span>
+                      <span
+                        class="program-day__split-half program-day__split-half--bottom"
+                        aria-hidden="true"
+                      >
+                        {{ labelPart }}
+                      </span>
+                    </span>
+                  </span>
+                </router-link>
+                <span v-else class="program-day__artist program-day__artist--workshop">
+                  <span class="program-day__time">{{ localized(entry.time) }}</span>
+                  <span class="program-day__workshop-title">
+                    <span
+                      v-for="(labelPart, labelIdx) in splitLabelParts(workshopEntryLabel(entry))"
+                      :key="`${entry.id}-fallback-label-${labelIdx}`"
+                      class="program-day__split program-day__workshop-title-text"
+                      :style="splitStyleForWorkshopLabel(labelPart)"
+                    >
+                      <span class="program-day__split-ghost">{{ labelPart }}</span>
+                      <span
+                        class="program-day__split-half program-day__split-half--top"
+                        aria-hidden="true"
+                      >
+                        {{ labelPart }}
+                      </span>
+                      <span
+                        class="program-day__split-half program-day__split-half--bottom"
+                        aria-hidden="true"
+                      >
+                        {{ labelPart }}
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </template>
+            </p>
+          </section>
+        </div>
       </section>
     </article>
   </main>
@@ -102,6 +168,7 @@ import { programExhibition } from '@/assets/data/program_exhibition.js'
 import { programPerformance } from '@/assets/data/program_performance.js'
 import { programWorkshop } from '@/assets/data/program_workshop.js'
 import { performanceSchedule, resolvePerformanceActs } from '@/assets/data/program_performance_schedule.js'
+import { getWorkshopDetail, workshopSchedule } from '@/assets/data/program_workshop_schedule.js'
 
 function textSeedHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
@@ -149,12 +216,40 @@ export default {
         }),
       }))
     },
+    workshopDays() {
+      return workshopSchedule.map((day) => ({
+        ...day,
+        entries: day.entries.map((entry) => ({
+          ...entry,
+          detail: getWorkshopDetail(entry.detailId),
+        })),
+      }))
+    },
   },
   methods: {
     localized(field) {
       if (!field) return ''
       const value = field[this.locale.lang] || field.en || field.kr || ''
       return typeof value === 'string' ? value.trim() : value
+    },
+    workshopEntryLabel(entry) {
+      if (!entry) return ''
+      if (!entry.detail) return this.localized(entry.title)
+      const artist = this.localized(entry.detail.artist)
+      const title = this.localized(entry.detail.title)
+      return [artist, title].filter(Boolean).join(' - ')
+    },
+    splitLabelParts(label) {
+      return String(label || '').trim().split(/\s+/).filter(Boolean)
+    },
+    splitStyleForWorkshopLabel(label) {
+      const style = this.splitStyleForLabel(label)
+      if (this.locale.lang === 'kr') return style
+      const scale = 0.56
+      return {
+        '--program-split-shift-top': `${(parseFloat(style['--program-split-shift-top']) * scale).toFixed(2)}px`,
+        '--program-split-shift-bottom': `${(parseFloat(style['--program-split-shift-bottom']) * scale).toFixed(2)}px`,
+      }
     },
     splitStyleForLabel(label) {
       const key = textSeedHash(`${label}\0program-link`)
@@ -165,8 +260,7 @@ export default {
         return h / 4294967296
       }
       const invert = u(101) >= 0.5
-      const scale = this.locale.lang === 'kr' ? 1 : 0.56
-      const base = (0.8 + u(7) * 1.1) * scale
+      const base = 0.8 + u(7) * 1.1
       return {
         '--program-split-shift-top': `${((invert ? 1 : -1) * base).toFixed(2)}px`,
         '--program-split-shift-bottom': `${((invert ? -1 : 1) * base * (0.85 + u(13) * 0.3)).toFixed(2)}px`,
@@ -178,9 +272,11 @@ export default {
 
 <style scoped>
 .program-page {
+  --program-page-y: clamp(72px, 12vw, 132px);
+  --program-page-x: clamp(20px, 8vw, 112px);
   box-sizing: border-box;
   width: 100%;
-  padding: clamp(72px, 12vw, 132px) clamp(20px, 8vw, 112px);
+  padding: var(--program-page-y) var(--program-page-x);
   background: #fff;
   color: rgba(10, 10, 10, 0.82);
 }
@@ -215,11 +311,14 @@ export default {
 }
 
 .program-section__header {
-  margin-bottom: 1.4rem;
+  display: grid;
+  align-content: start;
+  row-gap: 0.12rem;
+  margin-bottom: 1.8rem;
 }
 
 .program-section__title {
-  margin: 0 0 0.35rem;
+  margin: 0;
   font-size: 1rem;
   line-height: 1.42;
   font-weight: inherit;
@@ -236,8 +335,8 @@ export default {
 }
 
 .program-section__date,
-.program-section__hours {
-  margin: 0.35rem 0 0;
+.program-section__hour {
+  margin: 0;
 }
 
 .program-section__hour {
@@ -245,6 +344,7 @@ export default {
 }
 
 .program-section__description {
+  margin-top: 0;
   color: rgba(10, 10, 10, 0.52);
   font-weight: 20;
   text-shadow:
@@ -279,8 +379,49 @@ export default {
   letter-spacing: 0.055em;
 }
 
+.program-page--ko .program-day__date {
+  font-family: var(--font-home-ko);
+  font-weight: 100;
+  letter-spacing: 0.006em;
+}
+
 .program-day__lineup {
   margin: 0;
+}
+
+.program-day__time {
+  color: rgba(10, 10, 10, 0.52);
+}
+
+.program-day__time {
+  display: block;
+}
+
+.program-day__workshop-title {
+  display: block;
+}
+
+.program-day__workshop-title-text {
+  margin-right: 0.25em;
+}
+
+.program-day__workshop-title-text:last-child {
+  margin-right: 0;
+}
+
+.program-day__artist--workshop {
+  display: block;
+  margin-bottom: 0.35rem;
+  vertical-align: top;
+}
+
+.program-day__artist--workshop:last-child {
+  margin-bottom: 0;
+}
+
+.program-day__artist--workshop:hover,
+.program-day__artist--workshop:focus-visible {
+  color: #000;
 }
 
 .program-day__artist {
@@ -381,7 +522,61 @@ export default {
 
 @media (max-width: 768px) {
   .program-page {
+    --program-page-y: 72px;
+    --program-page-x: 20px;
     padding: 72px 20px 48px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .program-page {
+    --program-page-y: clamp(72px, 8vw, 104px);
+    --program-page-x: clamp(24px, 4vw, 64px);
+  }
+
+  .program-page__inner {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.5rem, 3vw, 3rem);
+    width: 100%;
+  }
+
+  .program-section {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    max-height: calc((var(--app-vh, 1vh) * 100) - (var(--program-page-y) * 2));
+    margin: 0;
+    padding-right: 0.4rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .program-section__header {
+    order: 1;
+    min-height: 5.25rem;
+  }
+
+  .program-section__schedule {
+    order: 2;
+    margin-top: 0;
+    margin-bottom: 1.8rem;
+  }
+
+  #workshop .program-section__schedule {
+    margin-top: 7.95rem;
+  }
+
+  #perf-0717 {
+    margin-top: 28rem;
+  }
+
+  .program-section__description {
+    order: 3;
+  }
+
+  .program-section:last-child {
+    margin-bottom: 0;
   }
 }
 </style>

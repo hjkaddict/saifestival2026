@@ -12,8 +12,8 @@ export const programWorkshop = {
 Eric Wong presents a sound workshop that explores silence, space, and the conditions of listening by reading and performing scores by Wandelweiser composers together with participants. Haryung Lee leads a workshop in which participants make dog-shaped sculptures from styrofoam boxes collected near the festival venue, while oolongradio works with participants to build modular structures. dianaband conducts a workshop using radio and distributed listening environments. Tuukka Laurila leads a workshop in which participants continuously modify and expand the internal structure of the exhibition space, centering on processes of collecting, sorting, and assembling materials that extend from his exhibition work. Nick Klein organizes a collective workshop in which participants bring objects to create and document an improvised exhibition. Audrey Chen and Roc Jiménez de Cisneros/EVOL each present lecture programs sharing their artistic practices and working methodologies.`.trim(),
   },
   date: {
-    kr: `2026.07.13. – 07.16.`.trim(),
-    en: `13 JUL – 16 JUL 2026`.trim(),
+    kr: `7월 13일 – 7월 16일`.trim(),
+    en: `JUL 13 – JUL 16`.trim(),
   },
   openingHours: {
     kr: ``.trim(),

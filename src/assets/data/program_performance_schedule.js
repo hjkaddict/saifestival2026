@@ -4,21 +4,21 @@ export const performanceSchedule = [
   {
     id: 'perf-0710',
     shortLabel: { kr: '7/10 (금)', en: '7/10 Fri' },
-    dateLabel: { kr: '7월 10일', en: 'July 10' },
+    dateLabel: { kr: '7월 10일 (금)', en: 'July 10' },
     naverBookingUrl: null,
     acts: ['The Great △', 'Jiyoung Wi', 'Container', 'Dayoon Lee'],
   },
   {
     id: 'perf-0711',
     shortLabel: { kr: '7/11 (토)', en: '7/11 Sat' },
-    dateLabel: { kr: '7월 11일', en: 'July 11' },
+    dateLabel: { kr: '7월 11일 (토)', en: 'July 11' },
     naverBookingUrl: null,
     acts: ['HELM', 'Luciano Maggiore', 'Seiji Morimoto', 'Tzu Ni', 'Eric Wong'],
   },
   {
     id: 'perf-0717',
     shortLabel: { kr: '7/17 (금)', en: '7/17 Fri' },
-    dateLabel: { kr: '7월 17일', en: 'July 17' },
+    dateLabel: { kr: '7월 17일 (금)', en: 'July 17' },
     naverBookingUrl: null,
     acts: [
       'Yan Jun',
@@ -34,7 +34,7 @@ export const performanceSchedule = [
   {
     id: 'perf-0718',
     shortLabel: { kr: '7/18 (토)', en: '7/18 Sat' },
-    dateLabel: { kr: '7월 18일', en: 'July 18' },
+    dateLabel: { kr: '7월 18일 (토)', en: 'July 18' },
     naverBookingUrl: null,
     acts: ['Choi Joonyong', 'Evicshen', 'EVOL', 'minsungsig'],
   },

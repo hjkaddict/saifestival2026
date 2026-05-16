@@ -8,12 +8,14 @@ import Venue from '@/views/Venue.vue'
 import Ticket from '@/views/Ticket.vue'
 import Artists from '@/views/Artists.vue'
 import AboutView from '@/views/About.vue'
+import WorkshopDetail from '@/views/WorkshopDetail.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/artists', name: 'Artists', component: Artists },
   { path: '/artists/:id', name: 'ArtistDetail', component: Artists, props: true },
   { path: '/program', name: 'Program', component: Program },
+  { path: '/program/workshop/:id', name: 'WorkshopDetail', component: WorkshopDetail, props: true },
   { path: '/venue', name: 'Venue', component: Venue },
   { path: '/ticket', name: 'Ticket', component: Ticket },
   { path: '/about', name: 'about', component: AboutView },

@@ -16,11 +16,11 @@ Seiji Morimoto, Dayoon Lee, and Choi Joonyong have each focused on malfunction a
 At the same time, this festival pays attention to the collective energy formed between noise, club music, and experimental music. Roc Jiménez de Cisneros/EVOL, Container, and HELM transform the sense of space and temporality through repetition and pressure, distorted rhythms, and dense sonic intensity. Jiyoung Wi intersects improvisation, failure, and the possibility of self-punishment, revealing the instability within performance. dianaband explores relations beyond human perception through radio, distributed networks, and relational listening, while Zhao Ziyi reveals tension and vulnerability through minimal sound and repetition. minsungsig reveals a state in which different senses and contexts collide, rather than reproducing the generic rules of music.`.trim(),
   },
   date: {
-    kr: `2026.07.10. | 07.11 | 07.17 | 07.18`.trim(),
+    kr: `7월 10일 | 7월 11일 | 7월 17일 | 7월 18일`.trim(),
     en: `JUL 10 | JUL 11 | JUL 17 | JUL 18`.trim(),
   },
   openingHours: {
-    kr: `오후 7시 – 10시`.trim(),
-    en: `7PM – 10PM`.trim(),
+    kr: `오후 7시 - 오후 10시`.trim(),
+    en: `7pm - 10pm`.trim(),
   },
 }
