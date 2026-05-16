@@ -147,6 +147,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
+  min-height: 100%;
   overflow-x: hidden;
   overflow-x: clip;
   background-color: #fff;
@@ -156,6 +157,24 @@ body {
     0 0 0.7px rgba(10, 10, 10, 0.42),
     0.42px 0.24px 0 rgba(10, 10, 10, 0.2),
     -0.28px -0.12px 0 rgba(10, 10, 10, 0.12);
+}
+
+html::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2147483647;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent 34%, rgba(0, 0, 0, 0.018)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.94' numOctaves='5' seed='31'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='table' tableValues='0.12 0.88'/%3E%3CfeFuncG type='table' tableValues='0.12 0.88'/%3E%3CfeFuncB type='table' tableValues='0.12 0.88'/%3E%3CfeFuncA type='table' tableValues='0.14 0.54'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23noise)' opacity='0.8'/%3E%3C/svg%3E");
+  background-size:
+    100% 100%,
+    320px 320px;
+  opacity: 0.52;
 }
 
 * {

@@ -143,7 +143,7 @@ export default {
   min-height: calc(var(--app-vh, 1vh) * 100);
   box-sizing: border-box;
   padding: clamp(24px, 6vw, 48px);
-  background: #fff;
+  background: transparent;
   color: #0a0a0a;
   font-size: 1rem;
   line-height: 1.65;
