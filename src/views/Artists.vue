@@ -753,6 +753,7 @@ export default {
 }
 
 .artist-detail__website .home-text__en {
+  background: #fff;
   font-family: var(--font-home-en);
   font-weight: var(--font-home-en-weight);
   letter-spacing: 0.055em;
