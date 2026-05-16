@@ -86,7 +86,7 @@
                     :to="`/artists/${formatSlug(item.artist.name_en)}`"
                     class="artist-card"
                     :class="{ 'artist-card--touch-resolve': performanceArtistResolvingKey === item.key }"
-                    @click="onPerformanceArtistLinkClick($event, item.key, `/artists/${formatSlug(item.artist.name_en)}`)"
+                    @click.capture="onPerformanceArtistLinkClick($event, item.key, `/artists/${formatSlug(item.artist.name_en)}`)"
                   >
                     <div class="glitch-wrapper">
                       <div class="slice top" :style="getSliceStyle(item.artist.glitch, 'top')">
@@ -200,6 +200,7 @@ export default {
       programBtnOrganic: randomOrganicHighlight('#000'),
       performanceArtistNavTimer: null,
       performanceArtistResolvingKey: null,
+      performanceArtistNavTeardown: null,
     }
   },
   mounted() {
@@ -231,28 +232,72 @@ export default {
       clearTimeout(this.performanceArtistNavTimer)
       this.performanceArtistNavTimer = null
     }
+    if (this.performanceArtistNavTeardown) {
+      this.performanceArtistNavTeardown()
+      this.performanceArtistNavTeardown = null
+    }
   },
   methods: {
     checkMobile() {
-      this.isMobile = window.innerWidth < 768
+      this.isMobile = window.matchMedia('(max-width: 768px)').matches
     },
     /**
-     * 모바일: 아티스트 카드 글리치 → 정렬 전환(0.6s) 후 아티스트 페이지로 이동
+     * 모바일: RouterLink 기본 네비가 먼저 도는 것을 막기 위해 capture에서 처리하고,
+     * .slice의 transform transition 종료 후 이동(폴백 타이머 포함).
      */
-    onPerformanceArtistLinkClick(e, itemKey, to) {
+    onPerformanceArtistLinkClick(e, itemKey, linkPath) {
       if (!this.isMobile) return
       e.preventDefault()
+      if (this.performanceArtistNavTeardown) {
+        this.performanceArtistNavTeardown()
+        this.performanceArtistNavTeardown = null
+      }
       if (this.performanceArtistNavTimer) {
         clearTimeout(this.performanceArtistNavTimer)
         this.performanceArtistNavTimer = null
       }
+
+      const card = e.currentTarget
       this.performanceArtistResolvingKey = itemKey
-      const ms = 620
-      this.performanceArtistNavTimer = setTimeout(() => {
-        this.performanceArtistNavTimer = null
+
+      let finished = false
+      const finish = () => {
+        if (finished) return
+        finished = true
+        if (this.performanceArtistNavTimer) {
+          clearTimeout(this.performanceArtistNavTimer)
+          this.performanceArtistNavTimer = null
+        }
+        if (this.performanceArtistNavTeardown) {
+          this.performanceArtistNavTeardown()
+          this.performanceArtistNavTeardown = null
+        }
         this.performanceArtistResolvingKey = null
-        this.$router.push(to)
-      }, ms)
+        this.$router.push(linkPath)
+      }
+
+      this.$nextTick(() => {
+        const slices = card?.querySelectorAll?.('.slice') ?? []
+        let remaining = slices.length
+        if (remaining === 0) {
+          finish()
+          return
+        }
+
+        const onSliceTransitionEnd = (ev) => {
+          if (ev.propertyName !== 'transform') return
+          remaining -= 1
+          if (remaining <= 0) finish()
+        }
+
+        slices.forEach((s) => s.addEventListener('transitionend', onSliceTransitionEnd))
+        this.performanceArtistNavTeardown = () => {
+          slices.forEach((s) => s.removeEventListener('transitionend', onSliceTransitionEnd))
+        }
+
+        const fallbackMs = 850
+        this.performanceArtistNavTimer = setTimeout(finish, fallbackMs)
+      })
     },
     onViewportChange() {
       this.checkMobile()
