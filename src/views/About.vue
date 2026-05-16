@@ -1,5 +1,11 @@
 <template>
-  <main class="about-page app-min-vh" :class="locale.lang === 'kr' ? 'about-page--ko' : 'about-page--en'">
+  <main
+    class="about-page app-min-vh"
+    :class="[
+      locale.lang === 'kr' ? 'about-page--ko' : 'about-page--en',
+      { 'about-page--scrolling': isScrolling },
+    ]"
+  >
     <article class="about-page__inner" :key="locale.lang">
       <section class="about-page__body" v-html="aboutContent"></section>
 
@@ -76,11 +82,22 @@ export default {
   data() {
     return {
       locale: localeStore,
+      isScrolling: false,
+      scrollRevealTimer: null,
     }
+  },
+  mounted() {
+    window.addEventListener('scroll', this.revealTextDuringScroll, { passive: true })
+    document.addEventListener('scroll', this.revealTextDuringScroll, true)
+  },
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.revealTextDuringScroll)
+    document.removeEventListener('scroll', this.revealTextDuringScroll, true)
+    window.clearTimeout(this.scrollRevealTimer)
   },
   computed: {
     aboutContent() {
-      return aboutData[this.locale.lang] || aboutData.en
+      return this.revealScrollOnlyText(aboutData[this.locale.lang] || aboutData.en)
     },
     teamHeading() {
       return festivalTeamHeading[this.locale.lang] || festivalTeamHeading.en
@@ -90,6 +107,32 @@ export default {
     },
   },
   methods: {
+    revealScrollOnlyText(content) {
+      const paragraphs = String(content || '').split(/\n\s*\n/)
+      if (paragraphs.length < 2) return content
+
+      paragraphs[0] = `<span class="about-page__scroll-only">${paragraphs[0]}</span>`
+      if (this.locale.lang === 'kr') {
+        paragraphs[1] = paragraphs[1].replace(
+          /^(\s*)(하지만)/,
+          '$1<span class="about-page__scroll-only">$2</span>',
+        )
+      } else {
+        paragraphs[1] = paragraphs[1].replace(
+          /^(\s*)(However,)\s+(they)\b/,
+          '$1<span class="about-page__scroll-only">$2</span> <span class="about-page__case-swap"><span class="about-page__case-swap-before">$3</span><span class="about-page__case-swap-during">They</span></span>',
+        )
+      }
+
+      return paragraphs.join('\n\n')
+    },
+    revealTextDuringScroll() {
+      this.isScrolling = true
+      window.clearTimeout(this.scrollRevealTimer)
+      this.scrollRevealTimer = window.setTimeout(() => {
+        this.isScrolling = false
+      }, 520)
+    },
     memberSplitStyle(name, sectionIdx, memberIdx) {
       const scale = this.locale.lang === 'kr' ? 1 : ABOUT_SPLIT_SCALE_LATIN
       const key = textSeedHash(`${this.locale.lang}\0${sectionIdx}\0${memberIdx}\0${name}`)
@@ -152,6 +195,27 @@ export default {
 
 .about-page__body :deep(i) {
   font-style: italic;
+}
+
+.about-page__body :deep(.about-page__scroll-only) {
+  text-decoration: line-through;
+  transition: opacity 0.16s linear;
+}
+
+.about-page--scrolling .about-page__body :deep(.about-page__scroll-only) {
+  opacity: 0;
+}
+
+.about-page__body :deep(.about-page__case-swap-during) {
+  display: none;
+}
+
+.about-page--scrolling .about-page__body :deep(.about-page__case-swap-before) {
+  display: none;
+}
+
+.about-page--scrolling .about-page__body :deep(.about-page__case-swap-during) {
+  display: inline;
 }
 
 .about-page__team {

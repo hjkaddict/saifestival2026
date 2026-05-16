@@ -479,9 +479,16 @@ html::before {
 
 .global-nav__active-text {
   display: inline-block;
+  background: #fff;
   text-decoration: line-through;
   text-decoration-thickness: 0.08em;
   text-decoration-color: currentColor;
+}
+
+.global-nav__split-ghost > span,
+.global-nav__split-half > span,
+.global-nav__active-text > span {
+  background: #fff;
 }
 
 .global-nav__split {
