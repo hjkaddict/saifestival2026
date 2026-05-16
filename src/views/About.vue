@@ -210,6 +210,7 @@ export default {
 
 .about-page--scrolling .about-page__inner {
   opacity: 0.16;
+  transition-duration: 0.08s;
 }
 
 .about-page--en .about-page__inner {
@@ -243,6 +244,7 @@ export default {
 
 .about-page--scrolling .about-page__body :deep(.about-page__scroll-only) {
   opacity: 0;
+  transition-duration: 0.08s;
 }
 
 .about-page__body :deep(.about-page__case-swap-during) {
@@ -271,6 +273,7 @@ export default {
 
 .about-page--scrolling .about-page__scroll-poem {
   opacity: 1;
+  transition-duration: 0.08s;
 }
 
 .about-page__scroll-poem-inner {
