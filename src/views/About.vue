@@ -122,7 +122,7 @@ export default {
       return [
         '사–이 페스티벌: 끼어드는 틈',
         '',
-        '낯선 것이 Something strange',
+        '낯선 것들이 Strange ones',
         '어이없게 absurdly',
         '',
         '뒤섞이고 mingling',
