@@ -2,43 +2,22 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { nextTick } from 'vue'
 
 import Home from '@/views/Home.vue'
-import Artists from '@/views/Artists.vue'
-import AboutView from '@/views/About.vue'
+import BlankView from '@/views/BlankView.vue'
 import Program from '@/views/Program.vue'
 import Venue from '@/views/Venue.vue'
 import Ticket from '@/views/Ticket.vue'
-import { artistsData } from '@/assets/data/artists.js'
-
-function artistSlug(nameEn) {
-  return nameEn.toLowerCase().trim().replace(/\s+/g, '-')
-}
-
-function randomArtistPath() {
-  const artist = artistsData[Math.floor(Math.random() * artistsData.length)]
-  return `/artists/${artistSlug(artist.name_en)}`
-}
+import Artists from '@/views/Artists.vue'
+import AboutView from '@/views/About.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
-  {
-    path: '/about',
-    name: 'about',
-    component: AboutView,
-  },
-  {
-    path: '/artists',
-    name: 'Artists',
-    redirect: () => randomArtistPath(),
-  },
-  {
-    path: '/artists/:id',
-    name: 'ArtistDetail',
-    component: Artists,
-    props: true,
-  },
+  { path: '/artists', name: 'Artists', component: Artists },
+  { path: '/artists/:id', name: 'ArtistDetail', component: Artists, props: true },
   { path: '/program', name: 'Program', component: Program },
   { path: '/venue', name: 'Venue', component: Venue },
   { path: '/ticket', name: 'Ticket', component: Ticket },
+  { path: '/about', name: 'about', component: AboutView },
+  { path: '/archive', name: 'Archive', component: BlankView },
 ]
 
 const SCROLL_STORE_PREFIX = 'saifestival:scroll:'

@@ -1,15 +1,15 @@
 <template>
-  <div class="page-shell app-min-vh" />
+  <div class="blank-view app-min-vh" aria-hidden="true" />
 </template>
 
 <script>
 export default {
-  name: 'Venue',
+  name: 'BlankView',
 }
 </script>
 
 <style scoped>
-.page-shell {
+.blank-view {
   width: 100%;
   background: #fff;
 }
