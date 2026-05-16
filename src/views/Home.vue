@@ -59,6 +59,63 @@
         <span v-if="idx < menus.length - 1" class="home-text__sep"> · </span>
       </template>
     </p>
+    <div class="home-text__contact" aria-label="Social and contact links">
+      <a
+        class="home-text__contact-link"
+        href="https://www.instagram.com/saifestival"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="home-text__split" :style="splitRandomStyleLatin(contactLinks[0])">
+          <span class="home-text__split-ghost">
+            <span class="home-text__en">Instagram</span>
+          </span>
+          <span class="home-text__split-half home-text__split-half--top" aria-hidden="true">
+            <span class="home-text__en">Instagram</span>
+          </span>
+          <span class="home-text__split-half home-text__split-half--bottom" aria-hidden="true">
+            <span class="home-text__en">Instagram</span>
+          </span>
+        </span>
+        <span class="home-text__gap"> </span>
+        <span class="home-text__split" :style="splitRandomStyleHangul(contactLinks[0])">
+          <span class="home-text__split-ghost">
+            <span class="home-text__ko">인스타그램</span>
+          </span>
+          <span class="home-text__split-half home-text__split-half--top" aria-hidden="true">
+            <span class="home-text__ko">인스타그램</span>
+          </span>
+          <span class="home-text__split-half home-text__split-half--bottom" aria-hidden="true">
+            <span class="home-text__ko">인스타그램</span>
+          </span>
+        </span>
+      </a>
+      <a class="home-text__contact-link" href="mailto:oolongradio@gmail.com">
+        <span class="home-text__split" :style="splitRandomStyleLatin(contactLinks[1])">
+          <span class="home-text__split-ghost">
+            <span class="home-text__en">Contact</span>
+          </span>
+          <span class="home-text__split-half home-text__split-half--top" aria-hidden="true">
+            <span class="home-text__en">Contact</span>
+          </span>
+          <span class="home-text__split-half home-text__split-half--bottom" aria-hidden="true">
+            <span class="home-text__en">Contact</span>
+          </span>
+        </span>
+        <span class="home-text__gap"> </span>
+        <span class="home-text__split" :style="splitRandomStyleHangul(contactLinks[1])">
+          <span class="home-text__split-ghost">
+            <span class="home-text__ko">문의</span>
+          </span>
+          <span class="home-text__split-half home-text__split-half--top" aria-hidden="true">
+            <span class="home-text__ko">문의</span>
+          </span>
+          <span class="home-text__split-half home-text__split-half--bottom" aria-hidden="true">
+            <span class="home-text__ko">문의</span>
+          </span>
+        </span>
+      </a>
+    </div>
   </div>
 </template>
 
@@ -93,6 +150,10 @@ export default {
   data() {
     return {
       menus: [],
+      contactLinks: [
+        { name: 'Instagram', koName: '인스타그램', path: 'https://www.instagram.com/saifestival' },
+        { name: 'Contact', koName: '문의', path: 'mailto:oolongradio@gmail.com' },
+      ],
     }
   },
   created() {
@@ -150,6 +211,7 @@ export default {
   word-break: keep-all;
   overflow-wrap: break-word;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -162,6 +224,62 @@ export default {
   text-align: center;
   font-family: var(--font-home-en);
   font-weight: var(--font-home-en-weight);
+}
+
+.home-text__contact {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.08rem;
+  margin-top: 2rem;
+  font-family: var(--font-home-en);
+  font-size: 1rem;
+  font-weight: var(--font-home-en-weight);
+  line-height: 1.65;
+}
+
+.home-text__contact-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.home-text__contact-link:hover,
+.home-text__contact-link:focus-visible {
+  outline: none;
+}
+
+.home-text__contact-link:hover .home-text__en,
+.home-text__contact-link:focus-visible .home-text__en,
+.home-text__contact-link:hover .home-text__gap,
+.home-text__contact-link:focus-visible .home-text__gap {
+  text-shadow:
+    0.016em 0 0 currentColor,
+    -0.016em 0 0 currentColor;
+}
+
+.home-text__contact-link:hover .home-text__ko,
+.home-text__contact-link:focus-visible .home-text__ko {
+  text-shadow:
+    0.012em 0 0 currentColor,
+    -0.012em 0 0 currentColor;
+}
+
+.home-text__contact-link:hover .home-text__split-ghost,
+.home-text__contact-link:focus-visible .home-text__split-ghost {
+  opacity: 1;
+}
+
+.home-text__contact-link:hover .home-text__split-half,
+.home-text__contact-link:focus-visible .home-text__split-half {
+  opacity: 0;
+}
+
+.home-text__contact-link:hover .home-text__split::after,
+.home-text__contact-link:focus-visible .home-text__split::after {
+  opacity: 1;
 }
 
 /* 보이는 박스·접근성용 자리; 실제 그림은 .split-half */
