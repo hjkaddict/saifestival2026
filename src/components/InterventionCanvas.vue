@@ -39,6 +39,8 @@ export default {
       ctx: null,
       lines: [],
       _animRafId: null,
+      /** 모바일에서 전체 선 굵기·글로우 배율 (CSS 브레이크포인트와 맞춤) */
+      strokeWidthScale: 1,
       /** 멈춘 순간의 논리 애니 시간(초). 재개 시 offset과 맞춰 연속으로 이어짐 */
       _pauseAnimT: null,
       /** 논리 시간 t = performance.now()/1000 - _animClockOffset */
@@ -296,6 +298,9 @@ export default {
           this.generateLines()
         }
       }
+      this.strokeWidthScale = window.matchMedia('(max-width: 768px)').matches
+        ? 0.48
+        : 1
       this.updateClipPath()
       this.render()
     },
@@ -441,13 +446,14 @@ export default {
           line.lengthBase + Math.sin(t * line.lengthOmega + line.lengthPhase) * line.lengthAmp
         const angle =
           line.angleBase + Math.sin(t * line.angleOmega + line.anglePhase) * line.angleAmp
-        const lw = Math.max(
+        const lwRaw = Math.max(
           line.widthMin,
           Math.min(
             line.widthMax,
             line.widthBase + Math.sin(t * line.widthOmega + line.widthPhase) * line.widthAmp,
           ),
         )
+        const lw = Math.max(0.35, lwRaw * this.strokeWidthScale)
         const wobbleAmp =
           line.wobbleAmpBase *
           (1 + Math.sin(t * line.wobbleAmpOmega + line.wobbleAmpPhase) * line.wobbleAmpMod)
