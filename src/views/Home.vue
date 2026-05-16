@@ -139,6 +139,7 @@ export default {
 .home-text {
   --home-split-merge-duration: 0.35s;
   --home-split-merge-easing: cubic-bezier(0.45, 0, 0.2, 1);
+  position: relative;
   min-height: calc(var(--app-vh, 1vh) * 100);
   box-sizing: border-box;
   padding: clamp(24px, 6vw, 48px);
@@ -155,6 +156,8 @@ export default {
 }
 
 .home-text__menu {
+  position: relative;
+  z-index: 1;
   margin: 0;
   text-align: center;
   font-family: var(--font-home-en);
@@ -166,6 +169,20 @@ export default {
   position: relative;
   display: inline-block;
   vertical-align: baseline;
+}
+
+.home-text__split::after {
+  content: '';
+  position: absolute;
+  left: -0.03em;
+  right: -0.03em;
+  top: 50%;
+  z-index: 3;
+  border-top: 0.08em solid currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: opacity var(--home-split-merge-duration) var(--home-split-merge-easing);
 }
 
 .home-text__split-ghost {
@@ -276,6 +293,11 @@ export default {
 .home-text__link:hover .home-text__split-half,
 .home-text__link:focus-visible .home-text__split-half {
   opacity: 0;
+}
+
+.home-text__link:hover .home-text__split::after,
+.home-text__link:focus-visible .home-text__split::after {
+  opacity: 1;
 }
 
 .home-text__muted {

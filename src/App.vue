@@ -2,13 +2,49 @@
   <div id="app-root">
     <nav v-if="$route.path !== '/'" class="global-nav">
       <router-link to="/" class="nav-btn global-nav__btn">
-        <span v-if="locale.lang === 'kr'" class="global-nav__ko">메인</span>
-        <span v-else class="global-nav__en">MAIN</span>
+        <span class="global-nav__split" :style="navSplitStyle('main')">
+          <span class="global-nav__split-ghost">
+            <span :class="navTextClass('main')">{{ navLabel('main') }}</span>
+          </span>
+          <span class="global-nav__split-half global-nav__split-half--top" aria-hidden="true">
+            <span :class="navTextClass('main')">{{ navLabel('main') }}</span>
+          </span>
+          <span class="global-nav__split-half global-nav__split-half--bottom" aria-hidden="true">
+            <span :class="navTextClass('main')">{{ navLabel('main') }}</span>
+          </span>
+        </span>
+      </router-link>
+
+      <router-link
+        v-if="$route.path.startsWith('/artists')"
+        to="/artists"
+        class="nav-btn global-nav__btn global-nav__center-btn"
+      >
+        <span class="global-nav__split" :style="navSplitStyle('lineup')">
+          <span class="global-nav__split-ghost">
+            <span :class="navTextClass('lineup')">{{ navLabel('lineup') }}</span>
+          </span>
+          <span class="global-nav__split-half global-nav__split-half--top" aria-hidden="true">
+            <span :class="navTextClass('lineup')">{{ navLabel('lineup') }}</span>
+          </span>
+          <span class="global-nav__split-half global-nav__split-half--bottom" aria-hidden="true">
+            <span :class="navTextClass('lineup')">{{ navLabel('lineup') }}</span>
+          </span>
+        </span>
       </router-link>
 
       <button type="button" class="nav-btn global-nav__btn" @click="toggleLang">
-        <span v-if="locale.lang === 'kr'" class="global-nav__en">EN</span>
-        <span v-else class="global-nav__ko">한글</span>
+        <span class="global-nav__split" :style="navSplitStyle('language')">
+          <span class="global-nav__split-ghost">
+            <span :class="navTextClass('language')">{{ navLabel('language') }}</span>
+          </span>
+          <span class="global-nav__split-half global-nav__split-half--top" aria-hidden="true">
+            <span :class="navTextClass('language')">{{ navLabel('language') }}</span>
+          </span>
+          <span class="global-nav__split-half global-nav__split-half--bottom" aria-hidden="true">
+            <span :class="navTextClass('language')">{{ navLabel('language') }}</span>
+          </span>
+        </span>
       </button>
     </nav>
 
@@ -24,6 +60,12 @@
 
 <script>
 import { localeStore } from '@/store/locale.js'
+
+const NAV_SPLIT_SCALE_LATIN = 0.56
+
+function navSeedHash(s) {
+  return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
+}
 
 export default {
   name: 'App',
@@ -47,6 +89,39 @@ export default {
     toggleLang() {
       const newLang = this.locale.lang === 'kr' ? 'en' : 'kr'
       this.locale.setLang(newLang)
+    },
+    navLabel(kind) {
+      if (kind === 'main') return this.locale.lang === 'kr' ? '메인' : 'MAIN'
+      if (kind === 'lineup') return this.locale.lang === 'kr' ? '라인업' : 'LINE-UP'
+      return this.locale.lang === 'kr' ? 'EN' : '한글'
+    },
+    navTextClass(kind) {
+      const isKo =
+        (kind === 'main' && this.locale.lang === 'kr') ||
+        (kind === 'lineup' && this.locale.lang === 'kr') ||
+        (kind === 'language' && this.locale.lang !== 'kr')
+      return isKo ? 'global-nav__ko' : 'global-nav__en'
+    },
+    navSplitStyle(kind) {
+      const isKo = this.navTextClass(kind) === 'global-nav__ko'
+      const scale = isKo ? 1 : NAV_SPLIT_SCALE_LATIN
+      const key = navSeedHash(`${kind}:${this.navLabel(kind)}`)
+      const u = (n) => {
+        let h = Math.imul((key + n) ^ 0x9e3779b9, 0x9e3779b9) >>> 0
+        h = (h ^ (h >>> 16)) >>> 0
+        h = Math.imul(h, 2246822507) >>> 0
+        return h / 4294967296
+      }
+      const invert = u(101) >= 0.5
+      const base = 0.95 + u(7) * 1.15
+      const topJitter = 0.88 + u(13) * 0.3
+      const botJitter = 0.88 + u(29) * 0.3
+      const signTop = invert ? 1 : -1
+      const signBot = invert ? -1 : 1
+      return {
+        '--nav-split-shift-top': `${(signTop * base * topJitter * scale).toFixed(2)}px`,
+        '--nav-split-shift-bottom': `${(signBot * base * botJitter * scale).toFixed(2)}px`,
+      }
     },
   },
 }
@@ -75,12 +150,48 @@ body {
   overflow-x: hidden;
   overflow-x: clip;
   background-color: #fff;
+  color: rgba(10, 10, 10, 0.82);
+  -webkit-font-smoothing: subpixel-antialiased;
+  text-shadow:
+    0 0 0.7px rgba(10, 10, 10, 0.42),
+    0.42px 0.24px 0 rgba(10, 10, 10, 0.2),
+    -0.28px -0.12px 0 rgba(10, 10, 10, 0.12);
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+/* 전역 텍스트 질감: 프린트 후 스캔한 듯한 아주 약한 번짐 */
+:where(
+  a,
+  button,
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  span,
+  li,
+  dt,
+  dd,
+  label,
+  small,
+  strong,
+  em,
+  figcaption,
+  blockquote
+) {
+  filter: blur(0.22px) contrast(1.08);
+}
+
+:where(img, svg, canvas, video, picture, iframe) {
+  filter: none;
+  text-shadow: none;
 }
 
 #app-root {
@@ -114,6 +225,12 @@ body {
   pointer-events: none;
 }
 
+.global-nav__center-btn {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 /* 두 버튼: 홈 메뉴와 같은 산세리프/명조, 검정 글자·배경 없음 */
 .global-nav__en {
   font-family: var(--font-home-en);
@@ -133,15 +250,91 @@ body {
   color: #0a0a0a;
   border: none;
   box-shadow: none;
-  text-shadow: none;
 }
 
 .global-nav .nav-btn.global-nav__btn:hover,
 .global-nav .nav-btn.global-nav__btn:focus-visible {
   background: transparent;
   color: #0a0a0a;
-  opacity: 0.55;
   outline: none;
+}
+
+.global-nav__split {
+  --home-split-merge-duration: 0.35s;
+  --home-split-merge-easing: cubic-bezier(0.45, 0, 0.2, 1);
+  position: relative;
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+.global-nav__split::after {
+  content: '';
+  position: absolute;
+  left: -0.03em;
+  right: -0.03em;
+  top: 50%;
+  z-index: 3;
+  border-top: 0.08em solid currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: opacity var(--home-split-merge-duration) var(--home-split-merge-easing);
+}
+
+.global-nav__split-ghost {
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity var(--home-split-merge-duration) var(--home-split-merge-easing);
+}
+
+.global-nav__split-half {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity var(--home-split-merge-duration) var(--home-split-merge-easing);
+}
+
+.global-nav__split-half--top {
+  clip-path: inset(0 0 50% 0);
+  transform: translateX(var(--nav-split-shift-top, -1.5px));
+}
+
+.global-nav__split-half--bottom {
+  clip-path: inset(50% 0 0 0);
+  transform: translateX(var(--nav-split-shift-bottom, 1.5px));
+}
+
+.global-nav__btn:hover .global-nav__split-ghost,
+.global-nav__btn:focus-visible .global-nav__split-ghost {
+  opacity: 1;
+}
+
+.global-nav__btn:hover .global-nav__split-half,
+.global-nav__btn:focus-visible .global-nav__split-half {
+  opacity: 0;
+}
+
+.global-nav__btn:hover .global-nav__split::after,
+.global-nav__btn:focus-visible .global-nav__split::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .global-nav__split-ghost,
+  .global-nav__split-half {
+    transition: none;
+  }
+
+  .global-nav__split-ghost {
+    opacity: 1;
+  }
+
+  .global-nav__split-half {
+    display: none;
+  }
 }
 
 /* 두 버튼 공통 스타일 */
