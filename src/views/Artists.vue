@@ -4,54 +4,61 @@
     class="artist-detail app-min-vh"
     :class="{ 'artist-detail--bio-expanded': bioExpanded }"
   >
-    <div class="artist-detail__media">
+    <div
+      class="artist-detail__media"
+      :class="{ 'artist-detail__media--transitioning': detailTransitioning }"
+    >
       <figure class="artist-detail__figure">
-        <div class="artist-detail__image-split" :style="imageSplitStyle(currentArtist)">
+        <div class="artist-detail__image-split" :style="imageSplitStyle(detailArtist)">
           <img
             class="artist-detail__image artist-detail__image--base"
-            :src="currentArtist.img"
-            :alt="artistDisplayName(currentArtist)"
-            :style="detailImageStyle(currentArtist)"
+            :src="detailArtist.img"
+            :alt="artistDisplayName(detailArtist)"
+            :style="detailImageStyle(detailArtist)"
+            decoding="sync"
+            fetchpriority="high"
           />
           <img
             class="artist-detail__image artist-detail__image-layer artist-detail__image-layer--top"
-            :src="currentArtist.img"
+            :src="detailArtist.img"
             alt=""
             aria-hidden="true"
-            :style="detailImageStyle(currentArtist)"
+            :style="detailImageStyle(detailArtist)"
+            decoding="sync"
           />
           <img
             class="artist-detail__image artist-detail__image-layer artist-detail__image-layer--bottom"
-            :src="currentArtist.img"
+            :src="detailArtist.img"
             alt=""
             aria-hidden="true"
-            :style="detailImageStyle(currentArtist)"
+            :style="detailImageStyle(detailArtist)"
+            decoding="sync"
           />
         </div>
       </figure>
       <div class="artist-detail__text">
-        <h1 class="artist-detail__title" :aria-label="artistTitleLabel(currentArtist)">
-          <span class="home-text__split" :style="splitRandomStyleForArtist(currentArtist)">
+        <h1 class="artist-detail__title" :aria-label="artistTitleLabel(detailArtist)">
+          <span class="home-text__split" :style="splitRandomStyleForArtist(detailArtist)">
             <span class="home-text__split-ghost">
               <span v-if="locale.lang === 'kr'" class="home-text__ko">{{
-                artistDisplayNameKr(currentArtist)
+                artistDisplayNameKr(detailArtist)
               }}</span>
-              <span v-else class="home-text__en">{{ currentArtist.name_en }}</span>
-              <span class="artists-list__cc">({{ currentArtist.nationality }})</span>
+              <span v-else class="home-text__en">{{ detailArtist.name_en }}</span>
+              <span class="artists-list__cc">({{ detailArtist.nationality }})</span>
             </span>
             <span class="home-text__split-half home-text__split-half--top" aria-hidden="true">
               <span v-if="locale.lang === 'kr'" class="home-text__ko">{{
-                artistDisplayNameKr(currentArtist)
+                artistDisplayNameKr(detailArtist)
               }}</span>
-              <span v-else class="home-text__en">{{ currentArtist.name_en }}</span>
-              <span class="artists-list__cc">({{ currentArtist.nationality }})</span>
+              <span v-else class="home-text__en">{{ detailArtist.name_en }}</span>
+              <span class="artists-list__cc">({{ detailArtist.nationality }})</span>
             </span>
             <span class="home-text__split-half home-text__split-half--bottom" aria-hidden="true">
               <span v-if="locale.lang === 'kr'" class="home-text__ko">{{
-                artistDisplayNameKr(currentArtist)
+                artistDisplayNameKr(detailArtist)
               }}</span>
-              <span v-else class="home-text__en">{{ currentArtist.name_en }}</span>
-              <span class="artists-list__cc">({{ currentArtist.nationality }})</span>
+              <span v-else class="home-text__en">{{ detailArtist.name_en }}</span>
+              <span class="artists-list__cc">({{ detailArtist.nationality }})</span>
             </span>
           </span>
         </h1>
@@ -80,9 +87,9 @@
             </span>
           </button>
           <a
-            v-if="currentArtist.website"
+            v-if="detailArtist.website"
             class="artist-detail__website"
-            :href="currentArtist.website"
+            :href="detailArtist.website"
             target="_blank"
             rel="noopener noreferrer"
             @click.stop
@@ -101,6 +108,64 @@
           </a>
         </section>
       </div>
+      <div
+        v-if="lineupVisible"
+        class="artist-detail__lineup home-text"
+        :class="{ 'artist-detail__lineup--closing': lineupClosing }"
+        aria-label="Artists lineup"
+        @click.self="closeLineup"
+      >
+        <p class="home-text__menu" @click.stop>
+          <template v-for="(artist, idx) in artists" :key="artist.id">
+            <span
+              v-if="isCurrentArtist(artist)"
+              class="home-text__current-artist"
+              :aria-current="'page'"
+            >
+              <span v-if="locale.lang === 'kr'" class="home-text__ko">{{
+                artistDisplayNameKr(artist)
+              }}</span>
+              <span v-else class="home-text__en">{{ artist.name_en }}</span>
+              <span class="artists-list__cc">({{ artist.nationality }})</span>
+            </span>
+            <router-link
+              v-else
+              :to="artistPath(artist)"
+              class="home-text__link"
+              data-mobile-delay="skip"
+              @click.prevent="goToArtistFromLineup(artist)"
+            >
+              <span class="home-text__split" :style="splitRandomStyleForArtist(artist)">
+                <span class="home-text__split-ghost">
+                  <span v-if="locale.lang === 'kr'" class="home-text__ko">{{
+                    artistDisplayNameKr(artist)
+                  }}</span>
+                  <span v-else class="home-text__en">{{ artist.name_en }}</span>
+                  <span class="artists-list__cc">({{ artist.nationality }})</span>
+                </span>
+                <span class="home-text__split-half home-text__split-half--top" aria-hidden="true">
+                  <span v-if="locale.lang === 'kr'" class="home-text__ko">{{
+                    artistDisplayNameKr(artist)
+                  }}</span>
+                  <span v-else class="home-text__en">{{ artist.name_en }}</span>
+                  <span class="artists-list__cc">({{ artist.nationality }})</span>
+                </span>
+                <span
+                  class="home-text__split-half home-text__split-half--bottom"
+                  aria-hidden="true"
+                >
+                  <span v-if="locale.lang === 'kr'" class="home-text__ko">{{
+                    artistDisplayNameKr(artist)
+                  }}</span>
+                  <span v-else class="home-text__en">{{ artist.name_en }}</span>
+                  <span class="artists-list__cc">({{ artist.nationality }})</span>
+                </span>
+              </span>
+            </router-link>
+            <span v-if="idx < artists.length - 1" class="home-text__sep"> · </span>
+          </template>
+        </p>
+      </div>
     </div>
   </article>
 
@@ -110,7 +175,7 @@
         <router-link
           :to="artistPath(artist)"
           class="home-text__link"
-            :aria-current="id === artistSlug(artist) ? 'page' : undefined"
+          :aria-current="id === artistSlug(artist) ? 'page' : undefined"
         >
           <span class="home-text__split" :style="splitRandomStyleForArtist(artist)">
             <span class="home-text__split-ghost">
@@ -166,24 +231,35 @@ export default {
       artists: artistsData,
       locale: localeStore,
       bioExpanded: false,
+      lineupVisible: false,
+      lineupClosing: false,
+      displayedArtist: null,
+      detailTransitioning: false,
+      _artistTransitionToken: 0,
+      _lineupNavigationPending: false,
       imageSplitNonce: Math.floor(Math.random() * 1000000000),
     }
   },
   mounted() {
     document.addEventListener('click', this.closeExpandedBio)
+    window.addEventListener('artists-lineup-toggle', this.toggleLineup)
   },
   beforeUnmount() {
     document.removeEventListener('click', this.closeExpandedBio)
+    window.removeEventListener('artists-lineup-toggle', this.toggleLineup)
   },
   computed: {
     currentArtist() {
       if (!this.id) return null
       return this.artists.find((artist) => this.artistSlug(artist) === this.id) || null
     },
+    detailArtist() {
+      return this.displayedArtist || this.currentArtist
+    },
     activeBio() {
-      if (!this.currentArtist) return ''
-      const localized = this.locale.lang === 'kr' ? this.currentArtist.bio_kr : this.currentArtist.bio_en
-      const fallback = this.currentArtist.bio_en || this.currentArtist.bio_kr || ''
+      if (!this.detailArtist) return ''
+      const localized = this.locale.lang === 'kr' ? this.detailArtist.bio_kr : this.detailArtist.bio_en
+      const fallback = this.detailArtist.bio_en || this.detailArtist.bio_kr || ''
       return (localized && localized.trim() ? localized : fallback).trim()
     },
     isBioLong() {
@@ -197,12 +273,25 @@ export default {
       return this.truncateBio(this.activeBio, 200)
     },
     websiteLabel() {
-      return this.currentArtist?.website || ''
+      return this.detailArtist?.website || ''
     },
   },
   watch: {
+    currentArtist: {
+      immediate: true,
+      handler(newArtist, oldArtist) {
+        this.transitionToArtist(newArtist, oldArtist)
+      },
+    },
     id() {
       this.bioExpanded = false
+      if (!this._lineupNavigationPending) {
+        this.lineupVisible = false
+        this.lineupClosing = false
+      }
+    },
+    lineupVisible(open) {
+      window.dispatchEvent(new CustomEvent('artists-lineup-state', { detail: { open } }))
     },
     'locale.lang'() {
       this.bioExpanded = false
@@ -228,6 +317,48 @@ export default {
     },
     artistPath(artist) {
       return `/artists/${this.artistSlug(artist)}`
+    },
+    isCurrentArtist(artist) {
+      return this.currentArtist && this.artistSlug(artist) === this.artistSlug(this.currentArtist)
+    },
+    setLineupVisible(open) {
+      this.lineupVisible = open
+      if (open) {
+        this.lineupClosing = false
+      }
+    },
+    toggleLineup() {
+      if (this.currentArtist) {
+        if (this.lineupVisible) {
+          this.closeLineup()
+        } else {
+          this.setLineupVisible(true)
+        }
+      }
+    },
+    async closeLineup() {
+      if (!this.lineupVisible || this.lineupClosing) return
+      this.lineupClosing = true
+      await this.delay(280)
+      this.setLineupVisible(false)
+      this.lineupClosing = false
+    },
+    async goToArtistFromLineup(artist) {
+      if (this.lineupClosing) return
+      const path = this.artistPath(artist)
+      this._lineupNavigationPending = true
+      await this.preloadImage(artist.img)
+      this.displayedArtist = artist
+      this.imageSplitNonce = Math.floor(Math.random() * 1000000000)
+      await this.$nextTick()
+      await this.waitForPaint()
+      if (this.$route.path !== path) {
+        await this.$router.push(path)
+      }
+      await this.$nextTick()
+      await this.waitForPaint()
+      await this.closeLineup()
+      this._lineupNavigationPending = false
     },
     detailImageStyle(artist) {
       return artist.objectPosition ? { objectPosition: artist.objectPosition } : {}
@@ -294,10 +425,68 @@ export default {
       return this.splitShiftVars(seed, scale)
     },
     moreSplitStyle() {
-      return this.splitShiftVars(`${this.currentArtist?.id || 'artist'}\0more`, ARTISTS_SPLIT_SCALE_LATIN)
+      return this.splitShiftVars(`${this.detailArtist?.id || 'artist'}\0more`, ARTISTS_SPLIT_SCALE_LATIN)
     },
     websiteSplitStyle() {
-      return this.splitShiftVars(`${this.currentArtist?.id || 'artist'}\0website`, ARTISTS_SPLIT_SCALE_LATIN)
+      return this.splitShiftVars(`${this.detailArtist?.id || 'artist'}\0website`, ARTISTS_SPLIT_SCALE_LATIN)
+    },
+    preloadImage(src) {
+      if (!src || typeof window === 'undefined') return Promise.resolve()
+      return new Promise((resolve) => {
+        const img = new Image()
+        img.decoding = 'sync'
+        img.onload = async () => {
+          try {
+            if (typeof img.decode === 'function') {
+              await img.decode()
+            }
+          } catch {
+            /* The load event is enough if decode rejects for a cached image. */
+          }
+          resolve()
+        }
+        img.onerror = resolve
+        img.src = src
+        if (img.complete) {
+          img.onload()
+        }
+      })
+    },
+    waitForPaint() {
+      return new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+    },
+    delay(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms))
+    },
+    async transitionToArtist(newArtist, oldArtist) {
+      const token = ++this._artistTransitionToken
+      if (!newArtist) {
+        this.displayedArtist = null
+        this.detailTransitioning = false
+        return
+      }
+      if (!oldArtist || !this.displayedArtist) {
+        this.displayedArtist = newArtist
+        this.detailTransitioning = false
+        return
+      }
+      if (this.artistSlug(newArtist) === this.artistSlug(this.displayedArtist)) {
+        this.detailTransitioning = false
+        return
+      }
+
+      this.detailTransitioning = true
+      await Promise.all([this.preloadImage(newArtist.img), this.delay(160)])
+      if (token !== this._artistTransitionToken) return
+
+      this.displayedArtist = newArtist
+      this.imageSplitNonce = Math.floor(Math.random() * 1000000000)
+      await this.$nextTick()
+      requestAnimationFrame(() => {
+        if (token === this._artistTransitionToken) {
+          this.detailTransitioning = false
+        }
+      })
     },
     closeExpandedBio() {
       if (this.bioExpanded) {
@@ -341,6 +530,7 @@ export default {
   margin: 0 auto;
   width: fit-content;
   max-width: 100%;
+  transition: opacity 0.22s ease;
 }
 
 .artist-detail__image-split {
@@ -426,6 +616,32 @@ export default {
   width: min(72vw, 980px);
   margin: 0;
   text-align: left;
+  transition: opacity 0.22s ease;
+}
+
+.artist-detail__media--transitioning .artist-detail__figure,
+.artist-detail__media--transitioning .artist-detail__text {
+  opacity: 0;
+}
+
+.artist-detail__lineup {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  background: #fff;
+}
+
+.artist-detail__lineup--closing {
+  pointer-events: none;
+}
+
+.artist-detail__lineup .home-text__menu {
+  opacity: 1;
+  transition: opacity 0.28s ease;
+}
+
+.artist-detail__lineup--closing .home-text__menu {
+  opacity: 0;
 }
 
 .artist-detail__bio {
@@ -745,6 +961,14 @@ export default {
   display: inline-block;
   color: inherit;
   text-decoration: none;
+}
+
+.home-text__current-artist {
+  display: inline-block;
+  text-decoration: line-through;
+  text-decoration-thickness: 0.08em;
+  text-decoration-color: currentColor;
+  text-underline-offset: 0.12em;
 }
 
 .home-text__link:focus-visible {

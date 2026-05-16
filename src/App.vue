@@ -15,12 +15,17 @@
         </span>
       </router-link>
 
-      <router-link
-        v-if="$route.path.startsWith('/artists')"
-        to="/artists"
+      <button
+        v-if="$route.name === 'ArtistDetail'"
+        type="button"
         class="nav-btn global-nav__btn global-nav__center-btn"
+        :class="{ 'global-nav__btn--active': artistLineupOpen }"
+        @click="toggleArtistLineup"
       >
-        <span class="global-nav__split" :style="navSplitStyle('lineup')">
+        <span v-if="artistLineupOpen" class="global-nav__active-text">
+          <span :class="navTextClass('lineup')">{{ navLabel('lineup') }}</span>
+        </span>
+        <span v-else class="global-nav__split" :style="navSplitStyle('lineup')">
           <span class="global-nav__split-ghost">
             <span :class="navTextClass('lineup')">{{ navLabel('lineup') }}</span>
           </span>
@@ -31,7 +36,7 @@
             <span :class="navTextClass('lineup')">{{ navLabel('lineup') }}</span>
           </span>
         </span>
-      </router-link>
+      </button>
 
       <button type="button" class="nav-btn global-nav__btn" @click="toggleLang">
         <span class="global-nav__split" :style="navSplitStyle('language')">
@@ -62,6 +67,7 @@
 import { localeStore } from '@/store/locale.js'
 
 const NAV_SPLIT_SCALE_LATIN = 0.56
+const MOBILE_LINK_DELAY_MS = 360
 
 function navSeedHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
@@ -72,14 +78,24 @@ export default {
   data() {
     return {
       locale: localeStore,
+      artistLineupOpen: false,
     }
   },
   mounted() {
     this.syncDocumentLang()
+    window.addEventListener('artists-lineup-state', this.onArtistLineupState)
+    window.addEventListener('click', this.handleMobileLinkClick, true)
+  },
+  beforeUnmount() {
+    window.removeEventListener('artists-lineup-state', this.onArtistLineupState)
+    window.removeEventListener('click', this.handleMobileLinkClick, true)
   },
   watch: {
     'locale.lang'() {
       this.syncDocumentLang()
+    },
+    '$route.name'() {
+      this.artistLineupOpen = false
     },
   },
   methods: {
@@ -89,6 +105,53 @@ export default {
     toggleLang() {
       const newLang = this.locale.lang === 'kr' ? 'en' : 'kr'
       this.locale.setLang(newLang)
+    },
+    toggleArtistLineup() {
+      window.dispatchEvent(new Event('artists-lineup-toggle'))
+    },
+    onArtistLineupState(event) {
+      this.artistLineupOpen = Boolean(event.detail?.open)
+    },
+    shouldDelayMobileLinks() {
+      if (typeof window === 'undefined') return false
+      return window.matchMedia('(hover: none), (pointer: coarse), (max-width: 768px)').matches
+    },
+    handleMobileLinkClick(event) {
+      if (!this.shouldDelayMobileLinks()) return
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return
+      }
+
+      const link = event.target?.closest?.('a[href]')
+      if (!link || link.dataset.mobileDelay === 'skip' || link.dataset.mobileActivating === 'true') return
+      if (link.hasAttribute('download') || link.getAttribute('aria-disabled') === 'true') return
+
+      const href = link.getAttribute('href')
+      if (!href || href.startsWith('#')) return
+
+      event.preventDefault()
+      event.stopPropagation()
+
+      link.dataset.mobileActivating = 'true'
+      link.classList.add('is-mobile-activating')
+
+      window.setTimeout(() => {
+        link.classList.remove('is-mobile-activating')
+        link.dataset.mobileActivating = 'false'
+
+        if (href.startsWith('mailto:') || href.startsWith('tel:')) {
+          window.location.href = href
+          return
+        }
+
+        const url = new URL(href, window.location.href)
+        if (url.origin === window.location.origin) {
+          this.$router.push(`${url.pathname}${url.search}${url.hash}`)
+          return
+        }
+
+        window.location.href = url.href
+      }, MOBILE_LINK_DELAY_MS)
     },
     navLabel(kind) {
       if (kind === 'main') return this.locale.lang === 'kr' ? '메인' : 'MAIN'
@@ -295,6 +358,13 @@ html::before {
   outline: none;
 }
 
+.global-nav__active-text {
+  display: inline-block;
+  text-decoration: line-through;
+  text-decoration-thickness: 0.08em;
+  text-decoration-color: currentColor;
+}
+
 .global-nav__split {
   --home-split-merge-duration: 0.35s;
   --home-split-merge-easing: cubic-bezier(0.45, 0, 0.2, 1);
@@ -355,6 +425,27 @@ html::before {
 
 .global-nav__btn:hover .global-nav__split::after,
 .global-nav__btn:focus-visible .global-nav__split::after {
+  opacity: 1;
+}
+
+.is-mobile-activating .home-text__split-ghost,
+.is-mobile-activating .global-nav__split-ghost,
+.is-mobile-activating .program-day__split-ghost,
+.is-mobile-activating .venue-page__split-ghost {
+  opacity: 1;
+}
+
+.is-mobile-activating .home-text__split-half,
+.is-mobile-activating .global-nav__split-half,
+.is-mobile-activating .program-day__split-half,
+.is-mobile-activating .venue-page__split-half {
+  opacity: 0;
+}
+
+.is-mobile-activating .home-text__split::after,
+.is-mobile-activating .global-nav__split::after,
+.is-mobile-activating .program-day__split::after,
+.is-mobile-activating .venue-page__split::after {
   opacity: 1;
 }
 
