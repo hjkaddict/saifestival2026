@@ -80,7 +80,7 @@
       </a>
     </footer>
 
-    <!-- Artists 구간에서도 인스턴스 유지(v-show)해야 홈에서 온 선 상태가 보존됨 -->
+    <!-- Artists 구간에서는 숨기고(v-show) 인스턴스는 유지해 전역 선 상태·애니메이션이 끊기지 않게 함 -->
     <InterventionCanvas v-show="!isArtistsRoute" />
   </div>
 </template>
@@ -89,7 +89,6 @@
 import { localeStore } from '@/store/locale.js'
 import InterventionCanvas from '@/components/InterventionCanvas.vue'
 import { randomOrganicHighlight } from '@/utils/organicHighlight.js'
-
 export default {
   name: 'App',
   components: { InterventionCanvas },

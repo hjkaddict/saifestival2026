@@ -1,6 +1,10 @@
 <template>
   <div class="menu-universe" ref="universe" :style="universeStyle">
-    <figure class="entry-shard" :class="{ 'is-landed': shardLanded }" aria-hidden="true">
+    <figure
+      class="entry-shard"
+      :class="{ 'is-landed': shardLanded && !skipShardAnimation, 'entry-shard--final': skipShardAnimation }"
+      aria-hidden="true"
+    >
       <div class="entry-shard__inner">
         <div class="entry-shard__wing entry-shard__wing--left">
           <div class="entry-shard__face entry-shard__face--left"></div>
@@ -50,6 +54,11 @@
 <script>
 import { getVisibleViewportHeight } from '@/utils/viewport.js'
 import { randomOrganicHighlight } from '@/utils/organicHighlight.js'
+import {
+  readHomeIntroSession,
+  writeHomeIntroSession,
+  clearHomeIntroSession,
+} from '@/utils/homeIntroSession.js'
 
 export default {
   name: 'Home',
@@ -72,6 +81,10 @@ export default {
       activeMenuIndex: null,
       pendingNav: null,
       _navFallbackTimer: null,
+      /** 캐시 복원·리사이즈 재배치 시 샤드 날개 키프레임 생략 */
+      skipShardAnimation: false,
+      /** sessionStorage에서 메뉴 좌표를 복원한 뒤 리사이즈 시 같은 브레이크포인트면 재생성 안 함 */
+      layoutFrozen: false,
     }
   },
   computed: {
@@ -86,18 +99,19 @@ export default {
   mounted() {
     this.checkMobile()
     this.updateCenterPos()
-    this.generatePositions()
-
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        this.shardLanded = true
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            this.isLoaded = true
-          })
-        })
-      }, 60)
-    })
+    const saved = readHomeIntroSession()
+    if (saved && saved.isMobile === this.isMobile) {
+      this.randomMenus = saved.menus
+      this.universeMinHeight = saved.universeMinHeight ?? null
+      this.layoutFrozen = true
+      this.skipShardAnimation = true
+      this.isLoaded = true
+    } else {
+      this.layoutFrozen = false
+      this.skipShardAnimation = false
+      this.generatePositions()
+      this.startIntroSequence()
+    }
     window.addEventListener('resize', this.handleResize)
     window.addEventListener('app-vh-change', this.handleResize)
   },
@@ -108,7 +122,29 @@ export default {
   },
   methods: {
     checkMobile() {
-      this.isMobile = window.innerWidth < 768
+      this.isMobile = window.matchMedia('(max-width: 768px)').matches
+    },
+    startIntroSequence() {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          this.shardLanded = true
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              this.isLoaded = true
+              this.layoutFrozen = true
+              this.persistHomeIntroSession()
+            })
+          })
+        }, 60)
+      })
+    },
+    persistHomeIntroSession() {
+      writeHomeIntroSession({
+        introComplete: true,
+        isMobile: this.isMobile,
+        menus: this.randomMenus,
+        universeMinHeight: this.universeMinHeight,
+      })
     },
     onMenuHover(isHovering) {
       if (isHovering) {
@@ -152,6 +188,20 @@ export default {
     handleResize() {
       this.checkMobile()
       this.updateCenterPos()
+      const saved = readHomeIntroSession()
+      if (saved && typeof saved.isMobile === 'boolean' && saved.isMobile !== this.isMobile) {
+        clearHomeIntroSession()
+        this.skipShardAnimation = true
+        this.shardLanded = false
+        this.generatePositions()
+        this.isLoaded = true
+        this.layoutFrozen = true
+        this.persistHomeIntroSession()
+        return
+      }
+      if (this.layoutFrozen && saved && saved.isMobile === this.isMobile) {
+        return
+      }
       this.generatePositions()
     },
     randomSliceStyles() {
@@ -341,6 +391,13 @@ export default {
   transform: rotateY(82deg);
 }
 
+/* 복원·리사이즈 재배치: 날개 펼침 키프레임 없이 최종 자세만 */
+.entry-shard.entry-shard--final .entry-shard__wing--left,
+.entry-shard.entry-shard--final .entry-shard__wing--right {
+  animation: none;
+  transform: rotateY(0deg);
+}
+
 .entry-shard__face {
   position: absolute;
   top: 0;
@@ -492,7 +549,7 @@ export default {
   background: rgba(255, 255, 255, 0.25);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .entry-shard__inner {
     height: calc(var(--app-vh, 1vh) * 86);
   }
