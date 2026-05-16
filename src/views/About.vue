@@ -63,6 +63,19 @@
         </dl>
       </section>
     </article>
+
+    <aside class="about-page__scroll-poem" aria-hidden="true">
+      <div class="about-page__scroll-poem-inner">
+        <p
+          v-for="(line, idx) in scrollPoemLines"
+          :key="idx"
+          class="about-page__scroll-poem-line"
+          :class="{ 'about-page__scroll-poem-line--spacer': line === '' }"
+        >
+          {{ line }}
+        </p>
+      </div>
+    </aside>
   </main>
 </template>
 
@@ -105,6 +118,27 @@ export default {
     teamSections() {
       return getFestivalTeam(this.locale.lang)
     },
+    scrollPoemLines() {
+      return [
+        '사–이 페스티벌: 끼어드는 틈',
+        '',
+        '낯선 것이 Something strange',
+        '어이없게 absurdly',
+        '',
+        '뒤섞이고 mingling',
+        '개입하고 intervening',
+        '머무르고 lingering',
+        '',
+        '끼어들까 말까 whether to interrupt you or not',
+        '내어줄까 말까, whether to let myself open or not,',
+        '들어갈까 말까 …whether to step in or not…',
+        '',
+        '이게 노는건지 whether this is play',
+        '작업인건지… or work…',
+        '',
+        '대전은 더울텐데… Daejeon is going to be hot…',
+      ]
+    },
   },
   methods: {
     revealScrollOnlyText(content) {
@@ -119,8 +153,8 @@ export default {
         )
       } else {
         paragraphs[1] = paragraphs[1].replace(
-          /^(\s*)(However,)\s+(they)\b/,
-          '$1<span class="about-page__scroll-only">$2</span> <span class="about-page__case-swap"><span class="about-page__case-swap-before">$3</span><span class="about-page__case-swap-during">They</span></span>',
+          /^(\s*)(However,)\s+(do)\b/,
+          '$1<span class="about-page__scroll-only">$2</span> <span class="about-page__case-swap"><span class="about-page__case-swap-before">$3</span><span class="about-page__case-swap-during">Do</span></span>',
         )
       }
 
@@ -167,10 +201,15 @@ export default {
   margin: 0 auto;
   filter: blur(0.22px) contrast(1.08);
   -webkit-font-smoothing: subpixel-antialiased;
+  transition: opacity 0.16s linear;
   text-shadow:
     0 0 0.7px rgba(10, 10, 10, 0.42),
     0.42px 0.24px 0 rgba(10, 10, 10, 0.2),
     -0.28px -0.12px 0 rgba(10, 10, 10, 0.12);
+}
+
+.about-page--scrolling .about-page__inner {
+  opacity: 0.16;
 }
 
 .about-page--en .about-page__inner {
@@ -216,6 +255,48 @@ export default {
 
 .about-page--scrolling .about-page__body :deep(.about-page__case-swap-during) {
   display: inline;
+}
+
+.about-page__scroll-poem {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: clamp(72px, 12vw, 132px) clamp(20px, 8vw, 112px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.16s linear;
+}
+
+.about-page--scrolling .about-page__scroll-poem {
+  opacity: 1;
+}
+
+.about-page__scroll-poem-inner {
+  width: min(100%, 42rem);
+  color: rgba(10, 10, 10, 0.88);
+  font-size: 1rem;
+  line-height: 1.42;
+  letter-spacing: 0.006em;
+  text-align: left;
+  filter: blur(0.12px) contrast(1.08);
+  -webkit-font-smoothing: subpixel-antialiased;
+  text-shadow:
+    0 0 0.7px rgba(10, 10, 10, 0.42),
+    0.42px 0.24px 0 rgba(10, 10, 10, 0.2),
+    -0.28px -0.12px 0 rgba(10, 10, 10, 0.12);
+  white-space: pre-wrap;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.about-page__scroll-poem-line {
+  margin: 0;
+}
+
+.about-page__scroll-poem-line--spacer {
+  height: 1.42em;
 }
 
 .about-page__team {
@@ -346,6 +427,10 @@ export default {
 
 @media (max-width: 768px) {
   .about-page {
+    padding: 72px 20px 48px;
+  }
+
+  .about-page__scroll-poem {
     padding: 72px 20px 48px;
   }
 
