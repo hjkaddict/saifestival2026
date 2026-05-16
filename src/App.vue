@@ -322,7 +322,7 @@ html::before {
     figcaption,
     blockquote
   ) {
-    filter: blur(0.08px) contrast(1.04);
+    filter: blur(0.13px) contrast(1.05);
   }
 }
 

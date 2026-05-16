@@ -855,7 +855,7 @@ export default {
   .artist-detail__title,
   .artist-detail__bio,
   .home-text__menu {
-    filter: blur(0.08px) contrast(1.04);
+    filter: blur(0.13px) contrast(1.05);
     text-shadow:
       0 0 0.35px rgba(10, 10, 10, 0.28),
       0.2px 0.12px 0 rgba(10, 10, 10, 0.12);
