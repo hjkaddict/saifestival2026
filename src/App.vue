@@ -297,6 +297,10 @@ html::before {
 }
 
 @media (max-width: 768px), (hover: none), (pointer: coarse) {
+  html::before {
+    display: none;
+  }
+
   html,
   body {
     text-shadow:
