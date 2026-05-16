@@ -303,6 +303,15 @@ html::before {
 
   html,
   body {
+    background-color: #fff;
+    background-image:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.012), transparent 38%, rgba(0, 0, 0, 0.01)),
+      radial-gradient(circle at 18% 24%, rgba(0, 0, 0, 0.028) 0 0.55px, transparent 0.65px),
+      radial-gradient(circle at 72% 64%, rgba(0, 0, 0, 0.022) 0 0.45px, transparent 0.55px);
+    background-size:
+      100% 100%,
+      9px 9px,
+      13px 13px;
     text-shadow:
       0 0 0.35px rgba(10, 10, 10, 0.28),
       0.2px 0.12px 0 rgba(10, 10, 10, 0.12);
