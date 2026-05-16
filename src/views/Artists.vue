@@ -13,7 +13,6 @@
                 artistDisplayNameKr(artist)
               }}</span>
               <span v-else class="home-text__en">{{ artist.name_en }}</span>
-              <span class="home-text__gap"> </span>
               <span class="artists-list__cc">({{ artist.nationality }})</span>
             </span>
             <span class="home-text__split-half home-text__split-half--top" aria-hidden="true">
@@ -21,7 +20,6 @@
                 artistDisplayNameKr(artist)
               }}</span>
               <span v-else class="home-text__en">{{ artist.name_en }}</span>
-              <span class="home-text__gap"> </span>
               <span class="artists-list__cc">({{ artist.nationality }})</span>
             </span>
             <span class="home-text__split-half home-text__split-half--bottom" aria-hidden="true">
@@ -29,7 +27,6 @@
                 artistDisplayNameKr(artist)
               }}</span>
               <span v-else class="home-text__en">{{ artist.name_en }}</span>
-              <span class="home-text__gap"> </span>
               <span class="artists-list__cc">({{ artist.nationality }})</span>
             </span>
           </span>
