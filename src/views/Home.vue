@@ -1,6 +1,5 @@
 <!--
-  텍스트 전용 메인. 이전 UI는 HomeArchive.legacy.vue 등 참고.
-  전역 선 애니메이션(InterventionCanvas)은 App.vue 에서 제거됨.
+  텍스트 전용 메인.
 -->
 <template>
   <div class="home-text">

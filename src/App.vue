@@ -213,6 +213,23 @@ html::before {
   text-shadow: none;
 }
 
+.page-fade-enter-active,
+.page-fade-leave-active {
+  transition: opacity 0.34s ease;
+}
+
+.page-fade-enter-from,
+.page-fade-leave-to {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-fade-enter-active,
+  .page-fade-leave-active {
+    transition-duration: 0.01ms;
+  }
+}
+
 #app-root {
   display: flex;
   flex-direction: column;
@@ -396,13 +413,7 @@ html::before {
   label,
   summary,
   .nav-btn,
-  .organic-highlight--btn,
-  .paper-label,
-  .lineup-name-link,
-  .ui-btn,
-  .more-btn-inline,
-  .close-x-btn,
-  .random-name-item {
+  .paper-label {
     touch-action: manipulation;
   }
 
