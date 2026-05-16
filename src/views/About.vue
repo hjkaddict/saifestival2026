@@ -165,7 +165,7 @@ export default {
       window.clearTimeout(this.scrollRevealTimer)
       this.scrollRevealTimer = window.setTimeout(() => {
         this.isScrolling = false
-      }, 520)
+      }, 820)
     },
     memberSplitStyle(name, sectionIdx, memberIdx) {
       const scale = this.locale.lang === 'kr' ? 1 : ABOUT_SPLIT_SCALE_LATIN
@@ -201,7 +201,7 @@ export default {
   margin: 0 auto;
   filter: blur(0.22px) contrast(1.08);
   -webkit-font-smoothing: subpixel-antialiased;
-  transition: opacity 0.16s linear;
+  transition: opacity 0.48s cubic-bezier(0.45, 0, 0.2, 1);
   text-shadow:
     0 0 0.7px rgba(10, 10, 10, 0.42),
     0.42px 0.24px 0 rgba(10, 10, 10, 0.2),
@@ -238,7 +238,7 @@ export default {
 
 .about-page__body :deep(.about-page__scroll-only) {
   text-decoration: line-through;
-  transition: opacity 0.16s linear;
+  transition: opacity 0.48s cubic-bezier(0.45, 0, 0.2, 1);
 }
 
 .about-page--scrolling .about-page__body :deep(.about-page__scroll-only) {
@@ -266,7 +266,7 @@ export default {
   padding: clamp(72px, 12vw, 132px) clamp(20px, 8vw, 112px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.16s linear;
+  transition: opacity 0.48s cubic-bezier(0.45, 0, 0.2, 1);
 }
 
 .about-page--scrolling .about-page__scroll-poem {
