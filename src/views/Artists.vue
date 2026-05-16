@@ -6,10 +6,17 @@
   >
     <div
       class="artist-detail__media"
-      :class="{ 'artist-detail__media--transitioning': detailTransitioning }"
+      :class="{
+        'artist-detail__media--transitioning': detailTransitioning,
+        'artist-detail__media--image-visible': detailImageVisible,
+      }"
     >
       <figure class="artist-detail__figure">
-        <div class="artist-detail__image-split" :style="imageSplitStyle(detailArtist)">
+        <div
+          :key="detailArtist.id"
+          class="artist-detail__image-split"
+          :style="imageSplitStyle(detailArtist)"
+        >
           <img
             class="artist-detail__image artist-detail__image--base"
             :src="detailArtist.img"
@@ -213,6 +220,7 @@ import { localeStore } from '@/store/locale.js'
 
 /** 영문 이름·코드: 갈라짐 약하게 (한글 UI일 때는 1) */
 const ARTISTS_SPLIT_SCALE_LATIN = 0.56
+const LINEUP_CLOSE_MS = 360
 
 function artistSeedHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
@@ -235,6 +243,7 @@ export default {
       lineupClosing: false,
       displayedArtist: null,
       detailTransitioning: false,
+      detailImageVisible: false,
       _artistTransitionToken: 0,
       _lineupNavigationPending: false,
       imageSplitNonce: Math.floor(Math.random() * 1000000000),
@@ -339,7 +348,7 @@ export default {
     async closeLineup() {
       if (!this.lineupVisible || this.lineupClosing) return
       this.lineupClosing = true
-      await this.delay(280)
+      await this.delay(LINEUP_CLOSE_MS)
       this.setLineupVisible(false)
       this.lineupClosing = false
     },
@@ -348,6 +357,7 @@ export default {
       const path = this.artistPath(artist)
       this._lineupNavigationPending = true
       await this.preloadImage(artist.img)
+      this.detailImageVisible = false
       this.displayedArtist = artist
       this.imageSplitNonce = Math.floor(Math.random() * 1000000000)
       await this.$nextTick()
@@ -358,6 +368,8 @@ export default {
       await this.$nextTick()
       await this.waitForPaint()
       await this.closeLineup()
+      await this.waitForPaint()
+      this.detailImageVisible = true
       this._lineupNavigationPending = false
     },
     detailImageStyle(artist) {
@@ -463,11 +475,18 @@ export default {
       if (!newArtist) {
         this.displayedArtist = null
         this.detailTransitioning = false
+        this.detailImageVisible = false
         return
       }
       if (!oldArtist || !this.displayedArtist) {
+        this.detailImageVisible = false
         this.displayedArtist = newArtist
         this.detailTransitioning = false
+        this.$nextTick(() => {
+          requestAnimationFrame(() => {
+            this.detailImageVisible = true
+          })
+        })
         return
       }
       if (this.artistSlug(newArtist) === this.artistSlug(this.displayedArtist)) {
@@ -476,6 +495,7 @@ export default {
       }
 
       this.detailTransitioning = true
+      this.detailImageVisible = false
       await Promise.all([this.preloadImage(newArtist.img), this.delay(160)])
       if (token !== this._artistTransitionToken) return
 
@@ -485,6 +505,11 @@ export default {
       requestAnimationFrame(() => {
         if (token === this._artistTransitionToken) {
           this.detailTransitioning = false
+          requestAnimationFrame(() => {
+            if (token === this._artistTransitionToken) {
+              this.detailImageVisible = true
+            }
+          })
         }
       })
     },
@@ -540,7 +565,13 @@ export default {
   max-width: 100%;
   line-height: 0;
   background: #fff;
+  opacity: 0;
   filter: contrast(1.1) brightness(1.03) saturate(0.9) blur(0.16px);
+  transition: opacity 0.72s ease;
+}
+
+.artist-detail__media--image-visible .artist-detail__image-split {
+  opacity: 1;
 }
 
 .artist-detail__image-split::after {
@@ -637,7 +668,7 @@ export default {
 
 .artist-detail__lineup .home-text__menu {
   opacity: 1;
-  transition: opacity 0.28s ease;
+  transition: opacity 0.36s ease;
 }
 
 .artist-detail__lineup--closing .home-text__menu {
