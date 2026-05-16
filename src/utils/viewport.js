@@ -5,28 +5,40 @@ export function getVisibleViewportHeight() {
 
 export function syncAppViewportHeight() {
   const h = getVisibleViewportHeight()
+  const previous = Number(document.documentElement.dataset.appVhSource || 0)
+  if (Math.abs(previous - h) < 1) return
+  document.documentElement.dataset.appVhSource = String(h)
   document.documentElement.style.setProperty('--app-vh', `${h * 0.01}px`)
   window.dispatchEvent(new Event('app-vh-change'))
 }
 
 export function installViewportHeightSync() {
-  const update = () => syncAppViewportHeight()
+  let rafId = null
+  const update = () => {
+    if (rafId != null) return
+    rafId = requestAnimationFrame(() => {
+      rafId = null
+      syncAppViewportHeight()
+    })
+  }
 
-  update()
+  syncAppViewportHeight()
   window.addEventListener('resize', update)
   window.addEventListener('orientationchange', update)
 
   if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', update)
-    window.visualViewport.addEventListener('scroll', update)
   }
 
   return () => {
+    if (rafId != null) {
+      cancelAnimationFrame(rafId)
+      rafId = null
+    }
     window.removeEventListener('resize', update)
     window.removeEventListener('orientationchange', update)
     if (window.visualViewport) {
       window.visualViewport.removeEventListener('resize', update)
-      window.visualViewport.removeEventListener('scroll', update)
     }
   }
 }

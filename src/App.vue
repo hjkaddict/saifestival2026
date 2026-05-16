@@ -268,7 +268,10 @@ html::before {
   figcaption,
   blockquote
 ) {
-  filter: blur(0.22px) contrast(1.08);
+  text-shadow:
+    0 0 0.7px rgba(10, 10, 10, 0.42),
+    0.42px 0.24px 0 rgba(10, 10, 10, 0.2),
+    -0.28px -0.12px 0 rgba(10, 10, 10, 0.12);
 }
 
 :where(img, svg, canvas, video, picture, iframe) {
