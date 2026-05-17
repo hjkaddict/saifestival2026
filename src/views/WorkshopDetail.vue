@@ -7,11 +7,31 @@
       <p class="workshop-detail__type">{{ localized(detail.type) }}</p>
       <h1 class="workshop-detail__title">{{ localized(detail.title) }}</h1>
       <p v-if="localized(detail.artist)" class="workshop-detail__artist">
-        {{ locale.lang === 'kr' ? 'by ' : 'by ' }}{{ localized(detail.artist) }}
+        {{ localized(detail.artist) }}
       </p>
+      <div v-if="scheduleLines.length" class="workshop-detail__schedule">
+        <p v-for="line in scheduleLines" :key="line" class="workshop-detail__schedule-line">
+          {{ line }}
+        </p>
+      </div>
       <section class="workshop-detail__description">
         {{ localized(detail.description) }}
       </section>
+      <div v-if="detailImages.length" class="workshop-detail__images">
+        <figure
+          v-for="image in detailImages"
+          :key="image.src"
+          class="workshop-detail__figure"
+        >
+          <img
+            class="workshop-detail__image"
+            :src="image.src"
+            :alt="localized(image.alt)"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+      </div>
       <router-link class="workshop-detail__back" to="/program#workshop">
         {{ locale.lang === 'kr' ? '프로그램으로 돌아가기' : 'Back to program' }}
       </router-link>
@@ -28,7 +48,7 @@
 </template>
 
 <script>
-import { getWorkshopDetail } from '@/assets/data/program_workshop_schedule.js'
+import { getWorkshopDetail, workshopSchedule } from '@/assets/data/program_workshop_schedule.js'
 import { localeStore } from '@/store/locale.js'
 
 export default {
@@ -47,6 +67,17 @@ export default {
   computed: {
     detail() {
       return getWorkshopDetail(this.id)
+    },
+    scheduleLines() {
+      if (!this.detail) return []
+      return workshopSchedule.flatMap((day) =>
+        day.entries
+          .filter((entry) => entry.detailId === this.detail.id)
+          .map((entry) => [this.localized(day.dateLabel), this.localized(entry.time)].filter(Boolean).join(' · ')),
+      )
+    },
+    detailImages() {
+      return Array.isArray(this.detail?.images) ? this.detail.images : []
     },
   },
   methods: {
@@ -92,6 +123,7 @@ export default {
 .workshop-detail__type,
 .workshop-detail__title,
 .workshop-detail__artist,
+.workshop-detail__schedule,
 .workshop-detail__description,
 .workshop-detail__back {
   font-size: 1rem;
@@ -101,18 +133,24 @@ export default {
 
 .workshop-detail__type,
 .workshop-detail__title,
-.workshop-detail__artist {
+.workshop-detail__artist,
+.workshop-detail__schedule-line {
   margin: 0;
 }
 
 .workshop-detail__type,
-.workshop-detail__artist {
+.workshop-detail__artist,
+.workshop-detail__schedule {
   color: rgba(10, 10, 10, 0.52);
 }
 
 .workshop-detail__title {
   margin-top: 0.2rem;
   font-weight: inherit;
+}
+
+.workshop-detail__schedule {
+  margin-top: 0.35rem;
 }
 
 .workshop-detail__description {
@@ -126,6 +164,23 @@ export default {
     0 0 0.34px rgba(10, 10, 10, 0.2),
     0.18px 0.1px 0 rgba(10, 10, 10, 0.08),
     -0.12px -0.06px 0 rgba(10, 10, 10, 0.05);
+}
+
+.workshop-detail__images {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.6rem;
+}
+
+.workshop-detail__figure {
+  margin: 0;
+}
+
+.workshop-detail__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: contrast(1.04) saturate(0.92) blur(0.08px);
 }
 
 .workshop-detail__back {

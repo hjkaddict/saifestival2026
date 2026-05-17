@@ -84,13 +84,22 @@ export const workshopDetails = [
 
 이 워크숍에서 웡과 참가자들은 악보를 함께 읽고 수행한다. 새로운 접근을 찾는 즉흥 음악가와 퍼포머, 소리를 구성하는 다른 방식을 탐구하는 작곡가, 즉흥의 여지를 남겨두는 기보 음악에 호기심이 있는 비전문 음악가 모두에게 열려 있다.
 
-참가자는 악기, 목소리, 또는 사운드 생성 앱을 준비해 오는 것을 권장한다.`.trim(),
+참가자는 악기, 목소리, 또는 소리를 생성하는 모바일 앱 등 준비해 오는 것을 권장한다.`.trim(),
       en: `Eric Wong will present to interested participants a selection of compositions by Wandelweiser composers, whose work attends not only to what is written in the score, but also to the conditions surrounding each performance. This includes room tone, sounds produced by other performers, the presence of the audience, and, at times, the internal sounds perceived by the performers themselves. Many of these works are characterized by extended durations and a strong emphasis on silence.
 
 In this workshop, Wong and participants will study and work through the scores together. The session is open to improvising musicians and performers who are seeking new approaches, composers interested in alternative ways of shaping sound, and non-professional musicians who are curious about written music that leaves space for improvisation.
 
 Participants are recommended to bring a musical instrument to the workshop, which includes voice or sound generating apps.`.trim(),
     },
+    images: [
+      {
+        src: '/images/workshops/eric-wong-workshop.png',
+        alt: {
+          kr: '에릭 웡 워크숍 대표 이미지',
+          en: 'Eric Wong workshop representative image',
+        },
+      },
+    ],
   },
   {
     id: 'workshop-tuukka-laurila',
@@ -121,6 +130,15 @@ Participants are recommended to bring a musical instrument to the workshop, whic
       kr: `이 렉쳐는 단순하지만 압도적인 전제, 즉 열한 개의 드럼 머신 사운드가 가질 수 있는 모든 배열을 연주하는 작업을 소개한다. 3,900만 개가 넘는 고유한 순열을 다루며, Roland TR-909의 상징적인 사운드를 사용한다. 이 작업은 한계, 반복, 패턴의 변형, 주의에 대한 체계적이면서도 이상할 만큼 명상적인 탐구가 된다.`.trim(),
       en: `This talk presents a piece built around a simple but overwhelming premise: playing every possible ordering of eleven drum machine sounds — over 39 million unique permutations. Using the iconic sounds of the Roland TR-909, the work becomes a systematic yet strangely meditative exploration of limits, repetition, pattern deformation, and attention.`.trim(),
     },
+    images: [
+      {
+        src: '/images/workshops/roc-jimenez-evol-lecture.png',
+        alt: {
+          kr: '록 히메네즈 데 시스네로스/이볼 렉쳐 대표 이미지',
+          en: 'Roc Jimenez de Cisneros/EVOL lecture representative image',
+        },
+      },
+    ],
   },
   {
     id: 'workshop-haryung-lee',
@@ -128,9 +146,18 @@ Participants are recommended to bring a musical instrument to the workshop, whic
     artist: { kr: '이하령', en: 'Haryung Lee' },
     title: { kr: '워크숍', en: 'Workshop' },
     description: {
-      kr: `이하령은 페스티벌 장소 인근에서 수집한 스티로폼 상자로 강아지 형태의 조각을 만드는 워크숍을 진행한다.`.trim(),
-      en: `Haryung Lee leads a workshop in which participants make dog-shaped sculptures from styrofoam boxes collected near the festival venue.`.trim(),
+      kr: `페스티벌 장소 인근의 동네를 산책하며 스티로폼 상자를 하나씩 줍는다. 주운 스티로폼 상자를 들고 출발지로 다시 모인다. 상자의 네 모서리를 열선으로 잘라, 강아지를 만든다. 각자 자신이 만든 강아지를 소장한다.`.trim(),
+      en: `Participants walk through the neighborhood near the festival venue and each collect a styrofoam box. They then return to the starting point with the boxes they have found. Using a hot wire, they cut the four corners of the box to make a dog. Each participant keeps the dog they have made.`.trim(),
     },
+    images: [
+      {
+        src: '/images/workshops/haryung-lee-workshop.png',
+        alt: {
+          kr: '이하령 워크숍 대표 이미지',
+          en: 'Haryung Lee workshop representative image',
+        },
+      },
+    ],
   },
   {
     id: 'workshop-nick-klein',
@@ -159,6 +186,15 @@ Chen activates her instruments, invoking a kind of joint resonant body/space tra
 
 The session will begin with a short performance/demonstration before moving into a talk about her practice. Participants will also listen to music from other projects and discuss their approaches.`.trim(),
     },
+    images: [
+      {
+        src: '/images/workshops/audrey-chen-lecture.png',
+        alt: {
+          kr: '오드리 첸 렉쳐 대표 이미지',
+          en: 'Audrey Chen lecture representative image',
+        },
+      },
+    ],
   },
   {
     id: 'workshop-dianaband',
