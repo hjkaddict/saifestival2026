@@ -165,7 +165,7 @@ export default {
       window.clearTimeout(this.scrollRevealTimer)
       this.scrollRevealTimer = window.setTimeout(() => {
         this.isScrolling = false
-      }, 820)
+      }, 120)
     },
     memberSplitStyle(name, sectionIdx, memberIdx) {
       const scale = this.locale.lang === 'kr' ? 1 : ABOUT_SPLIT_SCALE_LATIN
@@ -266,9 +266,10 @@ export default {
   display: grid;
   place-items: center;
   padding: clamp(72px, 12vw, 132px) clamp(20px, 8vw, 112px);
+  background: #fff;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.48s cubic-bezier(0.45, 0, 0.2, 1);
+  transition: opacity 1.8s cubic-bezier(0.45, 0, 0.2, 1);
 }
 
 .about-page--scrolling .about-page__scroll-poem {
