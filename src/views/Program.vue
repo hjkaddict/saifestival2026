@@ -243,13 +243,7 @@ export default {
       return String(label || '').trim().split(/\s+/).filter(Boolean)
     },
     splitStyleForWorkshopLabel(label) {
-      const style = this.splitStyleForLabel(label)
-      if (this.locale.lang === 'kr') return style
-      const scale = 0.56
-      return {
-        '--program-split-shift-top': `${(parseFloat(style['--program-split-shift-top']) * scale).toFixed(2)}px`,
-        '--program-split-shift-bottom': `${(parseFloat(style['--program-split-shift-bottom']) * scale).toFixed(2)}px`,
-      }
+      return this.splitStyleForLabel(label)
     },
     splitStyleForLabel(label) {
       const key = textSeedHash(`${label}\0program-link`)
@@ -260,7 +254,8 @@ export default {
         return h / 4294967296
       }
       const invert = u(101) >= 0.5
-      const base = 0.8 + u(7) * 1.1
+      const scale = this.locale.lang === 'kr' ? 1 : 0.56
+      const base = (0.8 + u(7) * 1.1) * scale
       return {
         '--program-split-shift-top': `${((invert ? 1 : -1) * base).toFixed(2)}px`,
         '--program-split-shift-bottom': `${((invert ? -1 : 1) * base * (0.85 + u(13) * 0.3)).toFixed(2)}px`,
@@ -568,7 +563,36 @@ export default {
   }
 
   #perf-0717 {
-    margin-top: 28rem;
+    margin-top: 32rem;
+  }
+
+  #perf-0711 {
+    position: relative;
+  }
+
+  #perf-0711::after {
+    content: '';
+    position: absolute;
+    top: calc(100% + 0.9rem);
+    left: 50%;
+    width: 1px;
+    height: 28.5rem;
+    background: rgba(10, 10, 10, 0.82);
+    pointer-events: none;
+    transform: translateX(-50%);
+  }
+
+  #perf-0711::before {
+    content: '';
+    position: absolute;
+    top: calc(100% + 29.05rem);
+    left: 50%;
+    width: 0.46rem;
+    height: 0.46rem;
+    border-right: 1px solid rgba(10, 10, 10, 0.82);
+    border-bottom: 1px solid rgba(10, 10, 10, 0.82);
+    pointer-events: none;
+    transform: translateX(-50%) rotate(45deg);
   }
 
   .program-section__description {
