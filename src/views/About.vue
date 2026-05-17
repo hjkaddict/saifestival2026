@@ -136,7 +136,7 @@ export default {
         '이게 노는건지 whether this is play',
         '작업인건지… or work…',
         '',
-        '대전은 더울텐데… Daejeon is going to be hot…',
+        ,
       ]
     },
   },
@@ -437,6 +437,5 @@ export default {
   .about-page__scroll-poem {
     padding: 72px 20px 48px;
   }
-
 }
 </style>
