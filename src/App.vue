@@ -19,7 +19,10 @@
         v-if="$route.name === 'ArtistDetail'"
         type="button"
         class="nav-btn global-nav__btn global-nav__center-btn"
-        :class="{ 'global-nav__btn--active': artistLineupOpen }"
+        :class="{
+          'global-nav__btn--active': artistLineupOpen,
+          'global-nav__center-btn--hint': artistLineupHint,
+        }"
         @click="toggleArtistLineup"
       >
         <span v-if="artistLineupOpen" class="global-nav__active-text">
@@ -120,11 +123,13 @@ export default {
     return {
       locale: localeStore,
       artistLineupOpen: false,
+      artistLineupHint: false,
       programMenuOpen: false,
       activeScrollbarElements: new Set(),
       scrollbarRevealTimers: new WeakMap(),
       scrollSaveFrame: null,
       scrollRestoreFrame: null,
+      artistLineupHintTimer: null,
     }
   },
   mounted() {
@@ -145,6 +150,7 @@ export default {
     if (this.scrollRestoreFrame) {
       window.cancelAnimationFrame(this.scrollRestoreFrame)
     }
+    window.clearTimeout(this.artistLineupHintTimer)
     this.activeScrollbarElements.forEach((element) => {
       window.clearTimeout(this.scrollbarRevealTimers.get(element))
       element.classList.remove('is-scrolling')
@@ -159,6 +165,10 @@ export default {
     '$route.name'() {
       this.artistLineupOpen = false
       this.programMenuOpen = false
+      this.triggerArtistLineupHint()
+    },
+    '$route.params.id'() {
+      this.triggerArtistLineupHint()
     },
   },
   computed: {
@@ -174,6 +184,22 @@ export default {
   methods: {
     syncDocumentLang() {
       document.documentElement.lang = this.locale.lang === 'kr' ? 'ko' : 'en'
+    },
+    isMobileViewport() {
+      if (typeof window === 'undefined') return false
+      return window.matchMedia('(max-width: 768px), (hover: none), (pointer: coarse)').matches
+    },
+    triggerArtistLineupHint() {
+      window.clearTimeout(this.artistLineupHintTimer)
+      this.artistLineupHint = false
+      if (this.$route.name !== 'ArtistDetail' || !this.isMobileViewport()) return
+
+      requestAnimationFrame(() => {
+        this.artistLineupHint = true
+        this.artistLineupHintTimer = window.setTimeout(() => {
+          this.artistLineupHint = false
+        }, 1200)
+      })
     },
     onHistoryScrollRestore(event) {
       this.animateWindowScrollTo(event.detail)
@@ -777,6 +803,10 @@ html::before {
     display: inline-flex;
   }
 
+  .global-nav__center-btn--hint {
+    animation: global-nav-hint-blink 0.6s ease-in-out 2;
+  }
+
   .global-nav .global-nav__program-menu {
     position: absolute;
     top: calc(100% - 0.15rem);
@@ -802,6 +832,23 @@ html::before {
     text-align: center;
     white-space: nowrap;
     cursor: pointer;
+  }
+}
+
+@keyframes global-nav-hint-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.18;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .global-nav__center-btn--hint {
+    animation: none;
   }
 }
 </style>

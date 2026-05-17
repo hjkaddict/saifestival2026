@@ -876,17 +876,10 @@ export default {
     margin-bottom: 2rem;
   }
 
-  .artist-detail--bio-expanded .artist-detail__media {
-    position: relative;
-  }
-
   .artist-detail--bio-expanded .artist-detail__text {
-    position: absolute;
-    z-index: 3;
-    top: 0;
-    left: 0;
+    position: static;
     width: 100%;
-    margin: 0;
+    margin: 18px 0 0;
   }
 }
 
