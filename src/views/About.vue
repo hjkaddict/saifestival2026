@@ -192,7 +192,7 @@ export default {
   box-sizing: border-box;
   width: 100%;
   padding: clamp(72px, 12vw, 132px) clamp(20px, 8vw, 112px);
-  background: #fff;
+  background: rgba(255, 255, 255, 0.86);
   color: rgba(10, 10, 10, 0.82);
 }
 
@@ -209,7 +209,7 @@ export default {
 }
 
 .about-page--scrolling .about-page__inner {
-  opacity: 0.16;
+  opacity: 0.42;
   transition-duration: 0.08s;
 }
 
@@ -266,7 +266,7 @@ export default {
   display: grid;
   place-items: center;
   padding: clamp(72px, 12vw, 132px) clamp(20px, 8vw, 112px);
-  background: #fff;
+  background: rgba(255, 255, 255, 0.38);
   opacity: 0;
   pointer-events: none;
   transition: opacity 1.8s cubic-bezier(0.45, 0, 0.2, 1);

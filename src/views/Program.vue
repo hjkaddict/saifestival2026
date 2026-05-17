@@ -527,6 +527,12 @@ export default {
   .program-page {
     --program-page-y: clamp(72px, 8vw, 104px);
     --program-page-x: clamp(24px, 4vw, 64px);
+    --program-performance-arrow-length: clamp(
+      7rem,
+      calc((var(--app-vh, 1vh) * 100) - (var(--program-page-y) * 2) - 17rem),
+      28.5rem
+    );
+    --program-performance-arrow-gap: calc(var(--program-performance-arrow-length) + 3.5rem);
   }
 
   .program-page__inner {
@@ -579,7 +585,7 @@ export default {
   }
 
   #perf-0717 {
-    margin-top: 32rem;
+    margin-top: var(--program-performance-arrow-gap);
   }
 
   #perf-0711 {
@@ -592,7 +598,7 @@ export default {
     top: calc(100% + 0.9rem);
     left: 50%;
     width: 1px;
-    height: 28.5rem;
+    height: var(--program-performance-arrow-length);
     background: rgba(10, 10, 10, 0.82);
     pointer-events: none;
     transform: translateX(-50%);
@@ -601,14 +607,14 @@ export default {
   #perf-0711::before {
     content: '';
     position: absolute;
-    top: calc(100% + 29.05rem);
+    top: calc(100% + 0.9rem + var(--program-performance-arrow-length));
     left: 50%;
     width: 0.46rem;
     height: 0.46rem;
     border-right: 1px solid rgba(10, 10, 10, 0.82);
     border-bottom: 1px solid rgba(10, 10, 10, 0.82);
     pointer-events: none;
-    transform: translateX(-50%) rotate(45deg);
+    transform: translate(-50%, -50%) rotate(45deg);
   }
 
   .program-section__description {
