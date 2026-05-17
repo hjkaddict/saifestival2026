@@ -286,8 +286,21 @@ export default {
 }
 
 .about-page__body :deep(.about-page__scroll-only) {
-  text-decoration: line-through;
+  position: relative;
+  display: inline-block;
   transition: opacity 0.48s cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+.about-page__body :deep(.about-page__scroll-only::after) {
+  content: '';
+  position: absolute;
+  left: -0.03em;
+  right: -0.03em;
+  top: 50%;
+  z-index: 3;
+  border-top: 0.08em solid currentColor;
+  pointer-events: none;
+  transform: translateY(-50%);
 }
 
 .about-page--scrolling .about-page__body :deep(.about-page__scroll-only) {

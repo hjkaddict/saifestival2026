@@ -38,6 +38,45 @@
         </span>
       </button>
 
+      <button
+        v-if="$route.name === 'Program'"
+        type="button"
+        class="nav-btn global-nav__btn global-nav__center-btn global-nav__program-toggle"
+        :class="{ 'global-nav__btn--active': programMenuOpen }"
+        @click.stop="toggleProgramMenu"
+      >
+        <span v-if="programMenuOpen" class="global-nav__active-text">
+          <span :class="navTextClass('program')">{{ navLabel('program') }}</span>
+        </span>
+        <span v-else class="global-nav__split" :style="navSplitStyle('program')">
+          <span class="global-nav__split-ghost">
+            <span :class="navTextClass('program')">{{ navLabel('program') }}</span>
+          </span>
+          <span class="global-nav__split-half global-nav__split-half--top" aria-hidden="true">
+            <span :class="navTextClass('program')">{{ navLabel('program') }}</span>
+          </span>
+          <span class="global-nav__split-half global-nav__split-half--bottom" aria-hidden="true">
+            <span :class="navTextClass('program')">{{ navLabel('program') }}</span>
+          </span>
+        </span>
+      </button>
+
+      <div
+        v-if="$route.name === 'Program' && programMenuOpen"
+        class="global-nav__program-menu"
+        @click.stop
+      >
+        <button
+          v-for="item in programNavItems"
+          :key="item.id"
+          type="button"
+          class="global-nav__program-item"
+          @click="scrollToProgramSection(item.id)"
+        >
+          <span :class="navTextClass('program')">{{ item.label }}</span>
+        </button>
+      </div>
+
       <button type="button" class="nav-btn global-nav__btn" @click="toggleLang">
         <span class="global-nav__split" :style="navSplitStyle('language')">
           <span class="global-nav__split-ghost">
@@ -69,6 +108,7 @@ import { localeStore } from '@/store/locale.js'
 const NAV_SPLIT_SCALE_LATIN = 0.56
 const MOBILE_LINK_DELAY_MS = 360
 const SCROLLBAR_REVEAL_MS = 520
+const SCROLL_RESTORE_MS = 220
 
 function navSeedHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
@@ -80,20 +120,31 @@ export default {
     return {
       locale: localeStore,
       artistLineupOpen: false,
+      programMenuOpen: false,
       activeScrollbarElements: new Set(),
       scrollbarRevealTimers: new WeakMap(),
+      scrollSaveFrame: null,
+      scrollRestoreFrame: null,
     }
   },
   mounted() {
     this.syncDocumentLang()
+    window.addEventListener('saifestival:history-scroll-restore', this.onHistoryScrollRestore)
     window.addEventListener('artists-lineup-state', this.onArtistLineupState)
     window.addEventListener('click', this.handleMobileLinkClick, true)
     document.addEventListener('scroll', this.revealScrollbarDuringScroll, true)
   },
   beforeUnmount() {
+    window.removeEventListener('saifestival:history-scroll-restore', this.onHistoryScrollRestore)
     window.removeEventListener('artists-lineup-state', this.onArtistLineupState)
     window.removeEventListener('click', this.handleMobileLinkClick, true)
     document.removeEventListener('scroll', this.revealScrollbarDuringScroll, true)
+    if (this.scrollSaveFrame) {
+      window.cancelAnimationFrame(this.scrollSaveFrame)
+    }
+    if (this.scrollRestoreFrame) {
+      window.cancelAnimationFrame(this.scrollRestoreFrame)
+    }
     this.activeScrollbarElements.forEach((element) => {
       window.clearTimeout(this.scrollbarRevealTimers.get(element))
       element.classList.remove('is-scrolling')
@@ -103,14 +154,61 @@ export default {
   watch: {
     'locale.lang'() {
       this.syncDocumentLang()
+      this.programMenuOpen = false
     },
     '$route.name'() {
       this.artistLineupOpen = false
+      this.programMenuOpen = false
+    },
+  },
+  computed: {
+    programNavItems() {
+      const isKo = this.locale.lang === 'kr'
+      return [
+        { id: 'exhibition', label: isKo ? '전시' : 'Exhibition' },
+        { id: 'performance', label: isKo ? '퍼포먼스' : 'Performance' },
+        { id: 'workshop', label: isKo ? '워크숍/렉쳐' : 'Workshop/Lecture' },
+      ]
     },
   },
   methods: {
     syncDocumentLang() {
       document.documentElement.lang = this.locale.lang === 'kr' ? 'ko' : 'en'
+    },
+    onHistoryScrollRestore(event) {
+      this.animateWindowScrollTo(event.detail)
+    },
+    easeOutCubic(t) {
+      return 1 - Math.pow(1 - t, 3)
+    },
+    animateWindowScrollTo(position) {
+      if (!position) return
+      if (this.scrollRestoreFrame) {
+        window.cancelAnimationFrame(this.scrollRestoreFrame)
+      }
+
+      const startLeft = window.scrollX
+      const startTop = window.scrollY
+      const targetLeft = position.left || 0
+      const targetTop = position.top || 0
+      const startTime = performance.now()
+
+      const step = (now) => {
+        const progress = Math.min(1, (now - startTime) / SCROLL_RESTORE_MS)
+        const eased = this.easeOutCubic(progress)
+        window.scrollTo(
+          startLeft + (targetLeft - startLeft) * eased,
+          startTop + (targetTop - startTop) * eased,
+        )
+
+        if (progress < 1) {
+          this.scrollRestoreFrame = window.requestAnimationFrame(step)
+        } else {
+          this.scrollRestoreFrame = null
+        }
+      }
+
+      this.scrollRestoreFrame = window.requestAnimationFrame(step)
     },
     toggleLang() {
       const newLang = this.locale.lang === 'kr' ? 'en' : 'kr'
@@ -118,6 +216,19 @@ export default {
     },
     toggleArtistLineup() {
       window.dispatchEvent(new Event('artists-lineup-toggle'))
+    },
+    toggleProgramMenu() {
+      this.programMenuOpen = !this.programMenuOpen
+    },
+    scrollToProgramSection(id) {
+      this.programMenuOpen = false
+      const section = document.getElementById(id)
+      if (!section) return
+
+      const navHeight = document.querySelector('.global-nav')?.getBoundingClientRect().height || 0
+      const top = section.getBoundingClientRect().top + window.scrollY - navHeight - 8
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
+      window.history.replaceState(null, '', `${this.$route.path}#${id}`)
     },
     onArtistLineupState(event) {
       this.artistLineupOpen = Boolean(event.detail?.open)
@@ -193,13 +304,15 @@ export default {
     },
     navLabel(kind) {
       if (kind === 'main') return this.locale.lang === 'kr' ? '메인' : 'MAIN'
-      if (kind === 'lineup') return this.locale.lang === 'kr' ? '라인업' : 'LINE-UP'
+      if (kind === 'lineup') return this.locale.lang === 'kr' ? '아티스트' : 'Artists'
+      if (kind === 'program') return this.locale.lang === 'kr' ? '프로그램' : 'PROGRAM'
       return this.locale.lang === 'kr' ? 'EN' : '한글'
     },
     navTextClass(kind) {
       const isKo =
         (kind === 'main' && this.locale.lang === 'kr') ||
         (kind === 'lineup' && this.locale.lang === 'kr') ||
+        (kind === 'program' && this.locale.lang === 'kr') ||
         (kind === 'language' && this.locale.lang !== 'kr')
       return isKo ? 'global-nav__ko' : 'global-nav__en'
     },
@@ -449,6 +562,11 @@ html::before {
   transform: translateX(-50%);
 }
 
+.global-nav__program-toggle,
+.global-nav__program-menu {
+  display: none;
+}
+
 /* 두 버튼: 홈 메뉴와 같은 산세리프/명조, 검정 글자·배경 없음 */
 .global-nav__en {
   font-family: var(--font-home-en);
@@ -478,11 +596,21 @@ html::before {
 }
 
 .global-nav__active-text {
+  position: relative;
   display: inline-block;
   background: #fff;
-  text-decoration: line-through;
-  text-decoration-thickness: 0.08em;
-  text-decoration-color: currentColor;
+}
+
+.global-nav__active-text::after {
+  content: '';
+  position: absolute;
+  left: -0.03em;
+  right: -0.03em;
+  top: 50%;
+  z-index: 3;
+  border-top: 0.08em solid currentColor;
+  pointer-events: none;
+  transform: translateY(-50%);
 }
 
 .global-nav__split-ghost > span,
@@ -614,6 +742,11 @@ html::before {
   white-space: nowrap;
 }
 
+.global-nav .global-nav__program-toggle,
+.global-nav .global-nav__program-menu {
+  display: none;
+}
+
 @media (max-width: 768px) {
   html,
   body {
@@ -638,6 +771,37 @@ html::before {
     top: 0;
     padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 14px;
     background: #fff;
+  }
+
+  .global-nav .global-nav__program-toggle {
+    display: inline-flex;
+  }
+
+  .global-nav .global-nav__program-menu {
+    position: absolute;
+    top: calc(100% - 0.15rem);
+    left: 50%;
+    z-index: 1;
+    display: grid;
+    gap: 0.08rem;
+    padding: 0.3rem 0.65rem 0.45rem;
+    background: #fff;
+    pointer-events: auto;
+    transform: translateX(-50%);
+  }
+
+  .global-nav__program-item {
+    display: block;
+    padding: 0.12rem 0;
+    border: 0;
+    background: transparent;
+    color: #0a0a0a;
+    font: inherit;
+    font-size: 0.9rem;
+    line-height: 1.42;
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
   }
 }
 </style>

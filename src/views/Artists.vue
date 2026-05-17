@@ -273,7 +273,8 @@ export default {
     },
     activeBio() {
       if (!this.detailArtist) return ''
-      const localized = this.locale.lang === 'kr' ? this.detailArtist.bio_kr : this.detailArtist.bio_en
+      const localized =
+        this.locale.lang === 'kr' ? this.detailArtist.bio_kr : this.detailArtist.bio_en
       const fallback = this.detailArtist.bio_en || this.detailArtist.bio_kr || ''
       return (localized && localized.trim() ? localized : fallback).trim()
     },
@@ -388,7 +389,11 @@ export default {
       const normalized = text.trim()
       if (normalized.length <= limit) return normalized
       const sliced = normalized.slice(0, limit).trimEnd()
-      const boundary = Math.max(sliced.lastIndexOf(' '), sliced.lastIndexOf('\n'), sliced.lastIndexOf('\t'))
+      const boundary = Math.max(
+        sliced.lastIndexOf(' '),
+        sliced.lastIndexOf('\n'),
+        sliced.lastIndexOf('\t'),
+      )
       if (boundary <= 0) return `${sliced}...`
       return `${sliced.slice(0, boundary).trimEnd()}...`
     },
@@ -427,7 +432,7 @@ export default {
         return h / 4294967296
       }
       const invert = u(101) >= 0.5
-      const base = 0.28 + u(7) * 0.36
+      const base = 0.95 + u(7) * 1.15
       const topJitter = 0.88 + u(13) * 0.3
       const botJitter = 0.88 + u(29) * 0.3
       const signTop = invert ? 1 : -1
@@ -446,10 +451,16 @@ export default {
       return this.splitShiftVars(seed, scale)
     },
     moreSplitStyle() {
-      return this.splitShiftVars(`${this.detailArtist?.id || 'artist'}\0more`, ARTISTS_SPLIT_SCALE_LATIN)
+      return this.splitShiftVars(
+        `${this.detailArtist?.id || 'artist'}\0more`,
+        ARTISTS_SPLIT_SCALE_LATIN,
+      )
     },
     websiteSplitStyle() {
-      return this.splitShiftVars(`${this.detailArtist?.id || 'artist'}\0website`, ARTISTS_SPLIT_SCALE_LATIN)
+      return this.splitShiftVars(
+        `${this.detailArtist?.id || 'artist'}\0website`,
+        ARTISTS_SPLIT_SCALE_LATIN,
+      )
     },
     preloadImage(src) {
       if (!src || typeof window === 'undefined') return Promise.resolve()
@@ -715,7 +726,7 @@ export default {
 .artist-detail__more {
   display: inline-block;
   margin-left: 0.35em;
-  padding: 0;
+  padding: 0 0.14em;
   border: 0;
   background: #fff;
   color: inherit;
@@ -723,6 +734,17 @@ export default {
   font: inherit;
   font-size: 0.72em;
   vertical-align: baseline;
+}
+
+.artist-detail__more:hover,
+.artist-detail__more:focus-visible {
+  background: #0a0a0a;
+  color: #fff;
+}
+
+.artist-detail__more:hover .home-text__en,
+.artist-detail__more:focus-visible .home-text__en {
+  background: #0a0a0a;
 }
 
 .artist-detail__more .home-text__en {
@@ -1030,11 +1052,20 @@ export default {
 }
 
 .home-text__current-artist {
+  position: relative;
   display: inline-block;
-  text-decoration: line-through;
-  text-decoration-thickness: 0.08em;
-  text-decoration-color: currentColor;
-  text-underline-offset: 0.12em;
+}
+
+.home-text__current-artist::after {
+  content: '';
+  position: absolute;
+  left: -0.03em;
+  right: -0.03em;
+  top: 50%;
+  z-index: 3;
+  border-top: 0.08em solid currentColor;
+  pointer-events: none;
+  transform: translateY(-50%);
 }
 
 .home-text__link:focus-visible {

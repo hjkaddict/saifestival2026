@@ -19,4 +19,52 @@ The acoustic conditions inside the exhibition space also operate as a central co
     kr: `금, 토: 오후 12시 - 오후 7시 | 일 - 목: 오후 12시 - 오후 8시`.trim(),
     en: `Fri, Sat: 12pm - 7pm | Sun - Thu: 12pm - 8pm`.trim(),
   },
+  works: [
+    {
+      id: 'andrew-ross',
+      artist: { kr: '앤드류 로스', en: 'Andrew Ross' },
+      title: { kr: '', en: '' },
+      description: { kr: '', en: '' },
+    },
+    {
+      id: 'sollee-kim',
+      artist: { kr: '김솔이', en: 'Sollee Kim' },
+      title: { kr: '', en: '' },
+      description: { kr: '', en: '' },
+    },
+    {
+      id: 'haryung-lee',
+      artist: { kr: '이하령', en: 'Haryung Lee' },
+      title: { kr: '', en: '' },
+      description: { kr: '', en: '' },
+    },
+    {
+      id: 'tuukka-laurila',
+      artist: { kr: '투카 라우리라', en: 'Tuukka Laurila' },
+      title: { kr: '', en: '' },
+      description: { kr: '', en: '' },
+    },
+    {
+      id: 'hugo-esquinca',
+      artist: { kr: '휴고 에스킨카', en: 'Hugo Esquinca' },
+      title: { kr: 'CONDICIÓN_0726', en: 'CONDICIÓN_0726' },
+      description: { kr: '', en: '' },
+    },
+    {
+      id: 'nick-klein',
+      artist: { kr: '닉 클라인', en: 'Nick Klein' },
+      title: { kr: '', en: '' },
+      description: { kr: '', en: '' },
+    },
+    {
+      id: 'li-qihang',
+      artist: { kr: '리 치항', en: 'Li Qihang' },
+      title: { kr: '머큐리 파티오', en: 'Mercury Patio' },
+      description: { kr: '', en: '' },
+    },
+  ],
+}
+
+export function getExhibitionWork(id) {
+  return programExhibition.works.find((work) => work.id === id) || null
 }

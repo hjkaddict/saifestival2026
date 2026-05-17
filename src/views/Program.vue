@@ -22,6 +22,60 @@
         </header>
 
         <div class="program-section__content">
+          <div v-if="program.id === 'exhibition'" class="program-section__works">
+            <router-link
+              v-for="work in exhibitionWorks"
+              :key="work.id"
+              class="program-section__work"
+              :to="`/program/exhibition/${work.id}`"
+            >
+              <span class="program-section__work-artist">
+                <span
+                  v-for="(labelPart, labelIdx) in splitLabelParts(localized(work.artist))"
+                  :key="`${work.id}-artist-${labelIdx}`"
+                  class="program-day__split program-section__work-artist-text"
+                  :style="splitStyleForLabel(labelPart)"
+                >
+                  <span class="program-day__split-ghost">{{ labelPart }}</span>
+                  <span
+                    class="program-day__split-half program-day__split-half--top"
+                    aria-hidden="true"
+                  >
+                    {{ labelPart }}
+                  </span>
+                  <span
+                    class="program-day__split-half program-day__split-half--bottom"
+                    aria-hidden="true"
+                  >
+                    {{ labelPart }}
+                  </span>
+                </span>
+              </span>
+              <span v-if="localized(work.title)" class="program-section__work-title">
+                <span
+                  v-for="(labelPart, labelIdx) in splitLabelParts(localized(work.title))"
+                  :key="`${work.id}-title-${labelIdx}`"
+                  class="program-day__split program-section__work-title-text"
+                  :style="splitStyleForLabel(labelPart)"
+                >
+                  <span class="program-day__split-ghost">{{ labelPart }}</span>
+                  <span
+                    class="program-day__split-half program-day__split-half--top"
+                    aria-hidden="true"
+                  >
+                    {{ labelPart }}
+                  </span>
+                  <span
+                    class="program-day__split-half program-day__split-half--bottom"
+                    aria-hidden="true"
+                  >
+                    {{ labelPart }}
+                  </span>
+                </span>
+              </span>
+            </router-link>
+          </div>
+
           <div
             class="program-section__description"
             v-html="localized(program.data.description)"
@@ -227,6 +281,11 @@ export default {
         })),
       }))
     },
+    exhibitionWorks() {
+      return [...(programExhibition.works || [])].sort((a, b) =>
+        (a.artist?.en || '').localeCompare(b.artist?.en || '', 'en'),
+      )
+    },
   },
   methods: {
     localized(field) {
@@ -357,6 +416,59 @@ export default {
   font-style: italic;
 }
 
+.program-section__works {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0 0 1.4rem;
+}
+
+.program-section__work {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.program-section__work:hover,
+.program-section__work:focus-visible {
+  color: #000;
+  outline: none;
+}
+
+.program-section__work-artist,
+.program-section__work-title {
+  display: inline;
+}
+
+.program-section__work-artist-text {
+  margin-right: 0.25em;
+}
+
+.program-section__work-artist-text:last-child {
+  margin-right: 0;
+}
+
+.program-section__work-title-text {
+  margin-right: 0.25em;
+  font-weight: 1;
+}
+
+.program-section__work-title-text:last-child {
+  margin-right: 0;
+}
+
+.program-section__work-title {
+  color: rgba(10, 10, 10, 0.34);
+  font-style: italic;
+  font-weight: 1;
+  text-shadow:
+    0 0 0.2px rgba(10, 10, 10, 0.12),
+    0.1px 0.05px 0 rgba(10, 10, 10, 0.04);
+}
+
+.program-section__work-title::before {
+  content: ' ';
+}
+
 .program-section__schedule {
   margin-top: 2.2rem;
 }
@@ -374,6 +486,9 @@ export default {
   font-family: var(--font-home-en);
   font-weight: var(--font-home-en-weight);
   letter-spacing: 0.055em;
+  text-decoration: underline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.12em;
 }
 
 .program-page--ko .program-day__date {
@@ -478,17 +593,23 @@ export default {
 }
 
 .program-day__artist:hover .program-day__split-ghost,
-.program-day__artist:focus-visible .program-day__split-ghost {
+.program-day__artist:focus-visible .program-day__split-ghost,
+.program-section__work:hover .program-day__split-ghost,
+.program-section__work:focus-visible .program-day__split-ghost {
   opacity: 1;
 }
 
 .program-day__artist:hover .program-day__split-half,
-.program-day__artist:focus-visible .program-day__split-half {
+.program-day__artist:focus-visible .program-day__split-half,
+.program-section__work:hover .program-day__split-half,
+.program-section__work:focus-visible .program-day__split-half {
   opacity: 0;
 }
 
 .program-day__artist:hover .program-day__split::after,
-.program-day__artist:focus-visible .program-day__split::after {
+.program-day__artist:focus-visible .program-day__split::after,
+.program-section__work:hover .program-day__split::after,
+.program-section__work:focus-visible .program-day__split::after {
   opacity: 1;
 }
 
@@ -522,6 +643,25 @@ export default {
     --program-page-y: 72px;
     --program-page-x: 20px;
     padding: 72px 20px 48px;
+  }
+
+  .program-section__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .program-section__works,
+  .program-section__schedule {
+    order: 1;
+  }
+
+  .program-section__schedule {
+    margin-top: 0;
+    margin-bottom: 1.4rem;
+  }
+
+  .program-section__description {
+    order: 2;
   }
 }
 
