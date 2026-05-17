@@ -865,7 +865,8 @@ export default {
 }
 
 .home-text__menu {
-  margin: 0;
+  width: min(100%, 42rem);
+  margin: 0 auto;
   text-align: center;
   font-family: var(--font-home-en);
   font-weight: var(--font-home-en-weight);

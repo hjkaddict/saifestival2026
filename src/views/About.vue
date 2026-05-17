@@ -130,29 +130,25 @@ export default {
 
       if (!isKo) {
         return [
-          'SA–I Festival: Interventions',
+          'The unfamiliar',
+          'somehow, with one another',
           '',
-          'Strange ones',
-          'absurdly',
+          'mingle',
+          'intervene',
+          'linger',
           '',
-          'mingling',
-          'intervening',
-          'lingering',
+          'to intrude or not;',
+          'to allow others in or not;',
+          '… to step in or not…',
           '',
-          'whether to interrupt you or not',
-          'whether to let myself open or not,',
-          '…whether to step in or not…',
-          '',
-          'whether this is play',
-          'or work…',
+          'whether this is all for fun',
+          '… or for work…',
           '',
           ,
         ]
       }
 
       return [
-        '사–이 페스티벌: 끼어드는 틈',
-        '',
         '낯선 것들이',
         '어이없게',
         '',
