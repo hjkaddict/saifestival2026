@@ -381,7 +381,7 @@ export default {
 }
 
 .about-page__team-row {
-  margin: 0 0 0.85rem;
+  margin: 0 0 0.42rem;
 }
 
 .about-page__team-row:last-child {

@@ -74,7 +74,13 @@
           class="artist-detail__bio"
           :class="locale.lang === 'kr' ? 'artist-detail__bio--ko' : 'artist-detail__bio--en'"
         >
-          <span class="artist-detail__bio-text">{{ displayedBio }}</span>
+          <template v-for="(paragraph, paragraphIdx) in displayedBioParagraphs" :key="paragraphIdx">
+            <span class="artist-detail__bio-text">{{ paragraph }}</span>
+            <template v-if="paragraphIdx < displayedBioParagraphs.length - 1">
+              <br />
+              <br />
+            </template>
+          </template>
           <button
             v-if="isBioCollapsed"
             type="button"
@@ -280,6 +286,9 @@ export default {
     displayedBio() {
       if (!this.isBioCollapsed) return this.activeBio
       return this.truncateBio(this.activeBio, 200)
+    },
+    displayedBioParagraphs() {
+      return this.displayedBio.split(/\n\s*\n/).filter((paragraph) => paragraph.trim())
     },
     websiteLabel() {
       return this.detailArtist?.website || ''
@@ -668,6 +677,7 @@ export default {
 
 .artist-detail__lineup .home-text__menu {
   opacity: 1;
+  text-align: center;
   transition: opacity 0.36s ease;
 }
 
@@ -792,7 +802,7 @@ export default {
 @media (max-width: 768px) {
   .artist-detail {
     --artist-detail-x: 20px;
-    padding: 72px var(--artist-detail-x) 48px;
+    padding: 72px var(--artist-detail-x) 120px;
   }
 
   .artist-detail__title {
@@ -826,10 +836,22 @@ export default {
     order: 2;
     width: 100%;
     margin: 18px 0 0;
+    padding-bottom: 5rem;
+    box-sizing: border-box;
+  }
+
+  .artist-detail__text::after {
+    content: '';
+    display: block;
+    height: 3rem;
   }
 
   .artist-detail__bio {
     display: inline;
+  }
+
+  .artist-detail__website {
+    margin-bottom: 2rem;
   }
 
   .artist-detail--bio-expanded .artist-detail__media {

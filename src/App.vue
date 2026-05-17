@@ -635,8 +635,9 @@ html::before {
   }
 
   .global-nav {
-    top: 20px;
-    padding: 0 20px;
+    top: 0;
+    padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 14px;
+    background: #fff;
   }
 }
 </style>
