@@ -530,10 +530,22 @@ export default {
   }
 
   .program-page__inner {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(1.5rem, 3vw, 3rem);
     width: 100%;
+  }
+
+  .program-page__inner::before {
+    content: '';
+    position: absolute;
+    top: 4.62rem;
+    left: 0;
+    right: 0;
+    z-index: 4;
+    border-top: 1px solid currentColor;
+    pointer-events: none;
   }
 
   .program-section {
@@ -548,8 +560,12 @@ export default {
   }
 
   .program-section__header {
+    position: sticky;
+    top: 0;
+    z-index: 3;
     order: 1;
     min-height: 5.25rem;
+    background: #fff;
   }
 
   .program-section__schedule {
