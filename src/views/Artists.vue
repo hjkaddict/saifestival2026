@@ -392,7 +392,7 @@ export default {
         return h / 4294967296
       }
       const invert = u(101) >= 0.5
-      const base = 9 + u(7) * 18
+      const base = 2.5 + u(7) * 5
       const signTop = invert ? 1 : -1
       const signBottom = invert ? -1 : 1
       const centerY = 35 + u(41) * 30
@@ -418,7 +418,7 @@ export default {
         return h / 4294967296
       }
       const invert = u(101) >= 0.5
-      const base = 0.95 + u(7) * 1.15
+      const base = 0.28 + u(7) * 0.36
       const topJitter = 0.88 + u(13) * 0.3
       const botJitter = 0.88 + u(29) * 0.3
       const signTop = invert ? 1 : -1

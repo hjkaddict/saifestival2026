@@ -72,7 +72,14 @@
           class="about-page__scroll-poem-line"
           :class="{ 'about-page__scroll-poem-line--spacer': line === '' }"
         >
-          {{ line }}
+          <span
+            v-for="(part, partIdx) in splitScrollPoemLine(line)"
+            :key="`${idx}-${partIdx}`"
+            class="about-page__scroll-poem-part"
+            :class="`about-page__scroll-poem-part--${part.type}`"
+          >
+            {{ part.text }}
+          </span>
         </p>
       </div>
     </aside>
@@ -119,22 +126,46 @@ export default {
       return getFestivalTeam(this.locale.lang)
     },
     scrollPoemLines() {
+      const isKo = this.locale.lang === 'kr'
+
+      if (!isKo) {
+        return [
+          'SA–I Festival: Interventions',
+          '',
+          'Strange ones',
+          'absurdly',
+          '',
+          'mingling',
+          'intervening',
+          'lingering',
+          '',
+          'whether to interrupt you or not',
+          'whether to let myself open or not,',
+          '…whether to step in or not…',
+          '',
+          'whether this is play',
+          'or work…',
+          '',
+          ,
+        ]
+      }
+
       return [
         '사–이 페스티벌: 끼어드는 틈',
         '',
-        '낯선 것들이 Strange ones',
-        '어이없게 absurdly',
+        '낯선 것들이',
+        '어이없게',
         '',
-        '뒤섞이고 mingling',
-        '개입하고 intervening',
-        '머무르고 lingering',
+        '뒤섞이고',
+        '개입하고',
+        '머무르고',
         '',
-        '끼어들까 말까 whether to interrupt you or not',
-        '내어줄까 말까, whether to let myself open or not,',
-        '들어갈까 말까 …whether to step in or not…',
+        '끼어들까 말까',
+        '내어줄까 말까,',
+        '들어갈까 말까',
         '',
-        '이게 노는건지 whether this is play',
-        '작업인건지… or work…',
+        '이게 노는건지',
+        '작업인건지…',
         '',
         ,
       ]
@@ -166,6 +197,17 @@ export default {
       this.scrollRevealTimer = window.setTimeout(() => {
         this.isScrolling = false
       }, 120)
+    },
+    splitScrollPoemLine(line) {
+      const text = String(line || '')
+      if (!text) return [{ type: 'ko', text: '' }]
+      return text
+        .split(/([A-Za-z][A-Za-z\s'’.-]*[A-Za-z.?!…]?)/g)
+        .filter((part) => part.length)
+        .map((part) => ({
+          text: part,
+          type: /[A-Za-z]/.test(part) ? 'en' : 'ko',
+        }))
     },
     memberSplitStyle(name, sectionIdx, memberIdx) {
       const scale = this.locale.lang === 'kr' ? 1 : ABOUT_SPLIT_SCALE_LATIN
@@ -218,7 +260,17 @@ export default {
   font-weight: 100;
 }
 
+.about-page--en .about-page__scroll-poem-inner {
+  font-family: var(--font-home-en);
+  font-weight: 100;
+}
+
 .about-page--ko .about-page__inner {
+  font-family: var(--font-home-ko);
+  font-weight: 100;
+}
+
+.about-page--ko .about-page__scroll-poem-inner {
   font-family: var(--font-home-ko);
   font-weight: 100;
 }
@@ -297,6 +349,16 @@ export default {
 
 .about-page__scroll-poem-line {
   margin: 0;
+}
+
+.about-page__scroll-poem-part--ko {
+  font-family: var(--font-home-ko);
+  font-weight: 100;
+}
+
+.about-page__scroll-poem-part--en {
+  font-family: var(--font-home-en);
+  font-weight: 100;
 }
 
 .about-page__scroll-poem-line--spacer {
