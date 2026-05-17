@@ -446,7 +446,7 @@ export default {
     },
     splitRandomStyleForArtist(artist) {
       const kr = this.locale.lang === 'kr'
-      const scale = kr ? 1 : ARTISTS_SPLIT_SCALE_LATIN
+      const scale = kr ? 0.56 : ARTISTS_SPLIT_SCALE_LATIN
       const seed = kr ? `${artist.id}\0ko` : `${artist.id}\0lat`
       return this.splitShiftVars(seed, scale)
     },

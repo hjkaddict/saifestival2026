@@ -206,7 +206,7 @@ export default {
         }))
     },
     memberSplitStyle(name, sectionIdx, memberIdx) {
-      const scale = this.locale.lang === 'kr' ? 1 : ABOUT_SPLIT_SCALE_LATIN
+      const scale = this.locale.lang === 'kr' ? 0.56 : ABOUT_SPLIT_SCALE_LATIN
       const key = textSeedHash(`${this.locale.lang}\0${sectionIdx}\0${memberIdx}\0${name}`)
       const u = (n) => {
         let h = Math.imul((key + n) ^ 0x9e3779b9, 0x9e3779b9) >>> 0
@@ -286,21 +286,10 @@ export default {
 }
 
 .about-page__body :deep(.about-page__scroll-only) {
-  position: relative;
-  display: inline-block;
+  text-decoration: line-through;
+  text-decoration-thickness: 0.08em;
+  text-decoration-color: currentColor;
   transition: opacity 0.48s cubic-bezier(0.45, 0, 0.2, 1);
-}
-
-.about-page__body :deep(.about-page__scroll-only::after) {
-  content: '';
-  position: absolute;
-  left: -0.03em;
-  right: -0.03em;
-  top: 50%;
-  z-index: 3;
-  border-top: 0.08em solid currentColor;
-  pointer-events: none;
-  transform: translateY(-50%);
 }
 
 .about-page--scrolling .about-page__body :deep(.about-page__scroll-only) {

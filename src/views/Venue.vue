@@ -106,7 +106,7 @@ export default {
         return h / 4294967296
       }
       const invert = u(101) >= 0.5
-      const scale = this.locale.lang === 'kr' ? 1 : 0.56
+      const scale = 0.56
       const base = (0.95 + u(7) * 1.15) * scale
       return {
         '--venue-split-shift-top': `${((invert ? 1 : -1) * base).toFixed(2)}px`,

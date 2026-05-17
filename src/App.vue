@@ -344,7 +344,7 @@ export default {
     },
     navSplitStyle(kind) {
       const isKo = this.navTextClass(kind) === 'global-nav__ko'
-      const scale = isKo ? 1 : NAV_SPLIT_SCALE_LATIN
+      const scale = isKo ? 0.56 : NAV_SPLIT_SCALE_LATIN
       const key = navSeedHash(`${kind}:${this.navLabel(kind)}`)
       const u = (n) => {
         let h = Math.imul((key + n) ^ 0x9e3779b9, 0x9e3779b9) >>> 0

@@ -189,7 +189,7 @@ export default {
       return this.splitShiftVars(`${item.path}\0lat`, HOME_SPLIT_SCALE_LATIN)
     },
     splitRandomStyleHangul(item) {
-      return this.splitShiftVars(`${item.path}\0ko`, 1)
+      return this.splitShiftVars(`${item.path}\0ko`, 0.56)
     },
   },
 }
