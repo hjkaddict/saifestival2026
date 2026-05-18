@@ -506,10 +506,13 @@ export default {
         this.detailImageVisible = false
         this.displayedArtist = newArtist
         this.detailTransitioning = false
-        this.$nextTick(() => {
-          requestAnimationFrame(() => {
+        await this.preloadImage(newArtist.img)
+        if (token !== this._artistTransitionToken) return
+        await this.$nextTick()
+        requestAnimationFrame(() => {
+          if (token === this._artistTransitionToken) {
             this.detailImageVisible = true
-          })
+          }
         })
         return
       }
@@ -864,6 +867,11 @@ export default {
     margin: 18px 0 0;
     padding-bottom: 5rem;
     box-sizing: border-box;
+    opacity: 0;
+  }
+
+  .artist-detail__media--image-visible .artist-detail__text {
+    opacity: 1;
   }
 
   .artist-detail__text::after {
