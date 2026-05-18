@@ -495,7 +495,17 @@ export default {
   }
 
   .about-page__scroll-poem {
-    padding: 72px 20px 48px;
+    display: block;
+    padding: 0;
+  }
+
+  .about-page__scroll-poem-inner {
+    position: fixed;
+    top: 50%;
+    top: 50svh;
+    left: 50%;
+    width: calc(100% - 40px);
+    transform: translate(-50%, -50%);
   }
 }
 </style>

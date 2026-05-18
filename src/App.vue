@@ -1,6 +1,10 @@
 <template>
   <div id="app-root">
-    <nav v-if="$route.path !== '/'" class="global-nav">
+    <nav
+      v-if="displayedRoutePath !== '/'"
+      class="global-nav"
+      :class="{ 'global-nav--text-faded': navTextFaded }"
+    >
       <router-link to="/" class="nav-btn global-nav__btn">
         <span class="global-nav__split" :style="navSplitStyle('main')">
           <span class="global-nav__split-ghost">
@@ -16,12 +20,11 @@
       </router-link>
 
       <button
-        v-if="$route.name === 'ArtistDetail'"
+        v-if="displayedRouteName === 'ArtistDetail'"
         type="button"
         class="nav-btn global-nav__btn global-nav__center-btn"
         :class="{
           'global-nav__btn--active': artistLineupOpen,
-          'global-nav__center-btn--hint': artistLineupHint,
         }"
         @click="toggleArtistLineup"
       >
@@ -42,7 +45,7 @@
       </button>
 
       <button
-        v-if="$route.name === 'Program'"
+        v-if="displayedRouteName === 'Program'"
         type="button"
         class="nav-btn global-nav__btn global-nav__center-btn global-nav__program-toggle"
         :class="{ 'global-nav__btn--active': programMenuOpen }"
@@ -65,7 +68,7 @@
       </button>
 
       <div
-        v-if="$route.name === 'Program' && programMenuOpen"
+        v-if="displayedRouteName === 'Program' && programMenuOpen"
         class="global-nav__program-menu"
         @click.stop
       >
@@ -80,7 +83,7 @@
         </button>
       </div>
 
-      <button type="button" class="nav-btn global-nav__btn" @click="toggleLang">
+      <button type="button" class="nav-btn global-nav__btn" @click="toggleLang($event)">
         <span class="global-nav__split" :style="navSplitStyle('language')">
           <span class="global-nav__split-ghost">
             <span :class="navTextClass('language')">{{ navLabel('language') }}</span>
@@ -97,7 +100,12 @@
 
     <main class="router-stage">
       <router-view v-slot="{ Component }">
-        <transition name="page-fade" mode="out-in">
+        <transition
+          name="page-fade"
+          mode="out-in"
+          @before-leave="onPageBeforeLeave"
+          @after-enter="onPageAfterEnter"
+        >
           <component :is="Component" />
         </transition>
       </router-view>
@@ -111,7 +119,6 @@ import { localeStore } from '@/store/locale.js'
 const NAV_SPLIT_SCALE_LATIN = 0.56
 const MOBILE_LINK_DELAY_MS = 360
 const SCROLLBAR_REVEAL_MS = 520
-const SCROLL_RESTORE_MS = 220
 
 function navSeedHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
@@ -123,34 +130,29 @@ export default {
     return {
       locale: localeStore,
       artistLineupOpen: false,
-      artistLineupHint: false,
       programMenuOpen: false,
       activeScrollbarElements: new Set(),
       scrollbarRevealTimers: new WeakMap(),
       scrollSaveFrame: null,
-      scrollRestoreFrame: null,
-      artistLineupHintTimer: null,
+      navTextFaded: false,
+      displayedRouteName: null,
+      displayedRoutePath: null,
     }
   },
   mounted() {
     this.syncDocumentLang()
-    window.addEventListener('saifestival:history-scroll-restore', this.onHistoryScrollRestore)
+    this.syncDisplayedRoute()
     window.addEventListener('artists-lineup-state', this.onArtistLineupState)
     window.addEventListener('click', this.handleMobileLinkClick, true)
     document.addEventListener('scroll', this.revealScrollbarDuringScroll, true)
   },
   beforeUnmount() {
-    window.removeEventListener('saifestival:history-scroll-restore', this.onHistoryScrollRestore)
     window.removeEventListener('artists-lineup-state', this.onArtistLineupState)
     window.removeEventListener('click', this.handleMobileLinkClick, true)
     document.removeEventListener('scroll', this.revealScrollbarDuringScroll, true)
     if (this.scrollSaveFrame) {
       window.cancelAnimationFrame(this.scrollSaveFrame)
     }
-    if (this.scrollRestoreFrame) {
-      window.cancelAnimationFrame(this.scrollRestoreFrame)
-    }
-    window.clearTimeout(this.artistLineupHintTimer)
     this.activeScrollbarElements.forEach((element) => {
       window.clearTimeout(this.scrollbarRevealTimers.get(element))
       element.classList.remove('is-scrolling')
@@ -165,10 +167,6 @@ export default {
     '$route.name'() {
       this.artistLineupOpen = false
       this.programMenuOpen = false
-      this.triggerArtistLineupHint()
-    },
-    '$route.params.id'() {
-      this.triggerArtistLineupHint()
     },
   },
   computed: {
@@ -185,60 +183,32 @@ export default {
     syncDocumentLang() {
       document.documentElement.lang = this.locale.lang === 'kr' ? 'ko' : 'en'
     },
-    isMobileViewport() {
-      if (typeof window === 'undefined') return false
-      return window.matchMedia('(max-width: 768px), (hover: none), (pointer: coarse)').matches
+    syncDisplayedRoute() {
+      this.displayedRouteName = this.$route.name
+      this.displayedRoutePath = this.$route.path
     },
-    triggerArtistLineupHint() {
-      window.clearTimeout(this.artistLineupHintTimer)
-      this.artistLineupHint = false
-      if (this.$route.name !== 'ArtistDetail' || !this.isMobileViewport()) return
-
-      requestAnimationFrame(() => {
-        this.artistLineupHint = true
-        this.artistLineupHintTimer = window.setTimeout(() => {
-          this.artistLineupHint = false
-        }, 1200)
-      })
+    onPageBeforeLeave() {
+      this.navTextFaded = true
     },
-    onHistoryScrollRestore(event) {
-      this.animateWindowScrollTo(event.detail)
+    onPageAfterEnter() {
+      this.navTextFaded = false
+      this.syncDisplayedRoute()
     },
-    easeOutCubic(t) {
-      return 1 - Math.pow(1 - t, 3)
-    },
-    animateWindowScrollTo(position) {
-      if (!position) return
-      if (this.scrollRestoreFrame) {
-        window.cancelAnimationFrame(this.scrollRestoreFrame)
-      }
-
-      const startLeft = window.scrollX
-      const startTop = window.scrollY
-      const targetLeft = position.left || 0
-      const targetTop = position.top || 0
-      const startTime = performance.now()
-
-      const step = (now) => {
-        const progress = Math.min(1, (now - startTime) / SCROLL_RESTORE_MS)
-        const eased = this.easeOutCubic(progress)
-        window.scrollTo(
-          startLeft + (targetLeft - startLeft) * eased,
-          startTop + (targetTop - startTop) * eased,
-        )
-
-        if (progress < 1) {
-          this.scrollRestoreFrame = window.requestAnimationFrame(step)
-        } else {
-          this.scrollRestoreFrame = null
-        }
-      }
-
-      this.scrollRestoreFrame = window.requestAnimationFrame(step)
-    },
-    toggleLang() {
+    toggleLang(event) {
       const newLang = this.locale.lang === 'kr' ? 'en' : 'kr'
+      if (this.shouldDelayMobileLinks()) {
+        const button = event?.currentTarget
+        button?.classList.add('is-mobile-activating')
+        window.setTimeout(() => {
+          button?.classList.remove('is-mobile-activating')
+          this.locale.setLang(newLang)
+          button?.blur?.()
+        }, MOBILE_LINK_DELAY_MS)
+        return
+      }
+
       this.locale.setLang(newLang)
+      event?.currentTarget?.blur?.()
     },
     toggleArtistLineup() {
       window.dispatchEvent(new Event('artists-lineup-toggle'))
@@ -621,6 +591,16 @@ html::before {
   outline: none;
 }
 
+.global-nav__btn,
+.global-nav__program-menu {
+  transition: opacity 0.18s ease;
+}
+
+.global-nav--text-faded .global-nav__btn,
+.global-nav--text-faded .global-nav__program-menu {
+  opacity: 0;
+}
+
 .global-nav__active-text {
   position: relative;
   display: inline-block;
@@ -711,21 +691,24 @@ html::before {
 .is-mobile-activating .home-text__split-ghost,
 .is-mobile-activating .global-nav__split-ghost,
 .is-mobile-activating .program-day__split-ghost,
-.is-mobile-activating .venue-page__split-ghost {
+.is-mobile-activating .venue-page__split-ghost,
+.is-mobile-activating .about-page__split-ghost {
   opacity: 1;
 }
 
 .is-mobile-activating .home-text__split-half,
 .is-mobile-activating .global-nav__split-half,
 .is-mobile-activating .program-day__split-half,
-.is-mobile-activating .venue-page__split-half {
+.is-mobile-activating .venue-page__split-half,
+.is-mobile-activating .about-page__split-half {
   opacity: 0;
 }
 
 .is-mobile-activating .home-text__split::after,
 .is-mobile-activating .global-nav__split::after,
 .is-mobile-activating .program-day__split::after,
-.is-mobile-activating .venue-page__split::after {
+.is-mobile-activating .venue-page__split::after,
+.is-mobile-activating .about-page__split::after {
   opacity: 1;
 }
 
@@ -799,12 +782,27 @@ html::before {
     background: #fff;
   }
 
-  .global-nav .global-nav__program-toggle {
-    display: inline-flex;
+  .global-nav__btn:hover .global-nav__split-ghost,
+  .global-nav__btn:focus-visible .global-nav__split-ghost,
+  .global-nav__btn:hover .global-nav__split::after,
+  .global-nav__btn:focus-visible .global-nav__split::after {
+    opacity: 0;
   }
 
-  .global-nav__center-btn--hint {
-    animation: global-nav-hint-blink 0.6s ease-in-out 2;
+  .global-nav__btn:hover .global-nav__split-half,
+  .global-nav__btn:focus-visible .global-nav__split-half {
+    opacity: 1;
+  }
+
+  .global-nav__active-text,
+  .global-nav__split-ghost > span,
+  .global-nav__split-half > span,
+  .global-nav__active-text > span {
+    background: transparent;
+  }
+
+  .global-nav .global-nav__program-toggle {
+    display: inline-flex;
   }
 
   .global-nav .global-nav__program-menu {
@@ -832,23 +830,6 @@ html::before {
     text-align: center;
     white-space: nowrap;
     cursor: pointer;
-  }
-}
-
-@keyframes global-nav-hint-blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.18;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .global-nav__center-btn--hint {
-    animation: none;
   }
 }
 </style>

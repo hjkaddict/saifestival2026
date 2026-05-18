@@ -24,11 +24,6 @@ const routes = [
   { path: '/archive', name: 'Archive', component: BlankView },
 ]
 
-const PAGE_TRANSITION_MS = 340
-const HISTORY_SCROLL_RESTORE_EVENT = 'saifestival:history-scroll-restore'
-let pendingHistoryScroll = null
-
-/** 일반 이동(push)·맨 위 정렬 */
 function waitLayoutQuick() {
   return new Promise((resolve) => {
     nextTick(() => {
@@ -50,11 +45,7 @@ const router = createRouter({
   routes,
   scrollBehavior(to, _from, savedPosition) {
     if (savedPosition) {
-      pendingHistoryScroll = {
-        left: savedPosition.left ?? savedPosition.x ?? 0,
-        top: savedPosition.top ?? savedPosition.y ?? 0,
-      }
-      return { left: 0, top: 0, behavior: 'auto' }
+      return false
     }
 
     if (to.hash) {
@@ -65,21 +56,8 @@ const router = createRouter({
       }))
     }
 
-    return waitLayoutQuick().then(() => ({
-      left: 0,
-      top: 0,
-      behavior: 'auto',
-    }))
+    return false
   },
-})
-
-router.afterEach(() => {
-  if (typeof window === 'undefined' || !pendingHistoryScroll) return
-  const position = pendingHistoryScroll
-  pendingHistoryScroll = null
-  window.setTimeout(() => {
-    window.dispatchEvent(new CustomEvent(HISTORY_SCROLL_RESTORE_EVENT, { detail: position }))
-  }, PAGE_TRANSITION_MS * 2 + 80)
 })
 
 export default router

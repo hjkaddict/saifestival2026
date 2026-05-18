@@ -146,7 +146,7 @@
               :to="artistPath(artist)"
               class="home-text__link"
               data-mobile-delay="skip"
-              @click.prevent="goToArtistFromLineup(artist)"
+              @click.prevent="goToArtistFromLineup(artist, $event)"
             >
               <span class="home-text__split" :style="splitRandomStyleForArtist(artist)">
                 <span class="home-text__split-ghost">
@@ -362,10 +362,14 @@ export default {
       this.setLineupVisible(false)
       this.lineupClosing = false
     },
-    async goToArtistFromLineup(artist) {
+    async goToArtistFromLineup(artist, event) {
       if (this.lineupClosing) return
       const path = this.artistPath(artist)
       this._lineupNavigationPending = true
+      const link = event?.currentTarget
+      link?.classList.add('is-mobile-activating')
+      await this.delay(360)
+      link?.classList.remove('is-mobile-activating')
       await this.preloadImage(artist.img)
       this.detailImageVisible = false
       this.displayedArtist = artist
