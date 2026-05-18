@@ -1,5 +1,5 @@
 <template>
-  <div id="app-root">
+  <div id="app-root" :class="{ 'is-language-switching': languageTextFading }">
     <nav
       v-if="displayedRoutePath !== '/'"
       class="global-nav"
@@ -119,6 +119,7 @@ import { localeStore } from '@/store/locale.js'
 const NAV_SPLIT_SCALE_LATIN = 0.56
 const MOBILE_LINK_DELAY_MS = 360
 const SCROLLBAR_REVEAL_MS = 520
+const LANG_SWITCH_FADE_MS = 280
 
 function navSeedHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
@@ -135,6 +136,8 @@ export default {
       scrollbarRevealTimers: new WeakMap(),
       scrollSaveFrame: null,
       navTextFaded: false,
+      languageTextFading: false,
+      languageSwitchTimer: null,
       displayedRouteName: null,
       displayedRoutePath: null,
     }
@@ -153,6 +156,7 @@ export default {
     if (this.scrollSaveFrame) {
       window.cancelAnimationFrame(this.scrollSaveFrame)
     }
+    window.clearTimeout(this.languageSwitchTimer)
     this.activeScrollbarElements.forEach((element) => {
       window.clearTimeout(this.scrollbarRevealTimers.get(element))
       element.classList.remove('is-scrolling')
@@ -196,19 +200,41 @@ export default {
     },
     toggleLang(event) {
       const newLang = this.locale.lang === 'kr' ? 'en' : 'kr'
+      const blurButtonAfterUpdate = (button) => {
+        this.$nextTick(() => {
+          button?.blur?.()
+          button?.classList.add('global-nav__btn--tap-complete')
+          if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur()
+          }
+        })
+      }
+
       if (this.shouldDelayMobileLinks()) {
         const button = event?.currentTarget
+        button?.classList.remove('global-nav__btn--tap-complete')
         button?.classList.add('is-mobile-activating')
         window.setTimeout(() => {
           button?.classList.remove('is-mobile-activating')
-          this.locale.setLang(newLang)
-          button?.blur?.()
+          this.switchLanguageWithFade(newLang, button, blurButtonAfterUpdate)
         }, MOBILE_LINK_DELAY_MS)
         return
       }
 
-      this.locale.setLang(newLang)
-      event?.currentTarget?.blur?.()
+      this.switchLanguageWithFade(newLang, event?.currentTarget, blurButtonAfterUpdate)
+    },
+    switchLanguageWithFade(newLang, button, afterUpdate) {
+      window.clearTimeout(this.languageSwitchTimer)
+      this.languageTextFading = true
+      this.languageSwitchTimer = window.setTimeout(() => {
+        this.locale.setLang(newLang)
+        this.$nextTick(() => {
+          requestAnimationFrame(() => {
+            this.languageTextFading = false
+            afterUpdate?.(button)
+          })
+        })
+      }, LANG_SWITCH_FADE_MS)
     },
     toggleArtistLineup() {
       window.dispatchEvent(new Event('artists-lineup-toggle'))
@@ -536,6 +562,56 @@ html::before {
   width: 100%;
   position: relative;
 }
+
+#app-root :where(
+  a,
+  button,
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  span,
+  li,
+  dt,
+  dd,
+  label,
+  small,
+  strong,
+  em,
+  figcaption,
+  blockquote
+) {
+  transition: opacity 0.28s cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+#app-root.is-language-switching .router-stage :where(
+  a,
+  button,
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  span,
+  li,
+  dt,
+  dd,
+  label,
+  small,
+  strong,
+  em,
+  figcaption,
+  blockquote
+),
+#app-root.is-language-switching .global-nav__btn,
+#app-root.is-language-switching .global-nav__program-menu {
+  opacity: 0;
+}
 /* 네비게이션 컨테이너 수정 (화면 밖으로 나가는 문제 해결) */
 .global-nav {
   position: fixed;
@@ -782,23 +858,23 @@ html::before {
     background: #fff;
   }
 
-  .global-nav__btn:hover .global-nav__split-ghost,
-  .global-nav__btn:focus-visible .global-nav__split-ghost,
-  .global-nav__btn:hover .global-nav__split::after,
-  .global-nav__btn:focus-visible .global-nav__split::after {
-    opacity: 0;
-  }
-
-  .global-nav__btn:hover .global-nav__split-half,
-  .global-nav__btn:focus-visible .global-nav__split-half {
-    opacity: 1;
-  }
-
   .global-nav__active-text,
   .global-nav__split-ghost > span,
   .global-nav__split-half > span,
   .global-nav__active-text > span {
     background: transparent;
+  }
+
+  .global-nav__btn--tap-complete:hover .global-nav__split-ghost,
+  .global-nav__btn--tap-complete:focus-visible .global-nav__split-ghost,
+  .global-nav__btn--tap-complete:hover .global-nav__split::after,
+  .global-nav__btn--tap-complete:focus-visible .global-nav__split::after {
+    opacity: 0;
+  }
+
+  .global-nav__btn--tap-complete:hover .global-nav__split-half,
+  .global-nav__btn--tap-complete:focus-visible .global-nav__split-half {
+    opacity: 1;
   }
 
   .global-nav .global-nav__program-toggle {
