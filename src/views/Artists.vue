@@ -292,7 +292,7 @@ export default {
       return this.displayedBio.split(/\n\s*\n/).filter((paragraph) => paragraph.trim())
     },
     websiteLabel() {
-      return this.detailArtist?.website || ''
+      return (this.detailArtist?.website || '').replace(/^https?:\/\//i, '').replace(/\/$/, '')
     },
   },
   watch: {
@@ -789,6 +789,23 @@ export default {
   color: #0a0a0a;
   font-size: 0.82em;
   text-decoration: none;
+}
+
+.artist-detail__website::after {
+  content: '↗';
+  position: relative;
+  z-index: 5;
+  display: inline-block;
+  margin-left: 0.26em;
+  color: #0a0a0a;
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  opacity: 1;
+  text-shadow: 0.025em 0 0 currentColor;
+  vertical-align: -0.06em;
 }
 
 .artist-detail__website .home-text__en {

@@ -73,6 +73,7 @@
                   </span>
                 </span>
               </span>
+              <span class="program-link-arrow" aria-hidden="true">→</span>
             </router-link>
           </div>
 
@@ -181,6 +182,7 @@
                           {{ labelPart }}
                         </span>
                       </span>
+                      <span class="program-link-arrow" aria-hidden="true">→</span>
                     </span>
                   </router-link>
                   <span v-else class="program-day__artist program-day__artist--workshop">
@@ -539,6 +541,22 @@ export default {
 .program-day__artist {
   color: inherit;
   text-decoration: none;
+}
+
+.program-link-arrow {
+  position: relative;
+  z-index: 5;
+  display: inline-block;
+  margin-left: 0.26em;
+  color: #0a0a0a;
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  opacity: 1;
+  text-shadow: 0.025em 0 0 currentColor;
+  vertical-align: -0.06em;
 }
 
 .program-day__artist:hover,

@@ -259,6 +259,40 @@ export default {
   display: block;
 }
 
+.ticket-show__cta::after {
+  content: '→';
+  position: relative;
+  z-index: 5;
+  display: inline-block;
+  margin-left: 0.26em;
+  color: #0a0a0a;
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  opacity: 1;
+  text-shadow: 0.025em 0 0 currentColor;
+  vertical-align: -0.06em;
+}
+
+.ticket-show__book:not(.ticket-show__book--soon)::after {
+  content: '↗';
+  position: relative;
+  z-index: 5;
+  display: inline-block;
+  margin-left: 0.26em;
+  color: #0a0a0a;
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  opacity: 1;
+  text-shadow: 0.025em 0 0 currentColor;
+  vertical-align: -0.06em;
+}
+
 .ticket-show__artists,
 .ticket-show__cta,
 .ticket-show__book,
