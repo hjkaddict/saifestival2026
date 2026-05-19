@@ -3,59 +3,62 @@
     class="ticket-page app-min-vh"
     :class="locale.lang === 'kr' ? 'ticket-page--ko' : 'ticket-page--en'"
   >
-    <article class="ticket-page__inner" :key="locale.lang">
-      <h1 class="ticket-page__title">{{ copy.title }}</h1>
+    <p v-if="showComingSoon" class="ticket-page__message">{{ comingSoonMessage }}</p>
+
+    <article v-else class="ticket-page__inner" :key="locale.lang">
+      <h1 class="ticket-page__title rich-text" v-html="copy.title"></h1>
 
       <section class="ticket-section" aria-label="Program admission">
         <div v-for="program in programs" :key="program.id" class="ticket-program">
           <h2 class="ticket-program__title">
-            <span>{{ program.name }}</span>
-            <span class="ticket-program__admission">{{ program.admission }}</span>
+            <span class="rich-text" v-html="program.name"></span>
+            <span class="ticket-program__admission rich-text" v-html="program.admission"></span>
           </h2>
-          <p v-if="program.dates" class="ticket-program__meta">{{ program.dates }}</p>
-          <p v-for="(line, idx) in program.hours" :key="idx" class="ticket-program__meta">
-            {{ line }}
-          </p>
+          <p v-if="program.dates" class="ticket-program__meta rich-text" v-html="program.dates"></p>
+          <p
+            v-for="(line, idx) in program.hours"
+            :key="idx"
+            class="ticket-program__meta rich-text"
+            v-html="line"
+          ></p>
         </div>
       </section>
 
       <section class="ticket-section" aria-labelledby="ticket-performance">
-        <h2 id="ticket-performance" class="ticket-section__title">
-          {{ copy.performanceHeading }}
-        </h2>
+        <h2 id="ticket-performance" class="ticket-section__title rich-text" v-html="copy.performanceHeading"></h2>
 
         <div class="ticket-info-block">
-          <h3 class="ticket-info-block__title">{{ copy.salesHeading }}</h3>
+          <h3 class="ticket-info-block__title rich-text" v-html="copy.salesHeading"></h3>
           <dl class="ticket-rows">
             <div class="ticket-row">
-              <dt>{{ sales.earlyBirdLabel }}</dt>
-              <dd>{{ sales.earlyBirdPeriod }}</dd>
+              <dt class="rich-text" v-html="sales.earlyBirdLabel"></dt>
+              <dd class="rich-text" v-html="sales.earlyBirdPeriod"></dd>
             </div>
             <div class="ticket-row">
-              <dt>{{ sales.regularLabel }}</dt>
-              <dd>{{ sales.regularPeriod }}</dd>
+              <dt class="rich-text" v-html="sales.regularLabel"></dt>
+              <dd class="rich-text" v-html="sales.regularPeriod"></dd>
             </div>
           </dl>
         </div>
 
         <div class="ticket-info-block">
-          <h3 class="ticket-info-block__title">{{ copy.priceHeading }}</h3>
+          <h3 class="ticket-info-block__title rich-text" v-html="copy.priceHeading"></h3>
           <ul class="ticket-price-list">
             <li v-for="tier in prices" :key="tier.id" class="ticket-row">
-              <span>{{ tier.label }}</span>
-              <span>{{ tier.price }}</span>
+              <span class="rich-text" v-html="tier.label"></span>
+              <span class="rich-text" v-html="tier.price"></span>
             </li>
           </ul>
         </div>
 
         <div class="ticket-info-block">
-          <h3 class="ticket-info-block__title">{{ copy.datesHeading }}</h3>
+          <h3 class="ticket-info-block__title rich-text" v-html="copy.datesHeading"></h3>
           <ul class="ticket-show-list">
             <li v-for="show in showDates" :key="show.id" class="ticket-show">
               <router-link :to="`/program#${show.id}`" class="ticket-show__link">
-                <span class="ticket-show__date">{{ show.label }}</span>
-                <span class="ticket-show__artists">{{ show.artists.join(', ') }}</span>
-                <span class="ticket-show__cta">{{ copy.viewProgramLabel }}</span>
+                <span class="ticket-show__date rich-text" v-html="show.label"></span>
+                <span class="ticket-show__artists rich-text" v-html="show.artists.join(', ')"></span>
+                <span class="ticket-show__cta rich-text" v-html="copy.viewProgramLabel"></span>
               </router-link>
               <a
                 v-if="show.naverBookingUrl"
@@ -64,10 +67,10 @@
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {{ copy.bookLabel }}
+                <span class="rich-text" v-html="copy.bookLabel"></span>
               </a>
               <span v-else class="ticket-show__book ticket-show__book--soon">
-                {{ copy.bookOpens }}
+                <span class="rich-text" v-html="copy.bookOpens"></span>
               </span>
             </li>
           </ul>
@@ -75,9 +78,9 @@
       </section>
 
       <section class="ticket-section ticket-section--notes" aria-labelledby="ticket-notes">
-        <h2 id="ticket-notes" class="ticket-section__title">{{ footnotes.heading }}</h2>
+        <h2 id="ticket-notes" class="ticket-section__title rich-text" v-html="footnotes.heading"></h2>
         <ul class="ticket-notes">
-          <li v-for="(bullet, idx) in footnotes.bullets" :key="idx">{{ bullet }}</li>
+          <li v-for="(bullet, idx) in footnotes.bullets" :key="idx" class="rich-text" v-html="bullet"></li>
         </ul>
       </section>
     </article>
@@ -95,14 +98,21 @@ import {
   ticketPage,
 } from '@/assets/data/ticket.js'
 
+// Set to false when ticket content is ready to publish.
+const TICKET_SHOW_COMING_SOON = true
+
 export default {
   name: 'Ticket',
   data() {
     return {
       locale: localeStore,
+      showComingSoon: TICKET_SHOW_COMING_SOON,
     }
   },
   computed: {
+    comingSoonMessage() {
+      return this.locale.lang === 'kr' ? '업데이트 될 예정입니다.' : 'Will be updated.'
+    },
     copy() {
       return ticketPage[this.locale.lang] || ticketPage.en
     },
@@ -134,6 +144,19 @@ export default {
   color: rgba(10, 10, 10, 0.82);
 }
 
+.ticket-page__message {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: calc(100vh - clamp(72px, 12vw, 132px) * 2);
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 100;
+  line-height: 1.42;
+  letter-spacing: 0.006em;
+  text-align: center;
+}
+
 .ticket-page__inner {
   width: min(100%, 42rem);
   margin: 0 auto;
@@ -145,12 +168,14 @@ export default {
     -0.28px -0.12px 0 rgba(10, 10, 10, 0.12);
 }
 
-.ticket-page--en .ticket-page__inner {
+.ticket-page--en .ticket-page__inner,
+.ticket-page--en .ticket-page__message {
   font-family: var(--font-home-en);
   font-weight: 100;
 }
 
-.ticket-page--ko .ticket-page__inner {
+.ticket-page--ko .ticket-page__inner,
+.ticket-page--ko .ticket-page__message {
   font-family: var(--font-home-ko);
   font-weight: 100;
 }
@@ -323,6 +348,10 @@ export default {
 @media (max-width: 768px) {
   .ticket-page {
     padding: 72px 20px 48px;
+  }
+
+  .ticket-page__message {
+    min-height: calc(100vh - 120px);
   }
 
   .ticket-row {

@@ -75,7 +75,7 @@
           :class="locale.lang === 'kr' ? 'artist-detail__bio--ko' : 'artist-detail__bio--en'"
         >
           <template v-for="(paragraph, paragraphIdx) in displayedBioParagraphs" :key="paragraphIdx">
-            <span class="artist-detail__bio-text">{{ paragraph }}</span>
+            <span class="artist-detail__bio-text rich-text" v-html="paragraph"></span>
             <template v-if="paragraphIdx < displayedBioParagraphs.length - 1">
               <br />
               <br />

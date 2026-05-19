@@ -1,0 +1,12 @@
+.rich-text i,
+.rich-text em {
+  font-style: italic;
+}
+
+.rich-text p {
+  margin: 0 0 0.85rem;
+}
+
+.rich-text p:last-child {
+  margin-bottom: 0;
+}

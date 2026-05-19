@@ -5,13 +5,17 @@
   >
     <article v-if="work" class="exhibition-detail__inner" :key="`${locale.lang}-${id}`">
       <p class="exhibition-detail__type">{{ locale.lang === 'kr' ? '전시' : 'Exhibition' }}</p>
-      <h1 class="exhibition-detail__artist">{{ localized(work.artist) }}</h1>
-      <p v-if="localized(work.title)" class="exhibition-detail__title">
-        {{ localized(work.title) }}
-      </p>
-      <section v-if="localized(work.description)" class="exhibition-detail__description">
-        {{ localized(work.description) }}
-      </section>
+      <h1 class="exhibition-detail__artist rich-text" v-html="localized(work.artist)"></h1>
+      <p
+        v-if="localized(work.title)"
+        class="exhibition-detail__title rich-text"
+        v-html="localized(work.title)"
+      ></p>
+      <section
+        v-if="localized(work.description)"
+        class="exhibition-detail__description rich-text"
+        v-html="localized(work.description)"
+      ></section>
       <router-link class="exhibition-detail__back" to="/program#exhibition">
         {{ locale.lang === 'kr' ? '프로그램으로 돌아가기' : 'Back to program' }}
       </router-link>
@@ -132,19 +136,26 @@ export default {
     -0.12px -0.06px 0 rgba(10, 10, 10, 0.05);
 }
 
+.exhibition-detail__description :deep(i) {
+  font-style: italic;
+}
+
 .exhibition-detail__back {
-  display: inline-block;
+  display: block;
+  width: fit-content;
   margin-top: 2rem;
+  margin-left: auto;
   color: inherit;
+  text-align: right;
   text-decoration: none;
 }
 
-.exhibition-detail__back::after {
-  content: '→';
+.exhibition-detail__back::before {
+  content: '←';
   position: relative;
   z-index: 5;
   display: inline-block;
-  margin-left: 0.26em;
+  margin-right: 0.26em;
   color: #0a0a0a;
   font-family: Arial, Helvetica, sans-serif;
   font-style: normal;

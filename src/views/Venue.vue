@@ -13,16 +13,15 @@
     >
       <div ref="mapContainer" class="venue-page__map-inner" />
       <aside class="venue-page__card" :key="locale.lang" aria-label="Venue details">
-        <h1 class="venue-page__card-title">{{ venueCard.title }}</h1>
-        <p class="venue-page__card-subtitle">{{ venueCard.subtitle }}</p>
+        <h1 class="venue-page__card-title rich-text" v-html="venueCard.title"></h1>
+        <p class="venue-page__card-subtitle rich-text" v-html="venueCard.subtitle"></p>
         <address class="venue-page__card-address">
           <span
             v-for="(line, idx) in venueCard.addressLines"
             :key="idx"
-            class="venue-page__card-line"
-          >
-            {{ line }}
-          </span>
+            class="venue-page__card-line rich-text"
+            v-html="line"
+          ></span>
         </address>
         <a
           class="venue-page__card-link"
@@ -30,7 +29,12 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span class="venue-page__split" :style="directionsSplitStyle">
+          <span
+            v-if="containsHtml(venueCard.directionsLabel)"
+            class="venue-page__directions-label rich-text"
+            v-html="venueCard.directionsLabel"
+          ></span>
+          <span v-else class="venue-page__split" :style="directionsSplitStyle">
             <span class="venue-page__split-ghost">{{ venueCard.directionsLabel }}</span>
             <span
               class="venue-page__split-half venue-page__split-half--top"
@@ -61,6 +65,7 @@ import {
   venuePlaceInfo,
 } from '@/assets/data/venueMap.js'
 import { localeStore } from '@/store/locale.js'
+import { containsHtml } from '@/utils/htmlContent.js'
 
 function parseEnvNumber(value) {
   const n = Number(value)
@@ -135,6 +140,7 @@ export default {
     this.mapInstance = null
   },
   methods: {
+    containsHtml,
     async initMap() {
       const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
       if (!apiKey) {

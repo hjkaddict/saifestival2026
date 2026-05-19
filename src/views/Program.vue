@@ -8,15 +8,15 @@
         class="program-section"
       >
         <header class="program-section__header">
-          <h1 class="program-section__title" v-html="localized(program.data.title)"></h1>
+          <h1 class="program-section__title rich-text" v-html="localized(program.data.title)"></h1>
           <p
             v-if="localized(program.data.period || program.data.date)"
-            class="program-section__date"
+            class="program-section__date rich-text"
             v-html="localized(program.data.period || program.data.date)"
           ></p>
           <p
             v-if="localized(program.data.openingHours)"
-            class="program-section__hour"
+            class="program-section__hour rich-text"
             v-html="localized(program.data.openingHours)"
           ></p>
         </header>
@@ -31,54 +31,68 @@
             >
               <span class="program-section__work-artist">
                 <span
-                  v-for="(labelPart, labelIdx) in splitLabelParts(localized(work.artist))"
-                  :key="`${work.id}-artist-${labelIdx}`"
-                  class="program-day__split program-section__work-artist-text"
-                  :style="splitStyleForLabel(labelPart)"
-                >
-                  <span class="program-day__split-ghost">{{ labelPart }}</span>
+                  v-if="containsHtml(localized(work.artist))"
+                  class="program-section__work-artist-text rich-text"
+                  v-html="localized(work.artist)"
+                ></span>
+                <template v-else>
                   <span
-                    class="program-day__split-half program-day__split-half--top"
-                    aria-hidden="true"
+                    v-for="(labelPart, labelIdx) in splitLabelParts(localized(work.artist))"
+                    :key="`${work.id}-artist-${labelIdx}`"
+                    class="program-day__split program-section__work-artist-text"
+                    :style="splitStyleForLabel(labelPart)"
                   >
-                    {{ labelPart }}
+                    <span class="program-day__split-ghost">{{ labelPart }}</span>
+                    <span
+                      class="program-day__split-half program-day__split-half--top"
+                      aria-hidden="true"
+                    >
+                      {{ labelPart }}
+                    </span>
+                    <span
+                      class="program-day__split-half program-day__split-half--bottom"
+                      aria-hidden="true"
+                    >
+                      {{ labelPart }}
+                    </span>
                   </span>
-                  <span
-                    class="program-day__split-half program-day__split-half--bottom"
-                    aria-hidden="true"
-                  >
-                    {{ labelPart }}
-                  </span>
-                </span>
+                </template>
               </span>
               <span v-if="localized(work.title)" class="program-section__work-title">
                 <span
-                  v-for="(labelPart, labelIdx) in splitLabelParts(localized(work.title))"
-                  :key="`${work.id}-title-${labelIdx}`"
-                  class="program-day__split program-section__work-title-text"
-                  :style="splitStyleForLabel(labelPart)"
-                >
-                  <span class="program-day__split-ghost">{{ labelPart }}</span>
+                  v-if="containsHtml(localized(work.title))"
+                  class="program-section__work-title-text rich-text"
+                  v-html="localized(work.title)"
+                ></span>
+                <template v-else>
                   <span
-                    class="program-day__split-half program-day__split-half--top"
-                    aria-hidden="true"
+                    v-for="(labelPart, labelIdx) in splitLabelParts(localized(work.title))"
+                    :key="`${work.id}-title-${labelIdx}`"
+                    class="program-day__split program-section__work-title-text"
+                    :style="splitStyleForLabel(labelPart)"
                   >
-                    {{ labelPart }}
+                    <span class="program-day__split-ghost">{{ labelPart }}</span>
+                    <span
+                      class="program-day__split-half program-day__split-half--top"
+                      aria-hidden="true"
+                    >
+                      {{ labelPart }}
+                    </span>
+                    <span
+                      class="program-day__split-half program-day__split-half--bottom"
+                      aria-hidden="true"
+                    >
+                      {{ labelPart }}
+                    </span>
                   </span>
-                  <span
-                    class="program-day__split-half program-day__split-half--bottom"
-                    aria-hidden="true"
-                  >
-                    {{ labelPart }}
-                  </span>
-                </span>
+                </template>
               </span>
               <span class="program-link-arrow" aria-hidden="true">→</span>
             </router-link>
           </div>
 
           <div
-            class="program-section__description"
+            class="program-section__description rich-text"
             v-html="localized(program.data.description)"
           ></div>
 
@@ -89,7 +103,10 @@
               :key="show.id"
               class="program-day"
             >
-              <h2 class="program-day__date">{{ show.dateLabel[locale.lang] || show.dateLabel.en }}</h2>
+              <h2
+                class="program-day__date rich-text"
+                v-html="show.dateLabel[locale.lang] || show.dateLabel.en"
+              ></h2>
               <p class="program-day__lineup">
                 <template v-for="(act, idx) in show.acts" :key="`${show.id}-${idx}`">
                   <span v-if="idx > 0" class="program-day__sep"> · </span>
@@ -100,7 +117,16 @@
                     >
                       <span v-if="partIdx > 0" class="program-day__join"> + </span>
                       <router-link :to="part.path" class="program-day__artist">
-                        <span class="program-day__split" :style="splitStyleForLabel(part.label)">
+                        <span
+                          v-if="containsHtml(part.label)"
+                          class="rich-text"
+                          v-html="part.label"
+                        ></span>
+                        <span
+                          v-else
+                          class="program-day__split"
+                          :style="splitStyleForLabel(part.label)"
+                        >
                           <span class="program-day__split-ghost">{{ part.label }}</span>
                           <span
                             class="program-day__split-half program-day__split-half--top"
@@ -123,7 +149,12 @@
                     :to="act.path"
                     class="program-day__artist"
                   >
-                    <span class="program-day__split" :style="splitStyleForLabel(act.label)">
+                    <span v-if="containsHtml(act.label)" class="rich-text" v-html="act.label"></span>
+                    <span
+                      v-else
+                      class="program-day__split"
+                      :style="splitStyleForLabel(act.label)"
+                    >
                       <span class="program-day__split-ghost">{{ act.label }}</span>
                       <span
                         class="program-day__split-half program-day__split-half--top"
@@ -139,7 +170,7 @@
                       </span>
                     </span>
                   </router-link>
-                  <span v-else class="program-day__artist">{{ act.label }}</span>
+                  <span v-else class="program-day__artist rich-text" v-html="act.label"></span>
                 </template>
               </p>
             </section>
@@ -152,7 +183,7 @@
               :key="day.id"
               class="program-day"
             >
-              <h2 class="program-day__date">{{ localized(day.dateLabel) }}</h2>
+              <h2 class="program-day__date rich-text" v-html="localized(day.dateLabel)"></h2>
               <p class="program-day__lineup">
                 <template v-for="entry in day.entries" :key="entry.id">
                   <router-link
@@ -160,54 +191,68 @@
                     class="program-day__artist program-day__artist--workshop"
                     :to="`/program/workshop/${entry.detail.id}`"
                   >
-                    <span class="program-day__time">{{ localized(entry.time) }}</span>
+                    <span class="program-day__time rich-text" v-html="localized(entry.time)"></span>
                     <span class="program-day__workshop-title">
                       <span
-                        v-for="(labelPart, labelIdx) in splitLabelParts(workshopEntryLabel(entry))"
-                        :key="`${entry.id}-label-${labelIdx}`"
-                        class="program-day__split program-day__workshop-title-text"
-                        :style="splitStyleForWorkshopLabel(labelPart)"
-                      >
-                        <span class="program-day__split-ghost">{{ labelPart }}</span>
+                        v-if="containsHtml(workshopEntryLabel(entry))"
+                        class="rich-text"
+                        v-html="workshopEntryLabel(entry)"
+                      ></span>
+                      <template v-else>
                         <span
-                          class="program-day__split-half program-day__split-half--top"
-                          aria-hidden="true"
+                          v-for="(labelPart, labelIdx) in splitLabelParts(workshopEntryLabel(entry))"
+                          :key="`${entry.id}-label-${labelIdx}`"
+                          class="program-day__split program-day__workshop-title-text"
+                          :style="splitStyleForWorkshopLabel(labelPart)"
                         >
-                          {{ labelPart }}
+                          <span class="program-day__split-ghost">{{ labelPart }}</span>
+                          <span
+                            class="program-day__split-half program-day__split-half--top"
+                            aria-hidden="true"
+                          >
+                            {{ labelPart }}
+                          </span>
+                          <span
+                            class="program-day__split-half program-day__split-half--bottom"
+                            aria-hidden="true"
+                          >
+                            {{ labelPart }}
+                          </span>
                         </span>
-                        <span
-                          class="program-day__split-half program-day__split-half--bottom"
-                          aria-hidden="true"
-                        >
-                          {{ labelPart }}
-                        </span>
-                      </span>
+                      </template>
                       <span class="program-link-arrow" aria-hidden="true">→</span>
                     </span>
                   </router-link>
                   <span v-else class="program-day__artist program-day__artist--workshop">
-                    <span class="program-day__time">{{ localized(entry.time) }}</span>
+                    <span class="program-day__time rich-text" v-html="localized(entry.time)"></span>
                     <span class="program-day__workshop-title">
                       <span
-                        v-for="(labelPart, labelIdx) in splitLabelParts(workshopEntryLabel(entry))"
-                        :key="`${entry.id}-fallback-label-${labelIdx}`"
-                        class="program-day__split program-day__workshop-title-text"
-                        :style="splitStyleForWorkshopLabel(labelPart)"
-                      >
-                        <span class="program-day__split-ghost">{{ labelPart }}</span>
+                        v-if="containsHtml(workshopEntryLabel(entry))"
+                        class="rich-text"
+                        v-html="workshopEntryLabel(entry)"
+                      ></span>
+                      <template v-else>
                         <span
-                          class="program-day__split-half program-day__split-half--top"
-                          aria-hidden="true"
+                          v-for="(labelPart, labelIdx) in splitLabelParts(workshopEntryLabel(entry))"
+                          :key="`${entry.id}-fallback-label-${labelIdx}`"
+                          class="program-day__split program-day__workshop-title-text"
+                          :style="splitStyleForWorkshopLabel(labelPart)"
                         >
-                          {{ labelPart }}
+                          <span class="program-day__split-ghost">{{ labelPart }}</span>
+                          <span
+                            class="program-day__split-half program-day__split-half--top"
+                            aria-hidden="true"
+                          >
+                            {{ labelPart }}
+                          </span>
+                          <span
+                            class="program-day__split-half program-day__split-half--bottom"
+                            aria-hidden="true"
+                          >
+                            {{ labelPart }}
+                          </span>
                         </span>
-                        <span
-                          class="program-day__split-half program-day__split-half--bottom"
-                          aria-hidden="true"
-                        >
-                          {{ labelPart }}
-                        </span>
-                      </span>
+                      </template>
                     </span>
                   </span>
                 </template>
@@ -227,6 +272,7 @@ import { programPerformance } from '@/assets/data/program_performance.js'
 import { programWorkshop } from '@/assets/data/program_workshop.js'
 import { performanceSchedule, resolvePerformanceActs } from '@/assets/data/program_performance_schedule.js'
 import { getWorkshopDetail, workshopSchedule } from '@/assets/data/program_workshop_schedule.js'
+import { containsHtml } from '@/utils/htmlContent.js'
 
 function textSeedHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
@@ -290,6 +336,7 @@ export default {
     },
   },
   methods: {
+    containsHtml,
     localized(field) {
       if (!field) return ''
       const value = field[this.locale.lang] || field.en || field.kr || ''

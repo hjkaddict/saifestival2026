@@ -67,22 +67,6 @@
         </span>
       </button>
 
-      <div
-        v-if="displayedRouteName === 'Program' && programMenuOpen"
-        class="global-nav__program-menu"
-        @click.stop
-      >
-        <button
-          v-for="item in programNavItems"
-          :key="item.id"
-          type="button"
-          class="global-nav__program-item"
-          @click="scrollToProgramSection(item.id)"
-        >
-          <span :class="navTextClass('program')">{{ item.label }}</span>
-        </button>
-      </div>
-
       <button type="button" class="nav-btn global-nav__btn" @click="toggleLang($event)">
         <span class="global-nav__split" :style="navSplitStyle('language')">
           <span class="global-nav__split-ghost">
@@ -97,6 +81,26 @@
         </span>
       </button>
     </nav>
+
+    <Transition name="program-menu">
+      <div
+        v-if="displayedRouteName === 'Program' && programMenuOpen"
+        class="global-nav__program-overlay"
+        @click.self="programMenuOpen = false"
+      >
+        <div class="global-nav__program-menu" role="menu" @click.stop>
+          <button
+            v-for="item in programNavItems"
+            :key="item.id"
+            type="button"
+            class="global-nav__program-item"
+            @click="scrollToProgramSection(item.id)"
+          >
+            <span :class="navTextClass('program')">{{ item.label }}</span>
+          </button>
+        </div>
+      </div>
+    </Transition>
 
     <main class="router-stage">
       <router-view v-slot="{ Component }">
@@ -583,7 +587,8 @@ html::before {
   em,
   figcaption,
   blockquote
-) {
+),
+#app-root .router-stage .rich-text {
   transition: opacity 0.28s cubic-bezier(0.45, 0, 0.2, 1);
 }
 
@@ -608,6 +613,7 @@ html::before {
   figcaption,
   blockquote
 ),
+#app-root.is-language-switching .router-stage .rich-text,
 #app-root.is-language-switching .global-nav__btn,
 #app-root.is-language-switching .global-nav__program-menu {
   opacity: 0;
@@ -635,7 +641,7 @@ html::before {
 }
 
 .global-nav__program-toggle,
-.global-nav__program-menu {
+.global-nav__program-overlay {
   display: none;
 }
 
@@ -673,7 +679,8 @@ html::before {
 }
 
 .global-nav--text-faded .global-nav__btn,
-.global-nav--text-faded .global-nav__program-menu {
+.global-nav--text-faded .global-nav__program-menu,
+.global-nav--text-faded .global-nav__program-overlay {
   opacity: 0;
 }
 
@@ -827,8 +834,7 @@ html::before {
   white-space: nowrap;
 }
 
-.global-nav .global-nav__program-toggle,
-.global-nav .global-nav__program-menu {
+.global-nav .global-nav__program-toggle {
   display: none;
 }
 
@@ -881,31 +887,67 @@ html::before {
     display: inline-flex;
   }
 
-  .global-nav .global-nav__program-menu {
-    position: absolute;
-    top: calc(100% - 0.15rem);
-    left: 50%;
-    z-index: 1;
-    display: grid;
-    gap: 0.08rem;
-    padding: 0.3rem 0.65rem 0.45rem;
+  .global-nav__program-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: calc(72px + env(safe-area-inset-top, 0px)) 20px 48px;
     background: #fff;
     pointer-events: auto;
-    transform: translateX(-50%);
+  }
+
+  .global-nav__program-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    width: 100%;
+    max-width: 20rem;
+    margin: 0 auto;
+    padding: 0;
+    background: transparent;
   }
 
   .global-nav__program-item {
     display: block;
-    padding: 0.12rem 0;
+    padding: 0.2rem 0;
     border: 0;
     background: transparent;
     color: #0a0a0a;
     font: inherit;
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1.42;
     text-align: center;
     white-space: nowrap;
     cursor: pointer;
+  }
+
+  .program-menu-enter-active,
+  .program-menu-leave-active {
+    transition: transform 0.38s cubic-bezier(0.45, 0, 0.2, 1);
+  }
+
+  .program-menu-enter-from,
+  .program-menu-leave-to {
+    transform: translateY(-100%);
+  }
+
+  .program-menu-enter-active .global-nav__program-menu,
+  .program-menu-leave-active .global-nav__program-menu {
+    transition:
+      transform 0.38s cubic-bezier(0.45, 0, 0.2, 1),
+      opacity 0.38s cubic-bezier(0.45, 0, 0.2, 1);
+  }
+
+  .program-menu-enter-from .global-nav__program-menu,
+  .program-menu-leave-to .global-nav__program-menu {
+    opacity: 0;
+    transform: translateY(-1.1rem);
   }
 }
 </style>

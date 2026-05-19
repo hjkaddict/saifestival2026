@@ -7,13 +7,13 @@
     ]"
   >
     <article class="about-page__inner" :key="locale.lang">
-      <section class="about-page__body" v-html="aboutContent"></section>
+      <section class="about-page__body rich-text" v-html="aboutContent"></section>
 
       <section class="about-page__team" aria-labelledby="festival-team-heading">
-        <h1 id="festival-team-heading" class="about-page__team-heading">{{ teamHeading }}</h1>
+        <h1 id="festival-team-heading" class="about-page__team-heading rich-text" v-html="teamHeading"></h1>
         <dl class="about-page__team-list">
           <div v-for="(section, idx) in teamSections" :key="idx" class="about-page__team-row">
-            <dt class="about-page__team-role">{{ section.role }}</dt>
+            <dt class="about-page__team-role rich-text" v-html="section.role"></dt>
             <dd class="about-page__team-members">
               <template v-for="(member, mi) in section.members" :key="mi">
                 <span v-if="mi > 0" class="about-page__team-sep">, </span>
@@ -78,7 +78,7 @@
             class="about-page__scroll-poem-part"
             :class="`about-page__scroll-poem-part--${part.type}`"
           >
-            {{ part.text }}
+            <span class="rich-text" v-html="part.text"></span>
           </span>
         </p>
       </div>

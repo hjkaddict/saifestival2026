@@ -4,19 +4,25 @@
     :class="locale.lang === 'kr' ? 'workshop-detail--ko' : 'workshop-detail--en'"
   >
     <article v-if="detail" class="workshop-detail__inner" :key="`${locale.lang}-${id}`">
-      <p class="workshop-detail__type">{{ localized(detail.type) }}</p>
-      <h1 class="workshop-detail__title">{{ localized(detail.title) }}</h1>
-      <p v-if="localized(detail.artist)" class="workshop-detail__artist">
-        {{ localized(detail.artist) }}
-      </p>
+      <p class="workshop-detail__type rich-text" v-html="localized(detail.type)"></p>
+      <h1 class="workshop-detail__title rich-text" v-html="localized(detail.title)"></h1>
+      <p
+        v-if="localized(detail.artist)"
+        class="workshop-detail__artist rich-text"
+        v-html="localized(detail.artist)"
+      ></p>
       <div v-if="scheduleLines.length" class="workshop-detail__schedule">
-        <p v-for="line in scheduleLines" :key="line" class="workshop-detail__schedule-line">
-          {{ line }}
-        </p>
+        <p
+          v-for="line in scheduleLines"
+          :key="line"
+          class="workshop-detail__schedule-line rich-text"
+          v-html="line"
+        ></p>
       </div>
-      <section class="workshop-detail__description">
-        {{ localized(detail.description) }}
-      </section>
+      <section
+        class="workshop-detail__description rich-text"
+        v-html="localized(detail.description)"
+      ></section>
       <div v-if="detailImages.length" class="workshop-detail__images">
         <figure
           v-for="image in detailImages"
@@ -184,18 +190,21 @@ export default {
 }
 
 .workshop-detail__back {
-  display: inline-block;
+  display: block;
+  width: fit-content;
   margin-top: 2rem;
+  margin-left: auto;
   color: inherit;
+  text-align: right;
   text-decoration: none;
 }
 
-.workshop-detail__back::after {
-  content: '→';
+.workshop-detail__back::before {
+  content: '←';
   position: relative;
   z-index: 5;
   display: inline-block;
-  margin-left: 0.26em;
+  margin-right: 0.26em;
   color: #0a0a0a;
   font-family: Arial, Helvetica, sans-serif;
   font-style: normal;
