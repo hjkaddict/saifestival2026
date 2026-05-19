@@ -94,9 +94,25 @@
             :key="item.id"
             type="button"
             class="global-nav__program-item"
-            @click="scrollToProgramSection(item.id)"
+            @click="goToProgramSection(item, $event)"
           >
-            <span :class="navTextClass('program')">{{ item.label }}</span>
+            <span class="global-nav__split" :style="programItemSplitStyle(item)">
+              <span class="global-nav__split-ghost">
+                <span :class="programItemTextClass()">{{ item.label }}</span>
+              </span>
+              <span
+                class="global-nav__split-half global-nav__split-half--top"
+                aria-hidden="true"
+              >
+                <span :class="programItemTextClass()">{{ item.label }}</span>
+              </span>
+              <span
+                class="global-nav__split-half global-nav__split-half--bottom"
+                aria-hidden="true"
+              >
+                <span :class="programItemTextClass()">{{ item.label }}</span>
+              </span>
+            </span>
           </button>
         </div>
       </div>
@@ -245,6 +261,44 @@ export default {
     },
     toggleProgramMenu() {
       this.programMenuOpen = !this.programMenuOpen
+    },
+    programItemTextClass() {
+      return this.locale.lang === 'kr' ? 'global-nav__ko' : 'global-nav__en'
+    },
+    programItemSplitStyle(item) {
+      const isKo = this.locale.lang === 'kr'
+      const scale = isKo ? 0.56 : NAV_SPLIT_SCALE_LATIN
+      const key = navSeedHash(`program-item:${item.id}:${item.label}`)
+      const u = (n) => {
+        let h = Math.imul((key + n) ^ 0x9e3779b9, 0x9e3779b9) >>> 0
+        h = (h ^ (h >>> 16)) >>> 0
+        h = Math.imul(h, 2246822507) >>> 0
+        return h / 4294967296
+      }
+      const invert = u(101) >= 0.5
+      const base = 0.95 + u(7) * 1.15
+      const topJitter = 0.88 + u(13) * 0.3
+      const botJitter = 0.88 + u(29) * 0.3
+      const signTop = invert ? 1 : -1
+      const signBot = invert ? -1 : 1
+      return {
+        '--nav-split-shift-top': `${(signTop * base * topJitter * scale).toFixed(2)}px`,
+        '--nav-split-shift-bottom': `${(signBot * base * botJitter * scale).toFixed(2)}px`,
+      }
+    },
+    goToProgramSection(item, event) {
+      if (this.shouldDelayMobileLinks()) {
+        event.preventDefault()
+        const button = event.currentTarget
+        button.classList.add('is-mobile-activating')
+        window.setTimeout(() => {
+          button.classList.remove('is-mobile-activating')
+          this.scrollToProgramSection(item.id)
+        }, MOBILE_LINK_DELAY_MS)
+        return
+      }
+
+      this.scrollToProgramSection(item.id)
     },
     scrollToProgramSection(id) {
       this.programMenuOpen = false
@@ -771,6 +825,21 @@ html::before {
   opacity: 1;
 }
 
+.global-nav__program-item:hover .global-nav__split-ghost,
+.global-nav__program-item:focus-visible .global-nav__split-ghost {
+  opacity: 1;
+}
+
+.global-nav__program-item:hover .global-nav__split-half,
+.global-nav__program-item:focus-visible .global-nav__split-half {
+  opacity: 0;
+}
+
+.global-nav__program-item:hover .global-nav__split::after,
+.global-nav__program-item:focus-visible .global-nav__split::after {
+  opacity: 1;
+}
+
 .is-mobile-activating .home-text__split-ghost,
 .is-mobile-activating .global-nav__split-ghost,
 .is-mobile-activating .program-day__split-ghost,
@@ -914,7 +983,7 @@ html::before {
   }
 
   .global-nav__program-item {
-    display: block;
+    display: inline-flex;
     padding: 0.2rem 0;
     border: 0;
     background: transparent;

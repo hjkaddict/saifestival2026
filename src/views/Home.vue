@@ -119,23 +119,14 @@
 </template>
 
 <script>
-/** 셔플 원본(불변) */
 const HOME_MENU_ITEMS = [
-  { name: 'Artists', koName: '아티스트', path: '/artists' },
-  { name: 'Program', koName: '프로그램', path: '/program' },
-  { name: 'Venue', koName: '장소', path: '/venue' },
-  { name: 'Ticket', koName: '티켓', path: '/ticket' },
-  { name: 'Archive', koName: '아카이브', path: '/archive' },
   { name: 'About', koName: '사–이', path: '/about' },
+  { name: 'Program', koName: '프로그램', path: '/program' },
+  { name: 'Artists', koName: '아티스트', path: '/artists' },
+  { name: 'Venue', koName: '장소', path: '/venue' },
+  { name: 'Archive', koName: '아카이브', path: '/archive' },
+  { name: 'Ticket', koName: '티켓', path: '/ticket' },
 ]
-
-function shuffleInPlace(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[arr[i], arr[j]] = [arr[j], arr[i]]
-  }
-  return arr
-}
 
 /** 라틴(영문 메뉴명): 갈라짐 약하게 — 한글은 읽기 유지용 기본 배율 1 */
 const HOME_SPLIT_SCALE_LATIN = 0.56
@@ -148,22 +139,14 @@ export default {
   name: 'Home',
   data() {
     return {
-      menus: [],
+      menus: HOME_MENU_ITEMS,
       contactLinks: [
         { name: 'Instagram', koName: '인스타그램', path: 'https://www.instagram.com/saifestival' },
         { name: 'Contact', koName: '문의', path: 'mailto:oolongradio@gmail.com' },
       ],
     }
   },
-  created() {
-    this.randomizeMenus()
-  },
   methods: {
-    randomizeMenus() {
-      const next = HOME_MENU_ITEMS.map((item) => ({ ...item }))
-      shuffleInPlace(next)
-      this.menus = next
-    },
     splitShiftVars(seedStr, scale) {
       const key = homePathHash(seedStr)
       const u = (n) => {
