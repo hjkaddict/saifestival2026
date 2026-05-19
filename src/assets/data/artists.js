@@ -257,7 +257,14 @@ export const artistsData = [
     name_en: 'The Great △',
     name_kr: '여름의 대△',
     nationality: 'JP',
-    bio_en: `The Great △ is a trio by Makoto Oshiro, Takahiro Kawaguchi and Satoshi Yashiro, which started out from the exhibition “Great △” held in 2010 at gallery Baikado (Osaka). They occasionally gather and do live performances.`,
+    bio_en: `The Great △ is a trio by Makoto Oshiro, Takahiro Kawaguchi and Satoshi Yashiro, which started out from the exhibition “Great △” held in 2010 at gallery Baikado (Osaka). They occasionally gather and do live performances.
+    
+    Makoto Oshiro: Tokyo–Berlin-based performer and artist. His primary medium is sound, alongside light, electricity, and moving objects. In live performances, he uses self-made tools and instruments built from electronic devices, everyday materials, and junk. His installation work treats sound as a physical and auditory phenomenon, focusing on vibration and interference. 
+    
+    Takahiro Kawaguchi: Tokyo-based artist and musician. He works with self-made instruments developed over the past 15 years. In performance, he arranges wooden planks, inflates plastic bags, or blasts compressed air through car horns, producing sounds that range from barely audible to ear-shattering. His recordings are similarly unpredictable.
+    
+    Satoshi Yashiro: Tokyo-based artist. Since the early 2000s, Yashiro has developed works in which sound emerges through movement, circulation, and feedback, often using self-propelled woofers and self-built devices. His practice spans exhibitions and performances, where sonic events reshape spatial and perceptual relationships. He performs with Motallica (with Keiichi Nakano) and is a member of The Great △ (夏の大△) with Makoto Oshiro and Takahiro Kawaguchi.
+    `,
     bio_kr: ``,
     img: '/images/artists/artist_21.jpg',
     website: '',
@@ -298,7 +305,8 @@ Working at the intersection of embodied listening and spatial poetics, she const
     name_en: 'Yan Jun',
     name_kr: '얀 준',
     nationality: 'CN',
-    bio_en: `yan jun, a musician and poet based in beijing.
+    bio_en: `yan jun, 
+    a musician and poet based in beijing.
     he makes music by experimental means. sometimes the result is not music. 
     he uses body and voice, feedback noise, field recording and situations, and concepts.
     he collects people's sleep recording (sleepingsorg.bandcamp.com).
@@ -313,9 +321,7 @@ Working at the intersection of embodied listening and spatial poetics, she const
     name_kr: '자오 쯔이',
     nationality: 'CN',
     bio_en: `Zhao Ziyi was born in Beijing in 2007 with a simple sound and a difficult-to-use body. In 2025, he released his debut solo CD album Sorry (Sub Jam). Also in the same year, his duo project "Nichijo" with Yang Kuku (from Ghostmass) released the double-cassette album One, Two (Sub Jam) and the full-length album The cheapest Japanese cuisine in the World (Zoomin’ Night).
-    
-    Beginning in 2023, he has organized the annual You and Me Festival in Beijing every summer. In 2024, he co-founded the venue xiaozu, an exceptionally small, multifaceted space located in central Beijing.
-    
+    Beginning in 2023, he has organized the annual You and Me Festival in Beijing every summer. In 2024, he co-founded the venue xiaozu, an exceptionally small, multifaceted space located in central Beijing.  
     These works are solitary, simple, dry, and self-harming.`,
     bio_kr: ``,
     img: '/images/artists/artist_25.jpg',
