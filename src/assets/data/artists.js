@@ -6,7 +6,7 @@ export const artistsData = [
     nationality: 'US',
     bio_en: `Andrew Ross is an artist working within the intersections of assemblage sculpture and digital imaging. He received his BFA from The Cooper Union in 2011, where he was awarded the Gelman Trust Award for Excellence in Sculpture. He attended Skowhegan School of Painting and Sculpture in 2011. He’s been a resident or fellow of programs including The Windgate Artist in Residence at SUNY Purchase College of Art and Design, ISCP, The Triangle Arts Association, The Drawing Center’s Open Sessions, LMCC’s Swing Space, The Macedonia Institute, The Bruce High Quality Foundation, Atelier Mondial, and Two Trees’ Cultural Space Subsidy Program. Ross has exhibited in group exhibitions at The Hessel Museum, The Drawing Center, The Studio Museum in Harlem, Artists Space, Center for the Humanities at CUNY, White Columns, and Greene Naftali. He has staged solo exhibitions at Kai Matsumiya Fine Arts Gallery, The Gallery at Heimbold Visual Arts Center, Signal, American Medium, Clima Gallery, and False Flag. Ross’ work has been reviewed in Artforum, Art in America, Cultured, Flash Art, Mousse, and the Brooklyn Rail. He is currently an Adjunct Professor at SUNY New Paltz and The Cooper Union for the Advancement of Science and Art.
 `,
-    bio_kr: ``,
+    bio_kr: `앤드류 로스는 아상블라지 조각과 디지털 이미지의 교차점에 위치한 작업을 선보인다. 쿠퍼유니온에서 학사과정을 밟으면서 겔만 트러스트 조각상 수상하였고 스코히건에서 수학했다. 뉴욕주립대 윈드게이트 레지던시, ISCP, 트라이앵글 미술협회, 더 드로잉센터, LMCC, 마케도니아 인스티튜트, 브루스 하이퀄리티 재단, 아뜰리에 몬디알, 투 트리스 문화공간 등에서의 레지던시 경험이 있따. 헤셀 미술관, 더 드로잉센터, 할렘 스튜디오 미술관, 아티스트 스페이스, 뉴욕시립대 인문학센터, 화이트 칼럼, 그린 나프탈리 등에서 개최된 단체전에 참여했으며 카이 마츠미야 갤러리, 하임볼트 시각미술센터 갤러리, 시그널, 아메리칸 미디엄, 클리마 갤러리, 폴스 플래그 등에서 개인전을 가졌다. 로스의 작업은 아트포럼, 아트 인 아메리카, 컬쳐드, 플래시 아트, 무스, 브루클린 레일 등에서 소개된 바 있고, 현재 뉴욕주립대 뉴팔츠 캠퍼스 및 쿠퍼 유니온에서 강사로 일하고 있다.`,
     img: '/images/artists/artist_01.jpg',
     website: 'https://andrewross.info/',
   },
@@ -134,7 +134,9 @@ export const artistsData = [
     bio_en: `Hugo Esquinca (Mexico City, 1990) produces actions and conditions utilising audio electronics at excessive levels of amplification.
     His work has been presented in diverse contexts and venues such as EMPAC-New York,  Stedelijk Museum, Muziekgebouw-Amsterdam, National Centre for Contemporary Arts NCCA-Moscow, HANGAR-Barcelona, Museum Nikola Tesla-Zagreb, Festspielhaus HELLERAU-Dresden, CONCRETE Alserkal-Dubai, Namba BEARS-Osaka, 20000V-Tokyo, MIRA Ploschad of Modern Art Siberia-Krasnoyarsk, Le Centquatre-Paris, Fondazione Antonio Ratti-Como, Ujazdowski Castle for Contemporary Art-Warsaw, Palacio de la Escuela de Medicina-CDMX, ARTER Museum-Istanbul, Haus der Berliner Festspiele, Akademie der Künste, Radialsystem, Haus der Kulturen der Welt, Tresor and Berghain-Berlin among others.
     Esquinca is currently a PhD researcher at the Erasmus Institute for Philosophy and Technology in Rotterdam under the supervision of Yuk Hui.`,
-    bio_kr: ``,
+    bio_kr: `휴고 에스킨카는 1990년생 멕시코 시티 출신으로, 주로 오디오 전자기기를 활용하여 음량 증폭을 극단까지 밀어붙이는 작업을 선보인다. 
+    그의 작업은 뉴욕 EMPAC, 슈테델릭 미술관, 뮤직헤바우, 니콜라 테슬라 기술박물관, 드레스덴 페스트슈필하우스, 콘크리트, 베어스, 20000V, MIRA, 르 상카르트, 안토니오 라티 재단, 우야즈도프스키 성 현대미술센터, 우남 현대미술관, 아르테르 미술관, 베를린 페스트슈필레, AdK, 라디엘시스템, 세계문화의 집, 트레조어, 베르크하인 등의 공간에서 발표된 바 있다. 
+    현재 로테르담 에라스무스 철학기술원 박사연구생으로, 지도교수는 육 휘(Yuk Hui)이다.`,
     img: '/images/artists/artist_11.jpg',
     website: 'https://www.dekj.org/',
   },
@@ -154,7 +156,7 @@ export const artistsData = [
     name_kr: '리 치항',
     nationality: 'CN/NL',
     bio_en: `Li Qihang is an artist based in Amsterdam. In 2022, she initiated the project Mercury Patio, an ongoing process of waiting. Her work follows the slip of reality, where the present is doubled, or already remembered.`,
-    bio_kr: ``,
+    bio_kr: `리치항은 암스테르담 기반의 작가이다. 기다림의 과정을 지속적으로 탐구하기 위해 2022년 머큐리 파티오 프로젝트를 시작했다. 현재가 갑절이 되거나 이미 기억되고 있는 등, 현실에서 벌어진 틈새를 추적하는 작업을 선보인다.  `,
     img: '/images/artists/artist_13.jpg',
     website: 'https://qihang.li/',
   },
@@ -190,7 +192,10 @@ export const artistsData = [
     Klein is currently located in Berlin. Klein had operated a monthly radio show on Montez Press Radio since its inception until 2025 amassing a library of over 50 unique interviews with important contemporary sonic practitioners. Klein has also ran an ambitious monthly invitational program beginning at the Volksbühne Roter Salon, now hosted at the Silent Green Kuppelhalle, titled Psychic Liberation Night. From December of 2023 to June of 2024 the Psychic Liberation Night was awarded the second highest funding to operate the series by Germany’s Musikfondsprogram. Klein has collaborated in various capacities and medial materializations with Wilted Woman, Audrey Chen, Das Ding, Hugo Esquinca, Jean-Louis Huhta, Erik Nystrand, Scant, Philip Maier, Makoto Oshiro and many more. Since 2013, Klein has ran the label “PL” (Primitive Languages, Psychic Liberation, Potentially Listenable etc) and currently collaborates on the free internet label FLMPP with Adam Campbell and Diego Behncke.
     Klein has performed and shown works in contexts and festivals like Sonic Acts Biennial (NL), Artsite Soje (KR), The Amant Foundation (USA), Julia Stoschek Foundation (DE), SARA’S (USA), MOMA PS1 (USA), De La Cruz Collection (USA), Volksbühne (DE), Empty Gallery (HK), Berghain (DE), Tresor (DE), Seendosi (SK), Cafe Sismo (CDMX), Cafe Oto (UK), Folkteatern (SE), Burning Fleshtival (USA), Herrensauna (DE), and Summer Scum (USA). 
 `,
-    bio_kr: ``,
+    bio_kr: `닉 클라인은 사운드 아트를 다루며, 미술과 사운드가 상호작용할 때 발생하는 사회적 잠재력에 주목하는 작업을 선보인다. 세계 곳곳의 음악 레이블과 녹음기사로서 협업하여 오면서 다양한 녹음 매체를 다뤄왔고, 본인 소유의 음악 레이블인 PL(primitive languages, Psychic Liberation 등)의 운영 또한 병행하고 있으며, 동시에 시각 예술 전시 또한 선보여 왔다. 미술과 사운드 각자에 깃든 억압적인 이데올로기나 클리셰로부터 거리를 두며, 두 영역이 마찰을 일으킬 때 발생하는 생산적인 에너지를 탐구하는 데 집중한다. 시끄러운 소리, 요리, 오프라인 커뮤니티 형성, 레코드, 술집, 신디사이저, 희극을 좋아하는 편이다. 
+    현재 베를린에 거주 중으로, 몬테즈 프레스 라디오(Montez Press Radio)의 창립 초기부터 2025년까지 매월 라디오 쇼를 진행하면서, 여러 현대 음향예술가들과 50여회의 인터뷰를 성사시켰다. 또한, 베를린 민중극장에서 시작해 지금은 사일런트 그린에서 독일 음악기금 지원금(2023년 12월~2024년 6월)을 받아 '사이킥 리버레이션 나이트’라는 월간 공연 프로그램을 운영하고 있다. 윌티드 우먼, 오드리 첸, 다스 딩, 휴고 에스킨카, 장-루이 후타, 에릭 니스트란드, 스캔트, 필립 마이어, 마코토 오시로 등 수많은 아티스트들과 다양한 형태로 협업하여 왔다. 2013년부터 운영해 온 PM에 이어, 현재는 애덤 캠벨, 디에고 벤케와 함께 오픈액세스 온라인 음악 레이블 FLMPP에서 함께하고 있다. 
+    소닉 액츠 비엔날레, 아트사이트 소제, 아만트 재단, 줄리아 스토셰크 재단, 사라스, 뉴욕현대미술관 PS1, 델라크루즈 콜렉션, 베를린 민중극장, 엠티 갤러리, 베르크하인, 트레조어, 신도시, 카페 시스모, 카페 오토, 포크테아테른, 버닝 플레시티벌, 헤렌자우나, 서머 스컴 등에서 공연 및 작품을 선보였다.
+`,
     img: '/images/artists/artist_16.jpg',
     website: 'https://nickklein.work/',
   },
@@ -266,7 +271,11 @@ export const artistsData = [
 In 2016 he founded The Community, evolving it from an experimental, multidisciplinary art space into an independent curatorial institution. He has worked with more than 350 artists and collaborated closely with institutions and estates including the Tom of Finland Foundation and the Tove Jansson Estate. In 2024 he co-founded The Salon, a new art fair developed with NADA that rethinks the structure of an art fair.
 His studio practice starts from found, discarded, and surplus materials. He has consistently been more interested in the conditions of making than in finished objects. This thinking extends into his workshops, which grow into living installations and shared environments, often activated through their participants, guests, students, collaborators and communities.
 Laurila's work has been featured in the New York Times, Artforum, The Guardian, Le Monde, Spike Art Quarterly, Domus, Artsy and Wallpaper*.`,
-    bio_kr: ``,
+    bio_kr: `투카 라우리라는 파리 기반의 핀란드인 작가이자 큐레이터이다. 
+    2016년에 실험・다원예술공간 ‘더 커뮤니티’를 창립하였고 350여명의 작가 및 톰 오브 핀란드 재단, 토베 얀손 재단 등의 기관과 긴밀하게 협력한 경험이 있다. 또한, 아트 페어의 구조를 새롭게 고찰해보려는 목적으로 NADA와 함께 2024년에 더 살롱을 창립하였다. 
+    라우리라의 작업은 자신이 찾아내거나 버려져 있는 잉여 재료에서 시작하며, 완성된 형태보다는 만들기라는 과정의 조건 자체에 집중되어 있다. 이러한 사고방식은 그의 워크샵에도 반영되어 있어, 다양한 참여자들을 매개로 살아있는 설치물과 공유 환경을 활성화시키는 방향으로 나아간다. 
+    그의 작업은 뉴욕타임스, 아트포럼, 가디언, 르몽드, 스파이크 아트, 도머스, 아트시, 월페이퍼 등의 지면에서 소개된 바 있다.  
+`,
     img: '/images/artists/artist_22.jpg',
     website: 'https://thecommunity.io/',
   },
