@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import './assets/fonts.css'
 import './assets/rich-text.css'
+import './assets/ios-split-crisp.css'
 import { installViewportHeightSync } from './utils/viewport.js'
 
 installViewportHeightSync()

@@ -267,6 +267,7 @@
 
 <script>
 import { localeStore } from '@/store/locale.js'
+import { splitShiftPx } from '@/utils/splitShift.js'
 import { programExhibition } from '@/assets/data/program_exhibition.js'
 import { programPerformance } from '@/assets/data/program_performance.js'
 import { programWorkshop } from '@/assets/data/program_workshop.js'
@@ -367,8 +368,8 @@ export default {
       const scale = 0.56
       const base = (0.8 + u(7) * 1.1) * scale
       return {
-        '--program-split-shift-top': `${((invert ? 1 : -1) * base).toFixed(2)}px`,
-        '--program-split-shift-bottom': `${((invert ? -1 : 1) * base * (0.85 + u(13) * 0.3)).toFixed(2)}px`,
+        '--program-split-shift-top': splitShiftPx((invert ? 1 : -1) * base),
+        '--program-split-shift-bottom': splitShiftPx((invert ? -1 : 1) * base * (0.85 + u(13) * 0.3)),
       }
     },
   },

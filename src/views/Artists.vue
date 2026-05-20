@@ -223,6 +223,7 @@
 <script>
 import { artistsData } from '@/assets/data/artists.js'
 import { localeStore } from '@/store/locale.js'
+import { splitShiftPx } from '@/utils/splitShift.js'
 
 /** 영문 이름·코드: 갈라짐 약하게 (한글 UI일 때는 1) */
 const ARTISTS_SPLIT_SCALE_LATIN = 0.56
@@ -444,8 +445,8 @@ export default {
       const topPx = signTop * base * topJitter * scale
       const botPx = signBot * base * botJitter * scale
       return {
-        '--home-split-shift-top': `${topPx.toFixed(2)}px`,
-        '--home-split-shift-bottom': `${botPx.toFixed(2)}px`,
+        '--home-split-shift-top': splitShiftPx(topPx),
+        '--home-split-shift-bottom': splitShiftPx(botPx),
       }
     },
     splitRandomStyleForArtist(artist) {

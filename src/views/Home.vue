@@ -119,6 +119,8 @@
 </template>
 
 <script>
+import { splitShiftPx } from '@/utils/splitShift.js'
+
 const HOME_MENU_ITEMS = [
   { name: 'About', koName: '사–이', path: '/about' },
   { name: 'Program', koName: '프로그램', path: '/program' },
@@ -164,8 +166,8 @@ export default {
       const topPx = signTop * base * topJitter * scale
       const botPx = signBot * base * botJitter * scale
       return {
-        '--home-split-shift-top': `${topPx.toFixed(2)}px`,
-        '--home-split-shift-bottom': `${botPx.toFixed(2)}px`,
+        '--home-split-shift-top': splitShiftPx(topPx),
+        '--home-split-shift-bottom': splitShiftPx(botPx),
       }
     },
     splitRandomStyleLatin(item) {

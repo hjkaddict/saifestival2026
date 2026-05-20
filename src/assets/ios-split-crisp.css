@@ -1,0 +1,134 @@
+/**
+ * iOS WebKit: filter + clip-path split text stacks into excess blur.
+ * Keeps a light scan texture; Android/desktop rules unchanged.
+ */
+@supports (-webkit-touch-callout: none) {
+  .program-page__inner,
+  .about-page__inner,
+  .about-page__scroll-poem-inner,
+  .exhibition-detail__inner,
+  .workshop-detail__inner,
+  .ticket-page__inner,
+  .venue-page__card,
+  .artist-detail__title,
+  .artist-detail__bio,
+  .home-text__menu {
+    filter: none;
+  }
+
+  :is(
+      [class*='__split'],
+      [class*='__split-ghost'],
+      [class*='__split-half']
+    ),
+  :is([class*='__split'], [class*='__split-ghost'], [class*='__split-half']) * {
+    filter: none !important;
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+
+  :is([class*='__split-ghost'], [class*='__split-half'])
+    :is(
+      .home-text__en,
+      .home-text__ko,
+      .home-text__gap,
+      .global-nav__en,
+      .global-nav__ko
+    ) {
+    text-shadow: none;
+  }
+
+  :is(
+      .home-text__split,
+      .global-nav__split,
+      .program-day__split,
+      .venue-page__split,
+      .about-page__split
+    ) {
+    text-shadow:
+      0 0 0.35px rgba(10, 10, 10, 0.2),
+      0.18px 0.1px 0 rgba(10, 10, 10, 0.08);
+  }
+
+  .global-nav__active-text,
+  .global-nav__active-text * {
+    filter: none !important;
+  }
+
+  .home-text__split-half--top,
+  .global-nav__split-half--top,
+  .program-day__split-half--top,
+  .venue-page__split-half--top,
+  .about-page__split-half--top {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translate3d(var(--home-split-shift-top, -1px), 0, 0);
+  }
+
+  .home-text__split-half--bottom,
+  .global-nav__split-half--bottom,
+  .program-day__split-half--bottom,
+  .venue-page__split-half--bottom,
+  .about-page__split-half--bottom {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translate3d(var(--home-split-shift-bottom, 1px), 0, 0);
+  }
+
+  .global-nav__split-half--top {
+    transform: translate3d(var(--nav-split-shift-top, -1px), 0, 0);
+  }
+
+  .global-nav__split-half--bottom {
+    transform: translate3d(var(--nav-split-shift-bottom, 1px), 0, 0);
+  }
+
+  .program-day__split-half--top {
+    transform: translate3d(var(--program-split-shift-top, -1px), 0, 0);
+  }
+
+  .program-day__split-half--bottom {
+    transform: translate3d(var(--program-split-shift-bottom, 1px), 0, 0);
+  }
+
+  .venue-page__split-half--top {
+    transform: translate3d(var(--venue-split-shift-top, -1px), 0, 0);
+  }
+
+  .venue-page__split-half--bottom {
+    transform: translate3d(var(--venue-split-shift-bottom, 1px), 0, 0);
+  }
+
+  .about-page__split-half--top {
+    transform: translate3d(var(--about-split-shift-top, -1px), 0, 0);
+  }
+
+  .about-page__split-half--bottom {
+    transform: translate3d(var(--about-split-shift-bottom, 1px), 0, 0);
+  }
+
+  @media (max-width: 768px), (hover: none), (pointer: coarse) {
+    :where(
+        a,
+        button,
+        p,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        span,
+        li,
+        dt,
+        dd,
+        label,
+        small,
+        strong,
+        em,
+        figcaption,
+        blockquote
+      ):not(:is([class*='__split'] *)) {
+      filter: blur(0.08px) contrast(1.04);
+    }
+  }
+}

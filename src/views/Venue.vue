@@ -66,6 +66,7 @@ import {
 } from '@/assets/data/venueMap.js'
 import { localeStore } from '@/store/locale.js'
 import { containsHtml } from '@/utils/htmlContent.js'
+import { splitShiftPx } from '@/utils/splitShift.js'
 
 function parseEnvNumber(value) {
   const n = Number(value)
@@ -114,8 +115,8 @@ export default {
       const scale = 0.56
       const base = (0.95 + u(7) * 1.15) * scale
       return {
-        '--venue-split-shift-top': `${((invert ? 1 : -1) * base).toFixed(2)}px`,
-        '--venue-split-shift-bottom': `${((invert ? -1 : 1) * base * (0.88 + u(13) * 0.3)).toFixed(2)}px`,
+        '--venue-split-shift-top': splitShiftPx((invert ? 1 : -1) * base),
+        '--venue-split-shift-bottom': splitShiftPx((invert ? -1 : 1) * base * (0.88 + u(13) * 0.3)),
       }
     },
     mapNoKeyMessage() {

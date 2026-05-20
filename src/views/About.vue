@@ -88,6 +88,7 @@
 
 <script>
 import { localeStore } from '@/store/locale.js'
+import { splitShiftPx } from '@/utils/splitShift.js'
 import { aboutData } from '@/assets/data/about.js'
 import { festivalTeamHeading, getFestivalTeam } from '@/assets/data/festivalTeam.js'
 
@@ -217,8 +218,8 @@ export default {
       const invert = u(101) >= 0.5
       const base = (0.95 + u(7) * 1.15) * scale
       return {
-        '--about-split-shift-top': `${((invert ? 1 : -1) * base * (0.88 + u(13) * 0.3)).toFixed(2)}px`,
-        '--about-split-shift-bottom': `${((invert ? -1 : 1) * base * (0.88 + u(29) * 0.3)).toFixed(2)}px`,
+        '--about-split-shift-top': splitShiftPx((invert ? 1 : -1) * base * (0.88 + u(13) * 0.3)),
+        '--about-split-shift-bottom': splitShiftPx((invert ? -1 : 1) * base * (0.88 + u(29) * 0.3)),
       }
     },
   },

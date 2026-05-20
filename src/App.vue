@@ -135,6 +135,7 @@
 
 <script>
 import { localeStore } from '@/store/locale.js'
+import { splitShiftPx } from '@/utils/splitShift.js'
 
 const NAV_SPLIT_SCALE_LATIN = 0.56
 const MOBILE_LINK_DELAY_MS = 360
@@ -282,8 +283,8 @@ export default {
       const signTop = invert ? 1 : -1
       const signBot = invert ? -1 : 1
       return {
-        '--nav-split-shift-top': `${(signTop * base * topJitter * scale).toFixed(2)}px`,
-        '--nav-split-shift-bottom': `${(signBot * base * botJitter * scale).toFixed(2)}px`,
+        '--nav-split-shift-top': splitShiftPx(signTop * base * topJitter * scale),
+        '--nav-split-shift-bottom': splitShiftPx(signBot * base * botJitter * scale),
       }
     },
     goToProgramSection(item, event) {
@@ -413,8 +414,8 @@ export default {
       const signTop = invert ? 1 : -1
       const signBot = invert ? -1 : 1
       return {
-        '--nav-split-shift-top': `${(signTop * base * topJitter * scale).toFixed(2)}px`,
-        '--nav-split-shift-bottom': `${(signBot * base * botJitter * scale).toFixed(2)}px`,
+        '--nav-split-shift-top': splitShiftPx(signTop * base * topJitter * scale),
+        '--nav-split-shift-bottom': splitShiftPx(signBot * base * botJitter * scale),
       }
     },
   },
