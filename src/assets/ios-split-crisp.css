@@ -16,6 +16,19 @@
     filter: none;
   }
 
+  .home-text__link:has([class*='__split']),
+  .home-text__contact-link:has([class*='__split']),
+  .global-nav__btn:has([class*='__split']),
+  .global-nav__program-item:has([class*='__split']),
+  .program-day__artist:has([class*='__split']),
+  .program-section__work:has([class*='__split']),
+  .venue-page__card-link:has([class*='__split']),
+  .about-page__team-link:has([class*='__split']),
+  .artist-detail__website:has([class*='__split']),
+  .artist-detail__more:has([class*='__split']) {
+    filter: none;
+  }
+
   :is(
       [class*='__split'],
       [class*='__split-ghost'],
@@ -23,18 +36,8 @@
     ),
   :is([class*='__split'], [class*='__split-ghost'], [class*='__split-half']) * {
     filter: none !important;
-    -webkit-font-smoothing: subpixel-antialiased;
-  }
-
-  :is([class*='__split-ghost'], [class*='__split-half'])
-    :is(
-      .home-text__en,
-      .home-text__ko,
-      .home-text__gap,
-      .global-nav__en,
-      .global-nav__ko
-    ) {
-    text-shadow: none;
+    text-shadow: none !important;
+    -webkit-font-smoothing: antialiased;
   }
 
   :is(
@@ -44,33 +47,30 @@
       .venue-page__split,
       .about-page__split
     ) {
-    text-shadow:
-      0 0 0.35px rgba(10, 10, 10, 0.2),
-      0.18px 0.1px 0 rgba(10, 10, 10, 0.08);
+    text-shadow: 0 0 0.22px rgba(10, 10, 10, 0.12);
   }
 
   .global-nav__active-text,
   .global-nav__active-text * {
     filter: none !important;
+    text-shadow: none !important;
   }
 
-  .home-text__split-half--top,
-  .global-nav__split-half--top,
-  .program-day__split-half--top,
-  .venue-page__split-half--top,
-  .about-page__split-half--top {
+  [class*='__split-half--top'] {
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+  }
+
+  [class*='__split-half--bottom'] {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .home-text__split-half--top {
     transform: translate3d(var(--home-split-shift-top, -1px), 0, 0);
   }
 
-  .home-text__split-half--bottom,
-  .global-nav__split-half--bottom,
-  .program-day__split-half--bottom,
-  .venue-page__split-half--bottom,
-  .about-page__split-half--bottom {
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
+  .home-text__split-half--bottom {
     transform: translate3d(var(--home-split-shift-bottom, 1px), 0, 0);
   }
 
@@ -128,7 +128,7 @@
         figcaption,
         blockquote
       ):not(:is([class*='__split'] *)) {
-      filter: blur(0.08px) contrast(1.04);
+      filter: blur(0.05px) contrast(1.03);
     }
   }
 }

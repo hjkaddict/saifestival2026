@@ -1,4 +1,3 @@
-// description fields support HTML (e.g. <i>, <p>, <br>).
 export const programExhibition = {
   title: {
     kr: `전시`,
@@ -24,7 +23,7 @@ The acoustic conditions inside the exhibition space also operate as a central co
     {
       id: 'andrew-ross',
       artist: { kr: '앤드류 로스', en: 'Andrew Ross' },
-      title: { kr: '', en: '' },
+      title: { kr: '가스 마스크', en: 'Gas Masks' },
       description: { kr: '', en: '' },
     },
     {

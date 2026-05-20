@@ -12,11 +12,14 @@ export function shouldSnapSplitShiftForIOS() {
   return iosSplitSnapCache
 }
 
-/** Horizontal split offset; on iOS snap to 0.5px to reduce WebKit raster blur. */
+/** Horizontal split offset; on iOS snap to whole px to reduce WebKit raster blur. */
 export function splitShiftPx(value) {
   if (!shouldSnapSplitShiftForIOS()) {
     return `${value.toFixed(2)}px`
   }
-  const snapped = Math.round(value * 2) / 2
-  return `${snapped.toFixed(1)}px`
+  let snapped = Math.round(value)
+  if (snapped === 0 && value !== 0) {
+    snapped = value > 0 ? 1 : -1
+  }
+  return `${snapped}px`
 }
