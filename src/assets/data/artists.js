@@ -16,10 +16,10 @@ export const artistsData = [
     name_kr: '오드리 첸',
     nationality: 'US/DE',
     bio_en: `As a 2nd generation Taiwanese American (born 1976) living in Berlin, Audrey Chen's work continuously explores the displacement of story and history due to the migration and integration processes, loss and adoption of language, untold stories, and how the past can be accessed through inherited and lived experience. Her practice is deeply intertwined with this act of invocation, calling upon the physical body to remember beyond the limitations of its own memory. Through extreme, un-processed hyperextensions of her voice in tandem with the chaotic glitch of a Ciat Lonbarde “Fourses” synthesiser, she invokes a highly amplified joint resonant body/space transforming itself in a feedback loop of imagination, touch, vibration, sound and aural sensation. For over two decades, she has been touring extensively, appearing worldwide and aside from her solo concerts, Chen performs currently in her longest running duo project since 2005 with Phil Minton; as BEAM SPLITTER with trombonist Henrik Munkeby Nørstebø; as MOPCUT with Lukas Koenig and Julien Desprez with regular guest MC Dälek; with electronic music artist Kaffe Matthews; with American sound artist Nick Klein, in duo for voice/live digital process with Mexican sound artist Hugo Esquinca and in trio with Vietnamese/German and Singaporean artists Nguyễn + Transitory.
-    She has shown her work at festivals/venues such as: Festival Beyond Innocence (Osaka, JP), Maerzmusik, CTM Festival, Berghain, (Berlin, DE),  Unsound Festival (Krakow, PL), 2PI Festival (Hangzhou, CN), Musique Actuelle de Victoriaville/FIMAV (CA), Festival Ecuatoriano de Música Contemporánea (Quito,Ecuador), Meteo Festival (Mulhouse, FR), Angelica Festival (Bologna, IT), Zacheta National Gallery (Warsaw, PL), Museé du quai Branly, Radio France (Paris, FR), Auditorio de Tenerife (Tenerife, ES), Teatro Colon (Buenos Aires, AR), Teatro Fondamenta Nuove (Venice, IT), DOM (Moscow, RU), Wien Modern, Wiener Konzerthaus (Vienna, AT), Lille Opera (Lille, FR) and Robert Wilson's Watermill Center (Water Mill, NY, US) among many others.
-    Writing for The Wire, Julien Cowlez describes her practice as »uncompromising and idiosyncratic music, tightly disciplined yet acoustically wild and heavy with implication. Her ultra-verbal vocalising, often reminiscent of the visceral and emotionally charged sound poetry of François Dufréne or Henri Chopin, exposes physiological aspects of utterance that are concealed within standardised articulation and day to day speech. Fleshy, breath-driven and flecked with spittle, Chen's voice emanates not just from her mouth but from an ensemble of upper body surfaces, channels, passages, and cavities.«
-`,
-    bio_kr: ``,
+    She has shown her work at festivals/venues such as: Festival Beyond Innocence (Osaka, JP), Maerzmusik, CTM Festival, Berghain, (Berlin, DE),  Unsound Festival (Krakow, PL), 2PI Festival (Hangzhou, CN), Musique Actuelle de Victoriaville/FIMAV (CA), Festival Ecuatoriano de Música Contemporánea (Quito,Ecuador), Meteo Festival (Mulhouse, FR), Angelica Festival (Bologna, IT), Zacheta National Gallery (Warsaw, PL), Museé du quai Branly, Radio France (Paris, FR), Auditorio de Tenerife (Tenerife, ES), Teatro Colon (Buenos Aires, AR), Teatro Fondamenta Nuove (Venice, IT), DOM (Moscow, RU), Wien Modern, Wiener Konzerthaus (Vienna, AT), Lille Opera (Lille, FR) and Robert Wilson's Watermill Center (Water Mill, NY, US) among many others.`,
+    bio_kr: `오드리 첸(1976년생)은 베를린 기반의 대만계 미국인 2세이며, 이주와 동화 서사 및 역사, 언어 상실・수용, 이야기되지 않는 것, 그리고 비경험 세대의 과거 경험을 끊임없이 탐구한다. ‘소환’의 행위라고도 할 수 있는 첸의 작업은 의식적인 기억의 한계를 넘은 신체의 기억을 촉구하는 것으로, 시아트 론바르데의 ‘포어스’ 신디사이저가 만들어내는 글리치 사운드와 날것의 목소리를 조합한다. 상상, 촉각, 진동, 소리, 청각적 감각이 만들어내는 피드백 루프 안에서 자가 변형되는 소리를 활용하고, 신체와 공간 사이의 공명을 증폭시키는 것을 시도한다. 
+    20년 넘게 세계 여러 곳을 다니며 공연해 왔으며, 2005년부터 필 민턴과 함께 듀오 프로젝트인 ‘빔 스플리터’로 활동하고 있으며 때때로 트롬본 연주자인 헨릭 문케비 노르스테보와도 협업한다. 또한, 루카스 쾨니히, 줄리엔 데프레스와 ‘MOPCUT’으로 활동하기도 하며, 정기적으로 게스트 MC 데렉과 협업한다. 전자음악가 카페 매튜스와 협업하기도 하며, 사운드 아티스트 닉 클라인, 휴고 에스킨카와는 보컬/라이브 디지털 프로세스 듀오로, 그리고 베트남, 독일, 싱가포르 작가로 구성된 ‘응우옌 + 트랜지토리’와도 함께 활동하고 있다.
+    비욘드 이노센스 페스티벌, 메르츠무직, CTM, 베르크하인, 언사운드 페스티벌, 2PI 페스티벌, 빅토리아빌 현대음악, 에콰도르 현대음악 페스티벌, 메테오 페스티벌, 안젤리카 페스티벌, 자케타 국립미술관, 브란리 미술관, 라디오 프랑스, 테네리페 오디토리오, 테아크로 콜론, 테아트로 폰다멘타 누오베, DOM, 빈 모던, 빈 콘체르트하우스, 릴 오페라, 워터밀 센터 등에서 공연을 선보였다.`,
     img: '/images/artists/artist_02.jpg',
     website: 'https://www.audreychen.com/',
   },
@@ -46,7 +46,7 @@ export const artistsData = [
     name_kr: '컨테이너',
     nationality: 'US/UK',
     bio_en: `Container is the solo project of American-born, UK-based musician Ren Schofield, who since 2009 has been honing a signature sound combining his background in noise-rock and tape music with techno and rhythmic electronics. Characterized by propulsive beats and liberal doses of distortion, Container’s deranged sonic meld has been welcomed at club nights, noise basements, electronic festivals, and punk shows alike. His 6 LP’s and 4 EP’s (for labels like Alter and Editions Mego oﬀshoot Spectrum Spools) have boggled brains around the globe, cementing Container as a distinctive and oﬀ-kilter figure in modern electronic music.`,
-    bio_kr: ``,
+    bio_kr: `컨테이너(Container)는 영국 기반의 미국인 음악가 렌 쇼필드(Ren Schofield)의 솔로 프로젝트로, 2009년부터 노이즈 록과 테이프 음악을 테크노, 리듬 중심의 일렉트로닉 음악과 결합하여 자신만의 독특한 사운드를 다듬어 왔다. 박진감 있는 비트와 과감한 디스토션이 특징이며, 클럽, 지하실, 전자음악 페스티벌, 펑크음악 공연장 등 다양한 무대에서 자신의 음악을 선보여 왔다. 알터와 에디션스 메고의 자매 레이블인 스펙트럼 스풀스 등을 통해 6장의 LP와 4장의 EP를 발매했고, 현대 일렉트로닉 음악계에서 독창적인 이단아 역할을 확립해 나가고 있다.`,
     img: '/images/artists/artist_04.jpg',
     website: 'https://gentledefect.bandcamp.com/',
   },
@@ -86,7 +86,8 @@ export const artistsData = [
     Wong has performed at venues, series, and festivals including Volksbühne (Berlin), Hebbel am Ufer (Berlin), Cafe OTO (London), Twenty Alpha (Hong Kong), KM28 (Berlin), Indexical (Santa Cruz), Ftarri (Tokyo), 411 Kent Avenue (Brooklyn), ausland (Berlin), Eroteme (Mnachester), exploratorium (Berlin), Schönegg Varieté (Zürich), PAS (Berlin), Project [BLANK] (San Diego), Record Shop (Brooklyn), Q-O2 (Brussels), MIT Spatial Sound Lab (Cambridge), piccolo (Providence), Richten25 (Berlin), Les 26 Chaises (Paris), OTOOTO (Tokyo), Ting Shuo Hear Say (Tainan), CuteLab (Brooklyn), Moozak (Vienna), Hošek Contemporary (Berlin), Labor Sonor (Berlin), Mullhaus Festival (Luzern), Freespace Noise Fest (Hong Kong), Cynetart (Dresden), Internationales Klangkunstfest (Berlin), Blaues Rauschen (Herne), Soundance Festival (Berlin), Festival Experimentelle Musik (Munich), Sound Forms (Hong Kong), and High Desert Soundings (Wonder Valley) 
     
     He has released music on labels Edition Wandelweiser, Creative Sources, Inexhaustible Editions, Full Body Massage Records, Lona Records, Sello Postal, Vintage Vinyl HK, Party Perfect!!!, Aloe Records, Ftarri, and Infant Tree.`,
-    bio_kr: ``,
+    bio_kr: `에릭 웡(1981년생)은 미니애폴리스에서 태어났지만 홍콩에서 성장하였으며, 현재는 베를린을 기반으로 음악가이자 사운드 아티스트로서 활동하고 있다. 청각과 소리 환경에서 인간이 형성해 나가는 관계에 대해 관심을 두고, 공간 사운드와 절제된 표현 양식을 차용하여 선형적인 소리 서사 구성이 아닌 소수의 제스쳐로 구성된 작업을 모색하고 있다. 
+    베를린 민중국장, 헤벨, 카페 오토, 20 알파, KM28, 인덱시컬, 프타리, 켄트 가 411번지, 아우스란트, 에로팀, 익스플로라토리움, 쇤에그 바리에테, PAS, [블랭크] 프로젝트, 레코드 숍, Q-O2, MIT 공간음향 랩, 피콜로, 리히텐25, 레 26 셰제, 오토오토, 팅 슈오 히어세이, 큐트랩, 무작, 호섹 컨템포러리, 라보르 소노르, 물하우스 페스티벌, 프리스페이스 노이즈 페스티벌, 시네타르트, 국제 사운드아트 페스티벌, 블라우에스 라우셴, 사운댄스 페스티벌, 실험음악 페스티벌, 사운드 폼스, 고지대 사막 사운딩스 등에서 공연을 선보인 바 있다. 또한, 에디션스 반델바이저, 크리에이티브 소스, 인익소스터블 에디션스, 전신마사지 레코드, 로나 레코드, 셀로 포스털, 빈티지 바이닐 HK, 파티 퍼펙트!!!, 알로에 레코드, 프라티, 인펀트 트리 등에서 음반을 발매했다.`,
     img: '/images/artists/artist_07.jpg',
     website: 'https://www.eric-wong.net/',
   },
@@ -96,7 +97,7 @@ export const artistsData = [
     name_kr: '에빅셴',
     nationality: 'US',
     bio_en: `Victoria Shen (Evicshen) is a San Francisco–based experimental sound artist, performer, and instrument builder whose work deconstructs and reimagines turntablism through a rigorously DIY and materially driven practice. Using custom-built devices, ranging from modified turntables and resin records to electromagnetic tools, nails as styli, and kinetic sound objects, she explores the body as both interface and site of inscription, foregrounding gesture, friction, and instability. Her performances unfold as volatile, physically charged environments that blur composition and improvisation, often evoking micro-narratives of tension, dominance, and release. Drawing from histories of noise, experimental music, and modernist abstraction, her work resists fixed meaning while remaining deeply attuned to the cultural and political resonances embedded in sound, material, and performance.`,
-    bio_kr: ``,
+    bio_kr: `빅토리아 셴(에빅셴)은 샌프란시스코 기반의 실험 사운드 아티스트이자 퍼포머, 악기 제작자다. 철저한 DIY 정신과 재료 중심의 작업 방식을 통해 ‘턴테이블리즘’을 해체하고 재해석한다. 개조한 턴테이블과 수지 레코드, 전자기기, 못(첨필로 활용), 그리고 움직이는 소리 오브제 등의 자가제작 장치를 활용하여, 신체를 인터페이스이자 기록의 장으로서 탐구하고 몸짓, 마찰, 불안정성을 전면에 내세우는 작업을 선보인다. 쉔의 퍼포먼스는 작곡과 즉흥 연주의 경계가 불분명하며 불안정하고 신체적 에너지가 충만한 환경 속에서 펼쳐지며, 종종 긴장, 지배, 해방이라는 미시적 서사를 야기한다. 노이즈, 실험 음악, 추상모더니즘의 역사에서 영감을 찾으며, 고정된 의미를 거부하는 동시에 소리, 물질, 퍼포먼스에 내재된 문화적·정치적 공명에 깊은 관심을 두고 있다.`,
     img: '/images/artists/artist_08.jpg',
     website: 'https://evicshen.com/',
   },
@@ -121,8 +122,10 @@ export const artistsData = [
     bio_en: `Born and raised in London (England), HELM is an electronic musician known for his intuitive approach to sound design and immersive sonic landscapes. Taking elements from drone, noise, ambient, and industrial music, HELM creates dense, textured compositions that challenge the boundaries of conventional electronic music. His work explores the intersection of abstract sound and physical space, using both analogue and digital techniques to craft deeply atmospheric pieces.
     HELM has released critically acclaimed albums on labels like Dais, PAN, and his own imprint Alter, maintaining a consistent presence in the experimental music scene for over a decade.
     HELM has also toured extensively across 5 continents, performing in cities as far-flung as Cairo, Tokyo, New York, Melbourne, Tunis and Athens. His live performances range from being both brutal and delicate, often incorporating the abstract visuals of his collaborators to enhance the journey and transform the regular gig environment. He has performed in venues as legendary and diverse as Berghain, Tate Modern, and The Tote in Melbourne, demonstrating the ability for his music to resonate across settings from major art institutions to clubs and intimate rock’n’roll dive bars.
-    Since 2016, HELM has also been a resident DJ on London’s flagship NTS Radio with his renowned AFTER DARK show, where he curates an eclectic mix from the fringes of Electronic music, Jazz, Punk, Metal and Noise. He is currently working on his seventh album, anticipated for release in 2025.`,
-    bio_kr: ``,
+    Since 2016, HELM has also been a resident DJ on London’s flagship NTS Radio with his renowned AFTER DARK show, where he curates an eclectic mix from the fringes of Electronic music, Jazz, Punk, Metal and Noise.`,
+    bio_kr: `HELM은 영국 런던 출신의 전자음악가이다. 직관적인 사운드 디자인과 몰입감 넘치는 사운드스케이프가 특징이다. 드론, 노이즈, 앰비언트, 인더스트리얼 음악의 요소를 차용하여 기존의 전자음악의 경계를 허무려고 시도하며, 추상적인 사운드와 물리 공간의 교차점을 탐구한다. 아날로그와 디지털 기법을 활용해 깊이 있는 분위기를 자아내어 밀도있고 입체적인 사운드를 추구한다.
+    데이즈, PAN, 그리고 자신의 레이블인 ‘알터’를 통해 음반을 발표해 왔으며, 10년 넘게 실험음악계에서 꾸준하게 활동해 왔으며, 5대륙을 가로지르는 투어를 돌며 카이로, 도쿄, 뉴욕, 멜버른, 튀니스, 아테네 등 많은 도시에서 공연을 선보인 바 있다. 거칠면서도 섬세한 공연을 추구하며 이따금 협업을 통해 추상적인 비주얼을 접목하기도 한다. 베르크하인, 테이트 모던, 더 토트 등, 미술관은 물론  클럽, 로큰롤 공연장 등 다양한 환경에서 자신의 음악을 선보여 왔다.
+    2016년부터 NTS 라디오에서 〈AFTER DARK〉라는 이름의 라디오 방송 프로그램을 진행하며 정규 DJ로 활동해 왔으며, 일렉트로닉 음악, 재즈, 펑크, 메탈, 노이즈 등에서 선별한 다채로운 믹스를 선보이고 있다.`,
     img: '/images/artists/artist_10.jpg',
     website: 'https://www.instagram.com/_helm_',
   },
@@ -136,7 +139,7 @@ export const artistsData = [
     Esquinca is currently a PhD researcher at the Erasmus Institute for Philosophy and Technology in Rotterdam under the supervision of Yuk Hui.`,
     bio_kr: `휴고 에스킨카는 1990년생 멕시코 시티 출신으로, 주로 오디오 전자기기를 활용하여 음량 증폭을 극단까지 밀어붙이는 작업을 선보인다. 
     그의 작업은 뉴욕 EMPAC, 슈테델릭 미술관, 뮤직헤바우, 니콜라 테슬라 기술박물관, 드레스덴 페스트슈필하우스, 콘크리트, 베어스, 20000V, MIRA, 르 상카르트, 안토니오 라티 재단, 우야즈도프스키 성 현대미술센터, 우남 현대미술관, 아르테르 미술관, 베를린 페스트슈필레, AdK, 라디엘시스템, 세계문화의 집, 트레조어, 베르크하인 등의 공간에서 발표된 바 있다. 
-    현재 로테르담 에라스무스 철학기술원 박사연구생으로, 지도교수는 육 휘(Yuk Hui)이다.`,
+    현재 로테르담 에라스무스 철학기술원 박사연구생으로, 지도교수는 육 휘.`,
     img: '/images/artists/artist_11.jpg',
     website: 'https://www.dekj.org/',
   },
@@ -156,7 +159,7 @@ export const artistsData = [
     name_kr: '리 치항',
     nationality: 'CN/NL',
     bio_en: `Li Qihang is an artist based in Amsterdam. In 2022, she initiated the project Mercury Patio, an ongoing process of waiting. Her work follows the slip of reality, where the present is doubled, or already remembered.`,
-    bio_kr: `리치항은 암스테르담 기반의 작가이다. 기다림의 과정을 지속적으로 탐구하기 위해 2022년 머큐리 파티오 프로젝트를 시작했다. 현재가 갑절이 되거나 이미 기억되고 있는 등, 현실에서 벌어진 틈새를 추적하는 작업을 선보인다.  `,
+    bio_kr: `리치항은 암스테르담 기반의 작가이다. 기다림의 과정을 지속적으로 탐구하기 위해 2022년 머큐리 파티오 프로젝트를 시작했다. 현재가 갑절이 되거나 이미 기억되고 있는 등, 현실에서 벌어진 틈새를 추적하는 작업을 선보인다.`,
     img: '/images/artists/artist_13.jpg',
     website: 'https://qihang.li/',
   },
@@ -167,9 +170,8 @@ export const artistsData = [
     nationality: 'IT/UK',
     bio_en: `Luciano Maggiore was born in Palermo and lives in London.
     His musical research is rooted in electroacoustics, a field in which he has explored performative components, particularly in relation to the perception of the musical act and the obscurity that emanates from it.
-    Working with bodily sounds, small acoustic objects, playback devices and speakers, he investigates mechanisms of sound diffusion and staging, using different media as effects. He is interested in repetition and endurance, and his work moves across areas such as behaviourism, non-human animal languages, dance, and folklore.
-`,
-    bio_kr: ``,
+    Working with bodily sounds, small acoustic objects, playback devices and speakers, he investigates mechanisms of sound diffusion and staging, using different media as effects. He is interested in repetition and endurance, and his work moves across areas such as behaviourism, non-human animal languages, dance, and folklore.`,
+    bio_kr: `루치아노 마조레는 팔레르모 출신으로, 현재는 런던에 거주하고 있다. 일렉트로-어쿠스틱 음악 분야에서의 퍼포먼스적인 요소를 탐구하며, 특히 음악적 행위의 지각과 그로부터 발산되는 모호함에 대해 관심을 기울여 왔다. 신체가 내는 소리, 소형 음향 오브제, 소리재생 장치, 스피커 등 다양한 매체를 활용하여 소리의 확산과 연출 메커니즘을 탐구한다. 반복과 지속성에 대한 관심에서 비롯한 마조레의 작업은 행동주의, 비인간 동물 언어, 무용, 민속학 등 다양한 영역을 아우른다.`,
     img: '/images/artists/artist_14.jpg',
     website: 'https://lucianomaggiore.blogspot.com/',
   },
@@ -217,7 +219,7 @@ export const artistsData = [
     name_kr: '록 히메네즈 데 시스네로스/이볼',
     nationality: 'ES',
     bio_en: `Stephen Sharp and Roc Jiménez de Cisneros like to deform musical objects. Fuelled by analogies about bending and stretching to resynthesise and liquify their favourite dance music tropes, their work is a love letter to techno culture written from a different continuum. Equally austere and maximalist, their music is a blend of bouncy patterns, hyper-deformed acid lines and screeching alarm-like sounds. EVOL records have been published on labels such as Diagonal, iDEAL, Superpang, Presto!?, Editions Mego, or their very own Alku.`,
-    bio_kr: ``,
+    bio_kr: `EVOL은 스티븐 샤프(Stephen Sharp)와 록 히메네스 데 시스네로스(Roc Jiménez de Cisneros)로 구성되어 있으며, 음악적 오브제를 변형시키는 작업 방식을 추구한다. ‘벤딩'과 ‘스트레칭'이라는 사운드 합성 용어에서 영감을 얻어, 이를 통해 댄스 음악의 클리셰를 재구성하고 유동화시키는 이들의 작업은 테크노 문화를 향한 러브레터와도 같다. 미니멀리즘과 맥시멀리즘을 동시에 추구하는 그들의 음악은 경쾌한 패턴과 합성・변형을 거듭한 애시드 멜로디, 그리고 경보음처럼 날카롭게 울리는 소리들이 한데 어우러져 있다. EVOL의 음반은 다이애거널, 아이디얼, 슈퍼팽, 프레스토!?, 에디션스 메고, 그리고 그들이 직접 운영하는 레이블인 ‘알쿠' 등을 통해 발매된 바 있다. `,
     img: '/images/artists/artist_18.jpg',
     website: 'http://vivapunani.org',
   },
@@ -231,7 +233,8 @@ export const artistsData = [
     Morimoto runs the label emitter micro with Kris Limbach and Pierce Warnecke and is the curator of the concert series Experimentik at tik in Berlin. 
     Since 2024, he has been managing the Giannozzo Archive of Rolf Langebartels. 
     In 2026, he joined The GingerEnsemble as a new member. `,
-    bio_kr: ``,
+    bio_kr: `세이지 모리모토는 2003년부터 베를린을 거점으로 활동하는 일본 출신 작가로, 퍼포먼스, 작곡, 설치, 영상 등을 아우르는 작업을 펼치고 있다. 그는 일상적인 사물과 기술 매체 사이에서 발생하는 미묘하고 불안정한 음향 현상에 주목한다. 미묘하게 구별되는 작은 구조를 탐구하고, 기술 매체를 통해 발견할 수 있는 우연한 현상들을 모색하려는 시도가 그의 작업을 규정한다.  그는 다케히사 고스기, 올리비에 디 플라시도, 프란체스코 카발리에레, 토모코 소바주, 이그나즈 쉬크, 루치아노 마조레, 크리스 콜, 펠리시티 망간, 알레산드라 에라모, 무라야마 세이지로, 한네스 링엔스, 데릭 셜리, 에릭 웡, 올라프 루프, 클레어 쿠퍼, 야마우치 가츠라, 오시로 마코토, 얀 준, 마리오 데 베가, 리즈 올비, 안드레아스 보치아, 헤더 프라쉬, 에바-마리아 후벤, 그르구르 사비치, 이시카와 미즈키 등 수많은 예술가들과 다양한 형식으로 협업해 왔으며, 아시아와 유럽에서 개최된 음악제, 예술제 등을 포함한 여러 기획에서 공연과 전시를 선보인 바 있다.
+    모리모토는 크리스 림바흐, 피어스 바르네케와 함께 ‘에미터 마이크로'라는 이름의 음악 레이블을 운영하고 있으며, 베를린의 tik에서 ‘익스페리멘틱'이라는 공연 시리즈를 기획・운영 중이다. 2024년부터 롤프 랑에바르텔스의 자노조 아카이브를 관리해왔고, 2026년부터 더 진저 앙상블의 새 멤버로 활동하고 있다.`,
     img: '/images/artists/artist_19.jpg',
     objectPosition: '26% center',
     website: 'https://www.seijimorimoto.com/',
@@ -265,7 +268,13 @@ export const artistsData = [
     
     Satoshi Yashiro: Tokyo-based artist. Since the early 2000s, Yashiro has developed works in which sound emerges through movement, circulation, and feedback, often using self-propelled woofers and self-built devices. His practice spans exhibitions and performances, where sonic events reshape spatial and perceptual relationships. He performs with Motallica (with Keiichi Nakano) and is a member of The Great △ (夏の大△) with Makoto Oshiro and Takahiro Kawaguchi.
     `,
-    bio_kr: ``,
+    bio_kr: `여름의 대삼각형은 마코토 오시로, 가와구치 다카히로, 야시로 사토시로 구성된 3인조 그룹이다. 2010년 오사카 소재의 갤러리 바이카도에서 열린 《Great △》이라는 전시를 계기로 결성된 이래, 간간이 함께 모여 라이브 공연을 선보인다. 
+    
+    마코토 오시로: 도쿄와 베를린 기반의 퍼포머이자 작가. 주 매체는 사운드, 빛, 전기, 그리고 유동체이며, 라이브 공연을 위해 자신이 직접 일상 사물, 전자기기, 폐품 등을 가지고 제작한 장치와 악기를 활용한다. 또한, 소리의 물리적・청각적 특성을 강조하고 진동과 간섭을 활용한 설치 작업을 선보인다.
+    
+    가와구치 다카히로: 도쿄 기반의 작가이자 음악가. 그는 지난 15년 동안 개발해 온 자가제작 악기들을 활용하여 작업한다. 공연에서 나무 판자를 배열하거나, 비닐봉지를 부풀리거나, 자동차 경적으로 압축 공기를 뿜어내는 등, 미세한 소리부터 귀를 찢을 듯한 굉음에 이르는 다양한 소리를 만들어낸다. 마찬가지로, 그의 녹음 작품 또한 예측할 수 없는 특성을 지닌다.
+    
+    야시로 사토시: 도쿄 기반 작가. 2000년대 초반부터 야시로는 자력으로 구동하는 우퍼와 직접 제작한 장치를 활용해 움직임, 순환, 피드백을 통해 소리를 생성하는 작품을 만들어 왔다. 음향적 사건이 공간적·지각적 관계를 재구성하는 방식의 전시와 퍼포먼스를 선보인다. 여름의 대삼각형으로서의 활동 외에도 나카노 게이이치와 함께 ‘모탈리카’라는 이름으로 공연하고 있다.`,
     img: '/images/artists/artist_21.jpg',
     website: '',
   },
@@ -295,7 +304,7 @@ Laurila's work has been featured in the New York Times, Artforum, The Guardian, 
 Her practice unfolds the feminine body within sonic decay and subtle forces such as wind, resonance, and vibration, weaving together subconscious narratives and field recordings.
 Working at the intersection of embodied listening and spatial poetics, she constructs environments where sound becomes a medium between intimacy, resistance, and relational knowledge. Her recent performances include Oscillation Festival, Default Den Haag, and Sonic Acts. Her sound commissions and collaborations include the Taiwan Pavilion at the Venice Biennale, Taipei Fine Arts Museum, and the Asian Culture Center.
 `,
-    bio_kr: ``,
+    bio_kr: `쯔니는 네덜란드 기반의 대만 출신 사운드 및 설치 작가이다. 인체의 유연성에 대한 믿음을 기반으로 기술과 인간성의 교차점에서 창조적인 동력을 모색하며, 제도권과 비제도권 사이의 균형을 추구한다. 소리의 잦아듬이나 바람, 공명, 진동과 같은 미묘한 힘 속에서 여성의 몸이 드러나는 방식을 무의식적인 서사와 필드레코딩을 엮어내는 것으로 표현한다. 몸으로 듣는 행위와 공간 시학에 관심을 두고 있는 작가는 소리가 친밀감, 저항, 관계적 지식 사이를 매개하는 환경을 구축하는 작업을 만들어 왔으며, 오실레이션 페스티벌, 디폴트, 소닉 액츠 등에서 공연했고 베니스 비엔날레 대만관, 타이베이 미술관, 국립 아시아 문화전당 등에서 커미션 및 협업 프로젝트를 선보인 바 있다. `,
     img: '/images/artists/artist_23.jpg',
     objectPosition: '64% center',
     website: 'https://iitzunii.xyz/',
@@ -311,7 +320,11 @@ Working at the intersection of embodied listening and spatial poetics, she const
     he uses body and voice, feedback noise, field recording and situations, and concepts.
     he collects people's sleep recording (sleepingsorg.bandcamp.com).
     he screams in plastic bags.`,
-    bio_kr: ``,
+    bio_kr: `베이징 기반의 시인이자 음악가.
+    실험적 수단을 통해 음악을 만든다. 결과물이 음악이 아닐 때도 있다. 
+    신체와 목소리, 피드백 노이즈, 필드레코딩, 상황, 개념 등을 활용한다. 
+    사람들이 잠자는 것을 녹음해 수집한다(sleepingsorg.bandcamp.com).
+    비닐 봉투에 소리를 지른다.`,
     img: '/images/artists/artist_24.jpg',
     website: 'https://yanjun.org/',
   },
@@ -321,9 +334,15 @@ Working at the intersection of embodied listening and spatial poetics, she const
     name_kr: '자오 쯔이',
     nationality: 'CN',
     bio_en: `Zhao Ziyi was born in Beijing in 2007 with a simple sound and a difficult-to-use body. In 2025, he released his debut solo CD album Sorry (Sub Jam). Also in the same year, his duo project "Nichijo" with Yang Kuku (from Ghostmass) released the double-cassette album One, Two (Sub Jam) and the full-length album The cheapest Japanese cuisine in the World (Zoomin’ Night).
+
     Beginning in 2023, he has organized the annual You and Me Festival in Beijing every summer. In 2024, he co-founded the venue xiaozu, an exceptionally small, multifaceted space located in central Beijing.  
+
     These works are solitary, simple, dry, and self-harming.`,
-    bio_kr: ``,
+    bio_kr: `자오 쯔이는 2007년생으로, 베이징 출신이다. 단순한 소리와 힘든 신체를 갖고 태어났다. 2025년에 서브잼 레이블에서 음반 〈Sorry〉를 발표함으로써 데뷔했다. 같은 해 ‘고스트매스’의 양쿠쿠와 함께 듀오 프로젝트 ‘니치조'를 결성하여 같은 레이블을 통해 더블 카세트 음반 〈원, 투〉를 발표했고 주밍 나이트 레이블을 통해 LP 〈세계에서 제일 저렴한 일본 음식〉을 냈다. 
+
+    2023년부터 매년 여름마다 유앤미 페스티벌을 기획해 오고 있다. 2024년에는 베이징에서 ‘샤오즈’라는 이름의 아주 협소한 다목적 공간을 설립했다.
+    
+    이 작업들은 고독하고, 단순하며, 메마르고, 자기파괴적이다.`,
     img: '/images/artists/artist_25.jpg',
     website: 'https://www.instagram.com/zhaoziyiiiii/',
   },
