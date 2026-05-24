@@ -8,97 +8,107 @@
     <article v-else class="ticket-page__inner" :key="locale.lang">
       <h1 class="ticket-page__title visually-hidden">{{ copy.title }}</h1>
 
-      <section class="ticket-section" aria-label="Program admission">
-        <div
-          v-for="program in programs"
-          :key="program.id"
-          class="ticket-program"
-          :class="{ 'ticket-program--paid': program.isPaid }"
-        >
-          <h2 class="ticket-row ticket-program__title">
-            <span class="ticket-program__name rich-text" v-html="program.name"></span>
-            <span class="ticket-program__admission ticket-row__value rich-text" v-html="program.admission"></span>
-          </h2>
-          <p v-if="program.dates" class="ticket-program__meta rich-text" v-html="program.dates"></p>
-          <p
-            v-for="(line, idx) in program.hours"
-            :key="idx"
-            class="ticket-program__meta rich-text"
-            v-html="line"
-          ></p>
-        </div>
-      </section>
+      <section class="ticket-section ticket-section--programs" aria-label="Program admission">
+        <ul class="ticket-program-list">
+          <li
+            v-for="program in programs"
+            :key="program.id"
+            class="ticket-program"
+            :class="{ 'ticket-program--paid': program.isPaid }"
+          >
+            <div class="ticket-line ticket-line--head">
+              <span class="ticket-line__primary rich-text" v-html="program.name"></span>
+              <span
+                class="ticket-line__badge rich-text"
+                :class="{ 'ticket-line__badge--admission': program.isPaid }"
+                v-html="program.admission"
+              ></span>
+            </div>
+            <div
+              v-if="program.dates || program.hours.length"
+              class="ticket-program__details"
+            >
+              <p v-if="program.dates" class="ticket-detail ticket-detail--dates rich-text" v-html="program.dates"></p>
+              <p
+                v-for="(line, idx) in program.hours"
+                :key="idx"
+                class="ticket-detail ticket-detail--hours rich-text"
+                v-html="line"
+              ></p>
+            </div>
 
-      <section
-        class="ticket-section"
-        :aria-label="locale.lang === 'kr' ? '퍼포먼스 티켓' : 'Performance tickets'"
-      >
-        <div class="ticket-info-block">
-          <ul class="ticket-price-list">
-            <li v-for="tier in prices" :key="tier.id" class="ticket-row ticket-row--tier">
-              <span class="ticket-row__main">
-                <span class="ticket-row__label rich-text" v-html="tier.label"></span>
-                <span class="ticket-row__period rich-text" v-html="tier.period"></span>
-              </span>
-              <span class="ticket-row__value ticket-row__value--price rich-text" v-html="tier.price"></span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="ticket-info-block ticket-info-block--dates">
-          <ul id="ticket-dates" class="ticket-show-list">
-            <li v-for="show in showDates" :key="show.id" class="ticket-row ticket-row--show">
-              <div class="ticket-row__main">
-                <span class="ticket-show__date rich-text" v-html="show.dateLabel"></span>
-                <span class="ticket-show__artists rich-text" v-html="show.artists.join(', ')"></span>
+            <div
+              v-if="program.isPaid"
+              class="ticket-program__subs"
+              :aria-label="locale.lang === 'kr' ? '퍼포먼스 티켓' : 'Performance tickets'"
+            >
+              <div class="ticket-block ticket-block--prices">
+                <ul class="ticket-tier-list">
+                  <li v-for="tier in prices" :key="tier.id" class="ticket-tier">
+                    <div class="ticket-tier__main">
+                      <span class="ticket-tier__label rich-text" v-html="tier.label"></span>
+                      <span class="ticket-tier__period rich-text" v-html="tier.period"></span>
+                    </div>
+                    <span class="ticket-tier__price rich-text" v-html="tier.price"></span>
+                  </li>
+                </ul>
               </div>
-              <a
-                v-if="show.naverBookingUrl"
-                class="ticket-row__value ticket-booking-cta ticket-booking-cta--link"
-                :href="show.naverBookingUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span class="ticket-booking-cta__text">{{ copy.bookLabel }}</span>
-                <svg
-                  class="ticket-booking-cta__icon"
-                  width="12"
-                  height="12"
-                  viewBox="0 0 12 12"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-width="1.25"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M2.5 9.5 9.5 2.5M9.5 2.5H4.5M9.5 2.5v5"
-                  />
-                </svg>
-              </a>
-              <span v-else class="ticket-row__value ticket-booking-cta ticket-booking-cta--soon">
-                <span class="ticket-booking-cta__text">{{ copy.bookOpens }}</span>
-                <svg
-                  class="ticket-booking-cta__icon"
-                  width="12"
-                  height="12"
-                  viewBox="0 0 12 12"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-width="1.25"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M2.5 9.5 9.5 2.5M9.5 2.5H4.5M9.5 2.5v5"
-                  />
-                </svg>
-              </span>
-            </li>
-          </ul>
-        </div>
+
+              <div class="ticket-block ticket-block--shows">
+                <ul id="ticket-dates" class="ticket-show-list">
+                  <li v-for="show in showDates" :key="show.id" class="ticket-show">
+                    <div class="ticket-show__date rich-text" v-html="show.dateLabel"></div>
+                    <div class="ticket-show__artists rich-text" v-html="show.artists.join(', ')"></div>
+                    <a
+                      v-if="show.naverBookingUrl"
+                      class="ticket-show__action ticket-booking-cta ticket-booking-cta--link"
+                      :href="show.naverBookingUrl"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span class="ticket-booking-cta__text">{{ copy.bookLabel }}</span>
+                      <svg
+                        class="ticket-booking-cta__icon"
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-width="1.25"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M2.5 9.5 9.5 2.5M9.5 2.5H4.5M9.5 2.5v5"
+                        />
+                      </svg>
+                    </a>
+                    <span v-else class="ticket-show__action ticket-booking-cta ticket-booking-cta--soon">
+                      <span class="ticket-booking-cta__text">{{ copy.bookOpens }}</span>
+                      <svg
+                        class="ticket-booking-cta__icon"
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-width="1.25"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M2.5 9.5 9.5 2.5M9.5 2.5H4.5M9.5 2.5v5"
+                        />
+                      </svg>
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        </ul>
       </section>
 
       <section
@@ -159,11 +169,24 @@ export default {
 
 <style scoped>
 .ticket-page {
+  --ticket-text: rgba(10, 10, 10, 0.86);
+  --ticket-text-muted: rgba(10, 10, 10, 0.5);
+  --ticket-text-soft: rgba(10, 10, 10, 0.42);
+  --ticket-line: rgba(10, 10, 10, 0.1);
+  --ticket-gap-sm: 0.35rem;
+  --ticket-gap-md: 0.75rem;
+  --ticket-gap-lg: 1.5rem;
+  --ticket-gap-xl: 2.25rem;
+  --ticket-date-col: 6.75rem;
+
   box-sizing: border-box;
   width: 100%;
   padding: clamp(72px, 12vw, 132px) clamp(20px, 8vw, 112px);
   background: transparent;
-  color: rgba(10, 10, 10, 0.82);
+  color: var(--ticket-text);
+  font-size: 1rem;
+  line-height: 1.5;
+  letter-spacing: 0.006em;
 }
 
 .ticket-page__message {
@@ -172,22 +195,12 @@ export default {
   width: 100%;
   min-height: calc(100vh - clamp(72px, 12vw, 132px) * 2);
   margin: 0;
-  font-size: 1rem;
-  font-weight: 100;
-  line-height: 1.42;
-  letter-spacing: 0.006em;
   text-align: center;
 }
 
 .ticket-page__inner {
-  width: min(100%, 42rem);
+  width: min(100%, 40rem);
   margin: 0 auto;
-  filter: blur(0.22px) contrast(1.08);
-  -webkit-font-smoothing: subpixel-antialiased;
-  text-shadow:
-    0 0 0.7px rgba(10, 10, 10, 0.42),
-    0.42px 0.24px 0 rgba(10, 10, 10, 0.2),
-    -0.28px -0.12px 0 rgba(10, 10, 10, 0.12);
 }
 
 .ticket-page--en .ticket-page__inner,
@@ -203,21 +216,6 @@ export default {
   font-weight: 100;
 }
 
-.ticket-section__title,
-.ticket-info-block__title,
-.ticket-program__title,
-.ticket-program__meta,
-.ticket-row,
-.ticket-notes {
-  font-size: 1rem;
-  line-height: 1.42;
-  letter-spacing: 0.006em;
-}
-
-.ticket-page--en .ticket-section__title {
-  letter-spacing: 0.04em;
-}
-
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -231,129 +229,240 @@ export default {
 }
 
 .ticket-section {
-  margin: 0 0 clamp(3.2rem, 8vw, 4.5rem);
-}
-
-.ticket-section:first-of-type {
-  margin-bottom: clamp(1rem, 2.8vw, 1.35rem);
+  margin: 0 0 var(--ticket-gap-xl);
 }
 
 .ticket-section:last-child {
   margin-bottom: 0;
 }
 
-.ticket-section__title {
-  margin: 0 0 clamp(1.2rem, 3vw, 1.6rem);
-  font-weight: 500;
-}
-
-.ticket-page--ko .ticket-section__title {
-  font-weight: 600;
-}
-
 .ticket-section--notes {
-  margin-top: clamp(3.6rem, 9vw, 5rem);
+  margin-top: var(--ticket-gap-xl);
+  padding-top: var(--ticket-gap-lg);
+}
+
+/* Programs */
+
+.ticket-program-list,
+.ticket-tier-list,
+.ticket-show-list,
+.ticket-notes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .ticket-program {
-  margin: 0 0 clamp(2.8rem, 7vw, 3.8rem);
+  margin: 0 0 var(--ticket-gap-xl);
+  padding-bottom: var(--ticket-gap-xl);
+  border-bottom: 1px solid var(--ticket-line);
 }
 
 .ticket-program:last-child {
-  margin-bottom: 0;
-}
-
-.ticket-program__title {
-  margin: 0 0 0.2rem;
-}
-
-.ticket-program__name {
-  min-width: 0;
-  font-weight: 500;
-}
-
-.ticket-page--ko .ticket-program__name {
-  font-weight: 600;
-}
-
-.ticket-program__admission {
-  flex-shrink: 0;
-  text-align: right;
-  color: rgba(10, 10, 10, 0.42);
-  font-weight: 300;
-}
-
-.ticket-page--ko .ticket-program__admission {
-  font-weight: 100;
-}
-
-.ticket-program--paid .ticket-program__admission {
-  text-decoration: underline;
-  text-underline-offset: 0.12em;
-  text-decoration-thickness: 0.06em;
-}
-
-.ticket-program__meta {
-  margin: 0;
-  color: rgba(10, 10, 10, 0.48);
-  font-weight: 300;
-}
-
-.ticket-page--ko .ticket-program__meta {
-  font-weight: 100;
-}
-
-.ticket-program__meta + .ticket-program__meta {
-  margin-top: 0.08rem;
-}
-
-.ticket-info-block {
-  margin: 0 0 clamp(2rem, 5vw, 2.6rem);
-}
-
-.ticket-info-block:last-child {
-  margin-bottom: 0;
-}
-
-.ticket-info-block__title {
-  margin: 0 0 0.55rem;
-  color: rgba(10, 10, 10, 0.46);
-  font-weight: 400;
-  font-size: 0.92rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.ticket-page--ko .ticket-info-block__title {
-  font-size: 1rem;
-  font-weight: 500;
-  letter-spacing: 0.006em;
-  text-transform: none;
-  color: rgba(10, 10, 10, 0.5);
-}
-
-.ticket-row--show {
-  margin-bottom: clamp(1.1rem, 3vw, 1.45rem);
-  padding-bottom: clamp(1.1rem, 3vw, 1.45rem);
-  border-bottom: 1px solid rgba(10, 10, 10, 0.08);
-}
-
-.ticket-row--show:last-child {
   margin-bottom: 0;
   padding-bottom: 0;
   border-bottom: 0;
 }
 
-.ticket-row__value.ticket-booking-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.3em;
+.ticket-program--paid {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.ticket-program__subs {
+  margin-top: var(--ticket-gap-lg);
+  padding-left: clamp(0.65rem, 2.5vw, 1rem);
+  border-left: 1px solid var(--ticket-line);
+}
+
+.ticket-line {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 1rem 1.25rem;
+}
+
+.ticket-line__primary {
+  min-width: 0;
+  font-weight: 500;
+  color: var(--ticket-text);
+}
+
+.ticket-page--ko .ticket-line__primary {
+  font-weight: 600;
+}
+
+.ticket-line__badge {
   flex-shrink: 0;
   text-align: right;
+  color: var(--ticket-text-soft);
+  font-weight: 300;
+  white-space: nowrap;
+}
+
+.ticket-page--ko .ticket-line__badge {
+  font-weight: 100;
+}
+
+.ticket-line__badge--admission {
+  text-decoration: underline;
+  text-underline-offset: 0.14em;
+  text-decoration-thickness: 0.06em;
+}
+
+.ticket-program__details {
+  margin-top: var(--ticket-gap-sm);
+  padding-left: 0;
+}
+
+.ticket-detail {
+  margin: 0;
+  color: var(--ticket-text-muted);
+  font-weight: 300;
+  font-size: 0.94rem;
+  line-height: 1.45;
+}
+
+.ticket-page--ko .ticket-detail {
+  font-size: 1rem;
+  font-weight: 100;
+}
+
+.ticket-detail--dates + .ticket-detail--hours,
+.ticket-detail--hours + .ticket-detail--hours {
+  margin-top: 0.15rem;
+}
+
+.ticket-detail--hours {
+  color: var(--ticket-text-muted);
+}
+
+/* Prices */
+
+.ticket-block--prices {
+  margin-bottom: var(--ticket-gap-md);
+}
+
+.ticket-tier {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 0.2rem 1.25rem;
+  margin-bottom: var(--ticket-gap-md);
+}
+
+.ticket-tier:last-child {
+  margin-bottom: 0;
+}
+
+.ticket-tier__main {
+  min-width: 0;
+}
+
+.ticket-tier__label {
+  display: block;
+  color: var(--ticket-text);
+  font-weight: 400;
+}
+
+.ticket-page--ko .ticket-tier__label {
+  font-weight: 500;
+}
+
+.ticket-tier__period {
+  display: block;
+  margin-top: 0.12rem;
+  color: var(--ticket-text-muted);
+  font-weight: 300;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.ticket-page--ko .ticket-tier__period {
+  font-size: 0.96rem;
+  font-weight: 100;
+}
+
+.ticket-tier__price {
+  flex-shrink: 0;
+  text-align: right;
+  color: var(--ticket-text);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.ticket-page--ko .ticket-tier__price {
+  font-weight: 500;
+}
+
+/* Show dates */
+
+.ticket-block--shows {
+  margin-top: var(--ticket-gap-md);
+  padding-top: var(--ticket-gap-md);
+  border-top: 1px solid var(--ticket-line);
+}
+
+.ticket-show {
+  display: grid;
+  grid-template-columns: var(--ticket-date-col) 1fr auto;
+  align-items: start;
+  gap: 0.2rem 1rem 0.65rem;
+  margin-bottom: var(--ticket-gap-lg);
+  padding-bottom: var(--ticket-gap-lg);
+  border-bottom: 1px solid var(--ticket-line);
+}
+
+.ticket-show:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.ticket-show__date {
+  grid-column: 1;
+  grid-row: 1;
+  color: var(--ticket-text);
+  font-weight: 500;
+  font-size: 0.96rem;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
+.ticket-page--ko .ticket-show__date {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.ticket-page--en .ticket-show__date {
+  letter-spacing: 0.02em;
+}
+
+.ticket-show__artists {
+  grid-column: 2;
+  grid-row: 1;
+  color: var(--ticket-text-muted);
+  font-weight: 300;
+  font-size: 0.94rem;
+  line-height: 1.45;
+}
+
+.ticket-page--ko .ticket-show__artists {
+  font-size: 1rem;
+  font-weight: 100;
+}
+
+.ticket-show__action {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+  align-self: start;
 }
 
 .ticket-booking-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28em;
   color: #ff0000;
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -399,10 +508,6 @@ export default {
   }
 }
 
-.ticket-booking-cta__text {
-  display: inline;
-}
-
 .ticket-booking-cta__icon {
   display: block;
   flex: 0 0 0.72em;
@@ -410,136 +515,31 @@ export default {
   height: 0.72em;
 }
 
-.ticket-price-list,
-.ticket-show-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.ticket-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1.25rem;
-  margin: 0 0 0.5rem;
-}
-
-.ticket-row:last-child {
-  margin-bottom: 0;
-}
-
-.ticket-row--tier {
-  margin-bottom: 0.5rem;
-}
-
-.ticket-row--tier:last-child {
-  margin-bottom: 0;
-}
-
-.ticket-row__main {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  min-width: 0;
-}
-
-.ticket-row__label {
-  color: rgba(10, 10, 10, 0.78);
-  font-weight: 400;
-}
-
-.ticket-page--ko .ticket-row__label {
-  font-weight: 500;
-}
-
-.ticket-row__period {
-  color: rgba(10, 10, 10, 0.46);
-  font-weight: 300;
-  font-size: 0.94rem;
-}
-
-.ticket-page--ko .ticket-row__period {
-  font-size: 1rem;
-  font-weight: 100;
-}
-
-.ticket-row__value--price {
-  font-weight: 400;
-  color: #0a0a0a;
-  letter-spacing: 0.02em;
-}
-
-.ticket-row__value.ticket-booking-cta {
-  font-weight: 500;
-  color: #ff0000;
-  letter-spacing: 0.02em;
-}
-
-.ticket-page--ko .ticket-row__value--price {
-  font-weight: 500;
-  letter-spacing: 0.006em;
-}
-
-.ticket-page--ko .ticket-row__value.ticket-booking-cta {
-  font-weight: 600;
-  letter-spacing: 0.006em;
-}
-
-.ticket-show__date {
-  display: block;
-}
-
-.ticket-show__artists {
-  display: block;
-}
-
-.ticket-show__date {
-  margin-bottom: 0.12rem;
-  font-weight: 500;
-  color: rgba(10, 10, 10, 0.9);
-}
-
-.ticket-page--ko .ticket-show__date {
-  font-weight: 600;
-}
-
-.ticket-show__artists {
-  margin-bottom: 0;
-  color: rgba(10, 10, 10, 0.52);
-  font-weight: 300;
-}
-
-.ticket-page--ko .ticket-show__artists {
-  font-weight: 100;
-}
+/* Notes */
 
 .ticket-notes {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  color: rgba(10, 10, 10, 0.46);
+  color: var(--ticket-text-muted);
   font-weight: 300;
-  font-size: 0.94rem;
-  line-height: 1.48;
+  font-size: 0.92rem;
+  line-height: 1.55;
 }
 
 .ticket-page--ko .ticket-notes {
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 100;
 }
 
 .ticket-notes li {
   position: relative;
-  margin: 0 0 0.45rem;
-  padding-left: 0.95em;
+  margin: 0 0 0.55rem;
+  padding-left: 1em;
 }
 
 .ticket-notes li::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 0.58em;
+  top: 0.62em;
   width: 0.32em;
   height: 0.32em;
   border-radius: 50%;
@@ -553,36 +553,44 @@ export default {
 
 @media (max-width: 768px) {
   .ticket-page {
+    --ticket-date-col: 5.5rem;
+    --ticket-gap-xl: 2rem;
+
     padding: calc(108px + env(safe-area-inset-top, 0px)) 20px 48px;
   }
 
-  .ticket-page__inner > .ticket-section:first-child {
-    margin-top: 0.75rem;
+  .ticket-page__inner > .ticket-section--programs {
+    margin-top: 0.5rem;
   }
 
   .ticket-page__message {
     min-height: calc(100vh - 120px);
   }
 
-  .ticket-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.12rem;
+  .ticket-program__subs {
+    padding-left: 0.5rem;
   }
 
-  .ticket-row--tier,
-  .ticket-row--show,
-  .ticket-program__title {
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
+  .ticket-show {
+    grid-template-columns: var(--ticket-date-col) 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 0.15rem 0.75rem;
   }
 
-  .ticket-row__value--price,
-  .ticket-row__value.ticket-booking-cta,
-  .ticket-program__admission {
-    flex-shrink: 0;
-    text-align: right;
+  .ticket-show__date {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .ticket-show__action {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .ticket-show__artists {
+    grid-column: 1 / -1;
+    grid-row: 2;
   }
 }
 </style>

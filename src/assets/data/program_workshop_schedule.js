@@ -77,7 +77,7 @@ export const workshopDetails = [
     artist: { kr: '에릭 웡', en: 'Eric Wong' },
     title: {
       kr: '즉흥과 기보 음악 사이, 들리지 않는 소리 탐구',
-      en: 'Between improvisation and written music, exploring sounds unheard',
+      en: 'BETWEEN IMPROVISATION AND WRITTEN MUSIC, EXPLORING SOUNDS UNHEARD',
     },
     description: {
       kr: `에릭 웡(Eric Wong)은 워크숍의 참여자들에게 반델바이저(Wandelweiser) 작곡가들의 선별된 작품을 소개할 예정입니다. 이 작곡가들의 음악은 악보에 적힌 내용뿐만 아니라 각 공연을 둘러싼 환경적 조건에도 주목합니다. 여기에는 공간의 울림, 다른 연주자들이 만들어내는 소리, 관객의 존재, 그리고 때로는 연주자 자신이 내면에서 감지하는 소리까지 포함됩니다. 이 작품들의 상당수는 긴 지속 시간과 침묵에 대한 강한 강조를 특징으로 합니다.
@@ -105,7 +105,7 @@ Participants are recommended to bring a musical instrument to the workshop, whic
     id: 'workshop-tuukka-laurila',
     type: { kr: '워크숍', en: 'Workshop' },
     artist: { kr: '투카 라우리라', en: 'Tuukka Laurila' },
-    title: { kr: '워크숍', en: 'Workshop' },
+    title: { kr: '', en: '' },
     description: {
       kr: `투카 라우리라는 참여자들과 함께 전시장 내부의 구조를 지속적으로 수정하고 확장하는 워크숍을 진행한다. 이 과정은 그의 전시 작업에서 이어지는 재료의 수집, 분류, 조립을 중심으로 이루어진다.`.trim(),
       en: `Tuukka Laurila leads a workshop in which participants continuously modify and expand the internal structure of the exhibition space, centering on processes of collecting, sorting, and assembling materials that extend from his exhibition work.`.trim(),
@@ -115,7 +115,7 @@ Participants are recommended to bring a musical instrument to the workshop, whic
     id: 'workshop-oolongradio',
     type: { kr: '워크숍', en: 'Workshop' },
     artist: { kr: '우롱라디오', en: 'oolongradio' },
-    title: { kr: 'Put yourself in the shade', en: 'Put yourself in the shade' },
+    title: { kr: '', en: '' },
     description: {
       kr: `업데이트 될 예정입니다.`.trim(),
       en: `Will be updated soon.`.trim(),
@@ -125,7 +125,7 @@ Participants are recommended to bring a musical instrument to the workshop, whic
     id: 'lecture-evol',
     type: { kr: '렉쳐', en: 'Lecture' },
     artist: { kr: '록 히메네즈 데 시스네로스/이볼', en: 'Roc Jimenez de Cisneros/EVOL' },
-    title: { kr: '무제의 드럼 순열', en: 'Untitled Drum Permutations' },
+    title: { kr: '무제의 드럼 순열', en: 'UNTITLED DRUM PERMUTATIONS' },
     description: {
       kr: `이 강연은 단순하지만 압도적인 전제를 바탕으로 만들어진 작업을 소개합니다. 열한 가지 드럼 머신 사운드를 가능한 모든 순서로 재생하는 것, 즉 3,900만 개가 넘는 고유한 순열을 전부 연주하는 것입니다. 롤랜드 TR-909의 상징적인 사운드들을 사용한 이 작품은 한계, 반복, 패턴의 변형, 그리고 주의(注意)에 대한 체계적이면서도 묘한 명상적인 탐구입니다.`.trim(),
       en: `This talk presents a piece built around a simple but overwhelming premise: playing every possible ordering of eleven drum machine sounds — over 39 million unique permutations. Using the iconic sounds of the Roland TR-909, the work becomes a systematic yet strangely meditative exploration of limits, repetition, pattern deformation, and attention.`.trim(),
@@ -144,7 +144,7 @@ Participants are recommended to bring a musical instrument to the workshop, whic
     id: 'workshop-haryung-lee',
     type: { kr: '워크숍', en: 'Workshop' },
     artist: { kr: '이하령', en: 'Haryung Lee' },
-    title: { kr: '자급자족', en: 'Self-Sufficient' },
+    title: { kr: '자급자족', en: 'SELF-SUFFICIENT' },
     description: {
       kr: `중앙동을 산책하며 스티로폼 상자를 하나씩 줍는다. 주운 스티로폼 상자를 들고 페스티벌 장소로 다시 모인다. 스티로폼 상자의 네 모서리를 열선으로 잘라, 강아지를 만든다. 각자 자신이 만든 강아지를 소장한다.`.trim(),
       en: `Participants walk through Jungang-dong, each picking up one styrofoam box. They then return to the festival venue, boxes in hand. Using a hot wire cutter, each participant cuts the four corners of their styrofoam box to shape it into a dog. Each participant keeps the dog they have made.`.trim(),
@@ -163,17 +163,30 @@ Participants are recommended to bring a musical instrument to the workshop, whic
     id: 'workshop-nick-klein',
     type: { kr: '워크숍', en: 'Workshop' },
     artist: { kr: '닉 클라인', en: 'Nick Klein' },
-    title: { kr: 'Impolite', en: 'Impolite' },
+    title: { kr: 'IMPOLITE', en: 'IMPOLITE' },
     description: {
       kr: `닉 클라인은 참여자들이 각자 오브젝트를 가져와 즉흥적인 전시를 만들고 기록하는 집단 워크숍을 구성한다.`.trim(),
-      en: `Nick Klein organizes a collective workshop in which participants bring objects to create and document an improvised exhibition.`.trim(),
+      en: `How do politicized cultural economies and dialogues manifest in our artistic material and formalist realities ? How do we define the braided utilities of sharing, spatial dynamism, and collaboration? Where do our preconceived ideas and entitlements become conceptual blind spots and, conversely, when do they become strengths? How does authorship and duration service art on a micro and macro scale, and what economies and markets prosper from these conditions?
+
+Impolite is a workshop course taking place during the period of a week, but for SA–I Festival we will work for only an afternoon session. During the workshop, objects are brought in for the exercises followed by exhibition exercise documentation. At the end of each exercise we will reflect on the micro exhibitions. Do not bring materials that are too precious to you, they will function to antagonize the other objects.
+
+Participants are encouraged and required to bring ready-made sculptures, amplification systems, televisions, lumber, tape, paper, garbage, animals, humans, books, fabrics, instruments, food, and whatever they feel can express their artistic agendas thoroughly.`.trim(),
     },
+    images: [
+      {
+        src: '/images/workshops/nick-klein-impolite-workshop.png',
+        alt: {
+          kr: '닉 클라인 Impolite 워크숍 사진',
+          en: "Nick Klein's Impolite workshop photo",
+        },
+      },
+    ],
   },
   {
     id: 'lecture-audrey-chen',
     type: { kr: '렉쳐', en: 'Lecture' },
     artist: { kr: '오드리 첸', en: 'Audrey Chen' },
-    title: { kr: '울림과 신체 기억의 호출', en: 'Invoking Echoic and Physical Memories' },
+    title: { kr: '울림과 신체 기억의 호출', en: 'INVOKING ECHOIC AND PHYSICAL MEMORIES' },
     description: {
       kr: `이 토크/프레젠테이션은 오드리 첸이 자신의 실천의 신체성을 통해 언어 없이, 그러나 소리를 통해 전달되는 일종의 서사를 어떻게 불러내려 하는지를 다룬다. 그는 베를린에 거주하는 2세대 타이완계-중국계 미국인이자 혼혈/다문화적 배경을 가진 아들의 어머니이다. 그의 작업은 이주와 통합의 과정, 언어의 상실과 채택, 말해지지 않은 이야기, 그리고 과거가 어떻게 상속된 경험과 살아낸 경험을 통해 접근되고 추적될 수 있는지를 탐구해왔다.
 
@@ -200,10 +213,10 @@ The session will begin with a short performance/demonstration before moving into
     id: 'workshop-dianaband',
     type: { kr: '워크숍', en: 'Workshop' },
     artist: { kr: '다이애나밴드', en: 'dianaband' },
-    title: { kr: '워크숍', en: 'Workshop' },
+    title: { kr: '', en: '' },
     description: {
-      kr: `다이애나밴드는 라디오와 분산된 청취 환경을 활용한 워크숍을 진행하며, 관계-듣기와 네트워크를 통해 인간 감각 너머의 관계를 탐구한다.`.trim(),
-      en: `dianaband conducts a workshop using radio and distributed listening environments, exploring relations beyond human perception through relational listening and networks.`.trim(),
+      kr: `업데이트 될 예정입니다.`.trim(),
+      en: `Will be updated soon.`.trim(),
     },
   },
 ]

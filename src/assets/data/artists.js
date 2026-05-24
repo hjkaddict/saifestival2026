@@ -276,7 +276,7 @@ export const artistsData = [
     
     야시로 사토시: 도쿄 기반 작가. 2000년대 초반부터 야시로는 자력으로 구동하는 우퍼와 직접 제작한 장치를 활용해 움직임, 순환, 피드백을 통해 소리를 생성하는 작품을 만들어 왔다. 음향적 사건이 공간적·지각적 관계를 재구성하는 방식의 전시와 퍼포먼스를 선보인다. 여름의 대삼각형으로서의 활동 외에도 나카노 게이이치와 함께 ‘모탈리카’라는 이름으로 공연하고 있다.`,
     img: '/images/artists/artist_21.jpg',
-    website: '',
+    website: 'https://basicfunction-releases.bandcamp.com/album/the-great',
   },
   {
     id: 'artist_22',

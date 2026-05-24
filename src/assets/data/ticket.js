@@ -85,7 +85,7 @@ export function getTicketPrograms(lang) {
       id: program.id,
       name: program.source.title[l],
       admission: program.admission[l],
-      dates,
+      dates: program.id === 'performance' ? '' : dates,
       hours,
       isPaid: program.id === 'performance',
     }
