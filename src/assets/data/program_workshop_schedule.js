@@ -76,19 +76,19 @@ export const workshopDetails = [
     type: { kr: '워크숍', en: 'Workshop' },
     artist: { kr: '에릭 웡', en: 'Eric Wong' },
     title: {
-      kr: '즉흥과 기보 음악 사이, 들리지 않았던 소리 탐구',
+      kr: '즉흥과 기보 음악 사이, 들리지 않는 소리 탐구',
       en: 'Between improvisation and written music, exploring sounds unheard',
     },
     description: {
-      kr: `에릭 웡은 참가자들에게 반델바이저 작곡가들의 작품을 소개한다. 이 작품들은 악보에 쓰인 것뿐 아니라 각 공연을 둘러싼 조건, 즉 공간의 소리, 다른 연주자가 만들어내는 소리, 관객의 존재, 때로는 연주자 자신이 지각하는 내적 소리까지 함께 다룬다. 많은 작품은 긴 지속 시간과 침묵에 대한 강한 강조를 특징으로 한다.
-
-이 워크숍에서 웡과 참가자들은 악보를 함께 읽고 수행한다. 새로운 접근을 찾는 즉흥 음악가와 퍼포머, 소리를 구성하는 다른 방식을 탐구하는 작곡가, 즉흥의 여지를 남겨두는 기보 음악에 호기심이 있는 비전문 음악가 모두에게 열려 있다.
-
-참가자는 악기, 목소리, 또는 소리를 생성하는 모바일 앱 등 준비해 오는 것을 권장한다.`.trim(),
+      kr: `에릭 웡(Eric Wong)은 워크숍의 참여자들에게 반델바이저(Wandelweiser) 작곡가들의 선별된 작품을 소개할 예정입니다. 이 작곡가들의 음악은 악보에 적힌 내용뿐만 아니라 각 공연을 둘러싼 환경적 조건에도 주목합니다. 여기에는 공간의 울림, 다른 연주자들이 만들어내는 소리, 관객의 존재, 그리고 때로는 연주자 자신이 내면에서 감지하는 소리까지 포함됩니다. 이 작품들의 상당수는 긴 지속 시간과 침묵에 대한 강한 강조를 특징으로 합니다.
+      
+이 워크숍에서 웡과 참가자들은 함께 악보를 살펴보고 연구할 것입니다. 이러한 세션은 새로운 접근 방식을 모색하는 즉흥 연주자 및 퍼포머, 소리를 형성하는 새로운 방식에 관심 있는 작곡가, 그리고 즉흥 연주의 여지를 남기는 악보 음악에 호기심을 가진 비전문 음악가 모두에게 열려 있습니다.
+      
+참가자들은 워크숍에 악기를 지참하시길 권장하며, 여기에는 목소리나 소리를 생성하는 앱도 포함됩니다.`.trim(),
       en: `Eric Wong will present to interested participants a selection of compositions by Wandelweiser composers, whose work attends not only to what is written in the score, but also to the conditions surrounding each performance. This includes room tone, sounds produced by other performers, the presence of the audience, and, at times, the internal sounds perceived by the performers themselves. Many of these works are characterized by extended durations and a strong emphasis on silence.
-
+      
 In this workshop, Wong and participants will study and work through the scores together. The session is open to improvising musicians and performers who are seeking new approaches, composers interested in alternative ways of shaping sound, and non-professional musicians who are curious about written music that leaves space for improvisation.
-
+      
 Participants are recommended to bring a musical instrument to the workshop, which includes voice or sound generating apps.`.trim(),
     },
     images: [
@@ -115,10 +115,10 @@ Participants are recommended to bring a musical instrument to the workshop, whic
     id: 'workshop-oolongradio',
     type: { kr: '워크숍', en: 'Workshop' },
     artist: { kr: '우롱라디오', en: 'oolongradio' },
-    title: { kr: '워크숍', en: 'Workshop' },
+    title: { kr: 'Put yourself in the shade', en: 'Put yourself in the shade' },
     description: {
-      kr: `우롱라디오는 참여자들과 함께 모듈형 구조물을 제작하며, 듣기와 기록, 송출, 제작이 서로 연결되는 방식을 워크숍의 형식 안에서 다룬다.`.trim(),
-      en: `oolongradio works with participants to build modular structures, approaching listening, recording, transmission, and making as connected practices within the format of a workshop.`.trim(),
+      kr: `업데이트 될 예정입니다.`.trim(),
+      en: `Will be updated soon.`.trim(),
     },
   },
   {
@@ -127,7 +127,7 @@ Participants are recommended to bring a musical instrument to the workshop, whic
     artist: { kr: '록 히메네즈 데 시스네로스/이볼', en: 'Roc Jimenez de Cisneros/EVOL' },
     title: { kr: '무제의 드럼 순열', en: 'Untitled Drum Permutations' },
     description: {
-      kr: `이 렉쳐는 단순하지만 압도적인 전제, 즉 열한 개의 드럼 머신 사운드가 가질 수 있는 모든 배열을 연주하는 작업을 소개한다. 3,900만 개가 넘는 고유한 순열을 다루며, Roland TR-909의 상징적인 사운드를 사용한다. 이 작업은 한계, 반복, 패턴의 변형, 주의에 대한 체계적이면서도 이상할 만큼 명상적인 탐구가 된다.`.trim(),
+      kr: `이 강연은 단순하지만 압도적인 전제를 바탕으로 만들어진 작업을 소개합니다. 열한 가지 드럼 머신 사운드를 가능한 모든 순서로 재생하는 것, 즉 3,900만 개가 넘는 고유한 순열을 전부 연주하는 것입니다. 롤랜드 TR-909의 상징적인 사운드들을 사용한 이 작품은 한계, 반복, 패턴의 변형, 그리고 주의(注意)에 대한 체계적이면서도 묘한 명상적인 탐구입니다.`.trim(),
       en: `This talk presents a piece built around a simple but overwhelming premise: playing every possible ordering of eleven drum machine sounds — over 39 million unique permutations. Using the iconic sounds of the Roland TR-909, the work becomes a systematic yet strangely meditative exploration of limits, repetition, pattern deformation, and attention.`.trim(),
     },
     images: [
@@ -144,10 +144,10 @@ Participants are recommended to bring a musical instrument to the workshop, whic
     id: 'workshop-haryung-lee',
     type: { kr: '워크숍', en: 'Workshop' },
     artist: { kr: '이하령', en: 'Haryung Lee' },
-    title: { kr: '워크숍', en: 'Workshop' },
+    title: { kr: '자급자족', en: 'Self-Sufficient' },
     description: {
-      kr: `페스티벌 장소 인근의 동네를 산책하며 스티로폼 상자를 하나씩 줍는다. 주운 스티로폼 상자를 들고 출발지로 다시 모인다. 상자의 네 모서리를 열선으로 잘라, 강아지를 만든다. 각자 자신이 만든 강아지를 소장한다.`.trim(),
-      en: `Participants walk through the neighborhood near the festival venue and each collect a styrofoam box. They then return to the starting point with the boxes they have found. Using a hot wire, they cut the four corners of the box to make a dog. Each participant keeps the dog they have made.`.trim(),
+      kr: `중앙동을 산책하며 스티로폼 상자를 하나씩 줍는다. 주운 스티로폼 상자를 들고 페스티벌 장소로 다시 모인다. 스티로폼 상자의 네 모서리를 열선으로 잘라, 강아지를 만든다. 각자 자신이 만든 강아지를 소장한다.`.trim(),
+      en: `Participants walk through Jungang-dong, each picking up one styrofoam box. They then return to the festival venue, boxes in hand. Using a hot wire cutter, each participant cuts the four corners of their styrofoam box to shape it into a dog. Each participant keeps the dog they have made.`.trim(),
     },
     images: [
       {

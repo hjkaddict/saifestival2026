@@ -291,7 +291,7 @@ export default {
   display: inline-block;
   margin-left: 0.26em;
   color: #0a0a0a;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-home-en);
   font-style: normal;
   font-weight: 700;
   letter-spacing: 0;

@@ -427,7 +427,7 @@ export default {
   margin: 0;
   font-size: 1rem;
   line-height: 1.42;
-  font-weight: inherit;
+  font-weight: 700;
 }
 
 .program-section__date,
@@ -452,7 +452,7 @@ export default {
 .program-section__description {
   margin-top: 0;
   color: rgba(10, 10, 10, 0.52);
-  font-weight: 20;
+  font-weight: 400;
   text-shadow:
     0 0 0.34px rgba(10, 10, 10, 0.2),
     0.18px 0.1px 0 rgba(10, 10, 10, 0.08),
@@ -491,6 +491,11 @@ export default {
 
 .program-section__work-artist-text {
   margin-right: 0.25em;
+  font-weight: 400;
+}
+
+.program-page--ko .program-section__work-artist-text {
+  font-weight: 500;
 }
 
 .program-section__work-artist-text:last-child {
@@ -565,6 +570,11 @@ export default {
 
 .program-day__workshop-title-text {
   margin-right: 0.25em;
+  font-weight: 400;
+}
+
+.program-page--ko .program-day__workshop-title-text {
+  font-weight: 500;
 }
 
 .program-day__workshop-title-text:last-child {
@@ -588,7 +598,12 @@ export default {
 
 .program-day__artist {
   color: inherit;
+  font-weight: 400;
   text-decoration: none;
+}
+
+.program-page--ko .program-day__artist {
+  font-weight: 500;
 }
 
 .program-link-arrow {
@@ -597,7 +612,7 @@ export default {
   display: inline-block;
   margin-left: 0.26em;
   color: #0a0a0a;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-home-en);
   font-style: normal;
   font-weight: 700;
   letter-spacing: 0;

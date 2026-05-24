@@ -2,8 +2,40 @@
 /* 홈 라인업: 궁서·명조 계열 — 400/700 로드 (한글 굵기는 영문 500에 맞춰 600→700 면 사용) */
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&display=swap');
 
-/* 영문: General Sans Medium (Fontshare) */
-@import url('https://api.fontshare.com/v2/css?f[]=general-sans@500&display=swap');
+/* 영문: Roboto (로컬 variable font) */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 75% 100%;
+  font-display: swap;
+  src: url('./fonts/roboto/Roboto-Variable.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 100 900;
+  font-stretch: 75% 100%;
+  font-display: swap;
+  src: url('./fonts/roboto/Roboto-Italic-Variable.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url('./fonts/roboto-mono/RobotoMono-Variable.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: italic;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url('./fonts/roboto-mono/RobotoMono-Italic-Variable.ttf') format('truetype');
+}
 
 /* 한글: Pretendard SemiBold — 한글 유니코드 구간만 */
 @font-face {
@@ -23,14 +55,13 @@
   --font-home-ko-weight: 600;
   --font-home-ko:
     'Nanum Myeongjo', 'GungsuhChe', 'Gungsuh', '궁서체', Batang, 'AppleMyungjo', serif;
-  /* 홈 메뉴 라틴: 깔끔한 산세리프 (Andrew Ross 참고 — General Sans / 시스템) */
   --font-home-en-weight: 500;
-  --font-home-en:
-    'General Sans', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-home-en: 'Roboto', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Roboto Mono', ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, monospace;
 }
 
 html {
-  font-family: 'General Sans', 'Pretendard', sans-serif;
+  font-family: 'Roboto', 'Pretendard', sans-serif;
   font-weight: 500;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -52,4 +83,11 @@ textarea,
 select {
   font-family: inherit;
   font-weight: inherit;
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--font-mono);
 }

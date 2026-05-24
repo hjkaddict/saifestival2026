@@ -845,7 +845,9 @@ html::before {
 .is-mobile-activating .global-nav__split-ghost,
 .is-mobile-activating .program-day__split-ghost,
 .is-mobile-activating .venue-page__split-ghost,
-.is-mobile-activating .about-page__split-ghost {
+.is-mobile-activating .about-page__split-ghost,
+.is-mobile-activating .exhibition-detail__split-ghost,
+.is-mobile-activating .workshop-detail__split-ghost {
   opacity: 1;
 }
 
@@ -853,7 +855,9 @@ html::before {
 .is-mobile-activating .global-nav__split-half,
 .is-mobile-activating .program-day__split-half,
 .is-mobile-activating .venue-page__split-half,
-.is-mobile-activating .about-page__split-half {
+.is-mobile-activating .about-page__split-half,
+.is-mobile-activating .exhibition-detail__split-half,
+.is-mobile-activating .workshop-detail__split-half {
   opacity: 0;
 }
 
@@ -861,7 +865,9 @@ html::before {
 .is-mobile-activating .global-nav__split::after,
 .is-mobile-activating .program-day__split::after,
 .is-mobile-activating .venue-page__split::after,
-.is-mobile-activating .about-page__split::after {
+.is-mobile-activating .about-page__split::after,
+.is-mobile-activating .exhibition-detail__split::after,
+.is-mobile-activating .workshop-detail__split::after {
   opacity: 1;
 }
 

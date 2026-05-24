@@ -24,6 +24,8 @@
   .program-section__work:has([class*='__split']),
   .venue-page__card-link:has([class*='__split']),
   .about-page__team-link:has([class*='__split']),
+  .exhibition-detail__back:has([class*='__split']),
+  .workshop-detail__back:has([class*='__split']),
   .artist-detail__website:has([class*='__split']),
   .artist-detail__more:has([class*='__split']) {
     filter: none;
@@ -45,7 +47,9 @@
       .global-nav__split,
       .program-day__split,
       .venue-page__split,
-      .about-page__split
+      .about-page__split,
+      .exhibition-detail__split,
+      .workshop-detail__split
     ) {
     text-shadow: 0 0 0.22px rgba(10, 10, 10, 0.12);
   }
@@ -104,6 +108,22 @@
 
   .about-page__split-half--bottom {
     transform: translate3d(var(--about-split-shift-bottom, 1px), 0, 0);
+  }
+
+  .exhibition-detail__split-half--top {
+    transform: translate3d(var(--exhibition-split-shift-top, -1px), 0, 0);
+  }
+
+  .exhibition-detail__split-half--bottom {
+    transform: translate3d(var(--exhibition-split-shift-bottom, 1px), 0, 0);
+  }
+
+  .workshop-detail__split-half--top {
+    transform: translate3d(var(--workshop-split-shift-top, -1px), 0, 0);
+  }
+
+  .workshop-detail__split-half--bottom {
+    transform: translate3d(var(--workshop-split-shift-bottom, 1px), 0, 0);
   }
 
   @media (max-width: 768px), (hover: none), (pointer: coarse) {

@@ -254,12 +254,12 @@ export default {
 
 .about-page--en .about-page__inner {
   font-family: var(--font-home-en);
-  font-weight: 100;
+  font-weight: 400;
 }
 
 .about-page--en .about-page__scroll-poem-inner {
   font-family: var(--font-home-en);
-  font-weight: 100;
+  font-weight: 400;
 }
 
 .about-page--ko .about-page__inner {
@@ -357,7 +357,7 @@ export default {
 
 .about-page__scroll-poem-part--en {
   font-family: var(--font-home-en);
-  font-weight: 100;
+  font-weight: 400;
 }
 
 .about-page__scroll-poem-line--spacer {
