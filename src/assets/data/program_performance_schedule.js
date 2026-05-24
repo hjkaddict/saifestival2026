@@ -73,6 +73,7 @@ export function getPerformanceShows(lang) {
   return performanceSchedule.map((show) => ({
     id: show.id,
     label: show.shortLabel[l],
+    dateLabel: show.dateLabel[l],
     artists: getActDisplayNames(show.acts, l),
     programHash: `#${show.id}`,
     naverBookingUrl: show.naverBookingUrl,

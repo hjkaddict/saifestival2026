@@ -4,10 +4,15 @@
   --link-arrow-external-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' d='M2.5 9.5 9.5 2.5M9.5 2.5H4.5M9.5 2.5v5'/%3E%3C/svg%3E");
 }
 
-.artist-detail__website::after,
+.link-external-icon {
+  display: block;
+  flex: 0 0 0.72em;
+  width: 0.72em;
+  height: 0.72em;
+}
+
 .about-page__team-link::after,
-.venue-page__card-link::after,
-.ticket-show__book:not(.ticket-show__book--soon)::after {
+.venue-page__card-link::after {
   content: '';
   position: relative;
   z-index: 5;

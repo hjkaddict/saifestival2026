@@ -99,26 +99,43 @@
               </span>
             </span>
           </button>
-          <a
-            v-if="detailArtist.website"
-            class="artist-detail__website"
-            :href="detailArtist.website"
-            target="_blank"
-            rel="noopener noreferrer"
-            @click.stop
-          >
-            <span class="home-text__split" :style="websiteSplitStyle()">
-              <span class="home-text__split-ghost">
-                <span class="home-text__en">{{ websiteLabel }}</span>
+          <div v-if="detailArtist.website" class="artist-detail__website-wrap">
+            <a
+              class="artist-detail__website"
+              :href="detailArtist.website"
+              target="_blank"
+              rel="noopener noreferrer"
+              @click.stop
+            >
+              <span class="home-text__split" :style="websiteSplitStyle()">
+                <span class="home-text__split-ghost">
+                  <span class="home-text__en">{{ websiteLabel }}</span>
+                </span>
+                <span class="home-text__split-half home-text__split-half--top" aria-hidden="true">
+                  <span class="home-text__en">{{ websiteLabel }}</span>
+                </span>
+                <span class="home-text__split-half home-text__split-half--bottom" aria-hidden="true">
+                  <span class="home-text__en">{{ websiteLabel }}</span>
+                </span>
               </span>
-              <span class="home-text__split-half home-text__split-half--top" aria-hidden="true">
-                <span class="home-text__en">{{ websiteLabel }}</span>
-              </span>
-              <span class="home-text__split-half home-text__split-half--bottom" aria-hidden="true">
-                <span class="home-text__en">{{ websiteLabel }}</span>
-              </span>
-            </span>
-          </a>
+              <svg
+                class="link-external-icon"
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-width="1.25"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M2.5 9.5 9.5 2.5M9.5 2.5H4.5M9.5 2.5v5"
+                />
+              </svg>
+            </a>
+          </div>
         </section>
       </div>
       <div
@@ -781,15 +798,30 @@ export default {
   outline-offset: 0.15em;
 }
 
-.artist-detail__website {
+.artist-detail__website-wrap {
   display: block;
+  margin-top: 0.45rem;
+}
+
+.artist-detail__website {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28em;
   width: fit-content;
-  margin: 0.45rem 0 0;
+  margin: 0;
   padding: 0 0.18em 0.02em;
   background: transparent;
   color: #0a0a0a;
   font-size: 0.82em;
   text-decoration: none;
+}
+
+.artist-detail__website .link-external-icon {
+  flex-shrink: 0;
+  align-self: center;
+  box-sizing: content-box;
+  padding: 0 0.1em;
+  background: #fff;
 }
 
 .artist-detail__website .home-text__en {
@@ -885,7 +917,7 @@ export default {
     display: inline;
   }
 
-  .artist-detail__website {
+  .artist-detail__website-wrap {
     margin-bottom: 2rem;
   }
 

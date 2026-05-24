@@ -44,6 +44,13 @@
         </span>
       </button>
 
+      <p
+        v-if="displayedRouteName === 'Ticket'"
+        class="global-nav__page-title global-nav__center-btn"
+      >
+        <span :class="navTextClass('ticket')">{{ navLabel('ticket') }}</span>
+      </p>
+
       <button
         v-if="displayedRouteName === 'Program'"
         type="button"
@@ -387,6 +394,7 @@ export default {
       if (kind === 'main') return this.locale.lang === 'kr' ? '메인' : 'MAIN'
       if (kind === 'lineup') return this.locale.lang === 'kr' ? '아티스트' : 'Artists'
       if (kind === 'program') return this.locale.lang === 'kr' ? '프로그램' : 'PROGRAM'
+      if (kind === 'ticket') return this.locale.lang === 'kr' ? '티켓' : 'Ticket'
       return this.locale.lang === 'kr' ? 'EN' : '한글'
     },
     navTextClass(kind) {
@@ -394,6 +402,7 @@ export default {
         (kind === 'main' && this.locale.lang === 'kr') ||
         (kind === 'lineup' && this.locale.lang === 'kr') ||
         (kind === 'program' && this.locale.lang === 'kr') ||
+        (kind === 'ticket' && this.locale.lang === 'kr') ||
         (kind === 'language' && this.locale.lang !== 'kr')
       return isKo ? 'global-nav__ko' : 'global-nav__en'
     },
@@ -693,6 +702,15 @@ html::before {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.global-nav__page-title {
+  margin: 0;
+  color: #0a0a0a;
+  font: inherit;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .global-nav__program-toggle,

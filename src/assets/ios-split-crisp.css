@@ -9,6 +9,9 @@
   .exhibition-detail__inner,
   .workshop-detail__inner,
   .ticket-page__inner,
+  .ticket-booking-cta,
+  .ticket-booking-cta *,
+  .link-external-icon,
   .venue-page__card,
   .artist-detail__title,
   .artist-detail__bio,
@@ -147,7 +150,14 @@
         em,
         figcaption,
         blockquote
-      ):not(:is([class*='__split'] *)) {
+      ):not(
+          :is(
+              [class*='__split'] *,
+              .ticket-booking-cta,
+              .ticket-booking-cta *,
+              .link-external-icon
+            )
+        ) {
       filter: blur(0.05px) contrast(1.03);
     }
   }
