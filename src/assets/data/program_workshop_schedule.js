@@ -53,17 +53,17 @@ export const workshopSchedule = [
     entries: [
       {
         id: 'workshop-nick-klein-0716',
-        time: { kr: '오후 12시 - 오후 2시', en: '12PM - 2PM' },
+        time: { kr: '오후 1시 - 오후 3시', en: '1PM - 3PM' },
         detailId: 'workshop-nick-klein',
       },
       {
         id: 'lecture-audrey-chen-0716',
-        time: { kr: '오후 2시 - 오후 4시', en: '2PM - 4PM' },
+        time: { kr: '오후 3시 - 오후 5시', en: '3PM - 5PM' },
         detailId: 'lecture-audrey-chen',
       },
       {
         id: 'workshop-dianaband-0716',
-        time: { kr: '오후 4시 - 오후 7시', en: '4PM - 7PM' },
+        time: { kr: '오후 5시 - 오후 7시', en: '5PM - 7PM' },
         detailId: 'workshop-dianaband',
       },
     ],
