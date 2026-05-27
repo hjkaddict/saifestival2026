@@ -124,8 +124,8 @@ Participants are recommended to bring a musical instrument to the workshop, whic
   {
     id: 'lecture-evol',
     type: { kr: '렉쳐', en: 'Lecture' },
-    artist: { kr: '록 히메네즈 데 시스네로스/이볼', en: 'Roc Jimenez de Cisneros/EVOL' },
-    title: { kr: '무제의 드럼 순열', en: 'UNTITLED DRUM PERMUTATIONS' },
+    artist: { kr: '록 히메네즈 데 시스네로스/이볼', en: 'Roc Jiménez de Cisneros/EVOL' },
+    title: { kr: '무제의 드럼 패턴 변주', en: 'UNTITLED DRUM PERMUTATIONS' },
     description: {
       kr: `이 강연은 단순하지만 압도적인 전제를 바탕으로 만들어진 작업을 소개합니다. 열한 가지 드럼 머신 사운드를 가능한 모든 순서로 재생하는 것, 즉 3,900만 개가 넘는 고유한 순열을 전부 연주하는 것입니다. 롤랜드 TR-909의 상징적인 사운드들을 사용한 이 작품은 한계, 반복, 패턴의 변형, 그리고 주의(注意)에 대한 체계적이면서도 묘한 명상적인 탐구입니다.`.trim(),
       en: `This talk presents a piece built around a simple but overwhelming premise: playing every possible ordering of eleven drum machine sounds — over 39 million unique permutations. Using the iconic sounds of the Roland TR-909, the work becomes a systematic yet strangely meditative exploration of limits, repetition, pattern deformation, and attention.`.trim(),
