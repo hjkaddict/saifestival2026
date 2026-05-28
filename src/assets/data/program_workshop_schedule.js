@@ -101,10 +101,15 @@ Participants are recommended to bring a musical instrument to the workshop, whic
     id: 'workshop-tuukka-laurila',
     type: { kr: '워크숍', en: 'Workshop' },
     artist: { kr: '투카 라우리라', en: 'Tuukka Laurila' },
-    title: { kr: '', en: '' },
+    title: { kr: 'Temporary Studio', en: 'Temporary Studio' },
     description: {
       kr: ``.trim(),
-      en: `Tuukka Laurila leads a workshop in which participants continuously modify and expand the internal structure of the exhibition space, centering on processes of collecting, sorting, and assembling materials that extend from his exhibition work.`.trim(),
+      en: `Open workshop sessions at SA–I Festival with Paris-based artist Tuukka Laurila will take place over two days as part of an ongoing "living environment" constructed from locally sourced found and discarded building materials.
+
+Throughout the workshop, materials will be collectively gathered, sorted, and gradually assembled into temporary structures that remain open to modification, and in the end, return to existing cycles of reuse.
+
+For Laurila, the process is the work: a temporary community formed through building and exchange, within a space that is a proposition against the perpetual newness of today's material world.
+`.trim(),
     },
   },
   {
