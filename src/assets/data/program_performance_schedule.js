@@ -3,22 +3,25 @@ import { artistsData } from './artists.js'
 export const performanceSchedule = [
   {
     id: 'perf-0710',
-    shortLabel: { kr: '7/10 (금)', en: '7/10 Fri' },
-    dateLabel: { kr: '7월 10일 (금)', en: 'July 10 Fri' },
+    shortLabel: { kr: '7/10 (금)', en: '7/10 (Fri)' },
+    dateLabel: { kr: '7월 10일 (금)', en: 'JUL 10 (Fri)' },
+    time: { kr: '오후 7시 - 10시', en: '7pm - 10pm' },
     naverBookingUrl: null,
     acts: ['The Great △', 'Jiyoung Wi', 'Container', 'Dayoon Lee'],
   },
   {
     id: 'perf-0711',
-    shortLabel: { kr: '7/11 (토)', en: '7/11 Sat' },
-    dateLabel: { kr: '7월 11일 (토)', en: 'July 11 Sat' },
+    shortLabel: { kr: '7/11 (토)', en: '7/11 (Sat)' },
+    dateLabel: { kr: '7월 11일 (토)', en: 'JUL 11 (Sat)' },
+    time: { kr: '오후 7시 - 10시', en: '7pm - 10pm' },
     naverBookingUrl: null,
     acts: ['HELM', 'Luciano Maggiore', 'Seiji Morimoto', 'Tzu Ni', 'Eric Wong'],
   },
   {
     id: 'perf-0717',
-    shortLabel: { kr: '7/17 (금)', en: '7/17 Fri' },
-    dateLabel: { kr: '7월 17일 (금)', en: 'July 17 Fri' },
+    shortLabel: { kr: '7/17 (금)', en: '7/17 (Fri)' },
+    dateLabel: { kr: '7월 17일 (금)', en: 'JUL 17 (Fri)' },
+    time: { kr: '오후 7시 - 10시', en: '7pm - 10pm' },
     naverBookingUrl: null,
     acts: [
       'Yan Jun',
@@ -33,8 +36,9 @@ export const performanceSchedule = [
   },
   {
     id: 'perf-0718',
-    shortLabel: { kr: '7/18 (토)', en: '7/18 Sat' },
-    dateLabel: { kr: '7월 18일 (토)', en: 'July 18 Sat' },
+    shortLabel: { kr: '7/18 (토)', en: '7/18 (Sat)' },
+    dateLabel: { kr: '7월 18일 (토)', en: 'JUL 18 (Sat)' },
+    time: { kr: '오후 7시 - 10시', en: '7pm - 10pm' },
     naverBookingUrl: null,
     acts: ['Choi Joonyong', 'Evicshen', 'EVOL', 'minsungsig'],
   },

@@ -12,12 +12,12 @@ export const programExhibition = {
 The acoustic conditions inside the exhibition space also operate as a central component. Hugo Esquinca treats a high-powered sound system as both an installation and an environmental element, proposing sonic conditions that continue even after operating hours, when no audience is present. Nick Klein's large-scale banner functions as a device that shapes the atmosphere and rhythm of a space where performance, sound, and installation intersect. Li Qihang expands her existing project Mercury Patio within the context of Daejeon, transforming the space where visitors wait for the shuttle bus into a temporary space of transition. The sensory changes that arise through movement and waiting, repetition and delay, are also among the important elements of this festival.`.trim(),
   },
   period: {
-    kr: `7월 10일 – 7월 18일`.trim(),
-    en: `JUL 10 – JUL 18`.trim(),
+    kr: `7월 10일 (금) – 7월 18일 (토)`.trim(),
+    en: `JUL 10 (Fri) – JUL 18 (Sat)`.trim(),
   },
   openingHours: {
-    kr: `금, 토: 오후 12시 - 오후 7시 | 일 - 목: 오후 12시 - 오후 8시`.trim(),
-    en: `Fri, Sat: 12pm - 7pm | Sun - Thu: 12pm - 8pm`.trim(),
+    kr: `금 · 토 오후 12–7시 / 일–목 오후 12–8시`.trim(),
+    en: `Fri · Sat 12–7pm / Sun–Thu 12–8pm`.trim(),
   },
   works: [
     {

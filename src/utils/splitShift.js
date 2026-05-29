@@ -1,3 +1,23 @@
+/** Hangul UI: keep current split intensity. */
+export const SPLIT_SCALE_KO = 0.56
+
+/** Latin / English: subtler horizontal split. */
+export const SPLIT_SCALE_LATIN = 0.36
+
+const HANGUL_RE = /[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/
+
+export function splitScaleForLang(lang) {
+  return lang === 'kr' ? SPLIT_SCALE_KO : SPLIT_SCALE_LATIN
+}
+
+/** Per label: Hangul → KO scale; otherwise Latin (e.g. EN names on KR site). */
+export function splitScaleForText(text) {
+  const s = String(text || '').trim()
+  if (!s) return SPLIT_SCALE_LATIN
+  if (HANGUL_RE.test(s)) return SPLIT_SCALE_KO
+  return SPLIT_SCALE_LATIN
+}
+
 let iosSplitSnapCache = null
 
 export function shouldSnapSplitShiftForIOS() {

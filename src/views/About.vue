@@ -88,11 +88,10 @@
 
 <script>
 import { localeStore } from '@/store/locale.js'
-import { splitShiftPx } from '@/utils/splitShift.js'
+import { splitScaleForText, splitShiftPx } from '@/utils/splitShift.js'
 import { aboutData } from '@/assets/data/about.js'
 import { festivalTeamHeading, getFestivalTeam } from '@/assets/data/festivalTeam.js'
 
-const ABOUT_SPLIT_SCALE_LATIN = 0.56
 
 function textSeedHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
@@ -207,7 +206,7 @@ export default {
         }))
     },
     memberSplitStyle(name, sectionIdx, memberIdx) {
-      const scale = this.locale.lang === 'kr' ? 0.56 : ABOUT_SPLIT_SCALE_LATIN
+      const scale = splitScaleForText(name)
       const key = textSeedHash(`${this.locale.lang}\0${sectionIdx}\0${memberIdx}\0${name}`)
       const u = (n) => {
         let h = Math.imul((key + n) ^ 0x9e3779b9, 0x9e3779b9) >>> 0

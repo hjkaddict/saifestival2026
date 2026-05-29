@@ -142,9 +142,7 @@
 
 <script>
 import { localeStore } from '@/store/locale.js'
-import { splitShiftPx } from '@/utils/splitShift.js'
-
-const NAV_SPLIT_SCALE_LATIN = 0.56
+import { SPLIT_SCALE_KO, SPLIT_SCALE_LATIN, splitShiftPx } from '@/utils/splitShift.js'
 const MOBILE_LINK_DELAY_MS = 360
 const SCROLLBAR_REVEAL_MS = 520
 const LANG_SWITCH_FADE_MS = 280
@@ -207,7 +205,7 @@ export default {
       return [
         { id: 'exhibition', label: isKo ? '전시' : 'Exhibition' },
         { id: 'performance', label: isKo ? '퍼포먼스' : 'Performance' },
-        { id: 'workshop', label: isKo ? '워크숍/렉쳐' : 'Workshop/Lecture' },
+        { id: 'workshop', label: isKo ? '워크숍/강연' : 'Workshop/Lecture' },
       ]
     },
   },
@@ -275,7 +273,7 @@ export default {
     },
     programItemSplitStyle(item) {
       const isKo = this.locale.lang === 'kr'
-      const scale = isKo ? 0.56 : NAV_SPLIT_SCALE_LATIN
+      const scale = isKo ? SPLIT_SCALE_KO : SPLIT_SCALE_LATIN
       const key = navSeedHash(`program-item:${item.id}:${item.label}`)
       const u = (n) => {
         let h = Math.imul((key + n) ^ 0x9e3779b9, 0x9e3779b9) >>> 0
@@ -408,7 +406,7 @@ export default {
     },
     navSplitStyle(kind) {
       const isKo = this.navTextClass(kind) === 'global-nav__ko'
-      const scale = isKo ? 0.56 : NAV_SPLIT_SCALE_LATIN
+      const scale = isKo ? SPLIT_SCALE_KO : SPLIT_SCALE_LATIN
       const key = navSeedHash(`${kind}:${this.navLabel(kind)}`)
       const u = (n) => {
         let h = Math.imul((key + n) ^ 0x9e3779b9, 0x9e3779b9) >>> 0

@@ -9,19 +9,28 @@
       >
         <header class="program-section__header">
           <h1 class="program-section__title rich-text" v-html="localized(program.data.title)"></h1>
-          <p
-            v-if="localized(program.data.period || program.data.date)"
-            class="program-section__date rich-text"
-            v-html="localized(program.data.period || program.data.date)"
-          ></p>
-          <p
-            v-if="localized(program.data.openingHours)"
-            class="program-section__hour rich-text"
-            v-html="localized(program.data.openingHours)"
-          ></p>
         </header>
 
         <div class="program-section__content">
+          <div
+            v-if="program.id === 'exhibition'"
+            class="program-section__exhibition-meta"
+          >
+            <span class="program-day__datetime">
+              <span v-if="localized(program.data.period)" class="program-day__datetime-date">
+                <span
+                  class="program-day__datetime-date-main rich-text"
+                  v-html="localized(program.data.period)"
+                ></span>
+              </span>
+              <span
+                v-for="(line, hoursIdx) in exhibitionHoursLines(program)"
+                :key="hoursIdx"
+                class="program-day__datetime-time rich-text"
+                v-html="line"
+              ></span>
+            </span>
+          </div>
           <div v-if="program.id === 'exhibition'" class="program-section__works">
             <router-link
               v-for="work in exhibitionWorks"
@@ -29,17 +38,17 @@
               class="program-section__work"
               :to="`/program/exhibition/${work.id}`"
             >
-              <span class="program-section__work-artist">
+              <span class="program-section__work-title">
                 <span
                   v-if="containsHtml(localized(work.artist))"
-                  class="program-section__work-artist-text rich-text"
+                  class="program-section__work-title-text rich-text"
                   v-html="localized(work.artist)"
                 ></span>
                 <template v-else>
                   <span
                     v-for="(labelPart, labelIdx) in splitLabelParts(localized(work.artist))"
                     :key="`${work.id}-artist-${labelIdx}`"
-                    class="program-day__split program-section__work-artist-text"
+                    class="program-day__split program-section__work-title-text"
                     :style="splitStyleForLabel(labelPart)"
                   >
                     <span class="program-day__split-ghost">{{ labelPart }}</span>
@@ -58,17 +67,17 @@
                   </span>
                 </template>
               </span>
-              <span v-if="localized(work.title)" class="program-section__work-title">
+              <span v-if="exhibitionWorkTitle(work)" class="program-section__work-artist">
                 <span
-                  v-if="containsHtml(localized(work.title))"
-                  class="program-section__work-title-text rich-text"
-                  v-html="localized(work.title)"
+                  v-if="containsHtml(exhibitionWorkTitle(work))"
+                  class="program-section__work-artist-text rich-text"
+                  v-html="exhibitionWorkTitle(work)"
                 ></span>
                 <template v-else>
                   <span
-                    v-for="(labelPart, labelIdx) in splitLabelParts(localized(work.title))"
+                    v-for="(labelPart, labelIdx) in splitLabelParts(exhibitionWorkTitle(work))"
                     :key="`${work.id}-title-${labelIdx}`"
-                    class="program-day__split program-section__work-title-text"
+                    class="program-day__split program-section__work-artist-text"
                     :style="splitStyleForLabel(labelPart)"
                   >
                     <span class="program-day__split-ghost">{{ labelPart }}</span>
@@ -103,10 +112,24 @@
               :key="show.id"
               class="program-day"
             >
-              <h2
-                class="program-day__date rich-text"
-                v-html="show.dateLabel[locale.lang] || show.dateLabel.en"
-              ></h2>
+              <span class="program-day__datetime">
+                <span class="program-day__datetime-date">
+                  <span
+                    class="program-day__datetime-date-main rich-text"
+                    v-html="scheduleDateParts(show.dateLabel).main"
+                  ></span>
+                  <span
+                    v-if="scheduleDateParts(show.dateLabel).weekday"
+                    class="program-day__datetime-date-week rich-text"
+                    v-html="scheduleDateParts(show.dateLabel).weekday"
+                  ></span>
+                </span>
+                <span
+                  v-if="localized(show.time)"
+                  class="program-day__datetime-time rich-text"
+                  v-html="localized(show.time)"
+                ></span>
+              </span>
               <p class="program-day__lineup">
                 <template v-for="(act, idx) in show.acts" :key="`${show.id}-${idx}`">
                   <span v-if="idx > 0" class="program-day__sep"> · </span>
@@ -183,78 +206,73 @@
               :key="day.id"
               class="program-day"
             >
-              <h2 class="program-day__date rich-text" v-html="localized(day.dateLabel)"></h2>
               <p class="program-day__lineup">
-                <template v-for="entry in day.entries" :key="entry.id">
-                  <router-link
-                    v-if="entry.detail"
+                <template v-for="(entry, entryIdx) in day.entries" :key="entry.id">
+                  <component
+                    :is="entry.detail ? 'router-link' : 'span'"
                     class="program-day__artist program-day__artist--workshop"
-                    :to="`/program/workshop/${entry.detail.id}`"
+                    v-bind="
+                      entry.detail ? { to: `/program/workshop/${entry.detail.id}` } : {}
+                    "
                   >
-                    <span class="program-day__time rich-text" v-html="localized(entry.time)"></span>
-                    <span class="program-day__workshop-title">
-                      <span
-                        v-if="containsHtml(workshopEntryLabel(entry))"
-                        class="rich-text"
-                        v-html="workshopEntryLabel(entry)"
-                      ></span>
-                      <template v-else>
+                    <span class="program-day__datetime">
+                      <span v-if="entryIdx === 0" class="program-day__datetime-date">
                         <span
-                          v-for="(labelPart, labelIdx) in splitLabelParts(workshopEntryLabel(entry))"
-                          :key="`${entry.id}-label-${labelIdx}`"
-                          class="program-day__split program-day__workshop-title-text"
-                          :style="splitStyleForWorkshopLabel(labelPart)"
-                        >
-                          <span class="program-day__split-ghost">{{ labelPart }}</span>
+                          class="program-day__datetime-date-main rich-text"
+                          v-html="scheduleDateParts(day.dateLabel).main"
+                        ></span>
+                        <span
+                          v-if="scheduleDateParts(day.dateLabel).weekday"
+                          class="program-day__datetime-date-week rich-text"
+                          v-html="scheduleDateParts(day.dateLabel).weekday"
+                        ></span>
+                      </span>
+                      <span
+                        v-if="localized(entry.time)"
+                        class="program-day__datetime-time rich-text"
+                        v-html="localized(entry.time)"
+                      ></span>
+                    </span>
+                    <span class="program-day__workshop-line">
+                      <template
+                        v-for="segment in workshopEntrySegments(entry)"
+                        :key="`${entry.id}-${segment.key}`"
+                      >
+                        <span :class="segment.wrapperClass">
                           <span
-                            class="program-day__split-half program-day__split-half--top"
-                            aria-hidden="true"
-                          >
-                            {{ labelPart }}
-                          </span>
-                          <span
-                            class="program-day__split-half program-day__split-half--bottom"
-                            aria-hidden="true"
-                          >
-                            {{ labelPart }}
-                          </span>
+                            v-if="containsHtml(segment.text)"
+                            class="rich-text"
+                            :class="segment.textClass"
+                            v-html="segment.text"
+                          ></span>
+                          <template v-else>
+                            <span
+                              v-for="(labelPart, labelIdx) in splitLabelParts(segment.text)"
+                              :key="`${entry.id}-${segment.key}-${labelIdx}`"
+                              class="program-day__split"
+                              :class="segment.textClass"
+                              :style="splitStyleForLabel(labelPart)"
+                            >
+                              <span class="program-day__split-ghost">{{ labelPart }}</span>
+                              <span
+                                class="program-day__split-half program-day__split-half--top"
+                                aria-hidden="true"
+                              >
+                                {{ labelPart }}
+                              </span>
+                              <span
+                                class="program-day__split-half program-day__split-half--bottom"
+                                aria-hidden="true"
+                              >
+                                {{ labelPart }}
+                              </span>
+                            </span>
+                          </template>
                         </span>
                       </template>
-                      <span class="program-link-arrow" aria-hidden="true">→</span>
+                      <span v-if="entry.detail" class="program-link-arrow" aria-hidden="true">→</span>
                     </span>
-                  </router-link>
-                  <span v-else class="program-day__artist program-day__artist--workshop">
-                    <span class="program-day__time rich-text" v-html="localized(entry.time)"></span>
-                    <span class="program-day__workshop-title">
-                      <span
-                        v-if="containsHtml(workshopEntryLabel(entry))"
-                        class="rich-text"
-                        v-html="workshopEntryLabel(entry)"
-                      ></span>
-                      <template v-else>
-                        <span
-                          v-for="(labelPart, labelIdx) in splitLabelParts(workshopEntryLabel(entry))"
-                          :key="`${entry.id}-fallback-label-${labelIdx}`"
-                          class="program-day__split program-day__workshop-title-text"
-                          :style="splitStyleForWorkshopLabel(labelPart)"
-                        >
-                          <span class="program-day__split-ghost">{{ labelPart }}</span>
-                          <span
-                            class="program-day__split-half program-day__split-half--top"
-                            aria-hidden="true"
-                          >
-                            {{ labelPart }}
-                          </span>
-                          <span
-                            class="program-day__split-half program-day__split-half--bottom"
-                            aria-hidden="true"
-                          >
-                            {{ labelPart }}
-                          </span>
-                        </span>
-                      </template>
-                    </span>
-                  </span>
+                  </component>
                 </template>
               </p>
             </section>
@@ -267,7 +285,7 @@
 
 <script>
 import { localeStore } from '@/store/locale.js'
-import { splitShiftPx } from '@/utils/splitShift.js'
+import { splitScaleForText, splitShiftPx } from '@/utils/splitShift.js'
 import { programExhibition } from '@/assets/data/program_exhibition.js'
 import { programPerformance } from '@/assets/data/program_performance.js'
 import { programWorkshop } from '@/assets/data/program_workshop.js'
@@ -343,19 +361,51 @@ export default {
       const value = field[this.locale.lang] || field.en || field.kr || ''
       return typeof value === 'string' ? value.trim() : value
     },
-    workshopEntryLabel(entry) {
-      if (!entry) return ''
-      if (!entry.detail) return this.localized(entry.title)
-      const artist = this.localized(entry.detail.artist)
-      const title = this.localized(entry.sessionTitle || entry.detail.title)
-      const titleUpper = title ? title.toLocaleUpperCase('en-US') : ''
-      return [artist, titleUpper].filter(Boolean).join(' - ')
+    scheduleDateParts(dateLabelField) {
+      const text = this.localized(dateLabelField)
+      return { main: text || '', weekday: '' }
+    },
+    exhibitionWorkTitle(work) {
+      const title = this.localized(work?.title)
+      return title ? title.toLocaleUpperCase('en-US') : ''
+    },
+    exhibitionHoursLines(program) {
+      const raw = this.localized(program?.data?.openingHours)
+      if (!raw) return []
+      return raw
+        .split(/\s*\/\s*/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+    },
+    workshopEntrySegments(entry) {
+      if (!entry) return []
+      const artist = entry.detail ? this.localized(entry.detail.artist) : ''
+      const rawTitle = entry.detail
+        ? this.localized(entry.sessionTitle || entry.detail.title)
+        : this.localized(entry.title)
+      const title = rawTitle ? rawTitle.toLocaleUpperCase('en-US') : ''
+      const byWord = this.locale.lang === 'kr' ? ' by ' : ' by '
+      const segments = []
+      if (title) {
+        segments.push({
+          key: 'title',
+          text: title,
+          wrapperClass: 'program-section__work-artist',
+          textClass: 'program-section__work-artist-text',
+        })
+      }
+      if (artist) {
+        segments.push({
+          key: 'byline',
+          text: `${byWord}${artist}`,
+          wrapperClass: 'program-section__work-title',
+          textClass: 'program-section__work-title-text',
+        })
+      }
+      return segments
     },
     splitLabelParts(label) {
       return String(label || '').trim().split(/\s+/).filter(Boolean)
-    },
-    splitStyleForWorkshopLabel(label) {
-      return this.splitStyleForLabel(label)
     },
     splitStyleForLabel(label) {
       const key = textSeedHash(`${label}\0program-link`)
@@ -366,7 +416,7 @@ export default {
         return h / 4294967296
       }
       const invert = u(101) >= 0.5
-      const scale = 0.56
+      const scale = splitScaleForText(label)
       const base = (0.8 + u(7) * 1.1) * scale
       return {
         '--program-split-shift-top': splitShiftPx((invert ? 1 : -1) * base),
@@ -406,7 +456,7 @@ export default {
 
 .program-page--ko .program-page__inner {
   font-family: var(--font-home-ko);
-  font-weight: 100;
+  font-weight: 400;
 }
 
 .program-section {
@@ -431,23 +481,15 @@ export default {
   font-weight: 700;
 }
 
-.program-section__date,
-.program-section__hour,
 .program-section__description,
-.program-day__date,
+.program-day__datetime-date,
+.program-day__datetime-date-main,
+.program-day__datetime-date-week,
+.program-day__datetime-time,
 .program-day__lineup {
   font-size: 1rem;
   line-height: 1.42;
   letter-spacing: 0.006em;
-}
-
-.program-section__date,
-.program-section__hour {
-  margin: 0;
-}
-
-.program-section__hour {
-  margin: 0;
 }
 
 .program-section__description {
@@ -465,6 +507,14 @@ export default {
 
 .program-section__description :deep(i) {
   font-style: italic;
+}
+
+.program-section__exhibition-meta {
+  margin: 0 0 1.4rem;
+}
+
+.program-section__exhibition-meta .program-day__datetime {
+  margin-bottom: 0;
 }
 
 .program-section__works {
@@ -490,22 +540,28 @@ export default {
   display: inline;
 }
 
+/* Primary label (workshop title, exhibition work title) */
 .program-section__work-artist-text {
   margin-right: 0.25em;
   font-weight: 400;
 }
 
 .program-page--ko .program-section__work-artist-text {
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .program-section__work-artist-text:last-child {
   margin-right: 0;
 }
 
+/* Secondary label (workshop byline, exhibition artist name) */
 .program-section__work-title-text {
   margin-right: 0.25em;
-  font-weight: 1;
+  font-weight: 100;
+}
+
+.program-page--ko .program-section__work-title-text {
+  font-weight: 400;
 }
 
 .program-section__work-title-text:last-child {
@@ -515,13 +571,29 @@ export default {
 .program-section__work-title {
   color: rgba(10, 10, 10, 0.34);
   font-style: italic;
-  font-weight: 1;
+  font-weight: 100;
   text-shadow:
     0 0 0.2px rgba(10, 10, 10, 0.12),
     0.1px 0.05px 0 rgba(10, 10, 10, 0.04);
 }
 
-.program-section__work-title::before {
+.program-page--ko .program-section__work-title {
+  font-weight: 400;
+  color: rgba(10, 10, 10, 0.38);
+}
+
+.program-section__works .program-section__work-artist,
+.program-section__works .program-section__work-artist-text,
+.program-day__workshop-line .program-section__work-artist,
+.program-day__workshop-line .program-section__work-artist-text {
+  text-transform: uppercase;
+}
+
+.program-section__works .program-section__work-artist::before {
+  content: ' ';
+}
+
+.program-day__workshop-line .program-section__work-title::before {
   content: ' ';
 }
 
@@ -537,22 +609,6 @@ export default {
   margin-bottom: 0;
 }
 
-.program-day__date {
-  margin: 0 0 0.15rem;
-  font-family: var(--font-home-en);
-  font-weight: var(--font-home-en-weight);
-  letter-spacing: 0.055em;
-  text-decoration: underline;
-  text-decoration-thickness: 0.06em;
-  text-underline-offset: 0.12em;
-}
-
-.program-page--ko .program-day__date {
-  font-family: var(--font-home-ko);
-  font-weight: 100;
-  letter-spacing: 0.006em;
-}
-
 .program-day__lineup {
   margin: 0;
 }
@@ -565,21 +621,75 @@ export default {
   display: block;
 }
 
-.program-day__workshop-title {
+.program-day__datetime {
   display: block;
+  margin: 0 0 0.15rem;
 }
 
-.program-day__workshop-title-text {
-  margin-right: 0.25em;
+/* Shared schedule date (exhibition, performance, workshop) */
+.program-day__datetime-date {
+  display: block;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.42;
+}
+
+.program-day__datetime-date-main {
+  font-family: var(--font-home-en);
+  font-weight: var(--font-home-en-weight);
+  letter-spacing: 0.055em;
+  text-decoration: underline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.12em;
+}
+
+.program-page--ko .program-day__datetime-date-main {
+  font-family: var(--font-home-ko);
+  font-weight: 700;
+  letter-spacing: 0.006em;
+}
+
+.program-day__datetime-time {
+  display: block;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.42;
+  letter-spacing: 0.006em;
+  font-variant-numeric: tabular-nums;
+}
+
+.program-page--en .program-day__datetime-time {
+  font-family: var(--font-home-en);
+  font-weight: 100;
+  color: rgba(10, 10, 10, 0.52);
+}
+
+/* Korean only: weekday + time lighter than date */
+.program-page--ko .program-day__datetime-date-week {
+  display: inline;
+  font-family: var(--font-home-ko);
   font-weight: 400;
+  font-style: italic;
+  color: rgba(10, 10, 10, 0.34);
+  text-decoration: none;
+  text-shadow:
+    0 0 0.2px rgba(10, 10, 10, 0.12),
+    0.1px 0.05px 0 rgba(10, 10, 10, 0.04);
 }
 
-.program-page--ko .program-day__workshop-title-text {
-  font-weight: 500;
+.program-page--ko .program-day__datetime-time {
+  font-family: var(--font-home-ko);
+  font-weight: 400;
+  font-style: italic;
+  color: rgba(10, 10, 10, 0.34);
+  text-shadow:
+    0 0 0.2px rgba(10, 10, 10, 0.12),
+    0.1px 0.05px 0 rgba(10, 10, 10, 0.04);
 }
 
-.program-day__workshop-title-text:last-child {
-  margin-right: 0;
+.program-day__workshop-line {
+  display: block;
+  margin: 0;
 }
 
 .program-day__artist--workshop {
@@ -604,7 +714,11 @@ export default {
 }
 
 .program-page--ko .program-day__artist {
-  font-weight: 500;
+  font-weight: 700;
+}
+
+.program-page--ko .program-section__description {
+  font-weight: 400;
 }
 
 .program-link-arrow {
@@ -732,6 +846,7 @@ export default {
     flex-direction: column;
   }
 
+  .program-section__exhibition-meta,
   .program-section__works,
   .program-section__schedule {
     order: 1;
@@ -770,7 +885,7 @@ export default {
   .program-page__inner::before {
     content: '';
     position: absolute;
-    top: 4.62rem;
+    top: 3.9rem;
     left: 0;
     right: 0;
     z-index: 4;
@@ -813,8 +928,9 @@ export default {
     margin-bottom: 1.8rem;
   }
 
+  /* JUL 12 workshops sit just below performance JUL 11 */
   #workshop .program-section__schedule {
-    margin-top: 7.95rem;
+    margin-top: 10rem;
   }
 
   #perf-0717 {

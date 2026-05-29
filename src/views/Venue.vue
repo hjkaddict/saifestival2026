@@ -66,7 +66,7 @@ import {
 } from '@/assets/data/venueMap.js'
 import { localeStore } from '@/store/locale.js'
 import { containsHtml } from '@/utils/htmlContent.js'
-import { splitShiftPx } from '@/utils/splitShift.js'
+import { splitScaleForLang, splitShiftPx } from '@/utils/splitShift.js'
 
 function parseEnvNumber(value) {
   const n = Number(value)
@@ -112,7 +112,7 @@ export default {
         return h / 4294967296
       }
       const invert = u(101) >= 0.5
-      const scale = 0.56
+      const scale = splitScaleForLang(this.locale.lang)
       const base = (0.95 + u(7) * 1.15) * scale
       return {
         '--venue-split-shift-top': splitShiftPx((invert ? 1 : -1) * base),

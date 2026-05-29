@@ -1,80 +1,80 @@
 export const workshopSchedule = [
   {
     id: 'workshop-0712',
-    dateLabel: { kr: '7월 12일 (일)', en: 'July 12 Sun' },
+    dateLabel: { kr: '7월 12일 (일)', en: 'JUL 12 (Sun)' },
     entries: [
       {
         id: 'workshop-tuukka-laurila-0712',
-        time: { kr: '오후 1시 - 오후 6시', en: '1PM - 6PM' },
+        time: { kr: '오후 1시 - 6시', en: '1pm - 6pm' },
         detailId: 'workshop-tuukka-laurila-open',
       },
     ],
   },
   {
     id: 'workshop-0713',
-    dateLabel: { kr: '7월 13일 (월)', en: 'July 13 Mon' },
+    dateLabel: { kr: '7월 13일 (월)', en: 'JUL 13 (Mon)' },
     entries: [
       {
         id: 'workshop-eric-wong-0713',
-        time: { kr: '오후 1시 - 오후 3시', en: '1PM - 3PM' },
+        time: { kr: '오후 1시 - 3시', en: '1pm - 3pm' },
         detailId: 'workshop-eric-wong',
       },
       {
         id: 'workshop-tuukka-laurila-0713',
-        time: { kr: '오후 4시 - 오후 8시', en: '4PM - 8PM' },
+        time: { kr: '오후 4시 - 8시', en: '4pm - 8pm' },
         detailId: 'workshop-tuukka-laurila-session-1',
       },
     ],
   },
   {
     id: 'workshop-0714',
-    dateLabel: { kr: '7월 14일 (화)', en: 'July 14 Tue' },
+    dateLabel: { kr: '7월 14일 (화)', en: 'JUL 14 (Tue)' },
     entries: [
       {
         id: 'workshop-oolongradio-0714',
-        time: { kr: '오후 1시 - 오후 3시', en: '1PM - 3PM' },
+        time: { kr: '오후 1시 - 3시', en: '1pm - 3pm' },
         detailId: 'workshop-oolongradio',
       },
       {
         id: 'workshop-tuukka-laurila-0714',
-        time: { kr: '오후 4시 - 오후 8시', en: '4PM - 8PM' },
+        time: { kr: '오후 4시 - 8시', en: '4pm - 8pm' },
         detailId: 'workshop-tuukka-laurila-session-2',
       },
     ],
   },
   {
     id: 'workshop-0715',
-    dateLabel: { kr: '7월 15일 (수)', en: 'July 15 Wed' },
+    dateLabel: { kr: '7월 15일 (수)', en: 'JUL 15 (Wed)' },
     entries: [
       {
         id: 'lecture-evol-0715',
-        time: { kr: '오후 2시 - 오후 3시', en: '2PM - 3PM' },
+        time: { kr: '오후 2시 - 3시', en: '2pm - 3pm' },
         detailId: 'lecture-evol',
       },
       {
         id: 'workshop-haryung-lee-0715',
-        time: { kr: '오후 5시 - 오후 8시', en: '5PM - 8PM' },
+        time: { kr: '오후 5시 - 8시', en: '5pm - 8pm' },
         detailId: 'workshop-haryung-lee',
       },
     ],
   },
   {
     id: 'workshop-0716',
-    dateLabel: { kr: '7월 16일 (목)', en: 'July 16 Thu' },
+    dateLabel: { kr: '7월 16일 (목)', en: 'JUL 16 (Thu)' },
     entries: [
       {
         id: 'workshop-nick-klein-0716',
-        time: { kr: '오후 12시 - 오후 3시', en: '12PM - 3PM' },
+        time: { kr: '오후 12시 - 3시', en: '12pm - 3pm' },
         detailId: 'workshop-nick-klein',
       },
       {
         id: 'lecture-audrey-chen-0716',
-        time: { kr: '오후 3시30분 - 오후 5시30분', en: '3:30PM - 5:30PM' },
+        time: { kr: '오후 3시 30분 - 5시 30분', en: '3:30pm - 5:30pm' },
         detailId: 'lecture-audrey-chen',
       },
       {
         id: 'workshop-dianaband-0716',
-        time: { kr: '오후 6시 - 오후 8시', en: '6PM - 8PM' },
+        time: { kr: '오후 6시 - 8시', en: '6pm - 8pm' },
         detailId: 'workshop-dianaband',
       },
     ],
@@ -192,7 +192,7 @@ For Laurila, the process is the work: a temporary community formed through build
   },
   {
     id: 'lecture-evol',
-    type: { kr: '렉쳐', en: 'Lecture' },
+    type: { kr: '강연', en: 'Lecture' },
     artist: { kr: '록 히메네즈 데 시스네로스/이볼', en: 'Roc Jiménez de Cisneros/EVOL' },
     title: { kr: '타악기 변형 무제 ', en: 'UNTITLED DRUM PERMUTATIONS' },
     description: {
@@ -203,7 +203,7 @@ For Laurila, the process is the work: a temporary community formed through build
       {
         src: '/images/workshops/roc-jimenez-evol-lecture.png',
         alt: {
-          kr: '록 히메네즈 데 시스네로스/이볼 렉쳐 대표 이미지',
+          kr: '록 히메네즈 데 시스네로스/이볼 강연 대표 이미지',
           en: 'Roc Jimenez de Cisneros/EVOL lecture representative image',
         },
       },
@@ -258,7 +258,7 @@ Participants are encouraged and required to bring ready-made sculptures, amplifi
   },
   {
     id: 'lecture-audrey-chen',
-    type: { kr: '렉쳐', en: 'Lecture' },
+    type: { kr: '강연', en: 'Lecture' },
     artist: { kr: '오드리 첸', en: 'Audrey Chen' },
     title: { kr: '메아리와 몸의 기억', en: 'INVOKING ECHOIC AND PHYSICAL MEMORIES' },
     description: {
@@ -276,7 +276,7 @@ The session will begin with a short performance/demonstration before moving into
       {
         src: '/images/workshops/audrey-chen-lecture.png',
         alt: {
-          kr: '오드리 첸 렉쳐 대표 이미지',
+          kr: '오드리 첸 강연 대표 이미지',
           en: 'Audrey Chen lecture representative image',
         },
       },

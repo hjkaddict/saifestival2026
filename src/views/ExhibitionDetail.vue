@@ -76,9 +76,7 @@
 <script>
 import { getExhibitionWork } from '@/assets/data/program_exhibition.js'
 import { localeStore } from '@/store/locale.js'
-import { splitShiftPx } from '@/utils/splitShift.js'
-
-const EXHIBITION_SPLIT_SCALE_LATIN = 0.56
+import { splitScaleForText, splitShiftPx } from '@/utils/splitShift.js'
 
 function textSeedHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
@@ -117,7 +115,7 @@ export default {
       return typeof value === 'string' ? value.trim() : value
     },
     backSplitStyle(labelPart) {
-      const scale = this.locale.lang === 'kr' ? 0.56 : EXHIBITION_SPLIT_SCALE_LATIN
+      const scale = splitScaleForText(labelPart)
       const key = textSeedHash(`${this.locale.lang}\0back\0${labelPart}`)
       const u = (n) => {
         let h = Math.imul((key + n) ^ 0x9e3779b9, 0x9e3779b9) >>> 0

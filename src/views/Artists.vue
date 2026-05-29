@@ -240,10 +240,14 @@
 <script>
 import { artistsData } from '@/assets/data/artists.js'
 import { localeStore } from '@/store/locale.js'
-import { splitShiftPx } from '@/utils/splitShift.js'
+import {
+  SPLIT_SCALE_KO,
+  SPLIT_SCALE_LATIN,
+  splitScaleForText,
+  splitShiftPx,
+} from '@/utils/splitShift.js'
 
 /** 영문 이름·코드: 갈라짐 약하게 (한글 UI일 때는 1) */
-const ARTISTS_SPLIT_SCALE_LATIN = 0.56
 const LINEUP_CLOSE_MS = 360
 
 function artistSeedHash(s) {
@@ -467,21 +471,22 @@ export default {
       }
     },
     splitRandomStyleForArtist(artist) {
-      const kr = this.locale.lang === 'kr'
-      const scale = kr ? 0.56 : ARTISTS_SPLIT_SCALE_LATIN
-      const seed = kr ? `${artist.id}\0ko` : `${artist.id}\0lat`
+      const displayName =
+        this.locale.lang === 'kr' ? this.artistDisplayNameKr(artist) : artist.name_en
+      const scale = splitScaleForText(displayName)
+      const seed = scale === SPLIT_SCALE_KO ? `${artist.id}\0ko` : `${artist.id}\0lat`
       return this.splitShiftVars(seed, scale)
     },
     moreSplitStyle() {
       return this.splitShiftVars(
         `${this.detailArtist?.id || 'artist'}\0more`,
-        ARTISTS_SPLIT_SCALE_LATIN,
+        SPLIT_SCALE_LATIN,
       )
     },
     websiteSplitStyle() {
       return this.splitShiftVars(
         `${this.detailArtist?.id || 'artist'}\0website`,
-        ARTISTS_SPLIT_SCALE_LATIN,
+        SPLIT_SCALE_LATIN,
       )
     },
     preloadImage(src) {

@@ -119,7 +119,7 @@
 </template>
 
 <script>
-import { splitShiftPx } from '@/utils/splitShift.js'
+import { SPLIT_SCALE_KO, SPLIT_SCALE_LATIN, splitShiftPx } from '@/utils/splitShift.js'
 
 const HOME_MENU_ITEMS = [
   { name: 'About', koName: '사–이', path: '/about' },
@@ -129,9 +129,6 @@ const HOME_MENU_ITEMS = [
   { name: 'Archive', koName: '아카이브', path: '/archive' },
   { name: 'Ticket', koName: '티켓', path: '/ticket' },
 ]
-
-/** 라틴(영문 메뉴명): 갈라짐 약하게 — 한글은 읽기 유지용 기본 배율 1 */
-const HOME_SPLIT_SCALE_LATIN = 0.56
 
 function homePathHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
@@ -171,10 +168,10 @@ export default {
       }
     },
     splitRandomStyleLatin(item) {
-      return this.splitShiftVars(`${item.path}\0lat`, HOME_SPLIT_SCALE_LATIN)
+      return this.splitShiftVars(`${item.path}\0lat`, SPLIT_SCALE_LATIN)
     },
     splitRandomStyleHangul(item) {
-      return this.splitShiftVars(`${item.path}\0ko`, 0.56)
+      return this.splitShiftVars(`${item.path}\0ko`, SPLIT_SCALE_KO)
     },
   },
 }

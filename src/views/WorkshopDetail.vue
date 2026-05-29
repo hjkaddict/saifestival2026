@@ -5,12 +5,66 @@
   >
     <article v-if="detail" class="workshop-detail__inner" :key="`${locale.lang}-${id}`">
       <p class="workshop-detail__type rich-text" v-html="localized(detail.type)"></p>
-      <h1 class="workshop-detail__title rich-text" v-html="localized(detail.title)"></h1>
-      <p
-        v-if="localized(detail.artist)"
-        class="workshop-detail__artist rich-text"
-        v-html="localized(detail.artist)"
-      ></p>
+      <h1 v-if="displayTitle || displayArtist" class="workshop-detail__heading">
+        <span
+          v-if="displayTitle"
+          class="workshop-detail__title-text rich-text"
+          v-html="displayTitle"
+        ></span>
+        <span v-if="displayArtist" class="workshop-detail__byline">
+          by
+          <router-link
+            v-if="artistPath"
+            :to="artistPath"
+            class="workshop-detail__artist-link"
+          >
+            <span
+              v-for="(labelPart, labelIdx) in artistNameParts"
+              :key="`artist-${labelIdx}`"
+              class="workshop-detail__split"
+              :class="{ 'workshop-detail__split--spaced': labelIdx > 0 }"
+              :style="artistSplitStyle(labelPart)"
+            >
+              <span class="workshop-detail__split-ghost">{{ labelPart }}</span>
+              <span
+                class="workshop-detail__split-half workshop-detail__split-half--top"
+                aria-hidden="true"
+              >
+                {{ labelPart }}
+              </span>
+              <span
+                class="workshop-detail__split-half workshop-detail__split-half--bottom"
+                aria-hidden="true"
+              >
+                {{ labelPart }}
+              </span>
+            </span>
+          </router-link>
+          <template v-else>
+            <span
+              v-for="(labelPart, labelIdx) in artistNameParts"
+              :key="`artist-fallback-${labelIdx}`"
+              class="workshop-detail__split"
+              :class="{ 'workshop-detail__split--spaced': labelIdx > 0 }"
+              :style="artistSplitStyle(labelPart)"
+            >
+              <span class="workshop-detail__split-ghost">{{ labelPart }}</span>
+              <span
+                class="workshop-detail__split-half workshop-detail__split-half--top"
+                aria-hidden="true"
+              >
+                {{ labelPart }}
+              </span>
+              <span
+                class="workshop-detail__split-half workshop-detail__split-half--bottom"
+                aria-hidden="true"
+              >
+                {{ labelPart }}
+              </span>
+            </span>
+          </template>
+        </span>
+      </h1>
       <div v-if="scheduleLines.length" class="workshop-detail__schedule">
         <p
           v-for="line in scheduleLines"
@@ -96,14 +150,27 @@
 </template>
 
 <script>
+import { artistsData } from '@/assets/data/artists.js'
 import { getWorkshopDetail, workshopSchedule } from '@/assets/data/program_workshop_schedule.js'
 import { localeStore } from '@/store/locale.js'
-import { splitShiftPx } from '@/utils/splitShift.js'
-
-const WORKSHOP_SPLIT_SCALE_LATIN = 0.56
+import { splitScaleForLang, splitScaleForText, splitShiftPx } from '@/utils/splitShift.js'
 
 function textSeedHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
+}
+
+function artistSlug(artistOrName) {
+  if (artistOrName && typeof artistOrName === 'object' && artistOrName.slug) {
+    return artistOrName.slug
+  }
+  const nameEn = typeof artistOrName === 'string' ? artistOrName : artistOrName?.name_en || ''
+  return nameEn.toLowerCase().trim().replace(/\s+/g, '-')
+}
+
+function findArtistByEnglishName(nameEn) {
+  const key = String(nameEn || '').trim()
+  if (!key) return null
+  return artistsData.find((artist) => artist.name_en === key) || null
 }
 
 export default {
@@ -134,6 +201,26 @@ export default {
     detailImages() {
       return Array.isArray(this.detail?.images) ? this.detail.images : []
     },
+    displayTitle() {
+      const title = this.localized(this.detail?.title)
+      return title ? title.toLocaleUpperCase('en-US') : ''
+    },
+    displayArtist() {
+      return this.localized(this.detail?.artist)
+    },
+    workshopArtist() {
+      return findArtistByEnglishName(this.detail?.artist?.en)
+    },
+    artistPath() {
+      if (!this.workshopArtist) return null
+      return `/artists/${artistSlug(this.workshopArtist)}`
+    },
+    artistNameParts() {
+      const name = this.displayArtist
+      if (!name) return []
+      if (this.locale.lang === 'kr') return [name]
+      return name.trim().split(/\s+/).filter(Boolean)
+    },
     backLabel() {
       return this.locale.lang === 'kr' ? '프로그램으로 돌아가기' : 'Back to program'
     },
@@ -149,8 +236,24 @@ export default {
       const value = field[this.locale.lang] || field.en || field.kr || ''
       return typeof value === 'string' ? value.trim() : value
     },
+    artistSplitStyle(labelPart) {
+      const key = textSeedHash(`${labelPart}\0program-link`)
+      const u = (n) => {
+        let h = Math.imul((key + n) ^ 0x9e3779b9, 0x9e3779b9) >>> 0
+        h = (h ^ (h >>> 16)) >>> 0
+        h = Math.imul(h, 2246822507) >>> 0
+        return h / 4294967296
+      }
+      const invert = u(101) >= 0.5
+      const scale = splitScaleForText(labelPart)
+      const base = (0.8 + u(7) * 1.1) * scale
+      return {
+        '--workshop-split-shift-top': splitShiftPx((invert ? 1 : -1) * base),
+        '--workshop-split-shift-bottom': splitShiftPx((invert ? -1 : 1) * base * (0.85 + u(13) * 0.3)),
+      }
+    },
     backSplitStyle(labelPart) {
-      const scale = this.locale.lang === 'kr' ? 0.56 : WORKSHOP_SPLIT_SCALE_LATIN
+      const scale = splitScaleForLang(this.locale.lang)
       const key = textSeedHash(`${this.locale.lang}\0back\0${labelPart}`)
       const u = (n) => {
         let h = Math.imul((key + n) ^ 0x9e3779b9, 0x9e3779b9) >>> 0
@@ -202,8 +305,8 @@ export default {
 }
 
 .workshop-detail__type,
+.workshop-detail__heading,
 .workshop-detail__title,
-.workshop-detail__artist,
 .workshop-detail__schedule,
 .workshop-detail__description,
 .workshop-detail__back {
@@ -213,28 +316,56 @@ export default {
 }
 
 .workshop-detail__type,
+.workshop-detail__heading,
 .workshop-detail__title,
-.workshop-detail__artist,
 .workshop-detail__schedule-line {
   margin: 0;
 }
 
 .workshop-detail__type,
-.workshop-detail__artist,
 .workshop-detail__schedule {
   color: rgba(10, 10, 10, 0.52);
 }
 
-.workshop-detail__title {
+.workshop-detail__heading {
   margin-top: 0.2rem;
   font-weight: 500;
+}
+
+.workshop-detail__title-text {
+  display: inline;
+  font-weight: 400;
   text-transform: uppercase;
 }
 
-.workshop-detail__artist {
+.workshop-detail--ko .workshop-detail__title-text {
+  font-weight: 500;
+}
+
+.workshop-detail__byline {
+  display: inline;
   color: rgba(10, 10, 10, 0.34);
   font-style: italic;
-  font-weight: 500;
+  font-weight: 1;
+  text-shadow:
+    0 0 0.2px rgba(10, 10, 10, 0.12),
+    0.1px 0.05px 0 rgba(10, 10, 10, 0.04);
+}
+
+.workshop-detail__byline::before {
+  content: ' ';
+}
+
+.workshop-detail__artist-link {
+  color: inherit;
+  font-style: italic;
+  text-decoration: none;
+}
+
+.workshop-detail__artist-link:hover,
+.workshop-detail__artist-link:focus-visible {
+  color: #000;
+  outline: none;
 }
 
 .workshop-detail__schedule {
@@ -352,18 +483,24 @@ export default {
 
 .workshop-detail__back:hover .workshop-detail__split-ghost,
 .workshop-detail__back:focus-visible .workshop-detail__split-ghost,
+.workshop-detail__artist-link:hover .workshop-detail__split-ghost,
+.workshop-detail__artist-link:focus-visible .workshop-detail__split-ghost,
 .is-mobile-activating .workshop-detail__split-ghost {
   opacity: 1;
 }
 
 .workshop-detail__back:hover .workshop-detail__split-half,
 .workshop-detail__back:focus-visible .workshop-detail__split-half,
+.workshop-detail__artist-link:hover .workshop-detail__split-half,
+.workshop-detail__artist-link:focus-visible .workshop-detail__split-half,
 .is-mobile-activating .workshop-detail__split-half {
   opacity: 0;
 }
 
 .workshop-detail__back:hover .workshop-detail__split::after,
 .workshop-detail__back:focus-visible .workshop-detail__split::after,
+.workshop-detail__artist-link:hover .workshop-detail__split::after,
+.workshop-detail__artist-link:focus-visible .workshop-detail__split::after,
 .is-mobile-activating .workshop-detail__split::after {
   opacity: 1;
 }
