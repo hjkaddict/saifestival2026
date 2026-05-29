@@ -17,7 +17,7 @@ At the same time, this festival pays attention to the collective energy formed b
   },
   date: {
     kr: `7월 10일 (금) | 7월 11일 (토) | 7월 17일 (금) | 7월 18일 (토)`.trim(),
-    en: `JUL 10 (Fri) | JUL 11 (Sat) | JUL 17 (Fri) | JUL 18 (Sat)`.trim(),
+    en: `JUL 10 (FRI) | JUL 11 (SAT) | JUL 17 (FRI) | JUL 18 (SAT)`.trim(),
   },
   openingHours: {
     kr: `오후 7시 - 오후 10시`.trim(),

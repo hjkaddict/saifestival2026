@@ -1,7 +1,7 @@
 export const workshopSchedule = [
   {
     id: 'workshop-0712',
-    dateLabel: { kr: '7월 12일 (일)', en: 'JUL 12 (Sun)' },
+    dateLabel: { kr: '7월 12일 (일)', en: 'JUL 12 (SUN)' },
     entries: [
       {
         id: 'workshop-tuukka-laurila-0712',
@@ -12,7 +12,7 @@ export const workshopSchedule = [
   },
   {
     id: 'workshop-0713',
-    dateLabel: { kr: '7월 13일 (월)', en: 'JUL 13 (Mon)' },
+    dateLabel: { kr: '7월 13일 (월)', en: 'JUL 13 (MON)' },
     entries: [
       {
         id: 'workshop-eric-wong-0713',
@@ -28,7 +28,7 @@ export const workshopSchedule = [
   },
   {
     id: 'workshop-0714',
-    dateLabel: { kr: '7월 14일 (화)', en: 'JUL 14 (Tue)' },
+    dateLabel: { kr: '7월 14일 (화)', en: 'JUL 14 (TUE)' },
     entries: [
       {
         id: 'workshop-oolongradio-0714',
@@ -44,7 +44,7 @@ export const workshopSchedule = [
   },
   {
     id: 'workshop-0715',
-    dateLabel: { kr: '7월 15일 (수)', en: 'JUL 15 (Wed)' },
+    dateLabel: { kr: '7월 15일 (수)', en: 'JUL 15 (WED)' },
     entries: [
       {
         id: 'lecture-evol-0715',
@@ -53,14 +53,14 @@ export const workshopSchedule = [
       },
       {
         id: 'workshop-haryung-lee-0715',
-        time: { kr: '오후 5시 - 8시', en: '5pm - 8pm' },
+        time: { kr: '오후 5시 - 7시', en: '5pm - 7pm' },
         detailId: 'workshop-haryung-lee',
       },
     ],
   },
   {
     id: 'workshop-0716',
-    dateLabel: { kr: '7월 16일 (목)', en: 'JUL 16 (Thu)' },
+    dateLabel: { kr: '7월 16일 (목)', en: 'JUL 16 (THU)' },
     entries: [
       {
         id: 'workshop-nick-klein-0716',
@@ -301,6 +301,15 @@ In this workshop, participants will create listening-beings that change and are 
 Participants will be provided with a simple motor device, a battery, and a network device. We may search for something specific to listen to in the space; or discover by chance a 'listening' created by spontaneous movements that evokes the human body. Whichever the case, we will follow where the process of making-listening leads. Using found objects, collecting materials from nature, etc., together we will create a collective listening by us, for us.
 `.trim(),
     },
+    images: [
+      {
+        src: '/images/workshops/dianaband-workshop.png',
+        alt: {
+          kr: '다이애나밴드 워크숍 대표 이미지',
+          en: 'dianaband workshop representative image',
+        },
+      },
+    ],
   },
 ]
 

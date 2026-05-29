@@ -101,8 +101,9 @@
           </div>
 
           <div
+            v-if="localized(program.data.description)"
             class="program-section__description rich-text"
-            v-html="localized(program.data.description)"
+            v-html="sanitizeRichText(localized(program.data.description))"
           ></div>
 
           <div v-if="program.id === 'performance'" class="program-section__schedule">
@@ -291,7 +292,7 @@ import { programPerformance } from '@/assets/data/program_performance.js'
 import { programWorkshop } from '@/assets/data/program_workshop.js'
 import { performanceSchedule, resolvePerformanceActs } from '@/assets/data/program_performance_schedule.js'
 import { getWorkshopDetail, workshopSchedule } from '@/assets/data/program_workshop_schedule.js'
-import { containsHtml } from '@/utils/htmlContent.js'
+import { containsHtml, sanitizeRichText } from '@/utils/htmlContent.js'
 
 function textSeedHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
@@ -356,6 +357,7 @@ export default {
   },
   methods: {
     containsHtml,
+    sanitizeRichText,
     localized(field) {
       if (!field) return ''
       const value = field[this.locale.lang] || field.en || field.kr || ''
@@ -680,7 +682,6 @@ export default {
 .program-page--ko .program-day__datetime-time {
   font-family: var(--font-home-ko);
   font-weight: 400;
-  font-style: italic;
   color: rgba(10, 10, 10, 0.34);
   text-shadow:
     0 0 0.2px rgba(10, 10, 10, 0.12),

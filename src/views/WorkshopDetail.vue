@@ -195,7 +195,14 @@ export default {
       return workshopSchedule.flatMap((day) =>
         day.entries
           .filter((entry) => entry.detailId === this.detail.id)
-          .map((entry) => [this.localized(day.dateLabel), this.localized(entry.time)].filter(Boolean).join(' · ')),
+          .map((entry) =>
+            [
+              this.formatWorkshopDetailDate(this.localized(day.dateLabel)),
+              this.localized(entry.time),
+            ]
+              .filter(Boolean)
+              .join(' · '),
+          ),
       )
     },
     detailImages() {
@@ -235,6 +242,15 @@ export default {
       if (!field) return ''
       const value = field[this.locale.lang] || field.en || field.kr || ''
       return typeof value === 'string' ? value.trim() : value
+    },
+    formatWorkshopDetailDate(label) {
+      const text = String(label || '').trim()
+      if (this.locale.lang === 'kr' || !text) return text
+      const titleCase = (word) => word.charAt(0) + word.slice(1).toLowerCase()
+      return text.replace(
+        /^([A-Z]{3})\s+(\d{1,2})\s+\(([A-Z]{3})\)$/,
+        (_, month, day, weekday) => `${titleCase(month)} ${day} (${titleCase(weekday)})`,
+      )
     },
     artistSplitStyle(labelPart) {
       const key = textSeedHash(`${labelPart}\0program-link`)
