@@ -347,8 +347,9 @@ export default {
       if (!entry) return ''
       if (!entry.detail) return this.localized(entry.title)
       const artist = this.localized(entry.detail.artist)
-      const title = this.localized(entry.detail.title)
-      return [artist, title].filter(Boolean).join(' - ')
+      const title = this.localized(entry.sessionTitle || entry.detail.title)
+      const titleUpper = title ? title.toLocaleUpperCase('en-US') : ''
+      return [artist, titleUpper].filter(Boolean).join(' - ')
     },
     splitLabelParts(label) {
       return String(label || '').trim().split(/\s+/).filter(Boolean)

@@ -228,6 +228,7 @@ export default {
 .workshop-detail__title {
   margin-top: 0.2rem;
   font-weight: 500;
+  text-transform: uppercase;
 }
 
 .workshop-detail__artist {
