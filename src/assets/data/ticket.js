@@ -12,12 +12,12 @@ export const ticketPage = {
   kr: {
     title: '티켓',
     bookLabel: '예매',
-    bookOpens: '5월 30일 오픈',
+    bookOpens: '6월 1일 오픈',
   },
   en: {
     title: 'Ticket',
     bookLabel: 'Book',
-    bookOpens: 'Open 30 May',
+    bookOpens: 'Open 1 June',
   },
 }
 
@@ -35,7 +35,7 @@ export const performancePriceTiers = [
   {
     id: 'early',
     label: { kr: '얼리버드', en: 'Early Bird' },
-    period: { kr: '판매 기간: 5월 30일 – 6월 20일', en: 'Sales period: 30 May – 20 June' },
+    period: { kr: '판매 기간: 6월 1일 – 6월 20일', en: 'Sales period: 1 June – 20 June' },
     price: { kr: '1일 15,000원', en: '1 day · ₩15,000' },
   },
   {
