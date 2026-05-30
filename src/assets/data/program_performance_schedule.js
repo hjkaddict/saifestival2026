@@ -1,12 +1,14 @@
 import { artistsData } from './artists.js'
 
+export const eventusBookingUrl = 'https://event-us.kr/saifestival/event/127172'
+
 export const performanceSchedule = [
   {
     id: 'perf-0710',
     shortLabel: { kr: '7/10 (금)', en: '7/10 (FRI)' },
     dateLabel: { kr: '7월 10일 (금)', en: 'JUL 10 (FRI)' },
     time: { kr: '오후 7시 - 10시', en: '7pm - 10pm' },
-    naverBookingUrl: null,
+    naverBookingUrl: eventusBookingUrl,
     acts: ['The Great △', 'Jiyoung Wi', 'Container', 'Dayoon Lee'],
   },
   {
@@ -14,7 +16,7 @@ export const performanceSchedule = [
     shortLabel: { kr: '7/11 (토)', en: '7/11 (SAT)' },
     dateLabel: { kr: '7월 11일 (토)', en: 'JUL 11 (SAT)' },
     time: { kr: '오후 7시 - 10시', en: '7pm - 10pm' },
-    naverBookingUrl: null,
+    naverBookingUrl: eventusBookingUrl,
     acts: ['HELM', 'Luciano Maggiore', 'Seiji Morimoto', 'Tzu Ni', 'Eric Wong'],
   },
   {
@@ -22,7 +24,7 @@ export const performanceSchedule = [
     shortLabel: { kr: '7/17 (금)', en: '7/17 (FRI)' },
     dateLabel: { kr: '7월 17일 (금)', en: 'JUL 17 (FRI)' },
     time: { kr: '오후 7시 - 10시', en: '7pm - 10pm' },
-    naverBookingUrl: null,
+    naverBookingUrl: eventusBookingUrl,
     acts: [
       'Yan Jun',
       {
@@ -39,7 +41,7 @@ export const performanceSchedule = [
     shortLabel: { kr: '7/18 (토)', en: '7/18 (SAT)' },
     dateLabel: { kr: '7월 18일 (토)', en: 'JUL 18 (SAT)' },
     time: { kr: '오후 7시 - 10시', en: '7pm - 10pm' },
-    naverBookingUrl: null,
+    naverBookingUrl: eventusBookingUrl,
     acts: ['Choi Joonyong', 'Evicshen', 'EVOL', 'minsungsig'],
   },
 ]

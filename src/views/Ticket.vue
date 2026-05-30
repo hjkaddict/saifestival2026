@@ -18,11 +18,53 @@
           >
             <div class="ticket-line ticket-line--head">
               <span class="ticket-line__primary rich-text" v-html="program.name"></span>
-              <span
-                class="ticket-line__badge rich-text"
-                :class="{ 'ticket-line__badge--admission': program.isPaid }"
-                v-html="program.admission"
-              ></span>
+              <template v-if="program.isPaid">
+                <a
+                  v-if="bookingUrl"
+                  class="ticket-line__action ticket-booking-cta ticket-booking-cta--link"
+                  :href="bookingUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span class="ticket-booking-cta__text">{{ copy.bookLabel }}</span>
+                  <svg
+                    class="ticket-booking-cta__icon"
+                    width="12"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M2.5 9.5 9.5 2.5M9.5 2.5H4.5M9.5 2.5v5"
+                    />
+                  </svg>
+                </a>
+                <span v-else class="ticket-line__action ticket-booking-cta ticket-booking-cta--soon">
+                  <span class="ticket-booking-cta__text">{{ copy.bookOpens }}</span>
+                  <svg
+                    class="ticket-booking-cta__icon"
+                    width="12"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M2.5 9.5 9.5 2.5M9.5 2.5H4.5M9.5 2.5v5"
+                    />
+                  </svg>
+                </span>
+              </template>
+              <span v-else class="ticket-line__badge rich-text" v-html="program.admission"></span>
             </div>
             <div
               v-if="program.dates || program.hours.length"
@@ -54,69 +96,22 @@
                 </ul>
               </div>
 
-              <div class="ticket-block ticket-block--shows">
-                <ul id="ticket-dates" class="ticket-show-list">
-                  <li v-for="show in showDates" :key="show.id" class="ticket-show">
-                    <div class="ticket-show__date rich-text" v-html="show.dateLabel"></div>
-                    <div class="ticket-show__artists rich-text" v-html="show.artists.join(', ')"></div>
-                    <a
-                      v-if="show.naverBookingUrl"
-                      class="ticket-show__action ticket-booking-cta ticket-booking-cta--link"
-                      :href="show.naverBookingUrl"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span class="ticket-booking-cta__text">{{ copy.bookLabel }}</span>
-                      <svg
-                        class="ticket-booking-cta__icon"
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        aria-hidden="true"
-                      >
-                        <path
-                          stroke="currentColor"
-                          stroke-width="1.25"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M2.5 9.5 9.5 2.5M9.5 2.5H4.5M9.5 2.5v5"
-                        />
-                      </svg>
-                    </a>
-                    <span v-else class="ticket-show__action ticket-booking-cta ticket-booking-cta--soon">
-                      <span class="ticket-booking-cta__text">{{ copy.bookOpens }}</span>
-                      <svg
-                        class="ticket-booking-cta__icon"
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        aria-hidden="true"
-                      >
-                        <path
-                          stroke="currentColor"
-                          stroke-width="1.25"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M2.5 9.5 9.5 2.5M9.5 2.5H4.5M9.5 2.5v5"
-                        />
-                      </svg>
-                    </span>
-                  </li>
-                </ul>
-              </div>
+              <ul
+                class="ticket-notes"
+                :aria-label="locale.lang === 'kr' ? '안내' : 'Notes'"
+              >
+                <li v-for="(bullet, idx) in footnotes.bullets" :key="idx" class="rich-text" v-html="bullet"></li>
+              </ul>
             </div>
-          </li>
-        </ul>
-      </section>
 
-      <section
-        class="ticket-section ticket-section--notes"
-        :aria-label="locale.lang === 'kr' ? '안내' : 'Notes'"
-      >
-        <ul class="ticket-notes">
-          <li v-for="(bullet, idx) in footnotes.bullets" :key="idx" class="rich-text" v-html="bullet"></li>
+            <router-link
+              :to="{ path: '/program', hash: program.programHash }"
+              class="ticket-program__view"
+            >
+              <span class="ticket-program__view-text">{{ program.viewProgramLabel }}</span>
+              <span class="ticket-program__view-arrow" aria-hidden="true">→</span>
+            </router-link>
+          </li>
         </ul>
       </section>
     </article>
@@ -127,8 +122,8 @@
 import { localeStore } from '@/store/locale.js'
 import {
   getPerformancePrices,
-  getPerformanceShowDates,
   getTicketPrograms,
+  performanceBooking,
   ticketFootnotes,
   ticketPage,
 } from '@/assets/data/ticket.js'
@@ -157,11 +152,11 @@ export default {
     prices() {
       return getPerformancePrices(this.locale.lang)
     },
-    showDates() {
-      return getPerformanceShowDates(this.locale.lang)
-    },
     footnotes() {
       return ticketFootnotes[this.locale.lang] || ticketFootnotes.en
+    },
+    bookingUrl() {
+      return performanceBooking.url
     },
   },
 }
@@ -177,7 +172,6 @@ export default {
   --ticket-gap-md: 0.75rem;
   --ticket-gap-lg: 1.5rem;
   --ticket-gap-xl: 2.25rem;
-  --ticket-date-col: 6.75rem;
 
   box-sizing: border-box;
   width: 100%;
@@ -236,16 +230,10 @@ export default {
   margin-bottom: 0;
 }
 
-.ticket-section--notes {
-  margin-top: var(--ticket-gap-xl);
-  padding-top: var(--ticket-gap-lg);
-}
-
 /* Programs */
 
 .ticket-program-list,
 .ticket-tier-list,
-.ticket-show-list,
 .ticket-notes {
   margin: 0;
   padding: 0;
@@ -264,15 +252,9 @@ export default {
   border-bottom: 0;
 }
 
-.ticket-program--paid {
-  padding-bottom: 0;
-  border-bottom: 0;
-}
-
 .ticket-program__subs {
   margin-top: var(--ticket-gap-lg);
   padding-left: clamp(0.65rem, 2.5vw, 1rem);
-  border-left: 1px solid var(--ticket-line);
 }
 
 .ticket-line {
@@ -304,10 +286,43 @@ export default {
   font-weight: 100;
 }
 
-.ticket-line__badge--admission {
-  text-decoration: underline;
-  text-underline-offset: 0.14em;
-  text-decoration-thickness: 0.06em;
+.ticket-line__action {
+  flex-shrink: 0;
+  justify-self: end;
+}
+
+.ticket-program__view {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28em;
+  margin-top: var(--ticket-gap-md);
+  color: var(--ticket-text-muted);
+  font-weight: 400;
+  font-size: 0.94rem;
+  letter-spacing: 0.006em;
+  text-decoration: none;
+  filter: none;
+}
+
+.ticket-page--ko .ticket-program__view {
+  font-size: 1rem;
+  font-weight: 100;
+}
+
+.ticket-program--paid .ticket-program__view {
+  margin-top: var(--ticket-gap-lg);
+}
+
+.ticket-program__view:hover,
+.ticket-program__view:focus-visible {
+  color: var(--ticket-text);
+  outline: none;
+}
+
+.ticket-program__view-arrow {
+  font-family: var(--font-home-en);
+  font-weight: 700;
+  line-height: 1;
 }
 
 .ticket-program__details {
@@ -340,7 +355,11 @@ export default {
 /* Prices */
 
 .ticket-block--prices {
-  margin-bottom: var(--ticket-gap-md);
+  margin-bottom: 0;
+}
+
+.ticket-program__subs .ticket-notes {
+  margin-top: var(--ticket-gap-lg);
 }
 
 .ticket-tier {
@@ -395,70 +414,6 @@ export default {
   font-weight: 500;
 }
 
-/* Show dates */
-
-.ticket-block--shows {
-  margin-top: var(--ticket-gap-md);
-  padding-top: var(--ticket-gap-md);
-  border-top: 1px solid var(--ticket-line);
-}
-
-.ticket-show {
-  display: grid;
-  grid-template-columns: var(--ticket-date-col) 1fr auto;
-  align-items: start;
-  gap: 0.2rem 1rem 0.65rem;
-  margin-bottom: var(--ticket-gap-lg);
-  padding-bottom: var(--ticket-gap-lg);
-  border-bottom: 1px solid var(--ticket-line);
-}
-
-.ticket-show:last-child {
-  margin-bottom: 0;
-  padding-bottom: 0;
-  border-bottom: 0;
-}
-
-.ticket-show__date {
-  grid-column: 1;
-  grid-row: 1;
-  color: var(--ticket-text);
-  font-weight: 500;
-  font-size: 0.96rem;
-  line-height: 1.35;
-  white-space: nowrap;
-}
-
-.ticket-page--ko .ticket-show__date {
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.ticket-page--en .ticket-show__date {
-  letter-spacing: 0.02em;
-}
-
-.ticket-show__artists {
-  grid-column: 2;
-  grid-row: 1;
-  color: var(--ticket-text-muted);
-  font-weight: 300;
-  font-size: 0.94rem;
-  line-height: 1.45;
-}
-
-.ticket-page--ko .ticket-show__artists {
-  font-size: 1rem;
-  font-weight: 100;
-}
-
-.ticket-show__action {
-  grid-column: 3;
-  grid-row: 1;
-  justify-self: end;
-  align-self: start;
-}
-
 .ticket-booking-cta {
   display: inline-flex;
   align-items: center;
@@ -478,31 +433,35 @@ export default {
 
 .ticket-booking-cta--link {
   cursor: pointer;
+  animation: ticket-booking-pulse 2.8s ease-in-out infinite;
 }
 
 .ticket-booking-cta--link:hover,
 .ticket-booking-cta--link:focus-visible {
   color: #cc0000;
+  opacity: 1;
+  animation: none;
   outline: none;
 }
 
-@keyframes ticket-booking-soon-fade {
+@keyframes ticket-booking-pulse {
   0%,
   100% {
     opacity: 1;
   }
 
   50% {
-    opacity: 0.28;
+    opacity: 0.42;
   }
 }
 
 .ticket-booking-cta--soon {
   cursor: default;
-  animation: ticket-booking-soon-fade 3.2s ease-in-out infinite;
+  animation: ticket-booking-pulse 2.8s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .ticket-booking-cta--link,
   .ticket-booking-cta--soon {
     animation: none;
   }
@@ -553,7 +512,6 @@ export default {
 
 @media (max-width: 768px) {
   .ticket-page {
-    --ticket-date-col: 5.5rem;
     --ticket-gap-xl: 2rem;
 
     padding: calc(108px + env(safe-area-inset-top, 0px)) 20px 48px;
@@ -569,28 +527,6 @@ export default {
 
   .ticket-program__subs {
     padding-left: 0.5rem;
-  }
-
-  .ticket-show {
-    grid-template-columns: var(--ticket-date-col) 1fr;
-    grid-template-rows: auto auto auto;
-    gap: 0.15rem 0.75rem;
-  }
-
-  .ticket-show__date {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .ticket-show__action {
-    grid-column: 2;
-    grid-row: 1;
-    justify-self: end;
-  }
-
-  .ticket-show__artists {
-    grid-column: 1 / -1;
-    grid-row: 2;
   }
 }
 </style>

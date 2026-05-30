@@ -1,47 +1,53 @@
 import { programExhibition } from './program_exhibition.js'
 import { programWorkshop } from './program_workshop.js'
 import { programPerformance } from './program_performance.js'
-import { getPerformanceShows } from './program_performance_schedule.js'
+import { eventusBookingUrl } from './program_performance_schedule.js'
 
-/** Set when Naver (or other) performance booking goes live. */
+/** Performance booking on Eventus. */
 export const performanceBooking = {
-  url: null,
+  url: eventusBookingUrl,
 }
 
 export const ticketPage = {
   kr: {
     title: '티켓',
-    bookLabel: '예매',
+    bookLabel: '예매링크',
     bookOpens: '6월 1일 오픈',
   },
   en: {
     title: 'Ticket',
-    bookLabel: 'Book',
+    bookLabel: 'Booking link',
     bookOpens: 'Open 1 June',
   },
 }
 
 export const ticketPrograms = [
-  { id: 'exhibition', source: programExhibition, admission: { kr: '무료', en: 'Free' } },
-  { id: 'workshop', source: programWorkshop, admission: { kr: '무료', en: 'Free' } },
   {
     id: 'performance',
     source: programPerformance,
     admission: { kr: '관람권', en: 'Admission' },
   },
+  { id: 'exhibition', source: programExhibition, admission: { kr: '무료', en: 'Free' } },
+  { id: 'workshop', source: programWorkshop, admission: { kr: '무료', en: 'Free' } },
 ]
 
 export const performancePriceTiers = [
   {
     id: 'early',
     label: { kr: '얼리버드', en: 'Early Bird' },
-    period: { kr: '판매 기간: 6월 1일 – 6월 20일', en: 'Sales period: 1 June – 20 June' },
+    period: {
+      kr: '6월 1일 (월) – 6월 30일 (화)',
+      en: 'JUN 1 (MON) – JUN 30 (TUE)',
+    },
     price: { kr: '1일 15,000원', en: '1 day · ₩15,000' },
   },
   {
     id: 'regular',
     label: { kr: '일반권 · 현장', en: 'Regular · on-site' },
-    period: { kr: '판매 기간: 6월 21일 이후', en: 'Sales period: From 21 June' },
+    period: {
+      kr: '7월 1일 (수) 이후',
+      en: 'From JUL 1 (WED)',
+    },
     price: { kr: '1일 22,000원', en: '1 day · ₩22,000' },
   },
 ]
@@ -49,16 +55,18 @@ export const performancePriceTiers = [
 export const ticketFootnotes = {
   kr: {
     bullets: [
-      '온라인으로 티켓을 구매하신 분들은 현장에서 퍼포먼스 입장 팔찌와 음료 쿠폰을 수령해주세요.',
+      '온라인 예매를 하신 분들은 해당 퍼포먼스 당일, 현장에서 입장 팔찌와 음료 쿠폰을 수령해주세요.',
+      '모든 퍼포먼스는 오후 7시 시작 예정입니다.',
       '티켓 1매당 음료 쿠폰 1장(커피 또는 맥주)이 제공됩니다.',
-      '회차당 120매 한정입니다.',
+      '퍼포먼스 회차당 150매 한정입니다.',
     ],
   },
   en: {
     bullets: [
-      'Online buyers must verify their purchase on site to receive a wristband and drink voucher.',
-      'Each ticket includes one drink voucher (coffee or beer).',
-      'Limited to 120 tickets per performance.',
+      'For online ticket holders, admission wristbands and drink vouchers can be collected at the venue on the day of the performance.',
+      'All performances are scheduled to start at 7PM.',
+      'Each ticket includes one complimentary drink voucher (coffee or beer).',
+      'Capacity is limited to 150 tickets per performance date.',
     ],
   },
 }
@@ -81,13 +89,17 @@ export function getTicketPrograms(lang) {
   const l = lang === 'kr' ? 'kr' : 'en'
   return ticketPrograms.map((program) => {
     const { dates, hours } = programSchedule(program.source, l)
+    const name = program.source.title[l]
     return {
       id: program.id,
-      name: program.source.title[l],
+      name,
       admission: program.admission[l],
-      dates: program.id === 'performance' ? '' : dates,
+      dates,
       hours,
       isPaid: program.id === 'performance',
+      viewProgramLabel:
+        l === 'kr' ? `${name} 프로그램 보러가기` : `View ${name} program`,
+      programHash: `#${program.id}`,
     }
   })
 }
@@ -101,9 +113,4 @@ export function getPerformancePrices(lang) {
     period: tier.period[l],
     price: tier.price[l],
   }))
-}
-
-/** @param {'kr' | 'en'} lang */
-export function getPerformanceShowDates(lang) {
-  return getPerformanceShows(lang)
 }
