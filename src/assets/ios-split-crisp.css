@@ -1,22 +1,79 @@
 /**
  * iOS WebKit: filter + clip-path split text stacks into excess blur.
- * Keeps a light scan texture; Android/desktop rules unchanged.
+ * Desktop keeps scan texture; iOS uses crisp type (no blur / halo shadows).
  */
 @supports (-webkit-touch-callout: none) {
-  .program-page__inner,
-  .about-page__inner,
-  .about-page__scroll-poem-inner,
-  .exhibition-detail__inner,
-  .workshop-detail__inner,
-  .ticket-page__inner,
+  html,
+  body,
+  #app-root {
+    -webkit-font-smoothing: antialiased !important;
+    text-shadow: none !important;
+    filter: none !important;
+  }
+
+  :where(
+      a,
+      button,
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      span,
+      li,
+      dt,
+      dd,
+      label,
+      small,
+      strong,
+      em,
+      figcaption,
+      blockquote
+    ),
+  #app-root .router-stage .rich-text,
+  #app-root .router-stage .rich-text * {
+    filter: none !important;
+    text-shadow: none !important;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :where(
+      .program-page__inner,
+      .about-page__inner,
+      .about-page__scroll-poem-inner,
+      .exhibition-detail__inner,
+      .workshop-detail__inner,
+      .ticket-page__inner,
+      .ticket-page__message,
+      .home-text,
+      .home-text__menu,
+      .artist-detail__title,
+      .artist-detail__bio,
+      .venue-page__card
+    ) {
+    filter: none !important;
+    text-shadow: none !important;
+    -webkit-font-smoothing: antialiased !important;
+  }
+
   .ticket-booking-cta,
   .ticket-booking-cta *,
-  .link-external-icon,
-  .venue-page__card,
-  .artist-detail__title,
-  .artist-detail__bio,
-  .home-text__menu {
-    filter: none;
+  .link-external-icon {
+    filter: none !important;
+  }
+
+  .artist-detail__image-split {
+    filter: contrast(1.1) brightness(1.03) saturate(0.9) !important;
+  }
+
+  .workshop-detail__image {
+    filter: contrast(1.04) saturate(0.92) !important;
+  }
+
+  .venue-page__map-inner {
+    filter: grayscale(1) contrast(1.42) brightness(0.96) !important;
   }
 
   .home-text__link:has([class*='__split']),
@@ -31,7 +88,7 @@
   .workshop-detail__back:has([class*='__split']),
   .artist-detail__website:has([class*='__split']),
   .artist-detail__more:has([class*='__split']) {
-    filter: none;
+    filter: none !important;
   }
 
   :is(
@@ -43,18 +100,6 @@
     filter: none !important;
     text-shadow: none !important;
     -webkit-font-smoothing: antialiased;
-  }
-
-  :is(
-      .home-text__split,
-      .global-nav__split,
-      .program-day__split,
-      .venue-page__split,
-      .about-page__split,
-      .exhibition-detail__split,
-      .workshop-detail__split
-    ) {
-    text-shadow: 0 0 0.22px rgba(10, 10, 10, 0.12);
   }
 
   .global-nav__active-text,
@@ -127,38 +172,5 @@
 
   .workshop-detail__split-half--bottom {
     transform: translate3d(var(--workshop-split-shift-bottom, 1px), 0, 0);
-  }
-
-  @media (max-width: 768px), (hover: none), (pointer: coarse) {
-    :where(
-        a,
-        button,
-        p,
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
-        span,
-        li,
-        dt,
-        dd,
-        label,
-        small,
-        strong,
-        em,
-        figcaption,
-        blockquote
-      ):not(
-          :is(
-              [class*='__split'] *,
-              .ticket-booking-cta,
-              .ticket-booking-cta *,
-              .link-external-icon
-            )
-        ) {
-      filter: blur(0.05px) contrast(1.03);
-    }
   }
 }
