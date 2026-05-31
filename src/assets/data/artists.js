@@ -216,7 +216,7 @@ export const artistsData = [
     id: 'artist_18',
     slug: 'evol',
     name_en: 'Roc Jiménez de Cisneros/EVOL',
-    name_kr: '록 히메네즈 데 시스네로스/이볼',
+    name_kr: '록 히메네스 데 시스네로스/이볼',
     nationality: 'ES',
     bio_en: `Stephen Sharp and Roc Jiménez de Cisneros like to deform musical objects. Fuelled by analogies about bending and stretching to resynthesise and liquify their favourite dance music tropes, their work is a love letter to techno culture written from a different continuum. Equally austere and maximalist, their music is a blend of bouncy patterns, hyper-deformed acid lines and screeching alarm-like sounds. EVOL records have been published on labels such as Diagonal, iDEAL, Superpang, Presto!?, Editions Mego, or their very own Alku.`,
     bio_kr: `EVOL은 스티븐 샤프(Stephen Sharp)와 록 히메네스 데 시스네로스(Roc Jiménez de Cisneros)로 구성되어 있으며, 음악적 오브제를 변형시키는 작업 방식을 추구한다. ‘벤딩'과 ‘스트레칭'이라는 사운드 합성 용어에서 영감을 얻어, 이를 통해 댄스 음악의 클리셰를 재구성하고 유동화시키는 이들의 작업은 테크노 문화를 향한 러브레터와도 같다. 미니멀리즘과 맥시멀리즘을 동시에 추구하는 그들의 음악은 경쾌한 패턴과 합성・변형을 거듭한 애시드 멜로디, 그리고 경보음처럼 날카롭게 울리는 소리들이 한데 어우러져 있다. EVOL의 음반은 다이애거널, 아이디얼, 슈퍼팽, 프레스토!?, 에디션스 메고, 그리고 그들이 직접 운영하는 레이블인 ‘알쿠' 등을 통해 발매된 바 있다. `,

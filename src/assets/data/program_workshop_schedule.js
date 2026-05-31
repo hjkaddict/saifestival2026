@@ -193,7 +193,7 @@ For Laurila, the process is the work: a temporary community formed through build
   {
     id: 'lecture-evol',
     type: { kr: '강연', en: 'Lecture' },
-    artist: { kr: '록 히메네즈 데 시스네로스/이볼', en: 'Roc Jiménez de Cisneros/EVOL' },
+    artist: { kr: '록 히메네스 데 시스네로스/이볼', en: 'Roc Jiménez de Cisneros/EVOL' },
     title: { kr: '타악기 변형 무제 ', en: 'UNTITLED DRUM PERMUTATIONS' },
     description: {
       kr: `본 발표에서는 “드럼머신 소리 열한 가지로 만들 수 있는 모든 배열을 연주하기”라는, 다소 단순하면서도 어마어마한—총 3백9십만가지의 변형이 가능합니다—전제를 바탕으로 만들어진 작품을 선보입니다. 롤란드 TR-909의 시그내쳐 사운드를 활용하여 체계적인 동시에 묘하게 명상적인 방식으로 한계, 반복, 패턴 왜곡, 그리고 집중도에 대해 탐구하고자 합니다. `.trim(),
@@ -203,7 +203,7 @@ For Laurila, the process is the work: a temporary community formed through build
       {
         src: '/images/workshops/roc-jimenez-evol-lecture.png',
         alt: {
-          kr: '록 히메네즈 데 시스네로스/이볼 강연 대표 이미지',
+          kr: '록 히메네스 데 시스네로스/이볼 강연 대표 이미지',
           en: 'Roc Jimenez de Cisneros/EVOL lecture representative image',
         },
       },
