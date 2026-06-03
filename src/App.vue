@@ -198,6 +198,11 @@ export default {
       this.artistLineupOpen = false
       this.programMenuOpen = false
     },
+    '$route.hash'(hash) {
+      if (this.$route.name === 'Program' && hash) {
+        this.scheduleProgramHashScroll()
+      }
+    },
   },
   computed: {
     programNavItems() {
@@ -223,6 +228,7 @@ export default {
     onPageAfterEnter() {
       this.navTextFaded = false
       this.syncDisplayedRoute()
+      this.scheduleProgramHashScroll()
     },
     toggleLang(event) {
       const newLang = this.locale.lang === 'kr' ? 'en' : 'kr'
@@ -306,14 +312,34 @@ export default {
 
       this.scrollToProgramSection(item.id)
     },
-    scrollToProgramSection(id) {
+    scheduleProgramHashScroll() {
+      if (this.$route.name !== 'Program') return
+      const id = (this.$route.hash || '').replace(/^#/, '')
+      if (!id) return
+      this.$nextTick(() => {
+        this.scrollToProgramSectionWhenReady(id)
+      })
+    },
+    scrollToProgramSectionWhenReady(id, attempt = 0) {
+      const section = document.getElementById(id)
+      if (section) {
+        this.scrollToProgramSection(id, { behavior: 'auto' })
+        return
+      }
+      if (attempt >= 30) return
+      requestAnimationFrame(() => {
+        this.scrollToProgramSectionWhenReady(id, attempt + 1)
+      })
+    },
+    scrollToProgramSection(id, options = {}) {
       this.programMenuOpen = false
       const section = document.getElementById(id)
       if (!section) return
 
       const navHeight = document.querySelector('.global-nav')?.getBoundingClientRect().height || 0
       const top = section.getBoundingClientRect().top + window.scrollY - navHeight - 8
-      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
+      const behavior = options.behavior || 'smooth'
+      window.scrollTo({ top: Math.max(0, top), behavior })
       window.history.replaceState(null, '', `${this.$route.path}#${id}`)
     },
     onArtistLineupState(event) {

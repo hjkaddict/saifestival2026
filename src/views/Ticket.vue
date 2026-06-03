@@ -105,7 +105,7 @@
             </div>
 
             <router-link
-              :to="{ path: '/program', hash: program.programHash }"
+              :to="{ path: '/program', hash: `#${program.id}` }"
               class="ticket-program__view"
             >
               <span class="ticket-program__view-text">{{ program.viewProgramLabel }}</span>

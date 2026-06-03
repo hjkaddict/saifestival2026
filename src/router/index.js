@@ -48,7 +48,8 @@ const router = createRouter({
       return false
     }
 
-    if (to.hash) {
+    // Program section anchors scroll after the page transition (see App.vue).
+    if (to.hash && to.name !== 'Program') {
       return waitLayoutQuick().then(() => ({
         el: to.hash,
         top: 100,

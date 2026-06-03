@@ -99,7 +99,6 @@ export function getTicketPrograms(lang) {
       isPaid: program.id === 'performance',
       viewProgramLabel:
         l === 'kr' ? `${name} 프로그램 보러가기` : `View ${name} program`,
-      programHash: `#${program.id}`,
     }
   })
 }
