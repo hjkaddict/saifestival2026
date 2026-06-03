@@ -65,13 +65,46 @@
           </template>
         </span>
       </h1>
-      <div v-if="scheduleLines.length" class="workshop-detail__schedule">
-        <p
-          v-for="line in scheduleLines"
-          :key="line"
-          class="workshop-detail__schedule-line rich-text"
-          v-html="line"
-        ></p>
+      <div
+        v-if="scheduleLines.length || rsvpUrl || openParticipationLabel"
+        class="workshop-detail__schedule-row"
+      >
+        <div v-if="scheduleLines.length" class="workshop-detail__schedule">
+          <p
+            v-for="line in scheduleLines"
+            :key="line"
+            class="workshop-detail__schedule-line rich-text"
+            v-html="line"
+          ></p>
+        </div>
+        <a
+          v-if="rsvpUrl"
+          class="workshop-detail__rsvp"
+          :href="rsvpUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span class="workshop-detail__rsvp-text">{{ rsvpLinkLabel }}</span>
+          <svg
+            class="workshop-detail__rsvp-icon"
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              stroke="currentColor"
+              stroke-width="1.25"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M2.5 9.5 9.5 2.5M9.5 2.5H4.5M9.5 2.5v5"
+            />
+          </svg>
+        </a>
+        <span v-else-if="openParticipationLabel" class="workshop-detail__open-participation">
+          {{ openParticipationLabel }}
+        </span>
       </div>
       <section
         class="workshop-detail__description rich-text"
@@ -189,6 +222,20 @@ export default {
   computed: {
     detail() {
       return getWorkshopDetail(this.id)
+    },
+    rsvpUrl() {
+      return this.detail?.rsvpUrl || ''
+    },
+    rsvpLinkLabel() {
+      return this.locale.lang === 'kr' ? '신청 링크' : 'Registration'
+    },
+    openParticipationLabel() {
+      if (!this.detail || this.rsvpUrl) return ''
+      const isLecture = this.detail.type?.en === 'Lecture'
+      if (this.locale.lang === 'kr') {
+        return isLecture ? '자유 입장' : '오픈 세션'
+      }
+      return isLecture ? 'Open admission' : 'Open session'
     },
     scheduleLines() {
       if (!this.detail) return []
@@ -384,8 +431,88 @@ export default {
   outline: none;
 }
 
-.workshop-detail__schedule {
+.workshop-detail__schedule-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
   margin-top: 0.35rem;
+}
+
+.workshop-detail__schedule {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.workshop-detail__open-participation {
+  flex: 0 0 auto;
+  margin-top: 0.02em;
+  color: rgba(10, 10, 10, 0.52);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.42;
+  letter-spacing: 0.006em;
+  white-space: nowrap;
+}
+
+.workshop-detail--ko .workshop-detail__open-participation {
+  font-weight: 500;
+}
+
+.workshop-detail__rsvp {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.28em;
+  margin-top: 0.02em;
+  color: #ff0000;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.42;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  filter: none;
+  animation: workshop-rsvp-pulse 2.8s ease-in-out infinite;
+}
+
+.workshop-detail--ko .workshop-detail__rsvp {
+  font-weight: 600;
+  letter-spacing: 0.006em;
+}
+
+.workshop-detail__rsvp:hover,
+.workshop-detail__rsvp:focus-visible {
+  color: #cc0000;
+  opacity: 1;
+  animation: none;
+  outline: none;
+}
+
+.workshop-detail__rsvp-icon {
+  display: block;
+  flex: 0 0 0.72em;
+  width: 0.72em;
+  height: 0.72em;
+  margin-top: 0.06em;
+}
+
+@keyframes workshop-rsvp-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.42;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workshop-detail__rsvp {
+    animation: none;
+  }
 }
 
 .workshop-detail__description {

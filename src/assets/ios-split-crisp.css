@@ -60,6 +60,8 @@
 
   .ticket-booking-cta,
   .ticket-booking-cta *,
+  .workshop-detail__rsvp,
+  .workshop-detail__rsvp *,
   .link-external-icon {
     filter: none !important;
   }

@@ -16,7 +16,7 @@ export const ticketPage = {
   },
   en: {
     title: 'Ticket',
-    bookLabel: 'Booking link',
+    bookLabel: 'Booking',
     bookOpens: 'Open 1 June',
   },
 }

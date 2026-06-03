@@ -31,7 +31,7 @@ export const programExhibition = {
     {
       id: 'haryung-lee',
       artist: { kr: '이하령', en: 'Haryung Lee' },
-      title: { kr: '', en: '' },
+      title: { kr: '(가제) 눈물 천국', en: 'Teardrop Heaven (working title)' },
       description: { kr: '', en: '' },
     },
     {

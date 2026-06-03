@@ -103,6 +103,7 @@ In this workshop, Wong and participants will study and work through the scores t
       
 Participants are recommended to bring a musical instrument to the workshop, which includes voice or sound generating apps.`.trim(),
     },
+    rsvpUrl: 'https://forms.gle/P9QAGdjDoZsvqJYm6',
     images: [
       {
         src: '/images/workshops/eric-wong-workshop.png',
@@ -131,6 +132,15 @@ Throughout the workshop, materials will be collectively gathered, sorted, and gr
 
 For Laurila, the process is the work: a temporary community formed through building and exchange, within a space that is a proposition against the perpetual newness of today's material world.`.trim(),
     },
+    images: [
+      {
+        src: '/images/workshops/tuukka-laurila-workshop.png',
+        alt: {
+          kr: '투카 라우리라 워크숍 대표 이미지',
+          en: 'Tuukka Laurila workshop representative image',
+        },
+      },
+    ],
   },
   {
     id: 'workshop-tuukka-laurila-session-1',
@@ -150,6 +160,16 @@ Throughout the workshop, materials will be collectively gathered, sorted, and gr
 
 For Laurila, the process is the work: a temporary community formed through building and exchange, within a space that is a proposition against the perpetual newness of today's material world.`.trim(),
     },
+    rsvpUrl: 'https://forms.gle/MKSEWtqEc41oyv3r5',
+    images: [
+      {
+        src: '/images/workshops/tuukka-laurila-workshop.png',
+        alt: {
+          kr: '투카 라우리라 워크숍 대표 이미지',
+          en: 'Tuukka Laurila workshop representative image',
+        },
+      },
+    ],
   },
   {
     id: 'workshop-tuukka-laurila-session-2',
@@ -169,6 +189,16 @@ Throughout the workshop, materials will be collectively gathered, sorted, and gr
 
 For Laurila, the process is the work: a temporary community formed through building and exchange, within a space that is a proposition against the perpetual newness of today's material world.`.trim(),
     },
+    rsvpUrl: 'https://forms.gle/MKSEWtqEc41oyv3r5',
+    images: [
+      {
+        src: '/images/workshops/tuukka-laurila-workshop.png',
+        alt: {
+          kr: '투카 라우리라 워크숍 대표 이미지',
+          en: 'Tuukka Laurila workshop representative image',
+        },
+      },
+    ],
   },
   {
     id: 'workshop-oolongradio',
@@ -218,6 +248,7 @@ For Laurila, the process is the work: a temporary community formed through build
       kr: `중앙동을 산책하며 스티로폼 상자를 하나씩 줍는다. 주운 스티로폼 상자를 들고 페스티벌 장소로 다시 모인다. 스티로폼 상자의 네 모서리를 열선으로 잘라, 강아지를 만든다. 각자 자신이 만든 강아지를 소장한다.`.trim(),
       en: `Take a walk around Jungang-dong and pick up a styrofoam box. Gather back at the venue with the collected styrofoam boxes. Cut four corners of the box using a hot wire cutter to shape them into a dog. Everyone keeps the dog they made.`.trim(),
     },
+    rsvpUrl: 'https://forms.gle/Q2QvL1XL1GPgHkhf6',
     images: [
       {
         src: '/images/workshops/haryung-lee-workshop.png',
@@ -246,6 +277,7 @@ Impolite is a workshop course taking place during the period of a week, but for 
 
 Participants are encouraged and required to bring ready-made sculptures, amplification systems, televisions, lumber, tape, paper, garbage, animals, humans, books, fabrics, instruments, food, and whatever they feel can express their artistic agendas thoroughly.`.trim(),
     },
+    rsvpUrl: 'https://forms.gle/YKaJkXdepVndXYmA9',
     images: [
       {
         src: '/images/workshops/nick-klein-impolite-workshop.png',
@@ -301,6 +333,7 @@ In this workshop, participants will create listening-beings that change and are 
 Participants will be provided with a simple motor device, a battery, and a network device. We may search for something specific to listen to in the space; or discover by chance a 'listening' created by spontaneous movements that evokes the human body. Whichever the case, we will follow where the process of making-listening leads. Using found objects, collecting materials from nature, etc., together we will create a collective listening by us, for us.
 `.trim(),
     },
+    rsvpUrl: 'https://forms.gle/oSWa6qLxgWxLF5DRA',
     images: [
       {
         src: '/images/workshops/dianaband-workshop.png',
