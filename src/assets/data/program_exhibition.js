@@ -1,3 +1,95 @@
+const liQihangTimetable = `<div class="mp-timetable">
+<div class="mp-timetable__dates">
+<span class="mp-timetable__dates-left">7월 10일~11일, 17일~18일 (금·토)</span>
+</div>
+<div class="mp-timetable__table-wrap">
+<table class="mp-timetable__table">
+<colgroup>
+<col class="mp-timetable__col-index" />
+<col class="mp-timetable__col-data" />
+<col class="mp-timetable__col-data" />
+<col class="mp-timetable__col-gap" />
+<col class="mp-timetable__col-data" />
+<col class="mp-timetable__col-data" />
+</colgroup>
+<tbody>
+<tr>
+<td class="mp-timetable__cell mp-timetable__cell--grey"></td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--en"><b>Daejeon Station</b></td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--en"><b>Artsite Soje</b></td>
+<td class="mp-timetable__cell mp-timetable__cell--gap"></td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--en"><b>Artsite Soje</b></td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--en"><b>Daejeon Station</b></td>
+</tr>
+<tr>
+<td class="mp-timetable__cell mp-timetable__cell--grey"></td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--kr">대전역 동광장</td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--kr">아트사이트 소제</td>
+<td class="mp-timetable__cell mp-timetable__cell--gap"></td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--kr">아트사이트 소제</td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--kr">대전역 동광장</td>
+</tr>
+<tr>
+<td class="mp-timetable__cell mp-timetable__cell--grey">1</td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--time">13 : 00</td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--time">13 : 20</td>
+<td class="mp-timetable__cell mp-timetable__cell--gap"></td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--time">13 : 30</td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--time">13 : 50</td>
+</tr>
+<tr>
+<td class="mp-timetable__cell mp-timetable__cell--grey">2</td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--time">13 : 50</td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--time">14 : 10</td>
+<td class="mp-timetable__cell mp-timetable__cell--gap"></td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--time">14 : 20</td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--time">14 : 40</td>
+</tr>
+<tr>
+<td class="mp-timetable__cell mp-timetable__cell--grey">3</td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--time">14 : 40</td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--time">15 : 00</td>
+<td class="mp-timetable__cell mp-timetable__cell--gap"></td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--time">15 : 10</td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--time">15 : 30</td>
+</tr>
+<tr>
+<td class="mp-timetable__cell mp-timetable__cell--grey">4</td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--time">15 : 30</td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--time">15 : 50</td>
+<td class="mp-timetable__cell mp-timetable__cell--gap"></td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--time">16 : 00</td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--time">16 : 20</td>
+</tr>
+<tr>
+<td class="mp-timetable__cell mp-timetable__cell--grey">5</td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--time">16 : 20</td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--time">16 : 40</td>
+<td class="mp-timetable__cell mp-timetable__cell--gap"></td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--time">16 : 50</td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--time">17 : 10</td>
+</tr>
+<tr>
+<td class="mp-timetable__cell mp-timetable__cell--grey">6</td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--time">17 : 10</td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--time">17 : 30</td>
+<td class="mp-timetable__cell mp-timetable__cell--gap"></td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--time">17 : 40</td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--time">18 : 00</td>
+</tr>
+<tr>
+<td class="mp-timetable__cell mp-timetable__cell--grey">7</td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--time">18 : 00</td>
+<td class="mp-timetable__cell mp-timetable__cell--grey mp-timetable__cell--time">18 : 20</td>
+<td class="mp-timetable__cell mp-timetable__cell--gap"></td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--time">18 : 30</td>
+<td class="mp-timetable__cell mp-timetable__cell--yellow mp-timetable__cell--time">18 : 50</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>`
+
 export const programExhibition = {
   title: {
     kr: `전시`,
@@ -114,7 +206,77 @@ At night, the line array is lit up.`,
       id: 'li-qihang',
       artist: { kr: '리 치항', en: 'Li Qihang' },
       title: { kr: '머큐리 파티오', en: 'Mercury Patio' },
-      description: { kr: '', en: '' },
+      media: {
+        '01': {
+          src: '/images/exhibitions/li-qihang-01.png',
+          alt: { kr: '', en: '' },
+        },
+        '02': {
+          src: '/images/exhibitions/li-qihang-02.png',
+          alt: { kr: '', en: '' },
+          layout: 'full',
+        },
+      },
+      blocks: [
+        {
+          type: 'html',
+          content: {
+            kr: `${liQihangTimetable}
+<br>
+7월 10일(금) 11일(토), 17일(금), 18일(토) 13:00~19:00 사이에 대전역 동광장-아트사이트 소제 셔틀버스가 운행됩니다. 편도운행 소요 시간은 약 20분이며, 방문객은 양쪽 정류장에서 자유롭게 탑승할 수 있고 왕복 이용 또한 가능합니다. 출발 시간은 시간표를 참고해 주시기 바랍니다. 사–이 페스티벌 주 행사장 옆에 마련된 공간은 승객대기실로 운영됩니다. 셔틀버스 운행 시간 외에도 대기실은 방문객에게 개방됩니다.
+<br>
+[[img:01]]
+<br>
+* 대전역에 도착하시는 승객은 <b>동광장 출구</b>로 나오셔야 합니다. 셔틀버스 승차장은 지정된 노상 주차 구역에 위치해 있으며, 머큐리 파티오(Mercury Patio) 표지판이 세워져 있습니다.
+
+<b>셔틀버스</b>
+운행일: 7월 10일~11일; 7월 17일~18일
+운행 시간: 13:00~19:00
+
+<b>대기실</b>
+페스티벌 기간 동안 매일 운영
+금~토: 12:00~19:00
+일~목: 12:00~20:00
+
+〈머큐리 파티오(Mercury Patio)〉는 2022년 6월에 시작된 ‘기다림과 탑승’의 과정입니다. ‘머큐리 파티오’라는 이름은 도쿄 긴자선 우에노역에 있는 대기실 이름에서 유래합니다. 특정 게이트를 통해 역에 진입한 승객들만 이 대기실을 이용할 수 있습니다. 공중전화와 벤치, 자판기가 갖춰진 이 라운지는 로마 신화에서 여행, 경계, 사기, 전령의 신인 ‘머큐리(메르쿠리우스)’의 동상이 세워진 공간이기도 합니다.
+
+대한민국의 주요 교통 허브인 대전에 자리 잡은 이번 에디션의 〈머큐리 파티오〉는 관계가 발생하는 공간인 ‘사이’에 주목하는 이번 페스티벌의 핵심 주제어에 가닿아 있습니다. 도시의 기차역과 페스티벌 행사장을 우회로로 연결하며, 승객들에게 일상에서 벗어난 이동을 제안합니다. 버스가 이동하는 동안에는 필드 레코딩(현장 녹음)으로 구성된 소리 작업이 함께 흘러나옵니다. 대기실은 버스 탑승과 행사장 사이, 즉 페스티벌의 직전 혹은 직후에 자리합니다.
+
+[[img:02]]
+
+과거 버전의 〈머큐리 파티오〉 사진. <a class="exhibition-detail__edition-link" href="https://mercurypatio.com/" target="_blank" rel="noopener noreferrer">2025년 3월 에디션</a>, 암스테르담 예술기금 후원. 북스앗, 티그리스 &amp; 유프라트 특별지원. <a class="exhibition-detail__edition-link" href="https://www.hartwigproxy.nl/programme/mercury-patio" target="_blank" rel="noopener noreferrer">2025년 8월 에디션</a>, 하트윅 프록시 후원.
+
+`.trim(),
+            en: `${liQihangTimetable}
+<br>
+On July 10 (Fri.) –11 (Sat.) and July 17 (Fri.) –18 (Sat.), from 13:00 to 19:00, a shuttle bus will operate between Daejeon Station and Artsite Soje. The ride takes approximately 20 minutes each way, and visitors are welcome to board at either stop or take the full round trip. Please refer to the timetable for departure times. A space adjacent to the main venue of SA–I Festival will be activated as a waiting room. When the shuttle bus is not in operation, the waiting room remains open to visitors.
+<br>
+[[img:01]]
+<br>
+* Passengers arriving at Daejeon Station should exit via the <b>East Exit</b>. The shuttle bus pick-up point is located at a designated roadside parking space, with a Mercury Patio sign.
+
+<b>Shuttle Bus</b>
+Dates: July 10–11 and July 17–18
+Hours: 13:00–19:00
+
+<b>Waiting Room</b>
+Open daily throughout the festival
+Fri–Sat: 12:00–19:00
+Sun–Thu: 12:00–20:00
+
+Mercury Patio is a process of waiting and riding initiated in June, 2022. The moniker, ‘mercury patio’, is borrowed from a waiting room at Ueno station on the Ginza line of Tokyo Metro. Only commuters who enter the station through the specific gate can access there. This lounge, equipped with payphones, benches and vending machines, is also a space to place the statue of Mercury, who in Roman mythology is the god of travel, boundary, trickery and message.
+
+Situated in Daejeon, a major transportation hub in South Korea, this edition of Mercury Patio responds to the festival’s focus on SA–I, the in-between space where relations emerge. Connecting the city station and the festival venue via a detour, passengers are invited to take a displaced commute. A composition of field recordings accompanies the ride. The waiting room sits between the ride and the venue, just before or right after the festival.
+
+[[img:02]]
+
+Images from previous iterations of Mercury Patio: the <a class="exhibition-detail__edition-link" href="https://mercurypatio.com/" target="_blank" rel="noopener noreferrer">March 2025 edition</a>, supported by the Amsterdams Fonds voor de Kunst, with thanks to BOOKS at and Tigris & Eufraat; and the <a class="exhibition-detail__edition-link" href="https://www.hartwigproxy.nl/programme/mercury-patio" target="_blank" rel="noopener noreferrer">Autumn 2025 edition</a>, supported by Hartwig Proxy.
+
+`.trim(),
+          },
+        },
+        // { type: 'code', content: { kr: '', en: 'const timetable = []' } },
+      ],
     },
   ],
 }

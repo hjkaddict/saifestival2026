@@ -18,10 +18,32 @@
             class="exhibition-detail__piece-title rich-text"
             v-html="localized(piece.title)"
           ></p>
+          <div v-if="contentBlocks(piece).length" class="exhibition-detail__content">
+            <template v-for="(block, blockIdx) in contentBlocks(piece)" :key="`${piece.id}-block-${blockIdx}`">
+              <section
+                v-if="block.type === 'html' && localized(block.content)"
+                class="exhibition-detail__description rich-text"
+                v-html="expandedHtml(block.content, piece)"
+              ></section>
+              <figure v-else-if="block.type === 'image' && block.src" class="exhibition-detail__figure">
+                <img
+                  class="exhibition-detail__image"
+                  :src="block.src"
+                  :alt="localized(block.alt)"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+              <pre
+                v-else-if="block.type === 'code' && localized(block.content)"
+                class="exhibition-detail__code"
+              ><code>{{ localized(block.content) }}</code></pre>
+            </template>
+          </div>
           <section
-            v-if="localized(piece.description)"
+            v-else-if="localized(piece.description)"
             class="exhibition-detail__description rich-text"
-            v-html="localized(piece.description)"
+            v-html="expandedHtml(piece.description, piece)"
           ></section>
         </section>
       </template>
@@ -31,11 +53,50 @@
           class="exhibition-detail__title rich-text"
           v-html="localized(work.title)"
         ></p>
-        <section
-          v-if="localized(work.description)"
-          class="exhibition-detail__description rich-text"
-          v-html="localized(work.description)"
-        ></section>
+        <div v-if="contentBlocks(work).length" class="exhibition-detail__content">
+          <template v-for="(block, blockIdx) in contentBlocks(work)" :key="`work-block-${blockIdx}`">
+            <section
+              v-if="block.type === 'html' && localized(block.content)"
+              class="exhibition-detail__description rich-text"
+              v-html="expandedHtml(block.content, work)"
+            ></section>
+            <figure v-else-if="block.type === 'image' && block.src" class="exhibition-detail__figure">
+              <img
+                class="exhibition-detail__image"
+                :src="block.src"
+                :alt="localized(block.alt)"
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+            <pre
+              v-else-if="block.type === 'code' && localized(block.content)"
+              class="exhibition-detail__code"
+            ><code>{{ localized(block.content) }}</code></pre>
+          </template>
+        </div>
+        <template v-else>
+          <section
+            v-if="localized(work.description)"
+            class="exhibition-detail__description rich-text"
+            v-html="expandedHtml(work.description, work)"
+          ></section>
+          <div v-if="detailImages.length" class="exhibition-detail__images">
+            <figure
+              v-for="image in detailImages"
+              :key="image.src"
+              class="exhibition-detail__figure"
+            >
+              <img
+                class="exhibition-detail__image"
+                :src="image.src"
+                :alt="localized(image.alt)"
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          </div>
+        </template>
       </template>
       <router-link class="exhibition-detail__back" to="/program#exhibition">
         <span class="exhibition-detail__back-arrow" aria-hidden="true">←</span>
@@ -103,6 +164,58 @@ function textSeedHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
 }
 
+function escapeHtmlAttr(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+}
+
+const exhibitionImgPlaceholder = /\[\[img:([\w-]+)\]\]/g
+
+function wrapExhibitionTextSegment(text) {
+  const trimmed = text.trim()
+  if (!trimmed) return ''
+  return trimmed
+}
+
+function exhibitionMediaFigure(mediaItem, altText) {
+  if (!mediaItem?.src) return ''
+  const alt = escapeHtmlAttr(altText)
+  const isFull = mediaItem.layout === 'full'
+  const figureClass = isFull
+    ? 'exhibition-detail__figure exhibition-detail__figure--full'
+    : 'exhibition-detail__figure'
+  const imageClass = isFull
+    ? 'exhibition-detail__image exhibition-detail__image--full'
+    : 'exhibition-detail__image'
+  return `<figure class="${figureClass}"><img class="${imageClass}" src="${mediaItem.src}" alt="${alt}" loading="lazy" decoding="async" /></figure>`
+}
+
+function expandExhibitionHtml(raw, media = {}, localizedAlt) {
+  if (!raw) return ''
+  exhibitionImgPlaceholder.lastIndex = 0
+  if (!exhibitionImgPlaceholder.test(raw)) {
+    return wrapExhibitionTextSegment(raw)
+  }
+
+  exhibitionImgPlaceholder.lastIndex = 0
+  const parts = raw.split(exhibitionImgPlaceholder)
+  let html = ''
+
+  for (let i = 0; i < parts.length; i++) {
+    if (i % 2 === 1) {
+      const mediaItem = media[parts[i]]
+      html += exhibitionMediaFigure(mediaItem, localizedAlt(mediaItem?.alt))
+      continue
+    }
+    html += wrapExhibitionTextSegment(parts[i])
+  }
+
+  return html
+}
+
 export default {
   name: 'ExhibitionDetail',
   props: {
@@ -123,6 +236,9 @@ export default {
     workPieces() {
       return Array.isArray(this.work?.pieces) ? this.work.pieces : []
     },
+    detailImages() {
+      return Array.isArray(this.work?.images) ? this.work.images : []
+    },
     backLabel() {
       return this.locale.lang === 'kr' ? '프로그램으로 돌아가기' : 'Back to program'
     },
@@ -137,6 +253,18 @@ export default {
       if (!field) return ''
       const value = field[this.locale.lang] || field.en || field.kr || ''
       return typeof value === 'string' ? value.trim() : value
+    },
+    contentBlocks(item) {
+      return Array.isArray(item?.blocks) ? item.blocks : []
+    },
+    itemMedia(item) {
+      if (item?.media && typeof item.media === 'object') return item.media
+      return this.work?.media || {}
+    },
+    expandedHtml(field, item) {
+      return expandExhibitionHtml(this.localized(field), this.itemMedia(item), (altField) =>
+        this.localized(altField),
+      )
     },
     backSplitStyle(labelPart) {
       const scale = splitScaleForText(labelPart)
@@ -231,8 +359,39 @@ export default {
   margin-top: 1.4rem;
 }
 
+.exhibition-detail__piece .exhibition-detail__content,
 .exhibition-detail__piece .exhibition-detail__description {
   margin-top: 0.55rem;
+}
+
+.exhibition-detail__content {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.exhibition-detail__content .exhibition-detail__description {
+  margin-top: 0;
+}
+
+.exhibition-detail__code {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+  border: 1px solid rgba(10, 10, 10, 0.1);
+  background: rgba(10, 10, 10, 0.03);
+  color: rgba(10, 10, 10, 0.72);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+.exhibition-detail__code code {
+  font-family: inherit;
+  font-size: inherit;
 }
 
 .exhibition-detail__artist {
@@ -247,10 +406,224 @@ export default {
   white-space: pre-wrap;
   word-break: keep-all;
   overflow-wrap: break-word;
-  text-shadow:
-    0 0 0.34px rgba(10, 10, 10, 0.2),
-    0.18px 0.1px 0 rgba(10, 10, 10, 0.08),
-    -0.12px -0.06px 0 rgba(10, 10, 10, 0.05);
+  text-shadow: none;
+}
+
+.exhibition-detail__description :deep(p) {
+  margin: 0 0 0.85rem;
+  font-weight: 400;
+}
+
+.exhibition-detail__description :deep(b),
+.exhibition-detail__description :deep(strong) {
+  font-weight: 500;
+}
+
+.exhibition-detail--ko .exhibition-detail__description :deep(b),
+.exhibition-detail--ko .exhibition-detail__description :deep(strong) {
+  font-weight: 700;
+  -webkit-font-smoothing: auto;
+}
+
+.exhibition-detail__description :deep(a) {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.exhibition-detail__description :deep(.exhibition-detail__edition-link) {
+  font-weight: 500;
+  text-shadow: none;
+}
+
+.exhibition-detail--ko .exhibition-detail__description :deep(.exhibition-detail__edition-link) {
+  font-weight: 600;
+  -webkit-font-smoothing: antialiased;
+}
+
+.exhibition-detail__description :deep(.mp-timetable) {
+  width: 90%;
+  margin: 0 auto 0.35rem;
+  color: #0000ff;
+  font-family: 'Times New Roman', Times, Batang, 'Nanum Myeongjo', serif;
+  font-size: 0.94rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-shadow: none;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: normal;
+  -webkit-font-smoothing: antialiased;
+}
+
+.exhibition-detail__description :deep(.mp-timetable + br) {
+  display: none;
+}
+
+.exhibition-detail__description :deep(.mp-timetable__dates) {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0.35rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  font-size: 0.94rem;
+  letter-spacing: 0.32em;
+}
+
+.exhibition-detail__description :deep(.mp-timetable__dates-left),
+.exhibition-detail__description :deep(.mp-timetable__dates-right) {
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+.exhibition-detail__description :deep(.mp-timetable__table) {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 2px;
+  border-top: 0.5px solid #000;
+  border-left: 0.5px solid #000;
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+  background: #fff;
+}
+
+.exhibition-detail__description :deep(.mp-timetable__col-index) {
+  width: 5.5%;
+}
+
+.exhibition-detail__description :deep(.mp-timetable__col-gap) {
+  width: 4.5%;
+}
+
+.exhibition-detail__description :deep(.mp-timetable__col-data) {
+  width: 22.5%;
+}
+
+.exhibition-detail__description :deep(.mp-timetable__cell) {
+  box-sizing: border-box;
+  padding: 0.28rem 0.12rem;
+  border-top: 1px solid #000;
+  border-left: 1px solid #000;
+  border-right: 0.5px solid #000;
+  border-bottom: 0.5px solid #000;
+  text-align: center;
+  vertical-align: middle;
+  color: #0000ff;
+  font-weight: 700;
+}
+
+.exhibition-detail__description :deep(.mp-timetable__cell--grey) {
+  background-color: #d8d8d8;
+}
+
+.exhibition-detail__description :deep(.mp-timetable__cell--yellow) {
+  background-color: #ffff80;
+}
+
+.exhibition-detail__description :deep(.mp-timetable__cell--gap) {
+  background-color: #fff;
+  padding: 0;
+}
+
+.exhibition-detail__description :deep(.mp-timetable__dates-left),
+.exhibition-detail__description :deep(.mp-timetable__dates-right) {
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  white-space: nowrap;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+.exhibition-detail__description :deep(.mp-timetable__cell--kr) {
+  font-weight: 900;
+  -webkit-font-smoothing: auto;
+  -webkit-text-stroke: 0.35px currentColor;
+  paint-order: stroke fill;
+}
+
+.exhibition-detail__description :deep(.mp-timetable__cell--en b) {
+  font-weight: 700;
+}
+
+.exhibition-detail__description :deep(.mp-timetable__cell--time) {
+  letter-spacing: 0.28em;
+}
+
+.exhibition-detail__description :deep(p:last-child) {
+  margin-bottom: 0;
+}
+
+.exhibition-detail__description :deep(pre) {
+  margin: 1rem 0;
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+  border: 1px solid rgba(10, 10, 10, 0.1);
+  background: rgba(10, 10, 10, 0.03);
+  color: rgba(10, 10, 10, 0.72);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+.exhibition-detail__description :deep(code) {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.92em;
+}
+
+.exhibition-detail__description :deep(pre code) {
+  font-size: inherit;
+}
+
+.exhibition-detail__description :deep(img) {
+  display: block;
+  width: 200px;
+  max-width: 100%;
+  height: auto;
+  margin: 1rem auto;
+  filter: contrast(1.04) saturate(0.92) blur(0.08px);
+}
+
+.exhibition-detail__description :deep(.exhibition-detail__figure) {
+  margin: 0;
+}
+
+.exhibition-detail__images {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.6rem;
+}
+
+.exhibition-detail__figure {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.exhibition-detail__image {
+  display: block;
+  width: 200px;
+  max-width: 100%;
+  height: auto;
+  filter: contrast(1.04) saturate(0.92) blur(0.08px);
+}
+
+.exhibition-detail__figure--full {
+  width: 100%;
+}
+
+.exhibition-detail__image--full,
+.exhibition-detail__description :deep(.exhibition-detail__image--full) {
+  width: 100%;
+  max-width: 100%;
+  margin: 1rem 0;
 }
 
 .exhibition-detail__description :deep(i) {
@@ -358,6 +731,78 @@ export default {
 @media (max-width: 768px) {
   .exhibition-detail {
     padding: 72px 20px 48px;
+  }
+
+  .exhibition-detail__description :deep(.mp-timetable) {
+    width: 100%;
+    font-size: clamp(0.62rem, 2.65vw, 0.78rem);
+  }
+
+  .exhibition-detail__description :deep(.mp-timetable__table-wrap) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .exhibition-detail__description :deep(.mp-timetable__dates) {
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    letter-spacing: 0.08em;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+
+  .exhibition-detail__description :deep(.mp-timetable__dates-left),
+  .exhibition-detail__description :deep(.mp-timetable__dates-right) {
+    display: block;
+    width: max-content;
+    max-width: none;
+    letter-spacing: 0.08em;
+    line-height: 1.35;
+  }
+
+  .exhibition-detail__description :deep(.mp-timetable__table) {
+    min-width: 19.5rem;
+    border-spacing: 1px;
+  }
+
+  .exhibition-detail__description :deep(.mp-timetable__col-index) {
+    width: 6%;
+  }
+
+  .exhibition-detail__description :deep(.mp-timetable__col-gap) {
+    width: 3%;
+  }
+
+  .exhibition-detail__description :deep(.mp-timetable__col-data) {
+    width: 23.25%;
+  }
+
+  .exhibition-detail__description :deep(.mp-timetable__cell) {
+    padding: 0.2rem 0.05rem;
+    line-height: 1.15;
+  }
+
+  .exhibition-detail__description :deep(.mp-timetable__cell--en b) {
+    display: inline-block;
+    font-size: 0.92em;
+    line-height: 1.12;
+    word-break: break-word;
+  }
+
+  .exhibition-detail__description :deep(.mp-timetable__cell--kr) {
+    font-size: 0.94em;
+    line-height: 1.12;
+    -webkit-text-stroke: 0.25px currentColor;
+  }
+
+  .exhibition-detail__description :deep(.mp-timetable__cell--time) {
+    letter-spacing: 0.1em;
+    font-size: 0.92em;
   }
 }
 </style>
