@@ -268,7 +268,7 @@ Situated in Daejeon, a major transportation hub in South Korea, this edition of 
 
 [[img:02]]
 
-Images from previous iterations of <i>Mercury Patio</i>: the <a class="exhibition-detail__edition-link" href="https://mercurypatio.com/" target="_blank" rel="noopener noreferrer">March 2025 edition</a>, supported by the Amsterdams Fonds voor de Kunst, with thanks to BOOKS at and Tigris & Eufraat; and the <a class="exhibition-detail__edition-link" href="https://www.hartwigproxy.nl/programme/mercury-patio" target="_blank" rel="noopener noreferrer">Autumn 2025 edition</a>, supported by Hartwig Proxy.
+Previous iterations of <i>Mercury Patio</i> include the <a class="exhibition-detail__edition-link" href="https://mercurypatio.com/" target="_blank" rel="noopener noreferrer">March 2025 edition</a>, supported by the Amsterdams Fonds voor de Kunst, with thanks to BOOKS at and Tigris & Eufraat; and the <a class="exhibition-detail__edition-link" href="https://www.hartwigproxy.nl/programme/mercury-patio" target="_blank" rel="noopener noreferrer">Autumn 2025 edition</a>, supported by Hartwig Proxy.
 
 `.trim(),
           },
