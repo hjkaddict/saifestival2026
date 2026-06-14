@@ -16,7 +16,6 @@
             <dt class="about-page__team-role rich-text" v-html="section.role"></dt>
             <dd class="about-page__team-members">
               <template v-for="(member, mi) in section.members" :key="mi">
-                <span v-if="mi > 0" class="about-page__team-sep">, </span>
                 <a
                   v-if="member.url"
                   class="about-page__team-link"
@@ -24,7 +23,11 @@
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <span class="about-page__split" :style="memberSplitStyle(member.name, idx, mi)">
+                  <span
+                    class="about-page__split"
+                    :class="{ 'about-page__split--follows': mi > 0 }"
+                    :style="memberSplitStyle(member.name, idx, mi)"
+                  >
                     <span class="about-page__split-ghost">{{ member.name }}</span>
                     <span
                       class="about-page__split-half about-page__split-half--top"
@@ -38,10 +41,19 @@
                     >
                       {{ member.name }}
                     </span>
-                  </span>
+                  </span><!--
+               --><span
+                    v-if="mi < section.members.length - 1"
+                    class="about-page__team-comma"
+                    aria-hidden="true"
+                  >,</span>
                 </a>
                 <span v-else class="about-page__team-name">
-                  <span class="about-page__split" :style="memberSplitStyle(member.name, idx, mi)">
+                  <span
+                    class="about-page__split"
+                    :class="{ 'about-page__split--follows': mi > 0 }"
+                    :style="memberSplitStyle(member.name, idx, mi)"
+                  >
                     <span class="about-page__split-ghost">{{ member.name }}</span>
                     <span
                       class="about-page__split-half about-page__split-half--top"
@@ -55,7 +67,12 @@
                     >
                       {{ member.name }}
                     </span>
-                  </span>
+                  </span><!--
+               --><span
+                    v-if="mi < section.members.length - 1"
+                    class="about-page__team-comma"
+                    aria-hidden="true"
+                  >,</span>
                 </span>
               </template>
             </dd>
@@ -412,8 +429,26 @@ export default {
 }
 
 .about-page__team-link {
+  display: inline;
   color: inherit;
   text-decoration: none;
+}
+
+.about-page__team-name {
+  display: contents;
+}
+
+.about-page__split--follows {
+  margin-left: -0.48em;
+}
+
+.about-page__team-comma {
+  display: inline;
+  margin-left: -0.14em;
+  margin-right: 0.12em;
+  font-style: normal;
+  font-weight: inherit;
+  vertical-align: baseline;
 }
 
 .about-page__team-link:hover,
@@ -421,12 +456,8 @@ export default {
   outline: none;
 }
 
-.about-page__team-name,
 .about-page__split {
   display: inline-block;
-}
-
-.about-page__split {
   position: relative;
   vertical-align: baseline;
 }

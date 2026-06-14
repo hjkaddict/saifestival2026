@@ -16,7 +16,7 @@ const teamSections = [
         name: { kr: '김형중', en: 'Hyungjoong Kim' },
         instagram: 'https://www.instagram.com/hyungjoong_k/',
       },
-      { name: { kr: '이선규', en: 'Sunkyu Lee' }, instagram: 'https://www.instagram.com/s_nky_/' },
+      { name: { kr: '이선규', en: 'Sunkyu Lee' }, instagram: 'https://sunkyulee.com/' },
     ],
   },
   {
@@ -24,15 +24,15 @@ const teamSections = [
     members: [
       {
         name: { kr: '닉 클라인', en: 'Nick Klein' },
-        instagram: 'https://www.instagram.com/nickklein____/',
+        instagram: 'https://nickklein.work/',
       },
     ],
   },
   {
-    role: { kr: '디자인', en: 'Design' },
+    role: { kr: '그래픽 디자인', en: 'Graphic Design' },
     members: [
       {
-        name: { kr: '최미선', en: 'MiSuN Choi' },
+        name: { kr: '최미선', en: 'Misun Choi' },
         instagram: 'https://www.instagram.com/misun_choi/',
       },
     ],
@@ -41,8 +41,8 @@ const teamSections = [
     role: { kr: '코디네이션 & 번역', en: 'Coordination & Translation' },
     members: [
       {
-        name: { kr: '장한길', en: 'Hangil Jang' },
-        instagram: 'https://www.instagram.com/hangiljang_/',
+        name: { kr: '장한길', en: 'Han Gil Jang' },
+        instagram: '',
       },
     ],
   },
@@ -51,13 +51,15 @@ const teamSections = [
     members: [
       {
         name: { kr: '하쿠 승호', en: 'Haku Sungho' },
-        instagram: 'https://www.instagram.com/hakusungho/',
+        instagram: 'https://www.hakusungho.com/',
       },
     ],
   },
   {
     role: { kr: '사진', en: 'Photo Documentation' },
-    members: [{ name: { kr: 'TBA', en: 'TBA' }, instagram: null }],
+    members: [
+      { name: { kr: '이윤호', en: 'Lee Yunho' }, instagram: 'https://leeyunhorecords.com/' },
+    ],
   },
   {
     role: { kr: '설치 지원', en: 'Installation Support' },

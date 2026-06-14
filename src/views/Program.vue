@@ -95,8 +95,8 @@
                     </span>
                   </span>
                 </template>
+                <span class="program-link-arrow" aria-hidden="true">→</span>
               </span>
-              <span class="program-link-arrow" aria-hidden="true">→</span>
             </router-link>
           </div>
 
@@ -287,7 +287,7 @@
 <script>
 import { localeStore } from '@/store/locale.js'
 import { splitScaleForText, splitShiftPx } from '@/utils/splitShift.js'
-import { programExhibition } from '@/assets/data/program_exhibition.js'
+import { getExhibitionListTitle, programExhibition } from '@/assets/data/program_exhibition.js'
 import { programPerformance } from '@/assets/data/program_performance.js'
 import { programWorkshop } from '@/assets/data/program_workshop.js'
 import { performanceSchedule, resolvePerformanceActs } from '@/assets/data/program_performance_schedule.js'
@@ -368,7 +368,7 @@ export default {
       return { main: text || '', weekday: '' }
     },
     exhibitionWorkTitle(work) {
-      const title = this.localized(work?.title)
+      const title = getExhibitionListTitle(work, this.locale.lang)
       return title ? title.toLocaleUpperCase('en-US') : ''
     },
     exhibitionHoursLines(program) {
@@ -531,15 +531,42 @@ export default {
   text-decoration: none;
 }
 
+.program-section__work-artist,
+.program-section__work-title {
+  display: inline;
+}
+
+.program-section__works .program-section__work {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  column-gap: 0.25em;
+}
+
+.program-section__works .program-section__work-title {
+  grid-column: 1;
+  grid-row: 1;
+  white-space: nowrap;
+}
+
+.program-section__works .program-section__work-artist {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+}
+
+.program-section__works .program-section__work-artist::before {
+  content: none;
+}
+
+.program-section__works .program-link-arrow {
+  white-space: nowrap;
+}
+
 .program-section__work:hover,
 .program-section__work:focus-visible {
   color: #000;
   outline: none;
-}
-
-.program-section__work-artist,
-.program-section__work-title {
-  display: inline;
 }
 
 /* Primary label (workshop title, exhibition work title) */

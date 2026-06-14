@@ -6,16 +6,37 @@
     <article v-if="work" class="exhibition-detail__inner" :key="`${locale.lang}-${id}`">
       <p class="exhibition-detail__type">{{ locale.lang === 'kr' ? '전시' : 'Exhibition' }}</p>
       <h1 class="exhibition-detail__artist rich-text" v-html="localized(work.artist)"></h1>
-      <p
-        v-if="localized(work.title)"
-        class="exhibition-detail__title rich-text"
-        v-html="localized(work.title)"
-      ></p>
-      <section
-        v-if="localized(work.description)"
-        class="exhibition-detail__description rich-text"
-        v-html="localized(work.description)"
-      ></section>
+      <template v-if="workPieces.length">
+        <section
+          v-for="(piece, pieceIdx) in workPieces"
+          :key="piece.id"
+          class="exhibition-detail__piece"
+          :class="{ 'exhibition-detail__piece--spaced': pieceIdx > 0 }"
+        >
+          <p
+            v-if="localized(piece.title)"
+            class="exhibition-detail__piece-title rich-text"
+            v-html="localized(piece.title)"
+          ></p>
+          <section
+            v-if="localized(piece.description)"
+            class="exhibition-detail__description rich-text"
+            v-html="localized(piece.description)"
+          ></section>
+        </section>
+      </template>
+      <template v-else>
+        <p
+          v-if="localized(work.title)"
+          class="exhibition-detail__title rich-text"
+          v-html="localized(work.title)"
+        ></p>
+        <section
+          v-if="localized(work.description)"
+          class="exhibition-detail__description rich-text"
+          v-html="localized(work.description)"
+        ></section>
+      </template>
       <router-link class="exhibition-detail__back" to="/program#exhibition">
         <span class="exhibition-detail__back-arrow" aria-hidden="true">←</span>
         <template v-for="(labelPart, labelIdx) in backLabelParts" :key="labelIdx">
@@ -98,6 +119,9 @@ export default {
   computed: {
     work() {
       return getExhibitionWork(this.id)
+    },
+    workPieces() {
+      return Array.isArray(this.work?.pieces) ? this.work.pieces : []
     },
     backLabel() {
       return this.locale.lang === 'kr' ? '프로그램으로 돌아가기' : 'Back to program'
@@ -190,6 +214,25 @@ export default {
 .exhibition-detail__title {
   font-style: italic;
   font-weight: 500;
+}
+
+.exhibition-detail__piece-title {
+  margin: 0;
+  color: rgba(10, 10, 10, 0.34);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.exhibition-detail__piece:first-child .exhibition-detail__piece-title {
+  margin-top: 0.35rem;
+}
+
+.exhibition-detail__piece--spaced .exhibition-detail__piece-title {
+  margin-top: 1.4rem;
+}
+
+.exhibition-detail__piece .exhibition-detail__description {
+  margin-top: 0.55rem;
 }
 
 .exhibition-detail__artist {
