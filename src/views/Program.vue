@@ -491,7 +491,7 @@ export default {
 .program-day__lineup {
   font-size: 1rem;
   line-height: 1.42;
-  letter-spacing: 0.006em;
+  letter-spacing: normal;
 }
 
 .program-section__description {
@@ -666,7 +666,7 @@ export default {
 .program-day__datetime-date-main {
   font-family: var(--font-home-en);
   font-weight: var(--font-home-en-weight);
-  letter-spacing: 0.055em;
+  letter-spacing: normal;
   text-decoration: underline;
   text-decoration-thickness: 0.06em;
   text-underline-offset: 0.12em;
@@ -675,7 +675,7 @@ export default {
 .program-page--ko .program-day__datetime-date-main {
   font-family: var(--font-home-ko);
   font-weight: 700;
-  letter-spacing: 0.006em;
+  letter-spacing: normal;
 }
 
 .program-day__datetime-time {
@@ -683,7 +683,7 @@ export default {
   margin: 0;
   font-size: 1rem;
   line-height: 1.42;
-  letter-spacing: 0.006em;
+  letter-spacing: normal;
   font-variant-numeric: tabular-nums;
 }
 
@@ -758,7 +758,7 @@ export default {
   font-family: var(--font-home-en);
   font-style: normal;
   font-weight: 700;
-  letter-spacing: 0;
+  letter-spacing: normal;
   line-height: 1;
   opacity: 1;
   text-shadow: 0.025em 0 0 currentColor;

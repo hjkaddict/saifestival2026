@@ -55,7 +55,7 @@
             </span>
           </span>
         </span>
-        <span v-if="idx < menus.length - 1" class="home-text__sep"> · </span>
+        <span v-if="idx < menus.length - 1" class="home-text__sep" aria-hidden="true">·</span>
       </template>
     </p>
     <div class="home-text__contact" aria-label="Social and contact links">
@@ -342,7 +342,7 @@ export default {
 .home-text__en {
   font-family: var(--font-home-en);
   font-weight: var(--font-home-en-weight);
-  letter-spacing: 0.055em;
+  letter-spacing: normal;
   transition: text-shadow var(--home-split-merge-duration) var(--home-split-merge-easing);
 }
 
@@ -431,7 +431,9 @@ export default {
 
 .home-text__sep {
   user-select: none;
+  font-family: var(--font-home-ko);
   font-size: 1.14em;
   vertical-align: 0.02em;
+  margin: 0 0.18em;
 }
 </style>

@@ -168,7 +168,7 @@ As much as I admire the established conventions of a specific genre, I am drawn 
       artist: { kr: '투카 라우리라', en: 'Tuukka Laurila' },
       title: { kr: '임시 스튜디오', en: 'Temporary Studio' },
       description: {
-        kr: `〈임시 스튜디오〉는 투카 라우리라의 프로젝트 ‘살아있는 공간’ (living environment)의 일환으로 진행되는 참여형 설치 작업이다. 작가는 처음 방문한 한국, 그리고 대전이라는 장소에서 지역의 사람들과 함께 폐건축 자재를 수집하고 조립하며 하나의 임시적인 공간을 구축해나간다.
+        kr: `〈임시 스튜디오〉는 투카 라우리라의 프로젝트 ‘살아있는 공간’(living environment)의 일환으로 진행되는 참여형 설치 작업이다. 작가는 처음 방문한 한국, 그리고 대전이라는 장소에서 지역의 사람들과 함께 폐건축 자재를 수집하고 조립하며 하나의 임시적인 공간을 구축해나간다.
 
 이 프로젝트는 완성된 형태의 구조물을 제시하기보다, 공간이 만들어지고 변화하는 과정을 기록하는 과정에 대한 이야기이다. 참가자들은 현장에서 수집된 자재를 함께 분류하고 쌓아 올리며 임시적인 구조물을 함께 만들 것이지만, 프로젝트가 종료되면 구조물은 다시 해체되고, 사용된 자재들은 수집되었던 장소로 되돌아갈 것이다. 
 
@@ -210,11 +210,13 @@ At night, the line array is lit up.`,
         '01': {
           src: '/images/exhibitions/li-qihang-01.png',
           alt: { kr: '', en: '' },
+          spacing: 'wide',
         },
         '02': {
           src: '/images/exhibitions/li-qihang-02.png',
           alt: { kr: '', en: '' },
           layout: 'full',
+          spacing: 'medium',
         },
       },
       blocks: [
@@ -224,9 +226,7 @@ At night, the line array is lit up.`,
             kr: `${liQihangTimetable}
 <br>
 7월 10일(금) 11일(토), 17일(금), 18일(토) 13:00~19:00 사이에 대전역 동광장-아트사이트 소제 셔틀버스가 운행됩니다. 편도운행 소요 시간은 약 20분이며, 방문객은 양쪽 정류장에서 자유롭게 탑승할 수 있고 왕복 이용 또한 가능합니다. 출발 시간은 시간표를 참고해 주시기 바랍니다. 사–이 페스티벌 주 행사장 옆에 마련된 공간은 승객대기실로 운영됩니다. 셔틀버스 운행 시간 외에도 대기실은 방문객에게 개방됩니다.
-<br>
 [[img:01]]
-<br>
 * 대전역에 도착하시는 승객은 <b>동광장 출구</b>로 나오셔야 합니다. 셔틀버스 승차장은 지정된 노상 주차 구역에 위치해 있으며, 머큐리 파티오(Mercury Patio) 표지판이 세워져 있습니다.
 
 <b>셔틀버스</b>
@@ -250,10 +250,8 @@ At night, the line array is lit up.`,
             en: `${liQihangTimetable}
 <br>
 On July 10 (Fri.) –11 (Sat.) and July 17 (Fri.) –18 (Sat.), from 13:00 to 19:00, a shuttle bus will operate between Daejeon Station and Artsite Soje. The ride takes approximately 20 minutes each way, and visitors are welcome to board at either stop or take the full round trip. Please refer to the timetable for departure times. A space adjacent to the main venue of SA–I Festival will be activated as a waiting room. When the shuttle bus is not in operation, the waiting room remains open to visitors.
-<br>
 [[img:01]]
-<br>
-* Passengers arriving at Daejeon Station should exit via the <b>East Exit</b>. The shuttle bus pick-up point is located at a designated roadside parking space, with a Mercury Patio sign.
+* Passengers arriving at Daejeon Station should exit via the <b>East Exit</b>. The shuttle bus pick-up point is located at a designated roadside parking space, with a <i>Mercury Patio</i> sign.
 
 <b>Shuttle Bus</b>
 Dates: July 10–11 and July 17–18
@@ -264,13 +262,13 @@ Open daily throughout the festival
 Fri–Sat: 12:00–19:00
 Sun–Thu: 12:00–20:00
 
-Mercury Patio is a process of waiting and riding initiated in June, 2022. The moniker, ‘mercury patio’, is borrowed from a waiting room at Ueno station on the Ginza line of Tokyo Metro. Only commuters who enter the station through the specific gate can access there. This lounge, equipped with payphones, benches and vending machines, is also a space to place the statue of Mercury, who in Roman mythology is the god of travel, boundary, trickery and message.
+<i>Mercury Patio</i> is a process of waiting and riding initiated in June, 2022. The moniker, ‘mercury patio’, is borrowed from a waiting room at Ueno station on the Ginza line of Tokyo Metro. Only commuters who enter the station through the specific gate can access there. This lounge, equipped with payphones, benches and vending machines, is also a space to place the statue of Mercury, who in Roman mythology is the god of travel, boundary, trickery and message.
 
-Situated in Daejeon, a major transportation hub in South Korea, this edition of Mercury Patio responds to the festival’s focus on SA–I, the in-between space where relations emerge. Connecting the city station and the festival venue via a detour, passengers are invited to take a displaced commute. A composition of field recordings accompanies the ride. The waiting room sits between the ride and the venue, just before or right after the festival.
+Situated in Daejeon, a major transportation hub in South Korea, this edition of <i>Mercury Patio</i> responds to the festival’s focus on SA–I, the in-between space where relations emerge. Connecting the city station and the festival venue via a detour, passengers are invited to take a displaced commute. A composition of field recordings accompanies the ride. The waiting room sits between the ride and the venue, just before or right after the festival.
 
 [[img:02]]
 
-Images from previous iterations of Mercury Patio: the <a class="exhibition-detail__edition-link" href="https://mercurypatio.com/" target="_blank" rel="noopener noreferrer">March 2025 edition</a>, supported by the Amsterdams Fonds voor de Kunst, with thanks to BOOKS at and Tigris & Eufraat; and the <a class="exhibition-detail__edition-link" href="https://www.hartwigproxy.nl/programme/mercury-patio" target="_blank" rel="noopener noreferrer">Autumn 2025 edition</a>, supported by Hartwig Proxy.
+Images from previous iterations of <i>Mercury Patio</i>: the <a class="exhibition-detail__edition-link" href="https://mercurypatio.com/" target="_blank" rel="noopener noreferrer">March 2025 edition</a>, supported by the Amsterdams Fonds voor de Kunst, with thanks to BOOKS at and Tigris & Eufraat; and the <a class="exhibition-detail__edition-link" href="https://www.hartwigproxy.nl/programme/mercury-patio" target="_blank" rel="noopener noreferrer">Autumn 2025 edition</a>, supported by Hartwig Proxy.
 
 `.trim(),
           },

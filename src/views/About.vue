@@ -291,7 +291,7 @@ export default {
 .about-page__body {
   font-size: 1rem;
   line-height: 1.42;
-  letter-spacing: 0.006em;
+  letter-spacing: normal;
   white-space: pre-wrap;
   word-break: keep-all;
   overflow-wrap: break-word;
@@ -349,7 +349,7 @@ export default {
   color: rgba(10, 10, 10, 0.88);
   font-size: 1rem;
   line-height: 1.42;
-  letter-spacing: 0.006em;
+  letter-spacing: normal;
   text-align: left;
   filter: blur(0.12px) contrast(1.08);
   -webkit-font-smoothing: subpixel-antialiased;
@@ -390,7 +390,7 @@ export default {
   font-family: var(--font-home-en);
   font-size: 0.85rem;
   font-weight: var(--font-home-en-weight);
-  letter-spacing: 0.12em;
+  letter-spacing: normal;
   text-transform: uppercase;
 }
 
@@ -416,7 +416,7 @@ export default {
   font-family: var(--font-home-en);
   font-size: 0.72rem;
   font-weight: var(--font-home-en-weight);
-  letter-spacing: 0.06em;
+  letter-spacing: normal;
   text-transform: uppercase;
   opacity: 0.55;
   margin-bottom: 0.1rem;
@@ -425,7 +425,7 @@ export default {
 .about-page__team-members {
   font-size: 1rem;
   line-height: 1.42;
-  letter-spacing: 0.006em;
+  letter-spacing: normal;
 }
 
 .about-page__team-link {

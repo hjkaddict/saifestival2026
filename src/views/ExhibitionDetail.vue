@@ -184,9 +184,16 @@ function exhibitionMediaFigure(mediaItem, altText) {
   if (!mediaItem?.src) return ''
   const alt = escapeHtmlAttr(altText)
   const isFull = mediaItem.layout === 'full'
-  const figureClass = isFull
-    ? 'exhibition-detail__figure exhibition-detail__figure--full'
-    : 'exhibition-detail__figure'
+  const isWideSpacing = mediaItem.spacing === 'wide'
+  const isMediumSpacing = mediaItem.spacing === 'medium'
+  const figureClass = [
+    'exhibition-detail__figure',
+    isFull && 'exhibition-detail__figure--full',
+    isWideSpacing && 'exhibition-detail__figure--wide-spacing',
+    isMediumSpacing && 'exhibition-detail__figure--medium-spacing',
+  ]
+    .filter(Boolean)
+    .join(' ')
   const imageClass = isFull
     ? 'exhibition-detail__image exhibition-detail__image--full'
     : 'exhibition-detail__image'
@@ -325,7 +332,7 @@ export default {
 .exhibition-detail__back {
   font-size: 1rem;
   line-height: 1.42;
-  letter-spacing: 0.006em;
+  letter-spacing: normal;
 }
 
 .exhibition-detail__type,
@@ -381,7 +388,7 @@ export default {
   border: 1px solid rgba(10, 10, 10, 0.1);
   background: rgba(10, 10, 10, 0.03);
   color: rgba(10, 10, 10, 0.72);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: var(--font-mono);
   font-size: 0.88rem;
   line-height: 1.5;
   white-space: pre;
@@ -449,7 +456,7 @@ export default {
   font-size: 0.94rem;
   font-weight: 400;
   line-height: 1.2;
-  letter-spacing: 0.02em;
+  letter-spacing: normal;
   text-shadow: none;
   white-space: normal;
   word-break: normal;
@@ -471,7 +478,7 @@ export default {
   margin-top: 2rem;
   margin-bottom: 2rem;
   font-size: 0.94rem;
-  letter-spacing: 0.32em;
+  letter-spacing: normal;
 }
 
 .exhibition-detail__description :deep(.mp-timetable__dates-left),
@@ -551,7 +558,7 @@ export default {
 }
 
 .exhibition-detail__description :deep(.mp-timetable__cell--time) {
-  letter-spacing: 0.28em;
+  letter-spacing: normal;
 }
 
 .exhibition-detail__description :deep(p:last-child) {
@@ -565,7 +572,7 @@ export default {
   border: 1px solid rgba(10, 10, 10, 0.1);
   background: rgba(10, 10, 10, 0.03);
   color: rgba(10, 10, 10, 0.72);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: var(--font-mono);
   font-size: 0.88rem;
   line-height: 1.5;
   white-space: pre;
@@ -574,7 +581,7 @@ export default {
 }
 
 .exhibition-detail__description :deep(code) {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: var(--font-mono);
   font-size: 0.92em;
 }
 
@@ -593,6 +600,14 @@ export default {
 
 .exhibition-detail__description :deep(.exhibition-detail__figure) {
   margin: 0;
+}
+
+.exhibition-detail__description :deep(.exhibition-detail__figure--wide-spacing img) {
+  margin: 4rem auto;
+}
+
+.exhibition-detail__description :deep(.exhibition-detail__figure--medium-spacing img) {
+  margin: 2.5rem 0;
 }
 
 .exhibition-detail__images {
@@ -649,7 +664,7 @@ export default {
   font-family: var(--font-home-en);
   font-style: normal;
   font-weight: 700;
-  letter-spacing: 0;
+  letter-spacing: normal;
   line-height: 1;
   text-shadow: 0.025em 0 0 currentColor;
   vertical-align: -0.06em;
@@ -748,7 +763,7 @@ export default {
     gap: 0.15rem;
     margin-top: 1.25rem;
     margin-bottom: 1.25rem;
-    letter-spacing: 0.08em;
+    letter-spacing: normal;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     white-space: nowrap;
@@ -761,7 +776,7 @@ export default {
     display: block;
     width: max-content;
     max-width: none;
-    letter-spacing: 0.08em;
+    letter-spacing: normal;
     line-height: 1.35;
   }
 
@@ -801,7 +816,7 @@ export default {
   }
 
   .exhibition-detail__description :deep(.mp-timetable__cell--time) {
-    letter-spacing: 0.1em;
+    letter-spacing: normal;
     font-size: 0.92em;
   }
 }

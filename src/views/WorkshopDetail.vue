@@ -375,7 +375,7 @@ export default {
 .workshop-detail__back {
   font-size: 1rem;
   line-height: 1.42;
-  letter-spacing: 0.006em;
+  letter-spacing: normal;
 }
 
 .workshop-detail__type,
@@ -451,7 +451,7 @@ export default {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.42;
-  letter-spacing: 0.006em;
+  letter-spacing: normal;
   white-space: nowrap;
 }
 
@@ -469,7 +469,7 @@ export default {
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.42;
-  letter-spacing: 0.02em;
+  letter-spacing: normal;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
@@ -479,7 +479,7 @@ export default {
 
 .workshop-detail--ko .workshop-detail__rsvp {
   font-weight: 600;
-  letter-spacing: 0.006em;
+  letter-spacing: normal;
 }
 
 .workshop-detail__rsvp:hover,
@@ -568,7 +568,7 @@ export default {
   font-family: var(--font-home-en);
   font-style: normal;
   font-weight: 700;
-  letter-spacing: 0;
+  letter-spacing: normal;
   line-height: 1;
   text-shadow: 0.025em 0 0 currentColor;
   vertical-align: -0.06em;

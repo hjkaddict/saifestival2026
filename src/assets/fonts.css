@@ -1,26 +1,7 @@
 /* @import 는 다른 규칙보다 먼저 와야 함 */
-/* 홈 라인업: 궁서·명조 계열 — 400/700 로드 (한글 굵기는 영문 500에 맞춰 600→700 면 사용) */
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&display=swap');
 
-/* 영문: Roboto (로컬 variable font) */
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 100 900;
-  font-stretch: 75% 100%;
-  font-display: swap;
-  src: url('./fonts/roboto/Roboto-Variable.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Roboto';
-  font-style: italic;
-  font-weight: 100 900;
-  font-stretch: 75% 100%;
-  font-display: swap;
-  src: url('./fonts/roboto/Roboto-Italic-Variable.ttf') format('truetype');
-}
-
+/* 영문: Roboto Mono (로컬 variable font) */
 @font-face {
   font-family: 'Roboto Mono';
   font-style: normal;
@@ -37,7 +18,7 @@
   src: url('./fonts/roboto-mono/RobotoMono-Italic-Variable.ttf') format('truetype');
 }
 
-/* 한글: Pretendard SemiBold — 한글 유니코드 구간만 */
+/* 한글: Pretendard SemiBold — 한글 유니코드 구간만 (전역 fallback) */
 @font-face {
   font-family: 'Pretendard';
   font-weight: 600;
@@ -56,15 +37,25 @@
   --font-home-ko:
     'Nanum Myeongjo', 'GungsuhChe', 'Gungsuh', '궁서체', Batang, 'AppleMyungjo', serif;
   --font-home-en-weight: 500;
-  --font-home-en: 'Roboto', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-home-en-letter-spacing: normal;
+  --font-home-en: 'Roboto Mono', ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, monospace;
   --font-mono: 'Roboto Mono', ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, monospace;
 }
 
 html {
-  font-family: 'Roboto', 'Pretendard', sans-serif;
-  font-weight: 500;
+  letter-spacing: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+html:lang(ko) {
+  font-family: var(--font-home-ko);
+  font-weight: var(--font-home-ko-weight);
+}
+
+html:lang(en) {
+  font-family: var(--font-home-en);
+  font-weight: var(--font-home-en-weight);
 }
 
 /* 100vh 대신 실제 보이는 뷰포트(주소창 포함 영역) — --app-vh는 viewport.js에서 갱신 */

@@ -37,7 +37,7 @@ export default {
   font-size: 1rem;
   font-weight: 100;
   line-height: 1.42;
-  letter-spacing: 0.006em;
+  letter-spacing: normal;
   text-align: center;
 }
 

@@ -180,7 +180,7 @@ export default {
   color: var(--ticket-text);
   font-size: 1rem;
   line-height: 1.5;
-  letter-spacing: 0.006em;
+  letter-spacing: normal;
 }
 
 .ticket-page__message {
@@ -201,7 +201,7 @@ export default {
 .ticket-page--en .ticket-page__message {
   font-family: var(--font-home-en);
   font-weight: 300;
-  letter-spacing: 0.02em;
+  letter-spacing: normal;
 }
 
 .ticket-page--ko .ticket-page__inner,
@@ -299,7 +299,7 @@ export default {
   color: var(--ticket-text-muted);
   font-weight: 400;
   font-size: 0.94rem;
-  letter-spacing: 0.006em;
+  letter-spacing: normal;
   text-decoration: none;
   filter: none;
 }
@@ -420,7 +420,7 @@ export default {
   gap: 0.28em;
   color: #ff0000;
   font-weight: 500;
-  letter-spacing: 0.02em;
+  letter-spacing: normal;
   text-decoration: none;
   white-space: nowrap;
   filter: none;
@@ -428,7 +428,7 @@ export default {
 
 .ticket-page--ko .ticket-booking-cta {
   font-weight: 600;
-  letter-spacing: 0.006em;
+  letter-spacing: normal;
 }
 
 .ticket-booking-cta--link {

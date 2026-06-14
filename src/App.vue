@@ -746,7 +746,7 @@ html::before {
 .global-nav__en {
   font-family: var(--font-home-en);
   font-weight: var(--font-home-en-weight);
-  letter-spacing: 0.055em;
+  letter-spacing: normal;
   color: inherit;
 }
 

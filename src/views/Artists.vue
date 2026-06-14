@@ -192,7 +192,7 @@
                 </span>
               </span>
             </router-link>
-            <span v-if="idx < artists.length - 1" class="home-text__sep"> · </span>
+            <span v-if="idx < artists.length - 1" class="home-text__sep" aria-hidden="true">·</span>
           </template>
         </p>
       </div>
@@ -231,7 +231,7 @@
             </span>
           </span>
         </router-link>
-        <span v-if="idx < artists.length - 1" class="home-text__sep"> · </span>
+        <span v-if="idx < artists.length - 1" class="home-text__sep" aria-hidden="true">·</span>
       </template>
     </p>
   </div>
@@ -732,7 +732,7 @@ export default {
   color: rgba(10, 10, 10, 0.82);
   font-size: 1rem;
   line-height: 1.42;
-  letter-spacing: 0.006em;
+  letter-spacing: normal;
   text-align: left;
   white-space: pre-line;
   word-break: keep-all;
@@ -780,7 +780,7 @@ export default {
 .artist-detail__more .home-text__en {
   font-family: var(--font-home-en);
   font-weight: var(--font-home-en-weight);
-  letter-spacing: 0.055em;
+  letter-spacing: normal;
 }
 
 .artist-detail__more:hover .home-text__split-ghost,
@@ -833,7 +833,7 @@ export default {
   background: #fff;
   font-family: var(--font-home-en);
   font-weight: var(--font-home-en-weight);
-  letter-spacing: 0.055em;
+  letter-spacing: normal;
 }
 
 .artist-detail__website:hover .home-text__split-ghost,
@@ -984,8 +984,10 @@ export default {
 
 .home-text__sep {
   user-select: none;
+  font-family: var(--font-home-ko);
   font-size: 1.14em;
   vertical-align: 0.02em;
+  margin: 0 0.18em;
 }
 
 .home-text__split {
@@ -1059,7 +1061,7 @@ export default {
 .home-text__en {
   font-family: var(--font-home-en);
   font-weight: var(--font-home-en-weight);
-  letter-spacing: 0.055em;
+  letter-spacing: normal;
   transition: text-shadow var(--home-split-merge-duration) var(--home-split-merge-easing);
 }
 
@@ -1082,7 +1084,7 @@ export default {
   font-family: var(--font-home-en);
   font-weight: var(--font-home-en-weight);
   font-size: 0.72em;
-  letter-spacing: 0.06em;
+  letter-spacing: normal;
   font-variant-caps: all-small-caps;
   vertical-align: 0.06em;
   transition: text-shadow var(--home-split-merge-duration) var(--home-split-merge-easing);
