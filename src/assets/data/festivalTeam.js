@@ -56,7 +56,7 @@ const teamSections = [
     ],
   },
   {
-    role: { kr: '사진', en: 'Photo Documentation' },
+    role: { kr: '사진', en: 'Photography' },
     members: [
       { name: { kr: '이윤호', en: 'Lee Yunho' }, instagram: 'https://leeyunhorecords.com/' },
     ],
