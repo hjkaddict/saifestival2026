@@ -22,25 +22,32 @@
       <button
         v-if="displayedRouteName === 'ArtistDetail'"
         type="button"
-        class="nav-btn global-nav__btn global-nav__center-btn"
+        class="nav-btn global-nav__btn global-nav__center-btn global-nav__lineup-toggle"
         :class="{
           'global-nav__btn--active': artistLineupOpen,
         }"
         @click="toggleArtistLineup"
       >
-        <span v-if="artistLineupOpen" class="global-nav__active-text">
-          <span :class="navTextClass('lineup')">{{ navLabel('lineup') }}</span>
-        </span>
-        <span v-else class="global-nav__split" :style="navSplitStyle('lineup')">
-          <span class="global-nav__split-ghost">
+        <span class="global-nav__lineup-toggle-inner">
+          <span v-if="artistLineupOpen" class="global-nav__active-text">
             <span :class="navTextClass('lineup')">{{ navLabel('lineup') }}</span>
           </span>
-          <span class="global-nav__split-half global-nav__split-half--top" aria-hidden="true">
-            <span :class="navTextClass('lineup')">{{ navLabel('lineup') }}</span>
+          <span v-else class="global-nav__split" :style="navSplitStyle('lineup')">
+            <span class="global-nav__split-ghost">
+              <span :class="navTextClass('lineup')">{{ navLabel('lineup') }}</span>
+            </span>
+            <span class="global-nav__split-half global-nav__split-half--top" aria-hidden="true">
+              <span :class="navTextClass('lineup')">{{ navLabel('lineup') }}</span>
+            </span>
+            <span class="global-nav__split-half global-nav__split-half--bottom" aria-hidden="true">
+              <span :class="navTextClass('lineup')">{{ navLabel('lineup') }}</span>
+            </span>
           </span>
-          <span class="global-nav__split-half global-nav__split-half--bottom" aria-hidden="true">
-            <span :class="navTextClass('lineup')">{{ navLabel('lineup') }}</span>
-          </span>
+          <span
+            class="global-nav__lineup-caret"
+            :class="{ 'global-nav__lineup-caret--open': artistLineupOpen }"
+            aria-hidden="true"
+          ></span>
         </span>
       </button>
 
@@ -726,6 +733,28 @@ html::before {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.global-nav__lineup-toggle-inner {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.global-nav__lineup-caret {
+  display: block;
+  width: 0;
+  height: 0;
+  margin-top: 0.3em;
+  border-top: 0.34em solid #0a0a0a;
+  border-right: 0.3em solid transparent;
+  border-left: 0.3em solid transparent;
+  transition: transform 0.25s ease;
+  pointer-events: none;
+}
+
+.global-nav__lineup-caret--open {
+  transform: rotate(180deg);
 }
 
 .global-nav__page-title {

@@ -465,7 +465,7 @@ export default {
   align-items: center;
   gap: 0.28em;
   margin-top: 0.02em;
-  color: #ff0000;
+  color: #FF0000;
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.42;
@@ -475,6 +475,11 @@ export default {
   cursor: pointer;
   filter: none;
   animation: workshop-rsvp-pulse 2.8s ease-in-out infinite;
+}
+
+.workshop-detail__rsvp,
+.workshop-detail__rsvp * {
+  filter: none;
 }
 
 .workshop-detail--ko .workshop-detail__rsvp {
@@ -501,10 +506,12 @@ export default {
 @keyframes workshop-rsvp-pulse {
   0%,
   100% {
+    color: #FF0000;
     opacity: 1;
   }
 
   50% {
+    color: #FF0000;
     opacity: 0.42;
   }
 }

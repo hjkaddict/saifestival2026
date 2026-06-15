@@ -418,11 +418,16 @@ export default {
   display: inline-flex;
   align-items: center;
   gap: 0.28em;
-  color: #ff0000;
+  color: #FF0000;
   font-weight: 500;
   letter-spacing: normal;
   text-decoration: none;
   white-space: nowrap;
+  filter: none;
+}
+
+.ticket-booking-cta,
+.ticket-booking-cta * {
   filter: none;
 }
 
@@ -447,10 +452,12 @@ export default {
 @keyframes ticket-booking-pulse {
   0%,
   100% {
+    color: #FF0000;
     opacity: 1;
   }
 
   50% {
+    color: #FF0000;
     opacity: 0.42;
   }
 }

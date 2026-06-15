@@ -225,7 +225,7 @@ At night, the line array is lit up.`,
           content: {
             kr: `${liQihangTimetable}
 <br>
-7월 10일(금) 11일(토), 17일(금), 18일(토) 13:00~19:00 사이에 대전역 동광장-아트사이트 소제 셔틀버스가 운행됩니다. 편도운행 소요 시간은 약 20분이며, 방문객은 양쪽 정류장에서 자유롭게 탑승할 수 있고 왕복 이용 또한 가능합니다. 출발 시간은 시간표를 참고해 주시기 바랍니다. 사–이 페스티벌 주 행사장 옆에 마련된 공간은 승객대기실로 운영됩니다. 셔틀버스 운행 시간 외에도 대기실은 방문객에게 개방됩니다.
+7월 10일(금) 11일(토), 17일(금), 18일(토) 13:00~19:00 사이에 대전역 동광장-아트사이트 소제 셔틀버스가 운행됩니다. 편도운행 소요 시간은 약 20분이며, 방문객은 양쪽 정류장에서 자유롭게 탑승할 수 있고 왕복 이용 또한 가능합니다. 출발 시간은 시간표를 참고해 주시기 바랍니다. 사–이 페스티벌 주 행사장 옆에 별관은 승객대기실로 운영됩니다. 셔틀버스 운행 시간 외에도 대기실은 방문객에게 개방됩니다.
 [[img:01]]
 * 대전역에 도착하시는 승객은 <b><a href="https://naver.me/5dhFg7CX" target="_blank" rel="noopener noreferrer">동광장</a> 출구</b>로 나오셔야 합니다. 셔틀버스 승차장은 지정된 노상 주차 구역에 위치해 있으며, 머큐리 파티오(Mercury Patio) 표지판이 세워져 있습니다.
 
@@ -249,7 +249,7 @@ At night, the line array is lit up.`,
 `.trim(),
             en: `${liQihangTimetable}
 <br>
-On July 10 (Fri.) –11 (Sat.) and July 17 (Fri.) –18 (Sat.), from 13:00 to 19:00, a shuttle bus will operate between Daejeon Station and Artsite Soje. The ride takes approximately 20 minutes each way, and visitors are welcome to board at either stop or take the full round trip. Please refer to the timetable for departure times. A space adjacent to the main venue of SA–I Festival will be activated as a waiting room. When the shuttle bus is not in operation, the waiting room remains open to visitors.
+On July 10 (Fri.) –11 (Sat.) and July 17 (Fri.) –18 (Sat.), from 13:00 to 19:00, a shuttle bus will operate between Daejeon Station and Artsite Soje. The ride takes approximately 20 minutes each way, and visitors are welcome to board at either stop or take the full round trip. Please refer to the timetable for departure times. The annex building adjacent to the main venue of SA–I Festival will be activated as a waiting room. When the shuttle bus is not in operation, the waiting room remains open to visitors.
 [[img:01]]
 * Passengers arriving at Daejeon Station should exit via the <b><a href="https://naver.me/5dhFg7CX" target="_blank" rel="noopener noreferrer">East Square</a></b>. The shuttle bus pick-up point is located at a designated roadside parking space, with a <i>Mercury Patio</i> sign.
 
@@ -285,14 +285,14 @@ function localizedField(field, lang) {
   return typeof value === 'string' ? value.trim() : value
 }
 
-/** Comma-separated titles for program list (multi-piece entries). */
+/** Pipe-separated titles for program list (multi-piece entries). */
 export function getExhibitionListTitle(entry, lang = 'en') {
   const l = lang === 'kr' ? 'kr' : 'en'
   if (Array.isArray(entry.pieces) && entry.pieces.length) {
     return entry.pieces
       .map((piece) => localizedField(piece.title, l))
       .filter(Boolean)
-      .join(', ')
+      .join(' | ')
   }
   return localizedField(entry.title, l)
 }
