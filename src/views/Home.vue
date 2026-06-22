@@ -59,6 +59,31 @@
       </template>
     </p>
     <div class="home-text__contact" aria-label="Social and contact links">
+      <router-link :to="curatorsNoteItem.path" class="home-text__contact-link">
+        <span class="home-text__split" :style="splitRandomStyleLatin(curatorsNoteItem)">
+          <span class="home-text__split-ghost">
+            <span class="home-text__en">{{ curatorsNoteItem.name }}</span>
+          </span>
+          <span class="home-text__split-half home-text__split-half--top" aria-hidden="true">
+            <span class="home-text__en">{{ curatorsNoteItem.name }}</span>
+          </span>
+          <span class="home-text__split-half home-text__split-half--bottom" aria-hidden="true">
+            <span class="home-text__en">{{ curatorsNoteItem.name }}</span>
+          </span>
+        </span>
+        <span class="home-text__gap"> </span>
+        <span class="home-text__split" :style="splitRandomStyleHangul(curatorsNoteItem)">
+          <span class="home-text__split-ghost">
+            <span class="home-text__ko">{{ curatorsNoteItem.koName }}</span>
+          </span>
+          <span class="home-text__split-half home-text__split-half--top" aria-hidden="true">
+            <span class="home-text__ko">{{ curatorsNoteItem.koName }}</span>
+          </span>
+          <span class="home-text__split-half home-text__split-half--bottom" aria-hidden="true">
+            <span class="home-text__ko">{{ curatorsNoteItem.koName }}</span>
+          </span>
+        </span>
+      </router-link>
       <a
         class="home-text__contact-link"
         href="https://www.instagram.com/saifestival"
@@ -130,6 +155,12 @@ const HOME_MENU_ITEMS = [
   { name: 'Ticket', koName: '티켓', path: '/ticket' },
 ]
 
+const CURATORS_NOTE_ITEM = {
+  name: "Curator's Note",
+  koName: '큐레이터 노트',
+  path: '/curators-note',
+}
+
 function homePathHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
 }
@@ -139,6 +170,7 @@ export default {
   data() {
     return {
       menus: HOME_MENU_ITEMS,
+      curatorsNoteItem: CURATORS_NOTE_ITEM,
       contactLinks: [
         { name: 'Instagram', koName: '인스타그램', path: 'https://www.instagram.com/saifestival' },
         { name: 'Contact', koName: '문의', path: 'mailto:oolongradio@gmail.com' },

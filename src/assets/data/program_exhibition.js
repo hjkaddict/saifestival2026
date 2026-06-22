@@ -125,8 +125,25 @@ Arranged nearby are inflatable nylon structures depicting two figures at work. I
     {
       id: 'sollee-kim',
       artist: { kr: '김솔이', en: 'Sollee Kim' },
-      title: { kr: '', en: '' },
-      description: { kr: '', en: '' },
+      title: { kr: '스툴, 소파, 서랍장, 침대', en: 'stool, sofa, kommode, bed' },
+      description: {
+        kr: `1966년, 헤르만 헤르츠버거가 설계한 네덜란드 델프트의 몬테소리 학교는 몬테소리 교육 이념을 건축적 형태로 번역한 작업으로, 공적 영역과 사적 영역, 형태와 사용, 건축 공간과 그 공간이 지닌 잠재적 수용 가능성 사이의 상호작용을 통한 사용자의 점유를 가능하게 하는 그의 참여적 건축 철학을 보여준다.
+
+학교의 공용 홀은 거리street로, 그에 비해 사적인 공간인 강의실과 분리하여 대조되는 곳이 아닌 관계가 교류되는 장소이며, 사적 공간의 연장선이자 공통의 관심사를 가진 사람들이 서로를 만나고 무언가를 기대하는 공간이다. 예로서, 공용 홀의 피트pit 공간이 가장 인상깊다. 이 공간은 지면 아래로 네모난 검은 구덩이처럼 움푹 파여 있고, 그 안은 나무 블록형 스툴들이 지면에 맞도록 채워져 있다. 아이들은 이 위를 지나쳐 가기도 하고 블록들을 꺼내어 의자, 무대, 또는 은신처로서 머무르기도 한다.
+
+협동의 작업 속에서도 우리에겐 개인의 내면 속 깊이 사색에 빠져들 수 있는 어떠한 공간이 있다. 이곳이 우리의 외부로 나와 현실에서 존재하게 된다면, 그것은 무언가를 쉬이게 하거나 담아둘 수 있는 형태가 될 것이다. 초기 코무날카가 아직 완전히 확립되기 이전, 공동의 삶 속에서 주택 공간과 가구에 대한 욕망은 문학 서사의 주요 동력이 되었다. 이 과정에서 서랍장, 침대, 소파는 공동의 삶에 대한 공적인 것과 사적인 것 사이의 불안정한 관계를 드러내며 거의 인간에 필적하는 위상을 획득하는 반면, 사람은 오히려 심리와 서사를 이끌어가는 주체성을 박탈당한 채 때로 물화된다.
+
+‘어린이의 존재 자체를 발견하고 어린이를 억압하는 것으로부터 해방’이라는 새로운 교육을 창안했던 마리아 몬테소리의 이념은 지적 재산화를 통하여 중산층 교육의 전유물로 전락하였고, 1차 세계대전 트라우마의 잔존, 빈민가, 정신병원에서부터 시작된 그녀의 정신은 세련되게 사유화되었다. 공동을 위한 것과 사적인 것이 철저히 분리되어 만나지 못하고 해방의 형식이 전유되어 어떻게 특권의 취향으로 굳어지는지, 서로가 서로를 어떻게 진정으로 다시 점유할 수 있는지, 정말로 그것이 가능했던 것인지, 표절은 순수한 점유에 대한 이상理想을 빨아먹고 자라나기에 구제驅除 excision할 수 없는 것인지, 불변할 수 없는 정신에 대하여.`.trim(),
+        en: `In 1966, Herman Hertzberger designed the Montessori School in Delft, the Netherlands, where Montessori educational principles were translated into an architectural form. The project exemplifies his participatory architectural approach, revealing a concern for the reciprocities between public and private realms, form and function, and architectural space and its potential for accommodation—all of which aim to enable users to inhabit space and make it their own.
+
+The school's common hall functions as a “street.” Rather than being separated from the more intimate classrooms, it acts as an intermediate realm where social relationships emerge and are negotiated—a spatial extension of the private domain where people with shared interests encounter one another and anticipate something from each other. The most striking element is the pit located within the common hall. Recessed into the floor as a square hollow, it is filled with loose wooden block stools that sit flush with the surrounding surface. Children move across it, taking out and rearranging the blocks as seats, a stage, or a temporary shelter.
+
+Even within the collective environment, there remains an intimate and private space within the individual, a place of withdrawal and contemplation. If this inner realm were to materialize in the world, it might take the form of an object that holds, contains, supports, or allows a body to rest. Before the kommunalka was fully established, the desire for housing and furniture became a major driving force in literary narratives of communal life. In this context, chests of drawers, beds, and sofas acquired a status nearly equal to that of human beings, revealing the unstable boundary between the public and the private. As things were endowed with an almost superhuman agency, people were deprived of agency as both psychological and narrative subjects, becoming reified.
+
+Maria Montessori’s vision—to discover and liberate the child—was gradually transformed into the preservation of middle-class education through the privatization of intellectual property. What began as a spirit forged amid the lingering trauma of the First World War in slums and psychiatric institutions was gradually appropriated, aestheticized, and privatized.
+
+Concerning the estrangement of the communal and the private; concerning how forms of liberation become appropriated and sediment into privileged taste; concerning how we might genuinely inhabit one another again; concerning whether such a possibility ever truly existed; concerning whether plagiarism, which thrives by feeding on the ideal of pure inhabitation, can ever be excised; concerning the mind that cannot remain unchanged.`.trim(),
+      },
     },
     {
       id: 'haryung-lee',
@@ -199,8 +216,14 @@ At night, the line array is lit up.`,
     {
       id: 'nick-klein',
       artist: { kr: '닉 클라인', en: 'Nick Klein' },
-      title: { kr: '', en: '' },
-      description: { kr: '', en: '' },
+      title: {
+        kr: '더 이상 없는 예술 < 더 많은 비예술',
+        en: 'NO MORE "ART" < MORE "NO-ART"',
+      },
+      description: {
+        kr: `〈더 이상 없는 예술 &lt; 더 많은 비예술〉는 깃발 형식을 하고 있다. 창작이라는 신성한 행위가 상품성으로 환원되면서 전시는 “비예술”로 명명된다. 깃발은 소통 방식의 하나로, 공간에 물리적으로 개입하여 전시와 그 너머의 맥락에서 목표를 천명한다. “비예술”이란 선결된 창작 방식을 거부하는 작업자들과 전치된 실천의 언어이다.`.trim(),
+        en: `NO MORE "ART" &lt; MORE "NO-ART" is a treatise in the form of a banner. As the sacred act of creativity enters further reductivity and bottlenecking towards a packaged commodity, I deem the interstitial practices exemplified in the exhibition as that of “NO-ART”. The banner as vessel of communication is one that offers a physical disruption of the space and proclaims its agenda within the context of the exhibition and beyond. “NO-ART” is the language of displaced practices and practitioners sitting outside the prescriptive methodologies of art making.`.trim(),
+      },
     },
     {
       id: 'li-qihang',
@@ -225,7 +248,7 @@ At night, the line array is lit up.`,
           content: {
             kr: `${liQihangTimetable}
 <br>
-7월 10일(금) 11일(토), 17일(금), 18일(토) 13:00~19:00 사이에 대전역 동광장-아트사이트 소제 셔틀버스가 운행됩니다. 편도운행 소요 시간은 약 20분이며, 방문객은 양쪽 정류장에서 자유롭게 탑승할 수 있고 왕복 이용 또한 가능합니다. 출발 시간은 시간표를 참고해 주시기 바랍니다. 사–이 페스티벌 주 행사장 옆에 위치한 별관은 승객대기실로 운영됩니다. 셔틀버스 운행 시간 외에도 대기실은 방문객에게 개방됩니다.y
+7월 10일(금) 11일(토), 17일(금), 18일(토) 13:00~19:00 사이에 대전역 동광장-아트사이트 소제 셔틀버스가 운행됩니다. 편도운행 소요 시간은 약 20분이며, 방문객은 양쪽 정류장에서 자유롭게 탑승할 수 있고 왕복 이용 또한 가능합니다. 출발 시간은 시간표를 참고해 주시기 바랍니다. 사–이 페스티벌 주 행사장 옆에 위치한 별관은 승객대기실로 운영됩니다. 셔틀버스 운행 시간 외에도 대기실은 방문객에게 개방됩니다.
 [[img:01]]
 * 대전역에 도착하시는 승객은 <b><a href="https://naver.me/5dhFg7CX" target="_blank" rel="noopener noreferrer">동광장</a> 출구</b>로 나오셔야 합니다. 셔틀버스 승차장은 지정된 노상 주차 구역에 위치해 있으며, 머큐리 파티오(Mercury Patio) 표지판이 세워져 있습니다.
 

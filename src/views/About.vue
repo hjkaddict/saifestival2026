@@ -46,7 +46,7 @@
                     v-if="mi < section.members.length - 1"
                     class="about-page__team-comma"
                     aria-hidden="true"
-                  >,</span>
+                  >, </span>
                 </a>
                 <span v-else class="about-page__team-name">
                   <span
@@ -72,7 +72,7 @@
                     v-if="mi < section.members.length - 1"
                     class="about-page__team-comma"
                     aria-hidden="true"
-                  >,</span>
+                  >, </span>
                 </span>
               </template>
             </dd>
@@ -439,13 +439,13 @@ export default {
 }
 
 .about-page__split--follows {
-  margin-left: -0.48em;
+  margin-left: 0;
 }
 
 .about-page__team-comma {
   display: inline;
   margin-left: -0.14em;
-  margin-right: 0.12em;
+  margin-right: 0;
   font-style: normal;
   font-weight: inherit;
   vertical-align: baseline;

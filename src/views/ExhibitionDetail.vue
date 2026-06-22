@@ -16,7 +16,7 @@
           <p
             v-if="localized(piece.title)"
             class="exhibition-detail__piece-title rich-text"
-            v-html="localized(piece.title)"
+            v-html="richTitle(piece.title)"
           ></p>
           <div v-if="contentBlocks(piece).length" class="exhibition-detail__content">
             <template v-for="(block, blockIdx) in contentBlocks(piece)" :key="`${piece.id}-block-${blockIdx}`">
@@ -51,7 +51,7 @@
         <p
           v-if="localized(work.title)"
           class="exhibition-detail__title rich-text"
-          v-html="localized(work.title)"
+          v-html="richTitle(work.title)"
         ></p>
         <div v-if="contentBlocks(work).length" class="exhibition-detail__content">
           <template v-for="(block, blockIdx) in contentBlocks(work)" :key="`work-block-${blockIdx}`">
@@ -159,6 +159,7 @@
 import { getExhibitionWork } from '@/assets/data/program_exhibition.js'
 import { localeStore } from '@/store/locale.js'
 import { splitScaleForText, splitShiftPx } from '@/utils/splitShift.js'
+import { sanitizeRichText } from '@/utils/htmlContent.js'
 
 function textSeedHash(s) {
   return s.split('').reduce((a, c) => ((Math.imul(a, 31) + c.charCodeAt(0)) | 0) >>> 0, 5381) >>> 0
@@ -260,6 +261,9 @@ export default {
       if (!field) return ''
       const value = field[this.locale.lang] || field.en || field.kr || ''
       return typeof value === 'string' ? value.trim() : value
+    },
+    richTitle(field) {
+      return sanitizeRichText(this.localized(field))
     },
     contentBlocks(item) {
       return Array.isArray(item?.blocks) ? item.blocks : []

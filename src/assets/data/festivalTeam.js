@@ -66,7 +66,7 @@ const teamSections = [
     members: [{ name: { kr: '엔지디', en: 'NGD' }, instagram: null }],
   },
   {
-    role: { kr: '주최/주관', en: 'Organization' },
+    role: { kr: '주최/주관', en: 'Presented by' },
     members: [
       {
         name: { kr: '씨엔씨티마음에너지재단', en: 'CNCITY Foundation' },
@@ -75,7 +75,7 @@ const teamSections = [
     ],
   },
   {
-    role: { kr: '후원', en: 'Supporters' },
+    role: { kr: '후원', en: 'Supported by' },
     members: [
       {
         name: { kr: '씨엔씨티에너지, 관사마을', en: 'CNCITY Energy, Gwansa Maeul' },
@@ -84,11 +84,15 @@ const teamSections = [
     ],
   },
   {
-    role: { kr: '협력', en: 'Partners' },
+    role: { kr: '협력', en: 'In Collaboration With' },
     members: [
       {
         name: { kr: '에너넷, 인큐버스, 마음이앤에이', en: 'Enernet, Incuvers, Maum E&A' },
         instagram: null,
+      },
+      {
+        name: { kr: '재작소', en: 'jaejagso' },
+        instagram: 'https://www.instagram.com/jaejagso/',
       },
     ],
   },
