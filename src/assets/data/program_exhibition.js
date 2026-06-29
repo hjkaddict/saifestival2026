@@ -172,7 +172,7 @@ As much as I admire the established conventions of a specific genre, I am drawn 
         },
         {
           id: 'haryung-lee-second-hand-deal',
-          title: { kr: '중고거래', en: 'Second Hand Deal' },
+          title: { kr: '중고거래를 기다리는 여자', en: 'Woman Waiting for Deal' },
           description: {
             kr: `작업은 주로 오래된 중식당이나 미용실에서 찾아볼 수 있는 구슬 발에서 착안했다. 손님은 장소에 들어가기 위해 수많은 구슬을 머리와 손으로 만진다. 이때 한 곳에서 다른 곳으로 입장한다는 감각이 극대화되고, 자신이 그 장소에서 앞으로 겪을 경험을 촉각적으로 예감하기도 한다.`.trim(),
             en: `The work was inspired by the beaded curtains often found in old Chinese restaurants or beauty salons. Guests touch numerous beads with their heads and hands to enter the space. Not only does this moment amplify the sensation of entering from one place to another, it also allows people to anticipate the sensory experiences they will have in that space.`.trim(),
