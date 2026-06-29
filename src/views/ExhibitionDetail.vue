@@ -362,6 +362,11 @@ export default {
   font-weight: 500;
 }
 
+.exhibition-detail--ko .exhibition-detail__title,
+.exhibition-detail--ko .exhibition-detail__piece-title {
+  font-style: normal;
+}
+
 .exhibition-detail__piece:first-child .exhibition-detail__piece-title {
   margin-top: 0.35rem;
 }

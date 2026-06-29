@@ -111,7 +111,7 @@ export const programExhibition = {
     {
       id: 'andrew-ross',
       artist: { kr: '앤드류 로스', en: 'Andrew Ross' },
-      title: { kr: '가스 마스크', en: 'Gas Masks' },
+      title: { kr: '《방독면》', en: 'Gas Masks' },
       description: {
         kr: `앤드류 로스는 기념비의 작법을 변화 그 자체의 과정으로 치환하며, 조각에 대한 뉴미디어적 접근을 통해 기록과 시뮬레이션의 경계를 불분명하게 만든다. 〈방독면(Gas Masks)〉은 물리적이고 심리적 역치와 경계에 관한 프로젝트이다. 방독면은 인체 내부가 손상되는 문턱을 넘지 않도록 몸을 보호하는 장치이자, 개인이 착용하는 하나의 포털이라고 할 수도 있다. 로스의 설치 작품 속에서 이 포털은 기념비적인 규모로 확대되어 사람이 거주할 수 있는 공간으로 거듭나며, 안면 보호대는 대형 무대의 커튼으로 탈바꿈한다.  
 
@@ -125,7 +125,7 @@ Arranged nearby are inflatable nylon structures depicting two figures at work. I
     {
       id: 'sollee-kim',
       artist: { kr: '김솔이', en: 'Sollee Kim' },
-      title: { kr: '스툴, 소파, 서랍장, 침대', en: 'stool, sofa, kommode, bed' },
+      title: { kr: '《스툴, 소파, 서랍장, 침대》', en: 'stool, sofa, kommode, bed' },
       description: {
         kr: `1966년, 헤르만 헤르츠버거가 설계한 네덜란드 델프트의 몬테소리 학교는 몬테소리 교육 이념을 건축적 형태로 번역한 작업으로, 공적 영역과 사적 영역, 형태와 사용, 건축 공간과 그 공간이 지닌 잠재적 수용 가능성 사이의 상호작용을 통한 사용자의 점유를 가능하게 하는 그의 참여적 건축 철학을 보여준다.
 
@@ -152,7 +152,7 @@ Concerning the estrangement of the communal and the private; concerning how form
       pieces: [
         {
           id: 'haryung-lee-kajillionaire',
-          title: { kr: '카조니어', en: 'Kajillionaire' },
+          title: { kr: '《카조니어》', en: 'Kajillionaire' },
           description: {
             kr: `사람들의 발에 채이는 조각’이라는 발상에서 착안한 이 공들은, 최태현의 즉흥 공연과 세이지 모리모토의 ‘벌룬 퍼포먼스’에서 풍선들이 바닥에 나부끼고 있는 모습에서 영감을 받았다. 플라스틱 끈으로 직조된 공의 형태는 대나무 공예의 방식을 참조했다.
             
@@ -164,7 +164,7 @@ As much as I admire the established conventions of a specific genre, I am drawn 
         },
         {
           id: 'haryung-lee-therapy-dog',
-          title: { kr: '테라피 독', en: 'Therapy Dog' },
+          title: { kr: '《테라피 독》', en: 'Therapy Dog' },
           description: {
             kr: `조각은 작업실 근처 동대문의 재봉공장 거리에 쌓여 있는 하늘색 쓰레기봉투 더미에서 영감을 받았다. 양팔로 껴안거나 앉을 수 있을 만큼 큰 특대형 파란색 쓰레기 봉투들은 천 조각들로 가득 차 있었다. 쓰레기 봉투 더미를 보며 빈백 의자나 봉제 인형이 주는 편안하고 푹신한 감각을 떠올렸고, 패러디로서 ‘심신안정을 위한 쓰레기 인형’을 만들게 되었다. ‘테라피 독’은 병원의 치료견이라는 존재에서 영감을 받은 작업이다. 강렬한 노이즈 콘서트 속에서 관객들은 마치 봉제인형처럼 이 작업을 껴안고 공연을 감상할 수 있다.`.trim(),
             en: `The sculpture was inspired by the piles of sky-blue trash bags laid out on the sewing factory streets of Dongdaemun, close to my studio. These large blue trash bags, large enough to hug or sit on, were filled with so many scraps of fabric to an extent that the bags appear swollen. Somehow, their shape resembled that of beanbag chairs and stuffed animals. This impression coincided with a parodical instinct, which led to the idea of a trash doll for mental and physical relaxation. Therapy Dog was inspired by therapy pets at hospitals. Amid intense noise concerts, audiences can embrace them like stuffed animals for physical and emotional therapy.`.trim(),
@@ -172,7 +172,7 @@ As much as I admire the established conventions of a specific genre, I am drawn 
         },
         {
           id: 'haryung-lee-second-hand-deal',
-          title: { kr: '중고거래를 기다리는 여자', en: 'Woman Waiting for Deal' },
+          title: { kr: '《중고거래를 기다리는 여자》', en: 'Woman Waiting for Deal' },
           description: {
             kr: `작업은 주로 오래된 중식당이나 미용실에서 찾아볼 수 있는 구슬 발에서 착안했다. 손님은 장소에 들어가기 위해 수많은 구슬을 머리와 손으로 만진다. 이때 한 곳에서 다른 곳으로 입장한다는 감각이 극대화되고, 자신이 그 장소에서 앞으로 겪을 경험을 촉각적으로 예감하기도 한다.`.trim(),
             en: `The work was inspired by the beaded curtains often found in old Chinese restaurants or beauty salons. Guests touch numerous beads with their heads and hands to enter the space. Not only does this moment amplify the sensation of entering from one place to another, it also allows people to anticipate the sensory experiences they will have in that space.`.trim(),
@@ -183,7 +183,7 @@ As much as I admire the established conventions of a specific genre, I am drawn 
     {
       id: 'tuukka-laurila',
       artist: { kr: '투카 라우리라', en: 'Tuukka Laurila' },
-      title: { kr: '임시 스튜디오', en: 'Temporary Studio' },
+      title: { kr: '《임시 스튜디오》', en: 'Temporary Studio' },
       description: {
         kr: `〈임시 스튜디오〉는 투카 라우리라의 프로젝트 ‘살아있는 공간’(living environment)의 일환으로 진행되는 참여형 설치 작업이다. 작가는 처음 방문한 한국, 그리고 대전이라는 장소에서 지역의 사람들과 함께 폐건축 자재를 수집하고 조립하며 하나의 임시적인 공간을 구축해나간다.
 
@@ -201,7 +201,7 @@ Laurila’s work centers on the process through which people forge relationships
     {
       id: 'hugo-esquinca',
       artist: { kr: '휴고 에스킨카', en: 'Hugo Esquinca' },
-      title: { kr: '조건_0726', en: 'CONDICIÓN_0726' },
+      title: { kr: '《조건_0726》', en: 'CONDICIÓN_0726' },
       description: {
         kr: `오늘날 다채널과 몰입형 청각 경험에 대한 각광에 맞서, 〈조건_0726〉은 단일 채널 조건을 탐구한다. 
         
@@ -217,7 +217,7 @@ At night, the line array is lit up.`,
       id: 'nick-klein',
       artist: { kr: '닉 클라인', en: 'Nick Klein' },
       title: {
-        kr: '더 이상 없는 예술 < 더 많은 비예술',
+        kr: '《더 이상 없는 예술 < 더 많은 비예술》',
         en: 'NO MORE "ART" < MORE "NO-ART"',
       },
       description: {
@@ -228,7 +228,7 @@ At night, the line array is lit up.`,
     {
       id: 'li-qihang',
       artist: { kr: '리 치항', en: 'Li Qihang' },
-      title: { kr: '머큐리 파티오', en: 'Mercury Patio' },
+      title: { kr: '《머큐리 파티오》', en: 'Mercury Patio' },
       media: {
         '01': {
           src: '/images/exhibitions/li-qihang-01.png',
@@ -312,10 +312,11 @@ function localizedField(field, lang) {
 export function getExhibitionListTitle(entry, lang = 'en') {
   const l = lang === 'kr' ? 'kr' : 'en'
   if (Array.isArray(entry.pieces) && entry.pieces.length) {
+    const separator = l === 'kr' ? '|' : ' | '
     return entry.pieces
       .map((piece) => localizedField(piece.title, l))
       .filter(Boolean)
-      .join(' | ')
+      .join(separator)
   }
   return localizedField(entry.title, l)
 }

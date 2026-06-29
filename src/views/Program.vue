@@ -75,7 +75,7 @@
                 ></span>
                 <template v-else>
                   <span
-                    v-for="(labelPart, labelIdx) in splitLabelParts(exhibitionWorkTitle(work))"
+                    v-for="(labelPart, labelIdx) in splitExhibitionTitleParts(exhibitionWorkTitle(work))"
                     :key="`${work.id}-title-${labelIdx}`"
                     class="program-day__split program-section__work-artist-text"
                     :style="splitStyleForLabel(labelPart)"
@@ -409,6 +409,24 @@ export default {
     splitLabelParts(label) {
       return String(label || '').trim().split(/\s+/).filter(Boolean)
     },
+    splitExhibitionTitleParts(label) {
+      const text = String(label || '').trim()
+      if (!text) return []
+
+      if (text.includes('|')) {
+        return text.split('|').flatMap((segment, index, segments) => {
+          const part = segment.trim()
+          if (!part) return []
+          return index < segments.length - 1 ? [part, '|'] : [part]
+        })
+      }
+
+      if (text.includes('《')) {
+        return [text]
+      }
+
+      return this.splitLabelParts(text)
+    },
     splitStyleForLabel(label) {
       const key = textSeedHash(`${label}\0program-link`)
       const u = (n) => {
@@ -541,6 +559,19 @@ export default {
   grid-template-columns: auto minmax(0, 1fr);
   align-items: start;
   column-gap: 0.25em;
+}
+
+.program-page--ko .program-section__works .program-section__work {
+  column-gap: 0.12em;
+}
+
+.program-page--ko .program-section__works .program-section__work-title-text {
+  margin-right: 0.1em;
+}
+
+.program-page--ko .program-section__works .program-section__work-artist-text {
+  margin-right: 0.08em;
+  font-style: normal;
 }
 
 .program-section__works .program-section__work-title {
