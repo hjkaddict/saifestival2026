@@ -3,6 +3,34 @@
 -->
 <template>
   <div class="home-text">
+    <router-link :to="saiLiveItem.path" class="home-text__live-link home-text__contact-link">
+      <span class="home-text__live-dot" aria-hidden="true"></span>
+      <span class="home-text__live-label">
+      <span class="home-text__split" :style="splitRandomStyleLatin(saiLiveItem)">
+        <span class="home-text__split-ghost">
+          <span class="home-text__en">{{ saiLiveItem.name }}</span>
+        </span>
+        <span class="home-text__split-half home-text__split-half--top" aria-hidden="true">
+          <span class="home-text__en">{{ saiLiveItem.name }}</span>
+        </span>
+        <span class="home-text__split-half home-text__split-half--bottom" aria-hidden="true">
+          <span class="home-text__en">{{ saiLiveItem.name }}</span>
+        </span>
+      </span>
+      <span class="home-text__gap"> </span>
+      <span class="home-text__split" :style="splitRandomStyleHangul(saiLiveItem)">
+        <span class="home-text__split-ghost">
+          <span class="home-text__ko">{{ saiLiveItem.koName }}</span>
+        </span>
+        <span class="home-text__split-half home-text__split-half--top" aria-hidden="true">
+          <span class="home-text__ko">{{ saiLiveItem.koName }}</span>
+        </span>
+        <span class="home-text__split-half home-text__split-half--bottom" aria-hidden="true">
+          <span class="home-text__ko">{{ saiLiveItem.koName }}</span>
+        </span>
+      </span>
+      </span>
+    </router-link>
     <p class="home-text__menu" aria-label="Main menu">
       <template v-for="(item, idx) in menus" :key="item.path">
         <router-link v-if="!item.disabled" :to="item.path" class="home-text__link">
@@ -155,6 +183,12 @@ const HOME_MENU_ITEMS = [
   { name: 'Ticket', koName: '티켓', path: '/ticket' },
 ]
 
+const SAI_LIVE_ITEM = {
+  name: 'SA–I CCTV',
+  koName: '사–이 CCTV',
+  path: '/sai-live',
+}
+
 const CURATORS_NOTE_ITEM = {
   name: "Curator's Note",
   koName: '큐레이터 노트',
@@ -170,6 +204,7 @@ export default {
   data() {
     return {
       menus: HOME_MENU_ITEMS,
+      saiLiveItem: SAI_LIVE_ITEM,
       curatorsNoteItem: CURATORS_NOTE_ITEM,
       contactLinks: [
         { name: 'Instagram', koName: '인스타그램', path: 'https://www.instagram.com/saifestival' },
@@ -230,6 +265,51 @@ export default {
   text-align: center;
 }
 
+.home-text__live-link {
+  position: fixed;
+  z-index: 2;
+  box-sizing: border-box;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45em;
+  padding:
+    0 clamp(28px, 7vw, 40px)
+    max(clamp(40px, 12vw, 64px), env(safe-area-inset-bottom, 0px));
+  text-align: center;
+}
+
+.home-text__live-label {
+  display: inline-block;
+}
+
+.home-text__live-dot {
+  display: block;
+  flex-shrink: 0;
+  width: 0.625rem;
+  height: 0.625rem;
+  min-width: 0.625rem;
+  min-height: 0.625rem;
+  border-radius: 50%;
+  background-color: #ff0000;
+  box-shadow: 0 0 0 1px #ff0000;
+  animation: home-live-dot-pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes home-live-dot-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}
+
 .home-text__menu {
   position: relative;
   z-index: 1;
@@ -253,12 +333,35 @@ export default {
   line-height: 1.65;
 }
 
+@media (min-width: 769px) {
+  .home-text__live-link {
+    position: static;
+    width: auto;
+    padding: 0;
+    margin: 0 0 1.25rem;
+    text-align: center;
+  }
+}
+
 .home-text__contact-link {
   display: block;
   background: transparent;
   color: #0a0a0a;
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+.home-text__live-link.home-text__contact-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45em;
+  filter: none;
+}
+
+.home-text__live-link.home-text__contact-link,
+.home-text__live-link.home-text__contact-link *:not(.home-text__live-dot) {
+  filter: none;
 }
 
 .home-text__contact-link:visited,
@@ -354,6 +457,10 @@ export default {
   .home-text__split-ghost,
   .home-text__split-half {
     transition: none;
+  }
+
+  .home-text__live-dot {
+    animation: none;
   }
 
   .home-text__en,

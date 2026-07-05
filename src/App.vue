@@ -1,7 +1,7 @@
 <template>
   <div id="app-root" :class="{ 'is-language-switching': languageTextFading }">
     <nav
-      v-if="displayedRoutePath !== '/'"
+      v-if="displayedRoutePath !== '/' && displayedRouteName !== 'SaiLive'"
       class="global-nav"
       :class="{ 'global-nav--text-faded': navTextFaded }"
     >

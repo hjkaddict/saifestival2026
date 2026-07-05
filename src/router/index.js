@@ -9,6 +9,7 @@ import Ticket from '@/views/Ticket.vue'
 import Artists from '@/views/Artists.vue'
 import AboutView from '@/views/About.vue'
 import CuratorsNote from '@/views/CuratorsNote.vue'
+import SaiLive from '@/views/SaiLive.vue'
 import ExhibitionDetail from '@/views/ExhibitionDetail.vue'
 import WorkshopDetail from '@/views/WorkshopDetail.vue'
 
@@ -22,6 +23,7 @@ const routes = [
   { path: '/venue', name: 'Venue', component: Venue },
   { path: '/ticket', name: 'Ticket', component: Ticket },
   { path: '/about', name: 'about', component: AboutView },
+  { path: '/sai-live', name: 'SaiLive', component: SaiLive },
   { path: '/curators-note', name: 'CuratorsNote', component: CuratorsNote },
   { path: '/archive', name: 'Archive', component: BlankView },
 ]
