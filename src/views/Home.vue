@@ -3,6 +3,7 @@
 -->
 <template>
   <div class="home-text">
+    <!-- SA–I CCTV — restore when live stream is ready
     <router-link :to="saiLiveItem.path" class="home-text__live-link home-text__contact-link">
       <span class="home-text__live-dot" aria-hidden="true"></span>
       <span class="home-text__live-label">
@@ -31,6 +32,7 @@
       </span>
       </span>
     </router-link>
+    -->
     <p class="home-text__menu" aria-label="Main menu">
       <template v-for="(item, idx) in menus" :key="item.path">
         <router-link v-if="!item.disabled" :to="item.path" class="home-text__link">
@@ -183,11 +185,12 @@ const HOME_MENU_ITEMS = [
   { name: 'Ticket', koName: '티켓', path: '/ticket' },
 ]
 
-const SAI_LIVE_ITEM = {
-  name: 'SA–I CCTV',
-  koName: '사–이 CCTV',
-  path: '/sai-live',
-}
+// SA–I CCTV — restore when live stream is ready
+// const SAI_LIVE_ITEM = {
+//   name: 'SA–I CCTV',
+//   koName: '사–이 CCTV',
+//   path: '/sai-live',
+// }
 
 const CURATORS_NOTE_ITEM = {
   name: "Curator's Note",
@@ -204,7 +207,7 @@ export default {
   data() {
     return {
       menus: HOME_MENU_ITEMS,
-      saiLiveItem: SAI_LIVE_ITEM,
+      // saiLiveItem: SAI_LIVE_ITEM,
       curatorsNoteItem: CURATORS_NOTE_ITEM,
       contactLinks: [
         { name: 'Instagram', koName: '인스타그램', path: 'https://www.instagram.com/saifestival' },
