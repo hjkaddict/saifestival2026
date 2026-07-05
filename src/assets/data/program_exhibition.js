@@ -274,7 +274,7 @@ At night, the line array is lit up.`,
 <br>
 On July 10 (Fri.) –11 (Sat.) and July 17 (Fri.) –18 (Sat.), from 13:00 to 19:00, a shuttle bus will operate between Daejeon Station and Artsite Soje. The ride takes approximately 20 minutes each way, and visitors are welcome to board at either stop or take the full round trip. Please refer to the timetable for departure times. The annex adjacent to the main venue of SA–I Festival will be activated as a waiting room. When the shuttle bus is not in operation, the waiting room remains open to visitors.
 [[img:01]]
-* Passengers arriving at Daejeon Station should exit via the <b><a href="https://naver.me/5dhFg7CX" target="_blank" rel="noopener noreferrer">East Square</a></b>. The shuttle bus pick-up point is located at a designated roadside parking space, with a <i>Mercury Patio</i> sign.
+* Passengers arriving at Daejeon Station should exit via the <b><a href="https://naver.me/5dhFg7CX" target="_blank" rel="noopener noreferrer">Eastside Square</a></b>. The shuttle bus pick-up point is located at a designated roadside parking space, with a <i>Mercury Patio</i> sign.
 
 <b>Shuttle Bus</b>
 Dates: July 10–11 and July 17–18
