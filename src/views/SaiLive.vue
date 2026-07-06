@@ -11,7 +11,7 @@
 </template>
 
 <script>
-const STREAM_BASE = 'http://34.64.249.162:8888/live/stream/'
+const STREAM_BASE = 'https://live.saifestival.com/live/stream/'
 
 export default {
   name: 'SaiLive',
