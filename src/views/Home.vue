@@ -17,18 +17,6 @@
           <span class="home-text__en">{{ saiLiveItem.name }}</span>
         </span>
       </span>
-      <span class="home-text__gap"> </span>
-      <span class="home-text__split" :style="splitRandomStyleHangul(saiLiveItem)">
-        <span class="home-text__split-ghost">
-          <span class="home-text__ko">{{ saiLiveItem.koName }}</span>
-        </span>
-        <span class="home-text__split-half home-text__split-half--top" aria-hidden="true">
-          <span class="home-text__ko">{{ saiLiveItem.koName }}</span>
-        </span>
-        <span class="home-text__split-half home-text__split-half--bottom" aria-hidden="true">
-          <span class="home-text__ko">{{ saiLiveItem.koName }}</span>
-        </span>
-      </span>
       </span>
     </router-link>
     <p class="home-text__menu" aria-label="Main menu">
@@ -185,7 +173,6 @@ const HOME_MENU_ITEMS = [
 
 const SAI_LIVE_ITEM = {
   name: 'SA–I LIVE',
-  koName: '사–이 라이브',
   path: '/sai-live',
 }
 

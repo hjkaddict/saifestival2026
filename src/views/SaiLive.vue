@@ -9,21 +9,31 @@
       <span class="sai-live-page__spinner" aria-hidden="true"></span>
       <span class="sai-live-page__loading-text">{{ loadingLabel }}</span>
     </div>
-    <iframe
-      class="sai-live-page__frame"
-      :src="streamSrc"
-      title="SA–I LIVE"
-      allow="autoplay; fullscreen"
-      referrerpolicy="no-referrer"
-      @load="onFrameLoad"
-    ></iframe>
+    <button
+      v-if="needsTap"
+      type="button"
+      class="sai-live-page__tap"
+      @click="startFromTap"
+    >
+      {{ tapLabel }}
+    </button>
+    <video
+      ref="video"
+      class="sai-live-page__video"
+      autoplay
+      muted
+      playsinline
+      disablepictureinpicture
+      @playing="onPlaying"
+    ></video>
   </main>
 </template>
 
 <script>
 import { localeStore } from '@/store/locale.js'
 
-const STREAM_BASE = 'https://live.saifestival.com/live/stream/'
+const STREAM_M3U8 = 'https://live.saifestival.com/live/stream/index.m3u8'
+const RETRY_MS = 2000
 
 export default {
   name: 'SaiLive',
@@ -31,26 +41,126 @@ export default {
     return {
       locale: localeStore,
       loading: true,
+      needsTap: false,
+      hls: null,
+      retryTimer: null,
+      destroyed: false,
     }
   },
   computed: {
-    streamSrc() {
-      const params = new URLSearchParams({
-        controls: 'false',
-        autoplay: 'true',
-        playsinline: 'true',
-        disablepictureinpicture: 'true',
-        muted: 'false',
-      })
-      return `${STREAM_BASE}?${params.toString()}`
-    },
     loadingLabel() {
       return this.locale.lang === 'kr' ? '로딩 중' : 'Loading'
     },
+    tapLabel() {
+      return this.locale.lang === 'kr' ? '탭하여 재생' : 'Tap to play'
+    },
+  },
+  mounted() {
+    this.initStream()
+  },
+  beforeUnmount() {
+    this.destroyed = true
+    this.teardownStream()
   },
   methods: {
-    onFrameLoad() {
+    videoEl() {
+      return this.$refs.video
+    },
+    supportsNativeHls(video) {
+      return video.canPlayType('application/vnd.apple.mpegurl') !== ''
+    },
+    async initStream() {
+      const video = this.videoEl()
+      if (!video || this.destroyed) return
+
+      video.muted = true
+      video.defaultMuted = true
+      video.autoplay = true
+      video.playsInline = true
+      video.controls = false
+
+      if (this.supportsNativeHls(video)) {
+        try {
+          await fetch(STREAM_M3U8)
+        } catch {
+          // playlist may still become available; try playback anyway
+        }
+        if (this.destroyed) return
+        video.src = STREAM_M3U8
+        await this.tryPlay()
+        return
+      }
+
+      const { default: Hls } = await import('hls.js')
+      if (this.destroyed) return
+
+      if (Hls.isSupported()) {
+        const hls = new Hls()
+        this.hls = hls
+        hls.on(Hls.Events.MANIFEST_LOADED, () => {
+          if (!this.destroyed) this.tryPlay()
+        })
+        hls.on(Hls.Events.ERROR, (_, data) => {
+          if (data.fatal && !this.destroyed) this.scheduleRetry()
+        })
+        hls.attachMedia(video)
+        hls.loadSource(STREAM_M3U8)
+        return
+      }
+
+      video.src = STREAM_M3U8
+      await this.tryPlay()
+    },
+    async tryPlay() {
+      const video = this.videoEl()
+      if (!video || this.destroyed) return
+
+      try {
+        await video.play()
+        this.needsTap = false
+      } catch {
+        this.needsTap = true
+        this.loading = false
+      }
+    },
+    async startFromTap() {
+      this.needsTap = false
+      this.loading = true
+      await this.tryPlay()
+      if (this.videoEl()?.paused) {
+        this.needsTap = true
+      }
+    },
+    onPlaying() {
       this.loading = false
+      this.needsTap = false
+    },
+    scheduleRetry() {
+      if (this.retryTimer || this.destroyed) return
+      this.retryTimer = window.setTimeout(() => {
+        this.retryTimer = null
+        if (this.destroyed) return
+        this.loading = true
+        this.needsTap = false
+        this.teardownStream()
+        this.initStream()
+      }, RETRY_MS)
+    },
+    teardownStream() {
+      if (this.retryTimer) {
+        clearTimeout(this.retryTimer)
+        this.retryTimer = null
+      }
+      if (this.hls) {
+        this.hls.destroy()
+        this.hls = null
+      }
+      const video = this.videoEl()
+      if (video) {
+        video.pause()
+        video.removeAttribute('src')
+        video.load()
+      }
     },
   },
 }
@@ -65,7 +175,7 @@ export default {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background: #ff0000;
+  background: rgb(30, 30, 30);
 }
 
 .sai-live-page__loading {
@@ -105,6 +215,27 @@ export default {
   text-transform: uppercase;
 }
 
+.sai-live-page__tap {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-family: var(--font-home-en);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
 @keyframes sai-live-spin {
   to {
     transform: rotate(360deg);
@@ -122,10 +253,11 @@ export default {
   }
 }
 
-.sai-live-page__frame {
+.sai-live-page__video {
   display: block;
   width: 100%;
   height: 100%;
-  border: 0;
+  object-fit: contain;
+  background: rgb(30, 30, 30);
 }
 </style>
