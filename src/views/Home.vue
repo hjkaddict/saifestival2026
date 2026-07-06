@@ -184,8 +184,8 @@ const HOME_MENU_ITEMS = [
 ]
 
 const SAI_LIVE_ITEM = {
-  name: 'SA–I CCTV',
-  koName: '사–이 CCTV',
+  name: 'SA–I LIVE',
+  koName: '사–이 LIVE',
   path: '/sai-live',
 }
 

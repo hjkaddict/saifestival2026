@@ -1,5 +1,5 @@
 <template>
-  <main class="sai-live-page" aria-label="SA–I CCTV">
+  <main class="sai-live-page" aria-label="SA–I LIVE">
     <div
       class="sai-live-page__loading"
       :class="{ 'sai-live-page__loading--hidden': !loading }"
@@ -12,7 +12,7 @@
     <iframe
       class="sai-live-page__frame"
       :src="streamSrc"
-      title="SA–I CCTV"
+      title="SA–I LIVE"
       allow="autoplay; fullscreen"
       referrerpolicy="no-referrer"
       @load="onFrameLoad"
