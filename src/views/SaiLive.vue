@@ -1,5 +1,5 @@
 <template>
-  <main class="sai-live-page" aria-label="SA–I LIVE" @pointerdown="onPagePointerDown">
+  <main class="sai-live-page" aria-label="SA–I LIVE">
     <div
       class="sai-live-page__loading"
       :class="{ 'sai-live-page__loading--hidden': !loading }"
@@ -18,12 +18,13 @@
       {{ tapLabel }}
     </button>
     <button
-      v-else-if="needsUnmute"
+      v-if="showAudioToggle"
       type="button"
-      class="sai-live-page__unmute"
-      @click="enableAudio"
+      class="sai-live-page__audio-toggle"
+      :aria-pressed="!isMuted"
+      @click="toggleAudio"
     >
-      {{ unmuteLabel }}
+      {{ audioToggleLabel }}
     </button>
     <video
       ref="video"
@@ -49,7 +50,7 @@ export default {
       locale: localeStore,
       loading: true,
       needsTap: false,
-      needsUnmute: false,
+      isMuted: true,
       hls: null,
       retryTimer: null,
       destroyed: false,
@@ -62,8 +63,14 @@ export default {
     tapLabel() {
       return this.locale.lang === 'kr' ? '탭하여 재생' : 'Tap to play'
     },
-    unmuteLabel() {
-      return this.locale.lang === 'kr' ? '소리 켜기' : 'Unmute'
+    showAudioToggle() {
+      return !this.loading && !this.needsTap
+    },
+    audioToggleLabel() {
+      if (this.isMuted) {
+        return this.locale.lang === 'kr' ? '소리 켜기' : 'Unmute'
+      }
+      return this.locale.lang === 'kr' ? '소리 끄기' : 'Mute'
     },
   },
   mounted() {
@@ -130,7 +137,7 @@ export default {
         try {
           await video.play()
           this.needsTap = false
-          this.needsUnmute = false
+          this.isMuted = false
           return
         } catch {
           // iOS and some browsers block unmuted autoplay; fall back to muted.
@@ -141,24 +148,24 @@ export default {
       try {
         await video.play()
         this.needsTap = false
-        this.needsUnmute = true
+        this.isMuted = true
       } catch {
         this.needsTap = true
-        this.needsUnmute = false
+        this.isMuted = true
         this.loading = false
       }
     },
-    enableAudio() {
+    toggleAudio() {
       const video = this.videoEl()
       if (!video || this.destroyed) return
 
-      video.muted = false
-      video.volume = 1
-      this.needsUnmute = false
+      const nextMuted = !video.muted
+      video.muted = nextMuted
+      if (!nextMuted) {
+        video.volume = 1
+      }
+      this.isMuted = nextMuted
       video.play().catch(() => {})
-    },
-    onPagePointerDown() {
-      if (this.needsUnmute) this.enableAudio()
     },
     async startFromTap() {
       this.needsTap = false
@@ -179,7 +186,7 @@ export default {
         if (this.destroyed) return
         this.loading = true
         this.needsTap = false
-        this.needsUnmute = false
+        this.isMuted = true
         this.teardownStream()
         this.initStream()
       }, RETRY_MS)
@@ -274,7 +281,7 @@ export default {
   -webkit-tap-highlight-color: transparent;
 }
 
-.sai-live-page__unmute {
+.sai-live-page__audio-toggle {
   position: absolute;
   right: 1rem;
   bottom: max(1rem, env(safe-area-inset-bottom, 0px));
