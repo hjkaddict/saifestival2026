@@ -1,5 +1,5 @@
 <template>
-  <main class="sai-live-page" aria-label="SA–I LIVE">
+  <main class="sai-live-page" aria-label="SA–I LIVE" @pointerdown="onPagePointerDown">
     <div
       class="sai-live-page__loading"
       :class="{ 'sai-live-page__loading--hidden': !loading }"
@@ -17,11 +17,18 @@
     >
       {{ tapLabel }}
     </button>
+    <button
+      v-else-if="needsUnmute"
+      type="button"
+      class="sai-live-page__unmute"
+      @click="enableAudio"
+    >
+      {{ unmuteLabel }}
+    </button>
     <video
       ref="video"
       class="sai-live-page__video"
       autoplay
-      muted
       playsinline
       disablepictureinpicture
       @playing="onPlaying"
@@ -42,6 +49,7 @@ export default {
       locale: localeStore,
       loading: true,
       needsTap: false,
+      needsUnmute: false,
       hls: null,
       retryTimer: null,
       destroyed: false,
@@ -53,6 +61,9 @@ export default {
     },
     tapLabel() {
       return this.locale.lang === 'kr' ? '탭하여 재생' : 'Tap to play'
+    },
+    unmuteLabel() {
+      return this.locale.lang === 'kr' ? '소리 켜기' : 'Unmute'
     },
   },
   mounted() {
@@ -73,8 +84,6 @@ export default {
       const video = this.videoEl()
       if (!video || this.destroyed) return
 
-      video.muted = true
-      video.defaultMuted = true
       video.autoplay = true
       video.playsInline = true
       video.controls = false
@@ -87,7 +96,7 @@ export default {
         }
         if (this.destroyed) return
         video.src = STREAM_M3U8
-        await this.tryPlay()
+        await this.tryPlay(true)
         return
       }
 
@@ -98,7 +107,7 @@ export default {
         const hls = new Hls()
         this.hls = hls
         hls.on(Hls.Events.MANIFEST_LOADED, () => {
-          if (!this.destroyed) this.tryPlay()
+          if (!this.destroyed) this.tryPlay(true)
         })
         hls.on(Hls.Events.ERROR, (_, data) => {
           if (data.fatal && !this.destroyed) this.scheduleRetry()
@@ -109,24 +118,52 @@ export default {
       }
 
       video.src = STREAM_M3U8
-      await this.tryPlay()
+      await this.tryPlay(true)
     },
-    async tryPlay() {
+    async tryPlay(withAudio = false) {
       const video = this.videoEl()
       if (!video || this.destroyed) return
 
+      if (withAudio) {
+        video.muted = false
+        video.volume = 1
+        try {
+          await video.play()
+          this.needsTap = false
+          this.needsUnmute = false
+          return
+        } catch {
+          // iOS and some browsers block unmuted autoplay; fall back to muted.
+        }
+      }
+
+      video.muted = true
       try {
         await video.play()
         this.needsTap = false
+        this.needsUnmute = true
       } catch {
         this.needsTap = true
+        this.needsUnmute = false
         this.loading = false
       }
+    },
+    enableAudio() {
+      const video = this.videoEl()
+      if (!video || this.destroyed) return
+
+      video.muted = false
+      video.volume = 1
+      this.needsUnmute = false
+      video.play().catch(() => {})
+    },
+    onPagePointerDown() {
+      if (this.needsUnmute) this.enableAudio()
     },
     async startFromTap() {
       this.needsTap = false
       this.loading = true
-      await this.tryPlay()
+      await this.tryPlay(true)
       if (this.videoEl()?.paused) {
         this.needsTap = true
       }
@@ -142,6 +179,7 @@ export default {
         if (this.destroyed) return
         this.loading = true
         this.needsTap = false
+        this.needsUnmute = false
         this.teardownStream()
         this.initStream()
       }, RETRY_MS)
@@ -229,6 +267,26 @@ export default {
   color: #fff;
   font-family: var(--font-home-en);
   font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sai-live-page__unmute {
+  position: absolute;
+  right: 1rem;
+  bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  z-index: 2;
+  margin: 0;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-family: var(--font-home-en);
+  font-size: 0.8125rem;
   font-weight: 400;
   letter-spacing: 0.04em;
   text-transform: uppercase;
