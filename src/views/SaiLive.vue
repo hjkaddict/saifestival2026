@@ -30,9 +30,16 @@
       ref="video"
       class="sai-live-page__video"
       autoplay
+      muted
       playsinline
+      webkit-playsinline
       disablepictureinpicture
+      preload="auto"
       @playing="onPlaying"
+      @loadeddata="onLoadedData"
+      @waiting="onWaiting"
+      @stalled="onStalled"
+      @error="onVideoError"
     ></video>
   </main>
 </template>
@@ -41,7 +48,10 @@
 import { localeStore } from '@/store/locale.js'
 
 const STREAM_M3U8 = 'https://live.saifestival.com/live/stream/index.m3u8'
-const RETRY_MS = 2000
+const RETRY_MS = 1800
+const PLAYLIST_POLL_MS = 1200
+const START_WATCHDOG_MS = 8000
+const STALL_WATCHDOG_MS = 6000
 
 export default {
   name: 'SaiLive',
@@ -53,7 +63,11 @@ export default {
       isMuted: true,
       hls: null,
       retryTimer: null,
+      watchdogTimer: null,
+      stallTimer: null,
+      startGeneration: 0,
       destroyed: false,
+      hasFrame: false,
     }
   },
   computed: {
@@ -64,7 +78,7 @@ export default {
       return this.locale.lang === 'kr' ? '탭하여 재생' : 'Tap to play'
     },
     showAudioToggle() {
-      return !this.loading && !this.needsTap
+      return !this.loading && !this.needsTap && this.hasFrame
     },
     audioToggleLabel() {
       if (this.isMuted) {
@@ -74,58 +88,129 @@ export default {
     },
   },
   mounted() {
+    document.addEventListener('visibilitychange', this.onVisibilityChange)
     this.initStream()
   },
   beforeUnmount() {
     this.destroyed = true
+    document.removeEventListener('visibilitychange', this.onVisibilityChange)
     this.teardownStream()
   },
   methods: {
     videoEl() {
       return this.$refs.video
     },
+    streamUrl() {
+      // Bust CDN / browser cache of a failed or empty playlist.
+      return `${STREAM_M3U8}?t=${Date.now()}`
+    },
     supportsNativeHls(video) {
       return video.canPlayType('application/vnd.apple.mpegurl') !== ''
+    },
+    async waitForPlaylist(url, maxAttempts = 15) {
+      for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+        if (this.destroyed) return false
+        try {
+          const response = await fetch(url, {
+            cache: 'no-store',
+            mode: 'cors',
+          })
+          if (response.ok) {
+            const body = await response.text()
+            if (body.includes('#EXTM3U')) return true
+          }
+        } catch {
+          // keep polling
+        }
+        await new Promise((resolve) => {
+          window.setTimeout(resolve, PLAYLIST_POLL_MS)
+        })
+      }
+      return false
     },
     async initStream() {
       const video = this.videoEl()
       if (!video || this.destroyed) return
 
+      const generation = ++this.startGeneration
+      this.loading = true
+      this.needsTap = false
+      this.hasFrame = false
+      this.clearWatchdogs()
+
       video.autoplay = true
+      video.muted = true
+      video.defaultMuted = true
       video.playsInline = true
+      video.setAttribute('playsinline', '')
+      video.setAttribute('webkit-playsinline', '')
       video.controls = false
 
+      const url = this.streamUrl()
+      const ready = await this.waitForPlaylist(url)
+      if (this.destroyed || generation !== this.startGeneration) return
+
+      if (!ready) {
+        this.scheduleRetry()
+        return
+      }
+
+      this.armStartWatchdog(generation)
+
       if (this.supportsNativeHls(video)) {
-        try {
-          await fetch(STREAM_M3U8)
-        } catch {
-          // playlist may still become available; try playback anyway
+        video.src = url
+        await this.tryPlay(false)
+        return
+      }
+
+      try {
+        const { default: Hls } = await import('hls.js')
+        if (this.destroyed || generation !== this.startGeneration) return
+
+        if (Hls.isSupported()) {
+          const hls = new Hls({
+            enableWorker: true,
+            lowLatencyMode: true,
+            backBufferLength: 30,
+            liveSyncDurationCount: 3,
+            liveMaxLatencyDurationCount: 10,
+            manifestLoadingTimeOut: 12000,
+            manifestLoadingMaxRetry: 6,
+            levelLoadingTimeOut: 12000,
+            levelLoadingMaxRetry: 6,
+            fragLoadingTimeOut: 12000,
+            fragLoadingMaxRetry: 6,
+          })
+          this.hls = hls
+
+          hls.on(Hls.Events.MANIFEST_PARSED, () => {
+            if (!this.destroyed && generation === this.startGeneration) {
+              this.tryPlay(false)
+            }
+          })
+          hls.on(Hls.Events.ERROR, (_, data) => {
+            if (this.destroyed || generation !== this.startGeneration) return
+            if (!data.fatal) {
+              if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
+                hls.startLoad()
+              } else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
+                hls.recoverMediaError()
+              }
+              return
+            }
+            this.scheduleRetry()
+          })
+          hls.attachMedia(video)
+          hls.loadSource(url)
+          return
         }
-        if (this.destroyed) return
-        video.src = STREAM_M3U8
-        await this.tryPlay(true)
-        return
+      } catch {
+        // fall through to native assignment
       }
 
-      const { default: Hls } = await import('hls.js')
-      if (this.destroyed) return
-
-      if (Hls.isSupported()) {
-        const hls = new Hls()
-        this.hls = hls
-        hls.on(Hls.Events.MANIFEST_LOADED, () => {
-          if (!this.destroyed) this.tryPlay(true)
-        })
-        hls.on(Hls.Events.ERROR, (_, data) => {
-          if (data.fatal && !this.destroyed) this.scheduleRetry()
-        })
-        hls.attachMedia(video)
-        hls.loadSource(STREAM_M3U8)
-        return
-      }
-
-      video.src = STREAM_M3U8
-      await this.tryPlay(true)
+      if (this.destroyed || generation !== this.startGeneration) return
+      video.src = url
+      await this.tryPlay(false)
     },
     async tryPlay(withAudio = false) {
       const video = this.videoEl()
@@ -140,20 +225,97 @@ export default {
           this.isMuted = false
           return
         } catch {
-          // iOS and some browsers block unmuted autoplay; fall back to muted.
+          // browsers often block unmuted autoplay
         }
       }
 
       video.muted = true
+      this.isMuted = true
       try {
         await video.play()
         this.needsTap = false
-        this.isMuted = true
       } catch {
         this.needsTap = true
-        this.isMuted = true
         this.loading = false
+        this.clearWatchdogs()
       }
+    },
+    markStarted() {
+      const video = this.videoEl()
+      if (!video || this.destroyed) return
+      if (video.videoWidth > 0 || video.readyState >= 2) {
+        this.hasFrame = true
+        this.loading = false
+        this.needsTap = false
+        this.clearWatchdogs()
+      }
+    },
+    onPlaying() {
+      this.markStarted()
+    },
+    onLoadedData() {
+      this.markStarted()
+    },
+    onWaiting() {
+      if (!this.hasFrame || this.destroyed) return
+      this.armStallWatchdog()
+    },
+    onStalled() {
+      if (this.destroyed) return
+      this.armStallWatchdog()
+    },
+    onVideoError() {
+      if (this.destroyed) return
+      this.scheduleRetry()
+    },
+    onVisibilityChange() {
+      if (this.destroyed || document.visibilityState !== 'visible') return
+      const video = this.videoEl()
+      if (!video) return
+      if (video.paused || video.readyState < 2 || video.videoWidth === 0) {
+        this.scheduleRetry(400)
+      } else {
+        video.play().catch(() => {})
+      }
+    },
+    armStartWatchdog(generation) {
+      this.clearStartWatchdog()
+      this.watchdogTimer = window.setTimeout(() => {
+        this.watchdogTimer = null
+        if (this.destroyed || generation !== this.startGeneration) return
+        if (!this.hasFrame) this.scheduleRetry(0)
+      }, START_WATCHDOG_MS)
+    },
+    armStallWatchdog() {
+      this.clearStallWatchdog()
+      this.stallTimer = window.setTimeout(() => {
+        this.stallTimer = null
+        if (this.destroyed) return
+        const video = this.videoEl()
+        if (!video || video.paused) return
+        // Still waiting / no dimensions after stall window → full reconnect.
+        if (video.readyState < 3 || video.videoWidth === 0) {
+          this.loading = true
+          this.hasFrame = false
+          this.scheduleRetry(0)
+        }
+      }, STALL_WATCHDOG_MS)
+    },
+    clearStartWatchdog() {
+      if (this.watchdogTimer) {
+        clearTimeout(this.watchdogTimer)
+        this.watchdogTimer = null
+      }
+    },
+    clearStallWatchdog() {
+      if (this.stallTimer) {
+        clearTimeout(this.stallTimer)
+        this.stallTimer = null
+      }
+    },
+    clearWatchdogs() {
+      this.clearStartWatchdog()
+      this.clearStallWatchdog()
     },
     toggleAudio() {
       const video = this.videoEl()
@@ -161,9 +323,7 @@ export default {
 
       const nextMuted = !video.muted
       video.muted = nextMuted
-      if (!nextMuted) {
-        video.volume = 1
-      }
+      if (!nextMuted) video.volume = 1
       this.isMuted = nextMuted
       video.play().catch(() => {})
     },
@@ -173,26 +333,26 @@ export default {
       await this.tryPlay(true)
       if (this.videoEl()?.paused) {
         this.needsTap = true
+        this.loading = false
       }
     },
-    onPlaying() {
-      this.loading = false
-      this.needsTap = false
-    },
-    scheduleRetry() {
-      if (this.retryTimer || this.destroyed) return
+    scheduleRetry(delay = RETRY_MS) {
+      if (this.destroyed) return
+      if (this.retryTimer) clearTimeout(this.retryTimer)
       this.retryTimer = window.setTimeout(() => {
         this.retryTimer = null
         if (this.destroyed) return
         this.loading = true
         this.needsTap = false
+        this.hasFrame = false
         this.isMuted = true
-        this.teardownStream()
+        this.teardownStream({ keepRetry: true })
         this.initStream()
-      }, RETRY_MS)
+      }, delay)
     },
-    teardownStream() {
-      if (this.retryTimer) {
+    teardownStream({ keepRetry = false } = {}) {
+      this.clearWatchdogs()
+      if (!keepRetry && this.retryTimer) {
         clearTimeout(this.retryTimer)
         this.retryTimer = null
       }
