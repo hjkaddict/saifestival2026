@@ -48,10 +48,19 @@
 import { localeStore } from '@/store/locale.js'
 
 const STREAM_M3U8 = 'https://live.saifestival.com/live/stream/index.m3u8'
-const RETRY_MS = 1800
-const PLAYLIST_POLL_MS = 1200
-const START_WATCHDOG_MS = 8000
-const STALL_WATCHDOG_MS = 6000
+const RETRY_MS = 1400
+const PLAYLIST_POLL_MS = 700
+const START_WATCHDOG_MS = 7000
+const STALL_WATCHDOG_MS = 5000
+
+let hlsModulePromise = null
+
+function loadHlsModule() {
+  if (!hlsModulePromise) {
+    hlsModulePromise = import('hls.js')
+  }
+  return hlsModulePromise
+}
 
 export default {
   name: 'SaiLive',
@@ -89,6 +98,8 @@ export default {
   },
   mounted() {
     document.addEventListener('visibilitychange', this.onVisibilityChange)
+    // Warm HLS chunk for Chromium/Firefox while native iOS skips it.
+    loadHlsModule().catch(() => {})
     this.initStream()
   },
   beforeUnmount() {
@@ -107,7 +118,7 @@ export default {
     supportsNativeHls(video) {
       return video.canPlayType('application/vnd.apple.mpegurl') !== ''
     },
-    async waitForPlaylist(url, maxAttempts = 15) {
+    async waitForPlaylist(url, maxAttempts = 8) {
       for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
         if (this.destroyed) return false
         try {
@@ -128,7 +139,7 @@ export default {
       }
       return false
     },
-    async initStream() {
+    async initStream({ waitForReady = false } = {}) {
       const video = this.videoEl()
       if (!video || this.destroyed) return
 
@@ -147,12 +158,14 @@ export default {
       video.controls = false
 
       const url = this.streamUrl()
-      const ready = await this.waitForPlaylist(url)
-      if (this.destroyed || generation !== this.startGeneration) return
-
-      if (!ready) {
-        this.scheduleRetry()
-        return
+      // First visit: start immediately. Retries: poll until playlist exists.
+      if (waitForReady) {
+        const ready = await this.waitForPlaylist(url)
+        if (this.destroyed || generation !== this.startGeneration) return
+        if (!ready) {
+          this.scheduleRetry()
+          return
+        }
       }
 
       this.armStartWatchdog(generation)
@@ -164,22 +177,26 @@ export default {
       }
 
       try {
-        const { default: Hls } = await import('hls.js')
+        const { default: Hls } = await loadHlsModule()
         if (this.destroyed || generation !== this.startGeneration) return
 
         if (Hls.isSupported()) {
           const hls = new Hls({
             enableWorker: true,
             lowLatencyMode: true,
+            startFragPrefetch: true,
             backBufferLength: 30,
-            liveSyncDurationCount: 3,
-            liveMaxLatencyDurationCount: 10,
-            manifestLoadingTimeOut: 12000,
-            manifestLoadingMaxRetry: 6,
-            levelLoadingTimeOut: 12000,
-            levelLoadingMaxRetry: 6,
-            fragLoadingTimeOut: 12000,
-            fragLoadingMaxRetry: 6,
+            // Join closer to live edge for quicker first frame.
+            liveSyncDurationCount: 2,
+            liveMaxLatencyDurationCount: 8,
+            maxBufferLength: 12,
+            maxMaxBufferLength: 24,
+            manifestLoadingTimeOut: 8000,
+            manifestLoadingMaxRetry: 4,
+            levelLoadingTimeOut: 8000,
+            levelLoadingMaxRetry: 4,
+            fragLoadingTimeOut: 8000,
+            fragLoadingMaxRetry: 4,
           })
           this.hls = hls
 
@@ -347,7 +364,7 @@ export default {
         this.hasFrame = false
         this.isMuted = true
         this.teardownStream({ keepRetry: true })
-        this.initStream()
+        this.initStream({ waitForReady: true })
       }, delay)
     },
     teardownStream({ keepRetry = false } = {}) {

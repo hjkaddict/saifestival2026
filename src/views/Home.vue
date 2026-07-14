@@ -3,7 +3,12 @@
 -->
 <template>
   <div class="home-text">
-    <router-link :to="saiLiveItem.path" class="home-text__live-link home-text__contact-link">
+    <router-link
+      :to="saiLiveItem.path"
+      class="home-text__live-link home-text__contact-link"
+      @pointerenter="prefetchLive"
+      @focus="prefetchLive"
+    >
       <span class="home-text__live-dot" aria-hidden="true"></span>
       <span class="home-text__live-label">
       <span class="home-text__split" :style="splitRandomStyleLatin(saiLiveItem)">
@@ -199,7 +204,21 @@ export default {
       ],
     }
   },
+  mounted() {
+    const idle = window.requestIdleCallback || ((cb) => window.setTimeout(cb, 400))
+    idle(() => {
+      import('hls.js').catch(() => {})
+      fetch('https://live.saifestival.com/live/stream/index.m3u8', {
+        method: 'HEAD',
+        mode: 'cors',
+        cache: 'no-store',
+      }).catch(() => {})
+    })
+  },
   methods: {
+    prefetchLive() {
+      import('hls.js').catch(() => {})
+    },
     splitShiftVars(seedStr, scale) {
       const key = homePathHash(seedStr)
       const u = (n) => {
