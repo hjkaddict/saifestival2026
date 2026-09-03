@@ -114,10 +114,7 @@
               <span class="global-nav__split-ghost">
                 <span :class="programItemTextClass()">{{ item.label }}</span>
               </span>
-              <span
-                class="global-nav__split-half global-nav__split-half--top"
-                aria-hidden="true"
-              >
+              <span class="global-nav__split-half global-nav__split-half--top" aria-hidden="true">
                 <span :class="programItemTextClass()">{{ item.label }}</span>
               </span>
               <span
@@ -536,7 +533,12 @@ html::before {
   z-index: 2147483647;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.16) 42%, rgba(255, 255, 255, 0.08)),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.42),
+      rgba(255, 255, 255, 0.16) 42%,
+      rgba(255, 255, 255, 0.08)
+    ),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.94' numOctaves='5' seed='31'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='table' tableValues='0.45 0.96'/%3E%3CfeFuncG type='table' tableValues='0.45 0.96'/%3E%3CfeFuncB type='table' tableValues='0.45 0.96'/%3E%3CfeFuncA type='table' tableValues='0.06 0.24'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23noise)' opacity='0.72'/%3E%3C/svg%3E");
   background-size:
     100% 100%,
@@ -662,52 +664,55 @@ html::before {
   position: relative;
 }
 
-#app-root :where(
-  a,
-  button,
-  p,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  span,
-  li,
-  dt,
-  dd,
-  label,
-  small,
-  strong,
-  em,
-  figcaption,
-  blockquote
-),
+#app-root
+  :where(
+    a,
+    button,
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    span,
+    li,
+    dt,
+    dd,
+    label,
+    small,
+    strong,
+    em,
+    figcaption,
+    blockquote
+  ),
 #app-root .router-stage .rich-text {
   transition: opacity 0.28s cubic-bezier(0.45, 0, 0.2, 1);
 }
 
-#app-root.is-language-switching .router-stage :where(
-  a,
-  button,
-  p,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  span,
-  li,
-  dt,
-  dd,
-  label,
-  small,
-  strong,
-  em,
-  figcaption,
-  blockquote
-),
+#app-root.is-language-switching
+  .router-stage
+  :where(
+    a,
+    button,
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    span,
+    li,
+    dt,
+    dd,
+    label,
+    small,
+    strong,
+    em,
+    figcaption,
+    blockquote
+  ),
 #app-root.is-language-switching .router-stage .rich-text,
 #app-root.is-language-switching .global-nav__btn,
 #app-root.is-language-switching .global-nav__program-menu {

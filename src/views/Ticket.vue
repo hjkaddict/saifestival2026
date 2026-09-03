@@ -18,53 +18,11 @@
           >
             <div class="ticket-line ticket-line--head">
               <span class="ticket-line__primary rich-text" v-html="program.name"></span>
-              <template v-if="program.isPaid">
-                <a
-                  v-if="bookingUrl"
-                  class="ticket-line__action ticket-booking-cta ticket-booking-cta--link"
-                  :href="bookingUrl"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span class="ticket-booking-cta__text">{{ copy.bookLabel }}</span>
-                  <svg
-                    class="ticket-booking-cta__icon"
-                    width="12"
-                    height="12"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-width="1.25"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M2.5 9.5 9.5 2.5M9.5 2.5H4.5M9.5 2.5v5"
-                    />
-                  </svg>
-                </a>
-                <span v-else class="ticket-line__action ticket-booking-cta ticket-booking-cta--soon">
-                  <span class="ticket-booking-cta__text">{{ copy.bookOpens }}</span>
-                  <svg
-                    class="ticket-booking-cta__icon"
-                    width="12"
-                    height="12"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-width="1.25"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M2.5 9.5 9.5 2.5M9.5 2.5H4.5M9.5 2.5v5"
-                    />
-                  </svg>
-                </span>
-              </template>
-              <span v-else class="ticket-line__badge rich-text" v-html="program.admission"></span>
+              <span
+                v-if="!program.isPaid"
+                class="ticket-line__badge rich-text"
+                v-html="program.admission"
+              ></span>
             </div>
             <div
               v-if="program.dates || program.hours.length"
@@ -123,7 +81,6 @@ import { localeStore } from '@/store/locale.js'
 import {
   getPerformancePrices,
   getTicketPrograms,
-  performanceBooking,
   ticketFootnotes,
   ticketPage,
 } from '@/assets/data/ticket.js'
@@ -154,9 +111,6 @@ export default {
     },
     footnotes() {
       return ticketFootnotes[this.locale.lang] || ticketFootnotes.en
-    },
-    bookingUrl() {
-      return performanceBooking.url
     },
   },
 }
@@ -286,11 +240,6 @@ export default {
   font-weight: 100;
 }
 
-.ticket-line__action {
-  flex-shrink: 0;
-  justify-self: end;
-}
-
 .ticket-program__view {
   display: inline-flex;
   align-items: center;
@@ -412,73 +361,6 @@ export default {
 
 .ticket-page--ko .ticket-tier__price {
   font-weight: 500;
-}
-
-.ticket-booking-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.28em;
-  color: #FF0000;
-  font-weight: 500;
-  letter-spacing: normal;
-  text-decoration: none;
-  white-space: nowrap;
-  filter: none;
-}
-
-.ticket-booking-cta,
-.ticket-booking-cta * {
-  filter: none;
-}
-
-.ticket-page--ko .ticket-booking-cta {
-  font-weight: 600;
-  letter-spacing: normal;
-}
-
-.ticket-booking-cta--link {
-  cursor: pointer;
-  animation: ticket-booking-pulse 2.8s ease-in-out infinite;
-}
-
-.ticket-booking-cta--link:hover,
-.ticket-booking-cta--link:focus-visible {
-  color: #cc0000;
-  opacity: 1;
-  animation: none;
-  outline: none;
-}
-
-@keyframes ticket-booking-pulse {
-  0%,
-  100% {
-    color: #FF0000;
-    opacity: 1;
-  }
-
-  50% {
-    color: #FF0000;
-    opacity: 0.42;
-  }
-}
-
-.ticket-booking-cta--soon {
-  cursor: default;
-  animation: ticket-booking-pulse 2.8s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ticket-booking-cta--link,
-  .ticket-booking-cta--soon {
-    animation: none;
-  }
-}
-
-.ticket-booking-cta__icon {
-  display: block;
-  flex: 0 0 0.72em;
-  width: 0.72em;
-  height: 0.72em;
 }
 
 /* Notes */

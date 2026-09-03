@@ -1,23 +1,13 @@
 import { programExhibition } from './program_exhibition.js'
 import { programWorkshop } from './program_workshop.js'
 import { programPerformance } from './program_performance.js'
-import { eventusBookingUrl } from './program_performance_schedule.js'
-
-/** Performance booking on Eventus. */
-export const performanceBooking = {
-  url: eventusBookingUrl,
-}
 
 export const ticketPage = {
   kr: {
     title: '티켓',
-    bookLabel: '예매링크',
-    bookOpens: '6월 1일 오픈',
   },
   en: {
     title: 'Ticket',
-    bookLabel: 'Booking',
-    bookOpens: 'Open 1 June',
   },
 }
 
