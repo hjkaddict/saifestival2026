@@ -294,9 +294,13 @@ export default {
       groupedPhotos: [],
       viewPhotos: [],
       collapsedDays: {},
+      syncingQuery: false,
       allPhotos: archivePhotos,
       artistNames: collectArtistNames(archivePhotos),
     }
+  },
+  created() {
+    this.applyQueryFromRoute(this.$route.query)
   },
   computed: {
     isKo() {
@@ -387,12 +391,22 @@ export default {
     activeSection() {
       this.closeLightbox()
       this.closeArtistMenu()
+      this.syncQueryToRoute()
     },
     selectedArtists() {
       this.closeLightbox()
+      if (!this.selectedArtists.length && this.mainOnly) {
+        this.mainOnly = false
+      }
+      this.syncQueryToRoute()
     },
     mainOnly() {
       this.closeLightbox()
+      this.syncQueryToRoute()
+    },
+    '$route.query'(query) {
+      if (this.syncingQuery) return
+      this.applyQueryFromRoute(query)
     },
     'locale.lang'() {
       this.groupedPhotos = this.groupedPhotos.map((group) => ({
@@ -423,6 +437,77 @@ export default {
         ...this.collapsedDays,
         [dateKey]: !this.collapsedDays[dateKey],
       }
+    },
+    parseArtistsQuery(raw) {
+      const value = Array.isArray(raw) ? raw.join(',') : raw || ''
+      if (!value) return []
+      return value
+        .split(',')
+        .map((part) => {
+          try {
+            return decodeURIComponent(part.trim())
+          } catch {
+            return part.trim()
+          }
+        })
+        .filter((name) => name && this.artistNames.includes(name))
+    },
+    buildArchiveQuery() {
+      const query = {}
+      if (this.activeSection !== 'festival') {
+        query.section = this.activeSection
+      }
+      if (this.selectedArtists.length) {
+        query.artists = this.selectedArtists.join(',')
+      }
+      if (this.mainOnly && this.selectedArtists.length) {
+        query.main = '1'
+      }
+      return query
+    },
+    queriesMatch(a, b) {
+      return (
+        (a.section || undefined) === (b.section || undefined) &&
+        (a.artists || undefined) === (b.artists || undefined) &&
+        (a.main || undefined) === (b.main || undefined)
+      )
+    },
+    applyQueryFromRoute(query = {}) {
+      const sectionIds = new Set(ARCHIVE_SECTIONS.map((section) => section.id))
+      const nextSection = sectionIds.has(query.section) ? query.section : 'festival'
+      const nextArtists = this.parseArtistsQuery(query.artists)
+      const nextMain = (query.main === '1' || query.main === 'true') && nextArtists.length > 0
+
+      if (
+        this.activeSection === nextSection &&
+        this.mainOnly === nextMain &&
+        this.selectedArtists.length === nextArtists.length &&
+        this.selectedArtists.every((name, idx) => name === nextArtists[idx])
+      ) {
+        return
+      }
+
+      this.syncingQuery = true
+      this.activeSection = nextSection
+      this.selectedArtists = nextArtists
+      this.mainOnly = nextMain
+      this.$nextTick(() => {
+        this.syncingQuery = false
+      })
+    },
+    syncQueryToRoute() {
+      if (this.syncingQuery) return
+      const query = this.buildArchiveQuery()
+      if (this.queriesMatch(this.$route.query, query)) return
+      this.syncingQuery = true
+      this.$router
+        .replace({ name: 'Archive', query })
+        .catch(() => {})
+        .finally(() => {
+          this.$nextTick(() => {
+            this.syncingQuery = false
+          })
+        })
     },
     toggleArtistMenu() {
       if (!this.availableArtistNames.length) return
