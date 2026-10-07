@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { nextTick } from 'vue'
 
 import Home from '@/views/Home.vue'
-import BlankView from '@/views/BlankView.vue'
 import Program from '@/views/Program.vue'
 import Venue from '@/views/Venue.vue'
 import Ticket from '@/views/Ticket.vue'
@@ -12,6 +11,7 @@ import CuratorsNote from '@/views/CuratorsNote.vue'
 import SaiLive from '@/views/SaiLive.vue'
 import ExhibitionDetail from '@/views/ExhibitionDetail.vue'
 import WorkshopDetail from '@/views/WorkshopDetail.vue'
+import Archive from '@/views/Archive.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -25,7 +25,7 @@ const routes = [
   { path: '/about', name: 'about', component: AboutView },
   { path: '/sai-live', name: 'SaiLive', component: SaiLive },
   { path: '/curators-note', name: 'CuratorsNote', component: CuratorsNote },
-  { path: '/archive', name: 'Archive', component: BlankView },
+  { path: '/archive', name: 'Archive', component: Archive },
 ]
 
 function waitLayoutQuick() {
