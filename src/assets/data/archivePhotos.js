@@ -9382,25 +9382,6 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0714_WS_04_oolongradio__DSC_3309",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3309.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Sollee Kim",
-      "Haryung Lee"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
     "id": "0714_WS_04_oolongradio__DSC_3311",
     "src": "/images/archive/0714_WS_04_oolongradio/DSC_3311.webp",
     "date": "2026-07-14",
@@ -9420,23 +9401,6 @@ export const archivePhotos = [
   {
     "id": "0714_WS_04_oolongradio__DSC_3312",
     "src": "/images/archive/0714_WS_04_oolongradio/DSC_3312.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3313",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3313.webp",
     "date": "2026-07-14",
     "main": "oolongradio",
     "mains": [
@@ -9644,100 +9608,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0714_WS_04_oolongradio__DSC_3331",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3331.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Tuukka Laurila"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3332",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3332.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Tuukka Laurila"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
     "id": "0714_WS_04_oolongradio__DSC_3335",
     "src": "/images/archive/0714_WS_04_oolongradio/DSC_3335.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3336",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3336.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Tuukka Laurila",
-      "Seiji Morimoto",
-      "Haryung Lee"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3337",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3337.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "Tuukka Laurila",
-      "Seiji Morimoto",
-      "oolongradio"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": true,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3339",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3339.webp",
     "date": "2026-07-14",
     "main": "oolongradio",
     "mains": [
@@ -9801,25 +9673,6 @@ export const archivePhotos = [
     "artists": [
       "oolongradio",
       "Sollee Kim"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3346",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3346.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Tuukka Laurila",
-      "Haryung Lee"
     ],
     "type": "workshop",
     "typeLabel": "Workshop",
@@ -9904,44 +9757,6 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0714_WS_04_oolongradio__DSC_3352",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3352.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Sollee Kim"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3353",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3353.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Sollee Kim",
-      "Haryung Lee",
-      "Nick Klein"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
     "id": "0714_WS_04_oolongradio__DSC_3354",
     "src": "/images/archive/0714_WS_04_oolongradio/DSC_3354.webp",
     "date": "2026-07-14",
@@ -9996,25 +9811,6 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0714_WS_04_oolongradio__DSC_3359",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3359.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Tuukka Laurila",
-      "Sollee Kim"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
     "id": "0714_WS_04_oolongradio__DSC_3360",
     "src": "/images/archive/0714_WS_04_oolongradio/DSC_3360.webp",
     "date": "2026-07-14",
@@ -10044,27 +9840,6 @@ export const archivePhotos = [
     "artists": [
       "oolongradio",
       "Tuukka Laurila"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3363",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3363.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Tuukka Laurila",
-      "Sollee Kim",
-      "Seiji Morimoto",
-      "Haryung Lee"
     ],
     "type": "workshop",
     "typeLabel": "Workshop",
@@ -10146,102 +9921,6 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0714_WS_04_oolongradio__DSC_3368",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3368.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "Andrew Ross",
-      "oolongradio",
-      "Tuukka Laurila",
-      "Seiji Morimoto"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3370",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3370.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Tuukka Laurila",
-      "Seiji Morimoto"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3371",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3371.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Tuukka Laurila"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3373",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3373.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Tuukka Laurila",
-      "Seiji Morimoto",
-      "Haryung Lee"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3375",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3375.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Seiji Morimoto",
-      "Haryung Lee"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
     "id": "0714_WS_04_oolongradio__DSC_3377",
     "src": "/images/archive/0714_WS_04_oolongradio/DSC_3377.webp",
     "date": "2026-07-14",
@@ -10252,61 +9931,6 @@ export const archivePhotos = [
     "artists": [
       "oolongradio",
       "Seiji Morimoto",
-      "Haryung Lee"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3380",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3380.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Seiji Morimoto"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3381",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3381.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Seiji Morimoto",
-      "Haryung Lee"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3382",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3382.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
       "Haryung Lee"
     ],
     "type": "workshop",
@@ -10391,23 +10015,6 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0714_WS_04_oolongradio__DSC_3387",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3387.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
     "id": "0714_WS_04_oolongradio__DSC_3388",
     "src": "/images/archive/0714_WS_04_oolongradio/DSC_3388.webp",
     "date": "2026-07-14",
@@ -10438,44 +10045,6 @@ export const archivePhotos = [
     "artists": [
       "oolongradio",
       "Tuukka Laurila"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3390",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3390.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Tuukka Laurila",
-      "Seiji Morimoto",
-      "Nick Klein"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3391",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3391.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Seiji Morimoto"
     ],
     "type": "workshop",
     "typeLabel": "Workshop",
@@ -10599,24 +10168,6 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0714_WS_04_oolongradio__DSC_3400",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3400.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Seiji Morimoto"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
     "id": "0714_WS_04_oolongradio__DSC_3401",
     "src": "/images/archive/0714_WS_04_oolongradio/DSC_3401.webp",
     "date": "2026-07-14",
@@ -10646,78 +10197,6 @@ export const archivePhotos = [
       "oolongradio",
       "Seiji Morimoto",
       "Haryung Lee"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3403",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3403.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "Seiji Morimoto",
-      "oolongradio"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": true,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3404",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3404.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Seiji Morimoto"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3407",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3407.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Seiji Morimoto"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3408",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3408.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Seiji Morimoto"
     ],
     "type": "workshop",
     "typeLabel": "Workshop",
@@ -10800,24 +10279,6 @@ export const archivePhotos = [
   {
     "id": "0714_WS_04_oolongradio__DSC_3413",
     "src": "/images/archive/0714_WS_04_oolongradio/DSC_3413.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Seiji Morimoto"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3414",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3414.webp",
     "date": "2026-07-14",
     "main": "oolongradio",
     "mains": [
@@ -10970,25 +10431,6 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0714_WS_04_oolongradio__DSC_3424",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3424.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Seiji Morimoto",
-      "Haryung Lee"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
     "id": "0714_WS_04_oolongradio__DSC_3425",
     "src": "/images/archive/0714_WS_04_oolongradio/DSC_3425.webp",
     "date": "2026-07-14",
@@ -11035,24 +10477,6 @@ export const archivePhotos = [
     "artists": [
       "oolongradio",
       "Tuukka Laurila",
-      "Seiji Morimoto"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3428",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3428.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
       "Seiji Morimoto"
     ],
     "type": "workshop",
@@ -11116,44 +10540,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0714_WS_04_oolongradio__DSC_3432",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3432.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Seiji Morimoto",
-      "Haryung Lee"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
     "id": "0714_WS_04_oolongradio__DSC_3434",
     "src": "/images/archive/0714_WS_04_oolongradio/DSC_3434.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3435",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3435.webp",
     "date": "2026-07-14",
     "main": "oolongradio",
     "mains": [
@@ -11212,41 +10600,6 @@ export const archivePhotos = [
     ],
     "artists": [
       "oolongradio"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3440",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3440.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0714_WS_04_oolongradio__DSC_3442",
-    "src": "/images/archive/0714_WS_04_oolongradio/DSC_3442.webp",
-    "date": "2026-07-14",
-    "main": "oolongradio",
-    "mains": [
-      "oolongradio"
-    ],
-    "artists": [
-      "oolongradio",
-      "Seiji Morimoto"
     ],
     "type": "workshop",
     "typeLabel": "Workshop",
@@ -15518,8 +14871,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3779",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3779.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3779",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3779.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15536,27 +14889,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3780",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3780.webp",
-    "date": "2026-07-15",
-    "main": "Roc Jiménez De Cisneros",
-    "mains": [
-      "Roc Jiménez De Cisneros",
-      "Sollee Kim"
-    ],
-    "artists": [
-      "Sollee Kim",
-      "Roc Jiménez De Cisneros"
-    ],
-    "type": "workshop",
-    "typeLabel": "Lecture",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3781",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3781.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3780",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3780.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15574,8 +14908,27 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3782",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3782.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3781",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3781.webp",
+    "date": "2026-07-15",
+    "main": "Roc Jiménez De Cisneros",
+    "mains": [
+      "Roc Jiménez De Cisneros",
+      "Sollee Kim"
+    ],
+    "artists": [
+      "Sollee Kim",
+      "Roc Jiménez De Cisneros"
+    ],
+    "type": "workshop",
+    "typeLabel": "Lecture",
+    "festivalView": false,
+    "credit": "Haku Sungho",
+    "rating": 0
+  },
+  {
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3782",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3782.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15595,8 +14948,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3784",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3784.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3784",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3784.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15616,8 +14969,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3785",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3785.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3785",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3785.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15637,8 +14990,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3786",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3786.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3786",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3786.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15658,8 +15011,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3787",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3787.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3787",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3787.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15679,8 +15032,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3788",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3788.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3788",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3788.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15697,8 +15050,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3789",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3789.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3789",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3789.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15715,8 +15068,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3790",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3790.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3790",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3790.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15733,8 +15086,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3792",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3792.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3792",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3792.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15754,8 +15107,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3795",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3795.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3795",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3795.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15773,8 +15126,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3796",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3796.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3796",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3796.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15791,8 +15144,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3797",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3797.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3797",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3797.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15809,8 +15162,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3799",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3799.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3799",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3799.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15826,8 +15179,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3801",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3801.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3801",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3801.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15843,8 +15196,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3802",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3802.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3802",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3802.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15860,8 +15213,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3803",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3803.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3803",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3803.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15878,8 +15231,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3804",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3804.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3804",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3804.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15899,8 +15252,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3805",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3805.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3805",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3805.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15920,8 +15273,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3807",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3807.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3807",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3807.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15937,28 +15290,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3809",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3809.webp",
-    "date": "2026-07-15",
-    "main": "Roc Jiménez De Cisneros",
-    "mains": [
-      "Roc Jiménez De Cisneros"
-    ],
-    "artists": [
-      "Sollee Kim",
-      "Roc Jiménez De Cisneros",
-      "The Great △",
-      "Nick Klein"
-    ],
-    "type": "workshop",
-    "typeLabel": "Lecture",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3810",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3810.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3809",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3809.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15977,8 +15310,28 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3811",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3811.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3810",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3810.webp",
+    "date": "2026-07-15",
+    "main": "Roc Jiménez De Cisneros",
+    "mains": [
+      "Roc Jiménez De Cisneros"
+    ],
+    "artists": [
+      "Sollee Kim",
+      "Roc Jiménez De Cisneros",
+      "The Great △",
+      "Nick Klein"
+    ],
+    "type": "workshop",
+    "typeLabel": "Lecture",
+    "festivalView": false,
+    "credit": "Haku Sungho",
+    "rating": 0
+  },
+  {
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3811",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3811.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -15995,8 +15348,8 @@ export const archivePhotos = [
     "rating": 0
   },
   {
-    "id": "0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL__DSC_3813",
-    "src": "/images/archive/0715_WS_06_Roc-Jiménez-de-Cisneros- -EVOL/DSC_3813.webp",
+    "id": "0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL__DSC_3813",
+    "src": "/images/archive/0715_WS_06_Roc-Jimenez-de-Cisneros-EVOL/DSC_3813.webp",
     "date": "2026-07-15",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -16075,24 +15428,6 @@ export const archivePhotos = [
       "Haryung Lee"
     ],
     "artists": [
-      "Haryung Lee"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0715_WS_07_Haryung-Lee__DSC_3855",
-    "src": "/images/archive/0715_WS_07_Haryung-Lee/DSC_3855.webp",
-    "date": "2026-07-15",
-    "main": "Haryung Lee",
-    "mains": [
-      "Haryung Lee"
-    ],
-    "artists": [
-      "Tuukka Laurila",
       "Haryung Lee"
     ],
     "type": "workshop",
@@ -16182,23 +15517,6 @@ export const archivePhotos = [
     "artists": [
       "Haryung Lee",
       "Li Qihang"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0715_WS_07_Haryung-Lee__DSC_3866",
-    "src": "/images/archive/0715_WS_07_Haryung-Lee/DSC_3866.webp",
-    "date": "2026-07-15",
-    "main": "Haryung Lee",
-    "mains": [
-      "Haryung Lee"
-    ],
-    "artists": [
-      "Haryung Lee"
     ],
     "type": "workshop",
     "typeLabel": "Workshop",
@@ -16379,23 +15697,6 @@ export const archivePhotos = [
   {
     "id": "0715_WS_07_Haryung-Lee__DSC_3879",
     "src": "/images/archive/0715_WS_07_Haryung-Lee/DSC_3879.webp",
-    "date": "2026-07-15",
-    "main": "Haryung Lee",
-    "mains": [
-      "Haryung Lee"
-    ],
-    "artists": [
-      "Haryung Lee"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0715_WS_07_Haryung-Lee__DSC_3880",
-    "src": "/images/archive/0715_WS_07_Haryung-Lee/DSC_3880.webp",
     "date": "2026-07-15",
     "main": "Haryung Lee",
     "mains": [
@@ -18030,23 +17331,6 @@ export const archivePhotos = [
     "type": "workshop",
     "typeLabel": "Workshop",
     "festivalView": false,
-    "credit": "Haku Sungho",
-    "rating": 0
-  },
-  {
-    "id": "0715_WS_07_Haryung-Lee__DSC_4019",
-    "src": "/images/archive/0715_WS_07_Haryung-Lee/DSC_4019.webp",
-    "date": "2026-07-15",
-    "main": "Haryung Lee",
-    "mains": [
-      "Haryung Lee"
-    ],
-    "artists": [
-      "Haryung Lee"
-    ],
-    "type": "workshop",
-    "typeLabel": "Workshop",
-    "festivalView": true,
     "credit": "Haku Sungho",
     "rating": 0
   },
@@ -27323,8 +26607,8 @@ export const archivePhotos = [
     "rating": 2
   },
   {
-    "id": "0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL__20850006",
-    "src": "/images/archive/0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL/20850006.webp",
+    "id": "0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL__20850006",
+    "src": "/images/archive/0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL/20850006.webp",
     "date": "2026-07-18",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -27340,8 +26624,8 @@ export const archivePhotos = [
     "rating": 2
   },
   {
-    "id": "0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL__20850012",
-    "src": "/images/archive/0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL/20850012.webp",
+    "id": "0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL__20850012",
+    "src": "/images/archive/0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL/20850012.webp",
     "date": "2026-07-18",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -27359,8 +26643,8 @@ export const archivePhotos = [
     "rating": 2
   },
   {
-    "id": "0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL__20850013",
-    "src": "/images/archive/0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL/20850013.webp",
+    "id": "0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL__20850013",
+    "src": "/images/archive/0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL/20850013.webp",
     "date": "2026-07-18",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -27378,8 +26662,8 @@ export const archivePhotos = [
     "rating": 2
   },
   {
-    "id": "0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL__20850016",
-    "src": "/images/archive/0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL/20850016.webp",
+    "id": "0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL__20850016",
+    "src": "/images/archive/0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL/20850016.webp",
     "date": "2026-07-18",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -27398,8 +26682,8 @@ export const archivePhotos = [
     "rating": 2
   },
   {
-    "id": "0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL__20850024",
-    "src": "/images/archive/0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL/20850024.webp",
+    "id": "0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL__20850024",
+    "src": "/images/archive/0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL/20850024.webp",
     "date": "2026-07-18",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -27418,8 +26702,8 @@ export const archivePhotos = [
     "rating": 2
   },
   {
-    "id": "0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL__20850031",
-    "src": "/images/archive/0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL/20850031.webp",
+    "id": "0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL__20850031",
+    "src": "/images/archive/0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL/20850031.webp",
     "date": "2026-07-18",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -27438,8 +26722,8 @@ export const archivePhotos = [
     "rating": 2
   },
   {
-    "id": "0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL__20900004",
-    "src": "/images/archive/0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL/20900004.webp",
+    "id": "0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL__20900004",
+    "src": "/images/archive/0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL/20900004.webp",
     "date": "2026-07-18",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -27455,8 +26739,8 @@ export const archivePhotos = [
     "rating": 2
   },
   {
-    "id": "0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL__20900007",
-    "src": "/images/archive/0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL/20900007.webp",
+    "id": "0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL__20900007",
+    "src": "/images/archive/0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL/20900007.webp",
     "date": "2026-07-18",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -27474,8 +26758,8 @@ export const archivePhotos = [
     "rating": 2
   },
   {
-    "id": "0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL__20900008",
-    "src": "/images/archive/0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL/20900008.webp",
+    "id": "0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL__20900008",
+    "src": "/images/archive/0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL/20900008.webp",
     "date": "2026-07-18",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -27492,8 +26776,8 @@ export const archivePhotos = [
     "rating": 2
   },
   {
-    "id": "0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL__20900010",
-    "src": "/images/archive/0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL/20900010.webp",
+    "id": "0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL__20900010",
+    "src": "/images/archive/0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL/20900010.webp",
     "date": "2026-07-18",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -27510,8 +26794,8 @@ export const archivePhotos = [
     "rating": 2
   },
   {
-    "id": "0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL__20900013",
-    "src": "/images/archive/0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL/20900013.webp",
+    "id": "0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL__20900013",
+    "src": "/images/archive/0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL/20900013.webp",
     "date": "2026-07-18",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
@@ -27528,8 +26812,8 @@ export const archivePhotos = [
     "rating": 2
   },
   {
-    "id": "0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL__20900014",
-    "src": "/images/archive/0718_PF_03_Roc-Jiménez-de-Cisneros- -EVOL/20900014.webp",
+    "id": "0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL__20900014",
+    "src": "/images/archive/0718_PF_03_Roc-Jimenez-de-Cisneros-EVOL/20900014.webp",
     "date": "2026-07-18",
     "main": "Roc Jiménez De Cisneros",
     "mains": [
