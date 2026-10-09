@@ -314,15 +314,14 @@ export default {
     },
     mainOnlyLabel() {
       if (this.selectedArtists.length >= 2) {
-        return this.isKo ? '이 아티스트들만' : 'these artists only'
+        return this.isKo ? '해당 아티스트들 중심' : 'these artists only'
       }
-      return this.isKo ? '이 아티스트만' : 'this artist only'
+      return this.isKo ? '해당 아티스트 중심' : 'this artist only'
     },
     artistFilterHint() {
       if (this.isKo) {
-        const focus =
-          this.selectedArtists.length >= 2 ? '이 아티스트들만' : '이 아티스트만'
-        return `검색 결과는 해당 아티스트의 작업물이 들어 있는 모든 사진을 포함할 수 있습니다. 해당 아티스트의 작업이 중심인 사진을 보고 싶다면 「${focus}」을 체크하세요.`
+        const focus = this.mainOnlyLabel
+        return `검색 결과는 해당 아티스트의 작업이 있는 모든 사진을 포함할 수 있습니다. 선택된 아티스트의 작업이 중심인 사진을 보고 싶다면 「${focus}」을 체크하세요.`
       }
       const focus =
         this.selectedArtists.length >= 2 ? 'these artists only' : 'this artist only'
